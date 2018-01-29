@@ -3,8 +3,8 @@
 #
 
 set project_directory       [file dirname [info script]]
-set project_name            "msgpack_rpc_server"
-set device_parts            "xc7z010clg400-1"
+set project_name            "merge_sorter_tree"
+set device_parts            "xc7z020clg400-1"
 #
 # Create project
 #
