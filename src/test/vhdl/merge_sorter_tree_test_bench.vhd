@@ -38,9 +38,10 @@ library ieee;
 use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Tree_Test_Bench is
     generic (
-        NAME            :  STRING;
-        SCENARIO_FILE   :  STRING;
-        TREE_DEPTH      :  integer :=  1
+        NAME            :  STRING  := "TEST";
+        SCENARIO_FILE   :  STRING  := "test.snr";
+        TREE_DEPTH      :  integer :=  2;
+        SORT_ORDER      :  integer :=  0
     );
 end     Merge_Sorter_Tree_Test_Bench;
 -----------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ end     Merge_Sorter_Tree_Test_Bench;
 library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
+library Merge_Sorter;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -69,6 +71,9 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
     constant   COMP_HIGH    :  integer := 31;
     constant   COMP_LOW     :  integer :=  0;
     constant   INFO_BITS    :  integer :=  1;
+    constant   SYNC_WIDTH   :  integer :=  2;
+    constant   GPO_WIDTH    :  integer :=  8;
+    constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;
     -------------------------------------------------------------------------------
     -- グローバルシグナル.
     -------------------------------------------------------------------------------
@@ -114,9 +119,14 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
     signal     o_valid      :  std_logic;
     signal     o_ready      :  std_logic;
     constant   o_keep       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
-    constant   o_strb       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '0');
+    constant   o_strb       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
     constant   o_id         :  std_logic_vector(O_WIDTH.ID  -1 downto 0) := (others => '0');
     constant   o_dest       :  std_logic_vector(O_WIDTH.DEST-1 downto 0) := (others => '0');
+    -------------------------------------------------------------------------------
+    -- GPIO(General Purpose Input/Output)
+    -------------------------------------------------------------------------------
+    signal   O_GPI           : std_logic_vector(GPI_WIDTH   -1 downto 0);
+    signal   O_GPO           : std_logic_vector(GPO_WIDTH   -1 downto 0);
     -------------------------------------------------------------------------------
     -- 各種状態出力.
     -------------------------------------------------------------------------------
@@ -131,6 +141,7 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     component Merge_Sorter_Tree
         generic (
+            SORT_ORDER  :  integer :=  0;
             QUEUE_SIZE  :  integer :=  2;
             TREE_DEPTH  :  integer :=  1;
             DATA_BITS   :  integer := 64;
@@ -167,7 +178,7 @@ begin
             FINISH_ABORT    => FALSE             -- 
         )                                        -- 
         port map(                                -- 
-            CLK             => ACLK            , -- In  :
+            CLK             => CLOCK           , -- In  :
             RESET           => RESET           , -- Out :
             SYNC(0)         => SYNC(0)         , -- I/O :
             SYNC(1)         => SYNC(1)         , -- I/O :
@@ -211,7 +222,7 @@ begin
     -- 
     -------------------------------------------------------------------------------
     I_MASTER:  for i in 0 to I_WORDS-1 generate      --
-        constant  gpi  : std_logic_vector(GPI_WIDTH) := (others => '0');
+        constant  gpi  : std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
             generic map (                            -- 
@@ -251,6 +262,7 @@ begin
     -------------------------------------------------------------------------------
     DUT: Merge_Sorter_Tree               -- 
         generic map (                    -- 
+            SORT_ORDER  => SORT_ORDER  , -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
             TREE_DEPTH  => TREE_DEPTH  , -- 
             DATA_BITS   => DATA_BITS   , --
@@ -278,9 +290,9 @@ begin
     -------------------------------------------------------------------------------
     process begin
         CLOCK <= '0';
-        wait for CLOCK_PERIOD / 2;
+        wait for PERIOD / 2;
         CLOCK <= '1';
-        wait for CLOCK_PERIOD / 2;
+        wait for PERIOD / 2;
     end process;
 
     ARESETn <= '1' when (RESET = '0') else '0';

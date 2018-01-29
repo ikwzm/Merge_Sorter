@@ -70,8 +70,9 @@ architecture RTL of Merge_Sorter_Queue is
     constant  WORD_DATA_HI_POS  :  integer := WORD_DATA_LO_POS + DATA_BITS - 1;
     constant  WORD_INFO_LO_POS  :  integer := WORD_DATA_HI_POS + 1;
     constant  WORD_INFO_HI_POS  :  integer := WORD_INFO_LO_POS + INFO_BITS - 1;
+    constant  WORD_LAST_POS     :  integer := WORD_INFO_HI_POS + 1;
     constant  WORD_LO_POS       :  integer := WORD_DATA_LO_POS;
-    constant  WORD_HI_POS       :  integer := WORD_INFO_HI_POS;
+    constant  WORD_HI_POS       :  integer := WORD_LAST_POS;
     constant  WORD_BITS         :  integer := WORD_HI_POS - WORD_LO_POS + 1;
     signal    i_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
     signal    q_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
@@ -79,7 +80,7 @@ architecture RTL of Merge_Sorter_Queue is
 begin
     Q: QUEUE_REGISTER                    -- 
         generic map (                    -- 
-            QUEUE_SIZE  => QUEU_SIZE   , -- 
+            QUEUE_SIZE  => QUEUE_SIZE  , -- 
             DATA_BITS   => WORD_BITS     --
         )                                -- 
         port map (                       -- 
@@ -93,11 +94,13 @@ begin
             O_VAL       => open        , -- Out :
             Q_DATA      => q_word      , -- Out :
             Q_VAL       => q_valid     , -- Out :
-            Q_RDY       => Q_READY       -- In  :
+            Q_RDY       => O_READY       -- In  :
         );
     i_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS) <= I_DATA;
     i_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS) <= I_INFO;
+    i_word(WORD_LAST_POS                           ) <= I_LAST;
     O_DATA <= q_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS);
     O_INFO <= q_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS);
+    O_LAST <= q_word(WORD_LAST_POS);
     O_VALID<= q_valid(0);
 end RTL;

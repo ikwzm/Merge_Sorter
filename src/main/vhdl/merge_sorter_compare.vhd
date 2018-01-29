@@ -38,6 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Compare is
     generic (
+        SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32
@@ -85,7 +86,8 @@ begin
             elsif (A_NONE = '1' and B_NONE = '0') then
                 SEL_A <= '0';
                 SEL_B <= '1';
-            elsif (a_gt_b = TRUE) then
+            elsif (SORT_ORDER  = 0 and a_gt_b = TRUE ) or
+                  (SORT_ORDER /= 0 and a_gt_b = FALSE) then
                 SEL_A <= '1';
                 SEL_B <= '0';
             else

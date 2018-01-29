@@ -38,6 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Node is
     generic (
+        SORT_ORDER  :  integer :=  0;
         QUEUE_SIZE  :  integer :=  2;
         DATA_BITS   :  integer := 64;
         COMP_HIGH   :  integer := 63;
@@ -99,6 +100,7 @@ architecture RTL of Merge_Sorter_Node is
     -------------------------------------------------------------------------------
     component Merge_Sorter_Compare is
         generic (
+            SORT_ORDER  :  integer :=  0;
             DATA_BITS   :  integer := 64;
             COMP_HIGH   :  integer := 63;
             COMP_LOW    :  integer := 32
@@ -148,6 +150,7 @@ begin
     -------------------------------------------------------------------------------
     COMP: Merge_Sorter_Compare           --
         generic map(                     -- 
+            SORT_ORDER  => SORT_ORDER  , -- 
             DATA_BITS   => DATA_BITS   , -- 
             COMP_HIGH   => COMP_HIGH   , -- 
             COMP_LOW    => COMP_LOW      -- 
