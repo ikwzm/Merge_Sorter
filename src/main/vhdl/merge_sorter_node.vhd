@@ -72,8 +72,7 @@ end Merge_Sorter_Node;
 library ieee;
 use     ieee.std_logic_1164.all;
 architecture RTL of Merge_Sorter_Node is
-    type      STATE_TYPE        is (IDLE_STATE , DONE_STATE   ,
-                                    COMP_STATE,
+    type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE
                                 );
@@ -214,13 +213,13 @@ begin
                 end if;
             when A_FLUSH_STATE =>
                 if    (q_ready = '1' and A_VALID = '1' and A_LAST = '1') then
-                    next_state <= DONE_STATE;
+                    next_state <= COMP_STATE;
                 else
                     next_state <= A_FLUSH_STATE;
                 end if;
             when B_FLUSH_STATE =>
                 if    (q_ready = '1' and B_VALID = '1' and B_LAST = '1') then
-                    next_state <= DONE_STATE;
+                    next_state <= COMP_STATE;
                 else
                     next_state <= B_FLUSH_STATE;
                 end if;
