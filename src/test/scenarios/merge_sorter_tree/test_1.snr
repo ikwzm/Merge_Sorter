@@ -65,8 +65,8 @@
   - XFER   : {DATA: 0x00000003, USER: 0}
   - XFER   : {DATA: 0x00000002, USER: 0}
   - XFER   : {DATA: 0x00000001, USER: 0}
-  - XFER   : {DATA: 0x00000000, USER: 0, LAST: 1}
----
+  - XFER   : {DATA: 0x00000000, USER: 0}
+  - XFER   : {DATA: 0xFFFFFFFF, USER: 1, LAST: 1}
 ---
 - MARCHAL  : 
   - SAY    : Merge_Sorter_Tree TEST 1.4 Start.
@@ -82,7 +82,7 @@
   - XFER   : {DATA: 0x00000017, USER: 0, LAST: 1}
 - I03:
   - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
-  - XFER   : {DATA: 0xFFFFFFFF, USER: 0, USER: 1, LAST: 1}
+  - XFER   : {DATA: 0xFFFFFFFF, USER: 1, LAST: 1}
 - O  :
   - XFER   : {DATA: 0x00000008, USER: 0}
   - XFER   : {DATA: 0x00000005, USER: 0}
@@ -90,7 +90,8 @@
   - XFER   : {DATA: 0x00000000, USER: 0, LAST: 1}
   - XFER   : {DATA: 0x00000017, USER: 0}
   - XFER   : {DATA: 0x00000013, USER: 0}
-  - XFER   : {DATA: 0x00000012, USER: 0, LAST: 1}
+  - XFER   : {DATA: 0x00000012, USER: 0}
+  - XFER   : {DATA: 0xFFFFFFFF, USER: 1, LAST: 1}
 ---
 - MARCHAL  : 
   - SAY    : Merge_Sorter_Tree TEST 1 Done.

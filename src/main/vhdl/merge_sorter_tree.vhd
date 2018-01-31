@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Tree Module :
 --!     @version 0.0.1
---!     @date    2018/1/28
+--!     @date    2018/1/31
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -139,30 +139,6 @@ architecture RTL of Merge_Sorter_Tree is
             O_READY         :  in  std_logic
         );
     end component;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Merge_Sorter_Drop_None
-        generic (
-            DATA_BITS       :  integer := 64;
-            INFO_BITS       :  integer :=  1
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            I_DATA          :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(INFO_BITS-1 downto 0);
-            I_LAST          :  in  std_logic;
-            I_VALID         :  in  std_logic;
-            I_READY         :  out std_logic;
-            O_DATA          :  out std_logic_vector(DATA_BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(INFO_BITS-1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
-        );
-    end component;
 begin
     -------------------------------------------------------------------------------
     --
@@ -229,24 +205,9 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    OUTLET: Merge_Sorter_Drop_None                             -- 
-        generic map (                                          -- 
-            DATA_BITS   => DATA_BITS                         , --
-            INFO_BITS   => INFO_BITS                           -- 
-        )                                                      -- 
-        port map (                                             -- 
-            CLK         => CLK                               , -- In  :
-            RST         => RST                               , -- In  :
-            CLR         => CLR                               , -- In  :
-            I_DATA      => node_data (0,0)                   , -- In  :
-            I_INFO      => node_info (0,0)                   , -- In  :
-            I_LAST      => node_last (0,0)                   , -- In  :
-            I_VALID     => node_valid(0,0)                   , -- In  :
-            I_READY     => node_ready(0,0)                   , -- Out :
-            O_DATA      => O_DATA                            , -- Out :
-            O_INFO      => O_INFO                            , -- Out :
-            O_LAST      => O_LAST                            , -- Out :
-            O_VALID     => O_VALID                           , -- Out :
-            O_READY     => O_READY                             -- In  :
-        );                                                     -- 
+    O_DATA  <= node_data (0,0);
+    O_INFO  <= node_info (0,0);
+    O_LAST  <= node_last (0,0);
+    O_VALID <= node_valid(0,0);
+    node_ready(0,0) <= O_READY;
 end RTL;
