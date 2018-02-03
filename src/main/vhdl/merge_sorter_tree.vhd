@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Tree Module :
---!     @version 0.0.1
---!     @date    2018/1/31
+--!     @version 0.0.2
+--!     @date    2018/2/4
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -114,58 +114,17 @@ architecture RTL of Merge_Sorter_Tree is
             O_READY         :  in  std_logic
         );
     end component;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Merge_Sorter_Queue
-        generic (
-            QUEUE_SIZE      :  integer :=  2;
-            DATA_BITS       :  integer := 64;
-            INFO_BITS       :  integer :=  1
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            I_DATA          :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(INFO_BITS-1 downto 0);
-            I_LAST          :  in  std_logic;
-            I_VALID         :  in  std_logic;
-            I_READY         :  out std_logic;
-            O_DATA          :  out std_logic_vector(DATA_BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(INFO_BITS-1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
-        );
-    end component;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    INTAKE: for i in 0 to (2**TREE_DEPTH)-1 generate           -- 
-        QUEUE: Merge_Sorter_Queue                              -- 
-            generic map (                                      -- 
-                QUEUE_SIZE  => QUEUE_SIZE                    , -- 
-                DATA_BITS   => DATA_BITS                     , --
-                INFO_BITS   => INFO_BITS                       -- 
-            )                                                  -- 
-            port map (                                         -- 
-                CLK         => CLK                           , -- In  :
-                RST         => RST                           , -- In  :
-                CLR         => CLR                           , -- In  :
-                I_DATA      => I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS) , -- In  :
-                I_INFO      => I_INFO((i+1)*INFO_BITS-1 downto i*INFO_BITS) , -- In  :
-                I_LAST      => I_LAST(i)                     , -- In  :
-                I_VALID     => I_VALID(i)                    , -- In  :
-                I_READY     => I_READY(i)                    , -- Out :
-                O_DATA      => node_data (TREE_DEPTH, i)     , -- Out :
-                O_INFO      => node_info (TREE_DEPTH, i)     , -- Out :
-                O_LAST      => node_last (TREE_DEPTH, i)     , -- Out :
-                O_VALID     => node_valid(TREE_DEPTH, i)     , -- Out :
-                O_READY     => node_ready(TREE_DEPTH, i)       -- In  :
-            );                                                 -- 
-    end generate;                                              -- 
+    INTAKE: for i in 0 to (2**TREE_DEPTH)-1 generate
+        node_data (TREE_DEPTH, i) <= I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
+        node_info (TREE_DEPTH, i) <= I_INFO((i+1)*INFO_BITS-1 downto i*INFO_BITS);
+        node_last (TREE_DEPTH, i) <= I_LAST(i);
+        node_valid(TREE_DEPTH, i) <= I_VALID(i);
+        I_READY(i) <= node_ready(TREE_DEPTH, i);
+    end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -205,9 +164,11 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    O_DATA  <= node_data (0,0);
-    O_INFO  <= node_info (0,0);
-    O_LAST  <= node_last (0,0);
-    O_VALID <= node_valid(0,0);
-    node_ready(0,0) <= O_READY;
+    OUTLET: block begin
+        O_DATA  <= node_data (0,0);
+        O_INFO  <= node_info (0,0);
+        O_LAST  <= node_last (0,0);
+        O_VALID <= node_valid(0,0);
+        node_ready(0,0) <= O_READY;
+    end block;
 end RTL;
