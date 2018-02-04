@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree_testbench.vhd
 --!     @brief   Merge Sorter Tree Test Bench :
---!     @version 0.0.1
---!     @date    2018/1/28
+--!     @version 0.0.3
+--!     @date    2018/2/4
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -40,7 +40,7 @@ entity  Merge_Sorter_Tree_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
-        TREE_DEPTH      :  integer :=  2;
+        I_WORDS         :  integer :=  4;
         SORT_ORDER      :  integer :=  0
     );
 end     Merge_Sorter_Tree_Test_Bench;
@@ -94,7 +94,6 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
-    constant   I_WORDS      :  integer := 2**TREE_DEPTH;
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
     type       I_INFO_VECTOR is array (integer range <>) of std_logic_vector(INFO_BITS-1 downto 0);
     signal     i_data       :  I_DATA_VECTOR   (I_WORDS-1 downto 0);
@@ -143,7 +142,7 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
         generic (
             SORT_ORDER  :  integer :=  0;
             QUEUE_SIZE  :  integer :=  2;
-            TREE_DEPTH  :  integer :=  1;
+            I_WORDS     :  integer :=  1;
             DATA_BITS   :  integer := 64;
             COMP_HIGH   :  integer := 63;
             COMP_LOW    :  integer := 32;
@@ -153,13 +152,13 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
             CLK         :  in  std_logic;
             RST         :  in  std_logic;
             CLR         :  in  std_logic;
-            I_DATA      :  in  std_logic_vector((2**TREE_DEPTH)*DATA_BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector((2**TREE_DEPTH)*INFO_BITS-1 downto 0);
-            I_LAST      :  in  std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-            I_VALID     :  in  std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-            I_READY     :  out std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-            O_DATA      :  out std_logic_vector(                DATA_BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(                INFO_BITS-1 downto 0);
+            I_DATA      :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
+            I_LAST      :  in  std_logic_vector(I_WORDS          -1 downto 0);
+            I_VALID     :  in  std_logic_vector(I_WORDS          -1 downto 0);
+            I_READY     :  out std_logic_vector(I_WORDS          -1 downto 0);
+            O_DATA      :  out std_logic_vector(        DATA_BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(        INFO_BITS-1 downto 0);
             O_LAST      :  out std_logic;
             O_VALID     :  out std_logic;
             O_READY     :  in  std_logic
@@ -264,7 +263,7 @@ begin
         generic map (                    -- 
             SORT_ORDER  => SORT_ORDER  , -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            TREE_DEPTH  => TREE_DEPTH  , -- 
+            I_WORDS     => I_WORDS     , -- 
             DATA_BITS   => DATA_BITS   , --
             COMP_HIGH   => COMP_HIGH   , -- 
             COMP_LOW    => COMP_LOW    , -- 

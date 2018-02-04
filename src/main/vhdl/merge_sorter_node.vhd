@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_node.vhd
 --!     @brief   Merge Sorter Node Module :
---!     @version 0.0.1
---!     @date    2018/1/28
+--!     @version 0.0.3
+--!     @date    2018/2/4
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -39,7 +39,6 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Node is
     generic (
         SORT_ORDER  :  integer :=  0;
-        QUEUE_SIZE  :  integer :=  2;
         DATA_BITS   :  integer := 64;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32;
@@ -89,14 +88,6 @@ architecture RTL of Merge_Sorter_Node is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    q_data            :  std_logic_vector(DATA_BITS-1 downto 0);
-    signal    q_info            :  std_logic_vector(INFO_BITS-1 downto 0);
-    signal    q_last            :  std_logic;
-    signal    q_valid           :  std_logic;
-    signal    q_ready           :  std_logic;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
     component Merge_Sorter_Compare is
         generic (
             SORT_ORDER  :  integer :=  0;
@@ -116,31 +107,6 @@ architecture RTL of Merge_Sorter_Node is
             READY       :  out std_logic;
             SEL_A       :  out std_logic;
             SEL_B       :  out std_logic
-        );
-    end component;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Merge_Sorter_Queue
-        generic (
-            QUEUE_SIZE  :  integer :=  2;
-            DATA_BITS   :  integer := 64;
-            INFO_BITS   :  integer :=  1
-        );
-        port (
-            CLK         :  in  std_logic;
-            RST         :  in  std_logic;
-            CLR         :  in  std_logic;
-            I_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector(INFO_BITS-1 downto 0);
-            I_LAST      :  in  std_logic;
-            I_VALID     :  in  std_logic;
-            I_READY     :  out std_logic;
-            O_DATA      :  out std_logic_vector(DATA_BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(INFO_BITS-1 downto 0);
-            O_LAST      :  out std_logic;
-            O_VALID     :  out std_logic;
-            O_READY     :  in  std_logic
         );
     end component;
 begin
@@ -193,32 +159,32 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    process (temp_state, A_VALID, A_LAST, B_VALID, B_LAST, q_ready) begin
+    process (temp_state, A_VALID, A_LAST, B_VALID, B_LAST, O_READY) begin
         case temp_state is
             when A_SEL_STATE =>
-                if    (q_ready = '1' and A_VALID = '1' and A_LAST = '1') then
+                if    (O_READY = '1' and A_VALID = '1' and A_LAST = '1') then
                     next_state <= B_FLUSH_STATE;
-                elsif (q_ready = '1' and A_VALID = '1' and A_LAST = '0') then
+                elsif (O_READY = '1' and A_VALID = '1' and A_LAST = '0') then
                     next_state <= COMP_STATE;
                 else
                     next_state <= A_SEL_STATE;
                 end if;
             when B_SEL_STATE =>
-                if    (q_ready = '1' and B_VALID = '1' and B_LAST = '1') then
+                if    (O_READY = '1' and B_VALID = '1' and B_LAST = '1') then
                     next_state <= A_FLUSH_STATE;
-                elsif (q_ready = '1' and B_VALID = '1' and B_LAST = '0') then
+                elsif (O_READY = '1' and B_VALID = '1' and B_LAST = '0') then
                     next_state <= COMP_STATE;
                 else
                     next_state <= B_SEL_STATE;
                 end if;
             when A_FLUSH_STATE =>
-                if    (q_ready = '1' and A_VALID = '1' and A_LAST = '1') then
+                if    (O_READY = '1' and A_VALID = '1' and A_LAST = '1') then
                     next_state <= COMP_STATE;
                 else
                     next_state <= A_FLUSH_STATE;
                 end if;
             when B_FLUSH_STATE =>
-                if    (q_ready = '1' and B_VALID = '1' and B_LAST = '1') then
+                if    (O_READY = '1' and B_VALID = '1' and B_LAST = '1') then
                     next_state <= COMP_STATE;
                 else
                     next_state <= B_FLUSH_STATE;
@@ -246,54 +212,30 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    A_READY <= '1' when (temp_state = A_SEL_STATE   and q_ready = '1') or
-                        (temp_state = A_FLUSH_STATE and q_ready = '1') else '0';
-    B_READY <= '1' when (temp_state = B_SEL_STATE   and q_ready = '1') or
-                        (temp_state = B_FLUSH_STATE and q_ready = '1') else '0';
+    A_READY <= '1' when (temp_state = A_SEL_STATE   and O_READY = '1') or
+                        (temp_state = A_FLUSH_STATE and O_READY = '1') else '0';
+    B_READY <= '1' when (temp_state = B_SEL_STATE   and O_READY = '1') or
+                        (temp_state = B_FLUSH_STATE and O_READY = '1') else '0';
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    q_valid <= '1' when (temp_state = A_SEL_STATE   and A_VALID = '1') or
+    O_VALID <= '1' when (temp_state = A_SEL_STATE   and A_VALID = '1') or
                         (temp_state = A_FLUSH_STATE and A_VALID = '1') or
                         (temp_state = B_SEL_STATE   and B_VALID = '1') or
                         (temp_state = B_FLUSH_STATE and B_VALID = '1') else '0';
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    q_last  <= '1' when (temp_state = A_FLUSH_STATE and A_LAST  = '1') or
+    O_LAST  <= '1' when (temp_state = A_FLUSH_STATE and A_LAST  = '1') or
                         (temp_state = B_FLUSH_STATE and B_LAST  = '1') else '0';
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    q_data  <= B_DATA when (temp_state = B_SEL_STATE  ) or
+    O_DATA  <= B_DATA when (temp_state = B_SEL_STATE  ) or
                            (temp_state = B_FLUSH_STATE) else A_DATA;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    q_info  <= B_INFO when (temp_state = B_SEL_STATE  ) or
+    O_INFO  <= B_INFO when (temp_state = B_SEL_STATE  ) or
                            (temp_state = B_FLUSH_STATE) else A_INFO;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    Q: Merge_Sorter_Queue                -- 
-        generic map (                    -- 
-            QUEUE_SIZE  => QUEUE_SIZE  , --
-            DATA_BITS   => DATA_BITS   , --
-            INFO_BITS   => INFO_BITS     --
-        )                                -- 
-        port map (                       -- 
-            CLK         => CLK         , -- In  :
-            RST         => RST         , -- In  :
-            CLR         => CLR         , -- In  :
-            I_DATA      => q_data      , -- In  :
-            I_INFO      => q_info      , -- In  :
-            I_LAST      => q_last      , -- In  :
-            I_VALID     => q_valid     , -- In  :
-            I_READY     => q_ready     , -- Out :
-            O_DATA      => O_DATA      , -- Out :
-            O_INFO      => O_INFO      , -- Out :
-            O_LAST      => O_LAST      , -- Out :
-            O_VALID     => O_VALID     , -- Out :
-            O_READY     => O_READY       -- In  :
-        );
 end RTL;

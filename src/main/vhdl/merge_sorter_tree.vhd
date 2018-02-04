@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Tree Module :
---!     @version 0.0.2
+--!     @version 0.0.3
 --!     @date    2018/2/4
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ entity  Merge_Sorter_Tree is
     generic (
         SORT_ORDER  :  integer :=  0;
         QUEUE_SIZE  :  integer :=  2;
-        TREE_DEPTH  :  integer :=  1;
+        I_WORDS     :  integer :=  8;
         DATA_BITS   :  integer := 64;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32;
@@ -50,13 +50,13 @@ entity  Merge_Sorter_Tree is
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_DATA      :  in  std_logic_vector((2**TREE_DEPTH)*DATA_BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector((2**TREE_DEPTH)*INFO_BITS-1 downto 0);
-        I_LAST      :  in  std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-        I_VALID     :  in  std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-        I_READY     :  out std_logic_vector((2**TREE_DEPTH)          -1 downto 0);
-        O_DATA      :  out std_logic_vector(                DATA_BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(                INFO_BITS-1 downto 0);
+        I_DATA      :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
+        I_LAST      :  in  std_logic_vector(I_WORDS          -1 downto 0);
+        I_VALID     :  in  std_logic_vector(I_WORDS          -1 downto 0);
+        I_READY     :  out std_logic_vector(I_WORDS          -1 downto 0);
+        O_DATA      :  out std_logic_vector(        DATA_BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(        INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -71,23 +71,9 @@ architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    type      DATA_ARRAY    is array (integer range <>, integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
-    type      INFO_ARRAY    is array (integer range <>, integer range <>) of std_logic_vector(INFO_BITS-1 downto 0);
-    type      LAST_ARRAY    is array (integer range <>, integer range <>) of std_logic;
-    type      VALID_ARRAY   is array (integer range <>, integer range <>) of std_logic;
-    type      READY_ARRAY   is array (integer range <>, integer range <>) of std_logic;
-    signal    node_data     :  DATA_ARRAY (0 to TREE_DEPTH, 0 to (2**TREE_DEPTH)-1);
-    signal    node_info     :  INFO_ARRAY (0 to TREE_DEPTH, 0 to (2**TREE_DEPTH)-1);
-    signal    node_last     :  LAST_ARRAY (0 to TREE_DEPTH, 0 to (2**TREE_DEPTH)-1);
-    signal    node_valid    :  VALID_ARRAY(0 to TREE_DEPTH, 0 to (2**TREE_DEPTH)-1);
-    signal    node_ready    :  READY_ARRAY(0 to TREE_DEPTH, 0 to (2**TREE_DEPTH)-1);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
     component Merge_Sorter_Node
         generic (
             SORT_ORDER      :  integer :=  0;
-            QUEUE_SIZE      :  integer :=  2;
             DATA_BITS       :  integer := 64;
             COMP_HIGH       :  integer := 63;
             COMP_LOW        :  integer := 32;
@@ -114,61 +100,227 @@ architecture RTL of Merge_Sorter_Tree is
             O_READY         :  in  std_logic
         );
     end component;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    component Merge_Sorter_Tree
+        generic (
+            SORT_ORDER      :  integer :=  0;
+            QUEUE_SIZE      :  integer :=  2;
+            I_WORDS         :  integer :=  8;
+            DATA_BITS       :  integer := 64;
+            COMP_HIGH       :  integer := 63;
+            COMP_LOW        :  integer := 32;
+            INFO_BITS       :  integer :=  1
+        );
+        port (
+            CLK             :  in  std_logic;
+            RST             :  in  std_logic;
+            CLR             :  in  std_logic;
+            I_DATA          :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
+            I_INFO          :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
+            I_LAST          :  in  std_logic_vector(I_WORDS          -1 downto 0);
+            I_VALID         :  in  std_logic_vector(I_WORDS          -1 downto 0);
+            I_READY         :  out std_logic_vector(I_WORDS          -1 downto 0);
+            O_DATA          :  out std_logic_vector(        DATA_BITS-1 downto 0);
+            O_INFO          :  out std_logic_vector(        INFO_BITS-1 downto 0);
+            O_LAST          :  out std_logic;
+            O_VALID         :  out std_logic;
+            O_READY         :  in  std_logic
+        );
+    end component;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    component Merge_Sorter_Queue
+        generic (
+            QUEUE_SIZE      :  integer :=  2;
+            DATA_BITS       :  integer := 64;
+            INFO_BITS       :  integer :=  1
+        );
+        port (
+            CLK             :  in  std_logic;
+            RST             :  in  std_logic;
+            CLR             :  in  std_logic;
+            I_DATA          :  in  std_logic_vector(DATA_BITS-1 downto 0);
+            I_INFO          :  in  std_logic_vector(INFO_BITS-1 downto 0);
+            I_LAST          :  in  std_logic;
+            I_VALID         :  in  std_logic;
+            I_READY         :  out std_logic;
+            O_DATA          :  out std_logic_vector(DATA_BITS-1 downto 0);
+            O_INFO          :  out std_logic_vector(INFO_BITS-1 downto 0);
+            O_LAST          :  out std_logic;
+            O_VALID         :  out std_logic;
+            O_READY         :  in  std_logic
+        );
+    end component;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    signal    q_data        :  std_logic_vector(DATA_BITS-1 downto 0);
+    signal    q_info        :  std_logic_vector(INFO_BITS-1 downto 0);
+    signal    q_last        :  std_logic;
+    signal    q_valid       :  std_logic;
+    signal    q_ready       :  std_logic;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    INTAKE: for i in 0 to (2**TREE_DEPTH)-1 generate
-        node_data (TREE_DEPTH, i) <= I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
-        node_info (TREE_DEPTH, i) <= I_INFO((i+1)*INFO_BITS-1 downto i*INFO_BITS);
-        node_last (TREE_DEPTH, i) <= I_LAST(i);
-        node_valid(TREE_DEPTH, i) <= I_VALID(i);
-        I_READY(i) <= node_ready(TREE_DEPTH, i);
+    NONE: if (I_WORDS = 1) generate
+        q_data     <= I_DATA;
+        q_info     <= I_INFO;
+        q_last     <= I_LAST (0);
+        q_valid    <= I_VALID(0);
+        I_READY(0) <= q_ready;
     end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    TREE: for depth in TREE_DEPTH-1 downto 0 generate          -- 
-        GEN: for i in 0 to (2**depth)-1 generate               -- 
-            NODE: Merge_Sorter_Node                            -- 
-               generic map(                                    -- 
-                    SORT_ORDER  => SORT_ORDER                , -- 
-                    QUEUE_SIZE  => QUEUE_SIZE                , -- 
-                    DATA_BITS   => DATA_BITS                 , -- 
-                    COMP_HIGH   => COMP_HIGH                 , -- 
-                    COMP_LOW    => COMP_LOW                  , --
-                    INFO_BITS   => INFO_BITS                   -- 
-                )                                              -- 
-                port map (                                     -- 
-                    CLK         => CLK                       , -- In  :
-                    RST         => RST                       , -- In  :
-                    CLR         => CLR                       , -- In  :
-                    A_DATA      => node_data (depth+1, 2*i+0), -- In  :
-                    A_INFO      => node_info (depth+1, 2*i+0), -- In  :
-                    A_LAST      => node_last (depth+1, 2*i+0), -- In  :
-                    A_VALID     => node_valid(depth+1, 2*i+0), -- In  :
-                    A_READY     => node_ready(depth+1, 2*i+0), -- Out :
-                    B_DATA      => node_data (depth+1, 2*i+1), -- In  :
-                    B_INFO      => node_info (depth+1, 2*i+1), -- In  :
-                    B_LAST      => node_last (depth+1, 2*i+1), -- In  :
-                    B_VALID     => node_valid(depth+1, 2*i+1), -- In  :
-                    B_READY     => node_ready(depth+1, 2*i+1), -- Out :
-                    O_DATA      => node_data (depth  ,   i  ), -- Out :
-                    O_INFO      => node_info (depth  ,   i  ), -- Out :
-                    O_LAST      => node_last (depth  ,   i  ), -- Out :
-                    O_VALID     => node_valid(depth  ,   i  ), -- Out :
-                    O_READY     => node_ready(depth  ,   i  )  -- In  :
-                );                                             -- 
-        end generate;                                          -- 
-    end generate;                                              -- 
+    TREE: if (I_WORDS > 1) generate
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        constant  A_WORDS   :  integer := I_WORDS / 2;
+        constant  A_FLAG_LO :  integer := 0;
+        constant  A_FLAG_HI :  integer := A_WORDS - 1;
+        constant  A_DATA_LO :  integer := 0;
+        constant  A_DATA_HI :  integer := A_WORDS*DATA_BITS-1;
+        constant  A_INFO_LO :  integer := 0;
+        constant  A_INFO_HI :  integer := A_WORDS*INFO_BITS-1;
+        signal    a_data    :  std_logic_vector(DATA_BITS-1 downto 0);
+        signal    a_info    :  std_logic_vector(INFO_BITS-1 downto 0);
+        signal    a_last    :  std_logic;
+        signal    a_valid   :  std_logic;
+        signal    a_ready   :  std_logic;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        constant  B_WORDS   :  integer := I_WORDS - A_WORDS;
+        constant  B_FLAG_LO :  integer := A_FLAG_HI + 1;
+        constant  B_FLAG_HI :  integer := I_WORDS   - 1;
+        constant  B_DATA_LO :  integer := A_DATA_HI + 1;
+        constant  B_DATA_HI :  integer := I_WORDS*DATA_BITS-1;
+        constant  B_INFO_LO :  integer := A_INFO_HI + 1;
+        constant  B_INFO_HI :  integer := I_WORDS*INFO_BITS-1;
+        signal    b_data    :  std_logic_vector(DATA_BITS-1 downto 0);
+        signal    b_info    :  std_logic_vector(INFO_BITS-1 downto 0);
+        signal    b_last    :  std_logic;
+        signal    b_valid   :  std_logic;
+        signal    b_ready   :  std_logic;
+    begin
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        A: Merge_Sorter_Tree                                        -- 
+            generic map (                                           -- 
+                SORT_ORDER  => SORT_ORDER                         , -- 
+                QUEUE_SIZE  => QUEUE_SIZE                         , --
+                I_WORDS     => A_WORDS                            , --
+                DATA_BITS   => DATA_BITS                          , --
+                COMP_HIGH   => COMP_HIGH                          , --
+                COMP_LOW    => COMP_LOW                           , --
+                INFO_BITS   => INFO_BITS                            --
+            )                                                       -- 
+            port map (                                              -- 
+                CLK         => CLK                                , -- In  :
+                RST         => RST                                , -- In  :
+                CLR         => CLR                                , -- In  :
+                I_DATA      => I_DATA (A_DATA_HI downto A_DATA_LO), -- In  :
+                I_INFO      => I_INFO (A_INFO_HI downto A_INFO_LO), -- In  :
+                I_LAST      => I_LAST (A_FLAG_HI downto A_FLAG_LO), -- In  :
+                I_VALID     => I_VALID(A_FLAG_HI downto A_FLAG_LO), -- In  :
+                I_READY     => I_READY(A_FLAG_HI downto A_FLAG_LO), -- Out :
+                O_DATA      => a_data                             , -- Out :
+                O_INFO      => a_info                             , -- Out :
+                O_LAST      => a_last                             , -- Out :
+                O_VALID     => a_valid                            , -- Out :
+                O_READY     => a_ready                              -- In  :
+            );                                                      -- 
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        B: Merge_Sorter_Tree                                        -- 
+            generic map (                                           -- 
+                SORT_ORDER  => SORT_ORDER                         , -- 
+                QUEUE_SIZE  => QUEUE_SIZE                         , --
+                I_WORDS     => B_WORDS                            , --
+                DATA_BITS   => DATA_BITS                          , --
+                COMP_HIGH   => COMP_HIGH                          , --
+                COMP_LOW    => COMP_LOW                           , --
+                INFO_BITS   => INFO_BITS                            --
+            )                                                       -- 
+            port map (                                              -- 
+                CLK         => CLK                                , -- In  :
+                RST         => RST                                , -- In  :
+                CLR         => CLR                                , -- In  :
+                I_DATA      => I_DATA (B_DATA_HI downto B_DATA_LO), -- In  :
+                I_INFO      => I_INFO (B_INFO_HI downto B_INFO_LO), -- In  :
+                I_LAST      => I_LAST (B_FLAG_HI downto B_FLAG_LO), -- In  :
+                I_VALID     => I_VALID(B_FLAG_HI downto B_FLAG_LO), -- In  :
+                I_READY     => I_READY(B_FLAG_HI downto B_FLAG_LO), -- Out :
+                O_DATA      => b_data                             , -- Out :
+                O_INFO      => b_info                             , -- Out :
+                O_LAST      => b_last                             , -- Out :
+                O_VALID     => b_valid                            , -- Out :
+                O_READY     => b_ready                              -- In  :
+            );                                                      -- 
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        NODE: Merge_Sorter_Node              -- 
+           generic map(                      -- 
+                SORT_ORDER  => SORT_ORDER  , -- 
+                DATA_BITS   => DATA_BITS   , -- 
+                COMP_HIGH   => COMP_HIGH   , -- 
+                COMP_LOW    => COMP_LOW    , --
+                INFO_BITS   => INFO_BITS     -- 
+            )                                -- 
+            port map (                       -- 
+                CLK         => CLK         , -- In  :
+                RST         => RST         , -- In  :
+                CLR         => CLR         , -- In  :
+                A_DATA      => a_data      , -- In  :
+                A_INFO      => a_info      , -- In  :
+                A_LAST      => a_last      , -- In  :
+                A_VALID     => a_valid     , -- In  :
+                A_READY     => a_ready     , -- Out :
+                B_DATA      => b_data      , -- In  :
+                B_INFO      => b_info      , -- In  :
+                B_LAST      => b_last      , -- In  :
+                B_VALID     => b_valid     , -- In  :
+                B_READY     => b_ready     , -- Out :
+                O_DATA      => q_data      , -- Out :
+                O_INFO      => q_info      , -- Out :
+                O_LAST      => q_last      , -- Out :
+                O_VALID     => q_valid     , -- Out :
+                O_READY     => q_ready       -- In  :
+            );                               -- 
+    end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    OUTLET: block begin
-        O_DATA  <= node_data (0,0);
-        O_INFO  <= node_info (0,0);
-        O_LAST  <= node_last (0,0);
-        O_VALID <= node_valid(0,0);
-        node_ready(0,0) <= O_READY;
+    OUTLET: block                            -- 
+    begin                                    -- 
+        QUEUE: Merge_Sorter_Queue            -- 
+            generic map (                    -- 
+                QUEUE_SIZE  => QUEUE_SIZE  , -- 
+                DATA_BITS   => DATA_BITS   , -- 
+                INFO_BITS   => INFO_BITS     -- 
+            )                                -- 
+            port map (                       -- 
+                CLK         => CLK         , -- In  :
+                RST         => RST         , -- In  :
+                CLR         => CLR         , -- In  :
+                I_DATA      => q_data      , -- In  :
+                I_INFO      => q_info      , -- In  :
+                I_LAST      => q_last      , -- In  :
+                I_VALID     => q_valid     , -- In  :
+                I_READY     => q_ready     , -- Out :
+                O_DATA      => O_DATA      , -- Out :
+                O_INFO      => O_INFO      , -- Out :
+                O_LAST      => O_LAST      , -- Out :
+                O_VALID     => O_VALID     , -- Out :
+                O_READY     => O_READY       -- In  :
+           );                                --
     end block;
 end RTL;
