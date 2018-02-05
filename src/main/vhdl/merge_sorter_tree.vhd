@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Tree Module :
---!     @version 0.0.3
---!     @date    2018/2/4
+--!     @version 0.0.4
+--!     @date    2018/2/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -38,25 +38,25 @@ library ieee;
 use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Tree is
     generic (
-        SORT_ORDER  :  integer :=  0;
-        QUEUE_SIZE  :  integer :=  2;
-        I_WORDS     :  integer :=  8;
+        I_NUM       :  integer :=  8;
         DATA_BITS   :  integer := 64;
+        INFO_BITS   :  integer :=  1;
+        SORT_ORDER  :  integer :=  0;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32;
-        INFO_BITS   :  integer :=  1
+        QUEUE_SIZE  :  integer :=  2
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_DATA      :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
-        I_LAST      :  in  std_logic_vector(I_WORDS          -1 downto 0);
-        I_VALID     :  in  std_logic_vector(I_WORDS          -1 downto 0);
-        I_READY     :  out std_logic_vector(I_WORDS          -1 downto 0);
-        O_DATA      :  out std_logic_vector(        DATA_BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(        INFO_BITS-1 downto 0);
+        I_DATA      :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
+        I_LAST      :  in  std_logic_vector(I_NUM          -1 downto 0);
+        I_VALID     :  in  std_logic_vector(I_NUM          -1 downto 0);
+        I_READY     :  out std_logic_vector(I_NUM          -1 downto 0);
+        O_DATA      :  out std_logic_vector(      DATA_BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(      INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -105,25 +105,25 @@ architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     component Merge_Sorter_Tree
         generic (
-            SORT_ORDER      :  integer :=  0;
-            QUEUE_SIZE      :  integer :=  2;
-            I_WORDS         :  integer :=  8;
+            I_NUM           :  integer :=  8;
             DATA_BITS       :  integer := 64;
+            INFO_BITS       :  integer :=  1;
+            SORT_ORDER      :  integer :=  0;
             COMP_HIGH       :  integer := 63;
             COMP_LOW        :  integer := 32;
-            INFO_BITS       :  integer :=  1
+            QUEUE_SIZE      :  integer :=  2
         );
         port (
             CLK             :  in  std_logic;
             RST             :  in  std_logic;
             CLR             :  in  std_logic;
-            I_DATA          :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
-            I_LAST          :  in  std_logic_vector(I_WORDS          -1 downto 0);
-            I_VALID         :  in  std_logic_vector(I_WORDS          -1 downto 0);
-            I_READY         :  out std_logic_vector(I_WORDS          -1 downto 0);
-            O_DATA          :  out std_logic_vector(        DATA_BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(        INFO_BITS-1 downto 0);
+            I_DATA          :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+            I_INFO          :  in  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
+            I_LAST          :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_VALID         :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_READY         :  out std_logic_vector(I_NUM          -1 downto 0);
+            O_DATA          :  out std_logic_vector(      DATA_BITS-1 downto 0);
+            O_INFO          :  out std_logic_vector(      INFO_BITS-1 downto 0);
             O_LAST          :  out std_logic;
             O_VALID         :  out std_logic;
             O_READY         :  in  std_logic
@@ -166,7 +166,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    NONE: if (I_WORDS = 1) generate
+    NONE: if (I_NUM = 1) generate
         q_data     <= I_DATA;
         q_info     <= I_INFO;
         q_last     <= I_LAST (0);
@@ -176,17 +176,17 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    TREE: if (I_WORDS > 1) generate
+    TREE: if (I_NUM > 1) generate
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  A_WORDS   :  integer := I_WORDS / 2;
+        constant  A_I_NUM   :  integer := I_NUM / 2;
         constant  A_FLAG_LO :  integer := 0;
-        constant  A_FLAG_HI :  integer := A_WORDS - 1;
+        constant  A_FLAG_HI :  integer := A_I_NUM - 1;
         constant  A_DATA_LO :  integer := 0;
-        constant  A_DATA_HI :  integer := A_WORDS*DATA_BITS-1;
+        constant  A_DATA_HI :  integer := A_I_NUM*DATA_BITS - 1;
         constant  A_INFO_LO :  integer := 0;
-        constant  A_INFO_HI :  integer := A_WORDS*INFO_BITS-1;
+        constant  A_INFO_HI :  integer := A_I_NUM*INFO_BITS - 1;
         signal    a_data    :  std_logic_vector(DATA_BITS-1 downto 0);
         signal    a_info    :  std_logic_vector(INFO_BITS-1 downto 0);
         signal    a_last    :  std_logic;
@@ -195,13 +195,13 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  B_WORDS   :  integer := I_WORDS - A_WORDS;
+        constant  B_I_NUM   :  integer := I_NUM - A_I_NUM;
         constant  B_FLAG_LO :  integer := A_FLAG_HI + 1;
-        constant  B_FLAG_HI :  integer := I_WORDS   - 1;
+        constant  B_FLAG_HI :  integer := I_NUM     - 1;
         constant  B_DATA_LO :  integer := A_DATA_HI + 1;
-        constant  B_DATA_HI :  integer := I_WORDS*DATA_BITS-1;
+        constant  B_DATA_HI :  integer := I_NUM*DATA_BITS - 1;
         constant  B_INFO_LO :  integer := A_INFO_HI + 1;
-        constant  B_INFO_HI :  integer := I_WORDS*INFO_BITS-1;
+        constant  B_INFO_HI :  integer := I_NUM*INFO_BITS - 1;
         signal    b_data    :  std_logic_vector(DATA_BITS-1 downto 0);
         signal    b_info    :  std_logic_vector(INFO_BITS-1 downto 0);
         signal    b_last    :  std_logic;
@@ -213,13 +213,13 @@ begin
         ---------------------------------------------------------------------------
         A: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
-                SORT_ORDER  => SORT_ORDER                         , -- 
-                QUEUE_SIZE  => QUEUE_SIZE                         , --
-                I_WORDS     => A_WORDS                            , --
+                I_NUM       => A_I_NUM                            , --
                 DATA_BITS   => DATA_BITS                          , --
+                INFO_BITS   => INFO_BITS                          , --
+                SORT_ORDER  => SORT_ORDER                         , -- 
                 COMP_HIGH   => COMP_HIGH                          , --
                 COMP_LOW    => COMP_LOW                           , --
-                INFO_BITS   => INFO_BITS                            --
+                QUEUE_SIZE  => QUEUE_SIZE                           --
             )                                                       -- 
             port map (                                              -- 
                 CLK         => CLK                                , -- In  :
@@ -241,13 +241,13 @@ begin
         ---------------------------------------------------------------------------
         B: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
-                SORT_ORDER  => SORT_ORDER                         , -- 
-                QUEUE_SIZE  => QUEUE_SIZE                         , --
-                I_WORDS     => B_WORDS                            , --
+                I_NUM       => B_I_NUM                            , --
                 DATA_BITS   => DATA_BITS                          , --
+                INFO_BITS   => INFO_BITS                          , --
+                SORT_ORDER  => SORT_ORDER                         , -- 
                 COMP_HIGH   => COMP_HIGH                          , --
                 COMP_LOW    => COMP_LOW                           , --
-                INFO_BITS   => INFO_BITS                            --
+                QUEUE_SIZE  => QUEUE_SIZE                           --
             )                                                       -- 
             port map (                                              -- 
                 CLK         => CLK                                , -- In  :

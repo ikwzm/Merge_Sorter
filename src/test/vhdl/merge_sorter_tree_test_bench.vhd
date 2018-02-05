@@ -40,7 +40,7 @@ entity  Merge_Sorter_Tree_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
-        I_WORDS         :  integer :=  4;
+        I_NUM           :  integer :=  4;
         SORT_ORDER      :  integer :=  0
     );
 end     Merge_Sorter_Tree_Test_Bench;
@@ -96,13 +96,13 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
                                );
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
     type       I_INFO_VECTOR is array (integer range <>) of std_logic_vector(INFO_BITS-1 downto 0);
-    signal     i_data       :  I_DATA_VECTOR   (I_WORDS-1 downto 0);
-    signal     i_info       :  I_INFO_VECTOR   (I_WORDS-1 downto 0);
-    signal     i_last       :  std_logic_vector(I_WORDS-1 downto 0);
-    signal     i_valid      :  std_logic_vector(I_WORDS-1 downto 0);
-    signal     i_ready      :  std_logic_vector(I_WORDS-1 downto 0);
-    signal     i_flat_data  :  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
-    signal     i_flat_info  :  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
+    signal     i_data       :  I_DATA_VECTOR   (I_NUM-1 downto 0);
+    signal     i_info       :  I_INFO_VECTOR   (I_NUM-1 downto 0);
+    signal     i_last       :  std_logic_vector(I_NUM-1 downto 0);
+    signal     i_valid      :  std_logic_vector(I_NUM-1 downto 0);
+    signal     i_ready      :  std_logic_vector(I_NUM-1 downto 0);
+    signal     i_flat_data  :  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+    signal     i_flat_info  :  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -133,32 +133,32 @@ architecture Model of Merge_Sorter_Tree_Test_Bench is
     signal     N_FINISH     : std_logic;
     signal     O_REPORT     : REPORT_STATUS_TYPE;
     signal     O_FINISH     : std_logic;
-    signal     I_REPORT     : REPORT_STATUS_VECTOR(I_WORDS-1 downto 0);
-    signal     I_FINISH     : std_logic_vector    (I_WORDS-1 downto 0);
+    signal     I_REPORT     : REPORT_STATUS_VECTOR(I_NUM-1 downto 0);
+    signal     I_FINISH     : std_logic_vector    (I_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     component Merge_Sorter_Tree
         generic (
-            SORT_ORDER  :  integer :=  0;
-            QUEUE_SIZE  :  integer :=  2;
-            I_WORDS     :  integer :=  1;
+            I_NUM       :  integer :=  1;
             DATA_BITS   :  integer := 64;
+            INFO_BITS   :  integer :=  1;
+            SORT_ORDER  :  integer :=  0;
             COMP_HIGH   :  integer := 63;
             COMP_LOW    :  integer := 32;
-            INFO_BITS   :  integer :=  1
+            QUEUE_SIZE  :  integer :=  2
         );
         port (
             CLK         :  in  std_logic;
             RST         :  in  std_logic;
             CLR         :  in  std_logic;
-            I_DATA      :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector(I_WORDS*INFO_BITS-1 downto 0);
-            I_LAST      :  in  std_logic_vector(I_WORDS          -1 downto 0);
-            I_VALID     :  in  std_logic_vector(I_WORDS          -1 downto 0);
-            I_READY     :  out std_logic_vector(I_WORDS          -1 downto 0);
-            O_DATA      :  out std_logic_vector(        DATA_BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(        INFO_BITS-1 downto 0);
+            I_DATA      :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
+            I_LAST      :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_VALID     :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_READY     :  out std_logic_vector(I_NUM          -1 downto 0);
+            O_DATA      :  out std_logic_vector(      DATA_BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(      INFO_BITS-1 downto 0);
             O_LAST      :  out std_logic;
             O_VALID     :  out std_logic;
             O_READY     :  in  std_logic
@@ -220,13 +220,14 @@ begin
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    I_MASTER:  for i in 0 to I_WORDS-1 generate      --
+    I_MASTER:  for i in 0 to I_NUM-1 generate        --
         constant  gpi  : std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
+        constant  name : string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
             generic map (                            -- 
                 SCENARIO_FILE   => SCENARIO_FILE   , --
-                NAME            => "I" & HEX_TO_STRING(i,8), --
+                NAME            => name            , --
                 OUTPUT_DELAY    => DELAY           , --
                 SYNC_PLUG_NUM   => 3+i             , --
                 WIDTH           => I_WIDTH         , --
@@ -263,7 +264,7 @@ begin
         generic map (                    -- 
             SORT_ORDER  => SORT_ORDER  , -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            I_WORDS     => I_WORDS     , -- 
+            I_NUM       => I_NUM       , -- 
             DATA_BITS   => DATA_BITS   , --
             COMP_HIGH   => COMP_HIGH   , -- 
             COMP_LOW    => COMP_LOW    , -- 
