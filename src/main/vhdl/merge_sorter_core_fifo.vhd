@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_fifo.vhd
 --!     @brief   Merge Sorter Core Fifo Module :
---!     @version 0.0.3
---!     @date    2018/2/7
+--!     @version 0.0.4
+--!     @date    2018/2/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -54,25 +54,24 @@ entity  Merge_Sorter_Core_Fifo is
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-        FBK_START       :  in  std_logic;
-        FBK_OUT_START   :  in  std_logic;
-        FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS-1 downto 0);
-        FBK_OUT_LAST    :  in  std_logic;
-        FBK_BUSY        :  out std_logic;
+        FBK_REQ         :  in  std_logic := '0';
+        FBK_ACK         :  out std_logic;
         FBK_DONE        :  out std_logic;
+        FBK_OUT_START   :  in  std_logic := '0';
+        FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS-1 downto 0);
+        FBK_OUT_LAST    :  in  std_logic := '0';
         FBK_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        FBK_IN_NONE     :  in  std_logic;
+        FBK_IN_NONE     :  in  std_logic := '0';
         FBK_IN_LAST     :  in  std_logic;
-        FBK_IN_VALID    :  in  std_logic;
+        FBK_IN_VALID    :  in  std_logic := '0';
         FBK_IN_READY    :  out std_logic;
-        MRG_START       :  in  std_logic := '0';
-        MRG_BUSY        :  out std_logic;
-        MRG_DONE        :  out std_logic;
+        MRG_REQ         :  in  std_logic := '0';
+        MRG_ACK         :  out std_logic;
         MRG_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic;
+        MRG_IN_NONE     :  in  std_logic := '0';
         MRG_IN_DONE     :  in  std_logic := '1';
         MRG_IN_LAST     :  in  std_logic;
-        MRG_IN_VALID    :  in  std_logic;
+        MRG_IN_VALID    :  in  std_logic := '0';
         MRG_IN_READY    :  out std_logic;
         OUTLET_DATA     :  out std_logic_vector(DATA_BITS-1 downto 0);
         OUTLET_INFO     :  out std_logic_vector(INFO_BITS-1 downto 0);
@@ -108,10 +107,9 @@ begin
     --
     -------------------------------------------------------------------------------
     NONE: if (FIFO_SIZE = 0) generate
-        FBK_BUSY     <= '0';
+        FBK_ACK      <= '0';
         FBK_DONE     <= '0';
-        MRG_BUSY     <= '0';
-        MRG_DONE     <= '0';
+        MRG_ACK      <= '0';
         OUTLET_DATA  <= (others => '0');
         OUTLET_INFO  <= (others => '0');
         OUTLET_LAST  <= '0';
@@ -128,7 +126,12 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        type      STATE_TYPE        is (IDLE_STATE, FBK_STATE, MRG_STATE);
+        type      STATE_TYPE        is (IDLE_STATE,
+                                        FBK_RUN_STATE,
+                                        FBK_ACK_STATE,
+                                        MRG_RUN_STATE,
+                                        MRG_ACK_STATE
+                                       );
         signal    curr_state        :  STATE_TYPE;
         ---------------------------------------------------------------------------
         --
@@ -168,33 +171,56 @@ begin
                 else
                     case curr_state is
                         when IDLE_STATE =>
-                            if    (FBK_ENABLE = TRUE and FBK_START = '1') then
-                                curr_state <= FBK_STATE;
-                                fifo_outlet_enable <= FBK_OUTLET;
-                            elsif (MRG_ENABLE = TRUE and MRG_START = '1') then
-                                curr_state         <= MRG_STATE;
-                                fifo_outlet_enable <= '1';
-                            else
-                                curr_state         <= IDLE_STATE;
-                                fifo_outlet_enable <= '0';
-                            end if;
-                        when FBK_STATE =>
-                            if (FBK_ENABLE = FALSE or fbk_state_done = TRUE) then
-                                curr_state         <= IDLE_STATE;
-                                fifo_outlet_enable <= '0';
-                            else
-                                curr_state         <= FBK_STATE;
-                                if (FBK_OUTLET = '1') then
-                                     fifo_outlet_enable <= '1';
+                            if    (FBK_ENABLE = TRUE and FBK_REQ = '1') then
+                                if (FBK_OUT_START = '1' and unsigned(FBK_OUT_SIZE) = 0) then
+                                    curr_state         <= FBK_ACK_STATE;
+                                    fifo_outlet_enable <= '0';
+                                else
+                                    curr_state         <= FBK_RUN_STATE;
+                                    fifo_outlet_enable <= '0';
                                 end if;
+                            elsif (MRG_ENABLE = TRUE and MRG_REQ = '1') then
+                                curr_state         <= MRG_RUN_STATE;
+                                fifo_outlet_enable <= '1';
+                            else
+                                curr_state         <= IDLE_STATE;
+                                fifo_outlet_enable <= '0';
                             end if;
-                        when MRG_STATE =>
-                            if (MRG_ENABLE = FALSE or mrg_state_done = TRUE) then
+                        when FBK_RUN_STATE =>
+                            if    (fbk_state_done = TRUE) or
+                                  (FBK_OUT_START = '1' and unsigned(FBK_OUT_SIZE) = 0) then
+                                curr_state         <= FBK_ACK_STATE;
+                                fifo_outlet_enable <= '0';
+                            elsif (FBK_OUT_START = '1') then
+                                curr_state         <= FBK_RUN_STATE;
+                                fifo_outlet_enable <= '1';
+                            else
+                                curr_state         <= FBK_RUN_STATE;
+                                fifo_outlet_enable <= fifo_outlet_enable;
+                            end if;
+                        when FBK_ACK_STATE =>
+                            if (FBK_REQ = '0') then
                                 curr_state         <= IDLE_STATE;
                                 fifo_outlet_enable <= '0';
                             else
-                                curr_state         <= MRG_STATE;
+                                curr_state         <= FBK_ACK_STATE;
+                                fifo_outlet_enable <= '0';
+                            end if;
+                        when MRG_RUN_STATE =>
+                            if (mrg_state_done = TRUE) then
+                                curr_state         <= MRG_ACK_STATE;
+                                fifo_outlet_enable <= '0';
+                            else
+                                curr_state         <= MRG_RUN_STATE;
                                 fifo_outlet_enable <= '1';
+                            end if;
+                        when MRG_ACK_STATE =>
+                            if (MRG_REQ = '0') then
+                                curr_state         <= IDLE_STATE;
+                                fifo_outlet_enable <= '0';
+                            else
+                                curr_state         <= MRG_ACK_STATE;
+                                fifo_outlet_enable <= '0';
                             end if;
                         when others =>
                                 curr_state         <= IDLE_STATE;
@@ -217,12 +243,31 @@ begin
             signal    outlet_counter :  std_logic_vector(SIZE_BITS-1 downto 0);
             signal    outlet_next    :  boolean;
             signal    outlet_last    :  boolean;
+            signal    outlet_done    :  std_logic;
+            signal    outlet_size    :  std_logic_vector(SIZE_BITS-1 downto 0);
         begin 
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
+            process (CLK, RST) begin
+                if (RST = '1') then
+                        outlet_size <= (others => '0');
+                        outlet_done <= '0';
+                elsif (CLK'event and CLK = '1') then
+                    if (CLR = '1') then
+                        outlet_size <= (others => '0');
+                        outlet_done <= '0';
+                    elsif (FBK_OUT_START = '1') then
+                        outlet_size <= std_logic_vector(unsigned(FBK_OUT_SIZE) - 1);
+                        outlet_done <= FBK_OUT_LAST;
+                    end if;
+                end if;
+            end process;
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
             process (CLK, RST)
-                variable next_counter :  unsigned(SIZE_BITS   downto 0);
+                variable next_counter :  unsigned(SIZE_BITS downto 0);
             begin
                 if (RST = '1') then
                         outlet_counter <= (others => '0');
@@ -233,7 +278,7 @@ begin
                         outlet_counter <= (others => '0');
                         outlet_next    <= FALSE;
                         outlet_last    <= FALSE;
-                    elsif (curr_state = FBK_STATE) then
+                    elsif (curr_state = FBK_RUN_STATE) then
                         next_counter := "0" & unsigned(outlet_counter);
                         if (fifo_outlet_enable = '1') and
                            (fifo_outlet_valid  = '1') and
@@ -242,8 +287,8 @@ begin
                             next_counter := next_counter + 1;
                         end if;
                         outlet_counter <= std_logic_vector(next_counter(outlet_counter'range));
-                        outlet_next    <= (next_counter  < unsigned(FBK_OUT_SIZE));
-                        outlet_last    <= (next_counter >= unsigned(FBK_OUT_SIZE));
+                        outlet_next    <= (next_counter  < unsigned(outlet_size));
+                        outlet_last    <= (next_counter >= unsigned(outlet_size));
                     else
                         outlet_counter <= (others => '0');
                         outlet_next    <= FALSE;
@@ -254,7 +299,7 @@ begin
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            fbk_outlet_enable <= (curr_state = FBK_STATE and fifo_outlet_enable = '1');
+            fbk_outlet_enable <= (curr_state = FBK_RUN_STATE and fifo_outlet_enable = '1');
             fbk_state_done    <= ((fbk_outlet_enable = TRUE) and
                                   (fbk_outlet_last   = '1' ) and
                                   (fifo_outlet_valid = '1' ) and
@@ -262,12 +307,14 @@ begin
                                   (fifo_outlet_word(WORD_LAST_POS) = '1'));
             fbk_outlet_next   <= '1' when (outlet_next and fbk_outlet_enable) else '0';
             fbk_outlet_last   <= '1' when (outlet_last and fbk_outlet_enable) else '0';
-            fbk_outlet_done   <= '1' when (fbk_outlet_last = '1' and FBK_OUT_LAST = '1') else '0';
-            fbk_outlet_num    <= outlet_counter when (fbk_outlet_enable) else (others => '0');
+            fbk_outlet_done   <= '1' when (fbk_outlet_last = '1' and outlet_done = '1') else '0';
+            fbk_outlet_num    <= outlet_counter(NUM_BITS-1 downto 0) when (fbk_outlet_enable) else (others => '0');
+            FBK_ACK           <= '1' when (curr_state = FBK_ACK_STATE) else '0';
+            FBK_DONE          <= '1' when (curr_state = FBK_ACK_STATE and outlet_done = '1') else '0';
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            fbk_intake_enable <= (curr_state = FBK_STATE);
+            fbk_intake_enable <= (curr_state = FBK_RUN_STATE);
             fbk_intake_valid                                  <= FBK_IN_VALID      when (fbk_intake_enable) else '0';
             fbk_intake_word(WORD_DATA_HI downto WORD_DATA_LO) <= FBK_IN_DATA       when (fbk_intake_enable) else DATA_NULL;
             fbk_intake_word(WORD_LAST_POS)                    <= FBK_IN_LAST       when (fbk_intake_enable) else '0';
@@ -290,6 +337,8 @@ begin
             fbk_intake_word   <= (others => '0');
             fbk_intake_ready  <= '0';
             FBK_IN_READY      <= '0';
+            FBK_ACK           <= '0';
+            FBK_DONE          <= '0';
         end generate;
         ---------------------------------------------------------------------------
         --
@@ -306,7 +355,7 @@ begin
                 elsif (CLK'event and CLK = '1') then
                     if (CLR = '1') then
                         fifo_flush <= FALSE;
-                    elsif (curr_state = MRG_STATE) then
+                    elsif (curr_state = MRG_RUN_STATE) then
                         if (mrg_state_done = TRUE) then
                             fifo_flush <= FALSE;
                         elsif (mrg_intake_valid  = '1' and mrg_intake_ready = '1') and
@@ -321,23 +370,22 @@ begin
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            mrg_outlet_enable <= (curr_state = MRG_STATE and fifo_outlet_enable = '1');
+            mrg_outlet_enable <= (curr_state = MRG_RUN_STATE and fifo_outlet_enable = '1');
             mrg_outlet_done   <= fifo_outlet_word(WORD_DONE_POS) when (mrg_outlet_enable) else '0';
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            mrg_state_done    <= ((curr_state = MRG_STATE and fifo_flush = TRUE) and
+            mrg_state_done    <= ((curr_state = MRG_RUN_STATE and fifo_flush = TRUE) and
                                   (fifo_outlet_enable = '1') and
                                   (fifo_outlet_valid  = '1') and
                                   (fifo_outlet_ready  = '1') and
                                   (fifo_outlet_word(WORD_LAST_POS) = '1') and
                                   (fifo_outlet_word(WORD_DONE_POS) = '1'));
-            MRG_BUSY          <= '1' when (curr_state = MRG_STATE) else '0';
-            MRG_DONE          <= '1' when (mrg_state_done) else '0';
+            MRG_ACK           <= '1' when (curr_state = MRG_ACK_STATE) else '0';
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            mrg_intake_enable <= (curr_state = MRG_STATE and fifo_flush = FALSE);
+            mrg_intake_enable <= (curr_state = MRG_RUN_STATE and fifo_flush = FALSE);
             mrg_intake_valid                                  <= MRG_IN_VALID      when (mrg_intake_enable) else '0';
             mrg_intake_word(WORD_DATA_HI downto WORD_DATA_LO) <= MRG_IN_DATA       when (mrg_intake_enable) else DATA_NULL;
             mrg_intake_word(WORD_LAST_POS)                    <= MRG_IN_LAST       when (mrg_intake_enable) else '0';
@@ -358,8 +406,7 @@ begin
             mrg_intake_word   <= (others => '0');
             mrg_intake_ready  <= '0';
             MRG_IN_READY      <= '0';
-            MRG_BUSY          <= '0';
-            MRG_DONE          <= '0';
+            MRG_ACK           <= '0';
         end generate;
         ---------------------------------------------------------------------------
         --

@@ -78,6 +78,7 @@ end Merge_Sorter_Core_Stream_Intake;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
 architecture RTL of Merge_Sorter_Core_Stream_Intake is
@@ -90,7 +91,7 @@ architecture RTL of Merge_Sorter_Core_Stream_Intake is
     signal    intake_first      :  std_logic;
     signal    intake_done       :  boolean;
     signal    state_done        :  boolean;
-    type      STATE_TYPE        is (IDLE_STATE, INTAKE_STATE, FLUSH_STATE)
+    type      STATE_TYPE        is (IDLE_STATE, INTAKE_STATE, FLUSH_STATE);
     signal    curr_state        :  STATE_TYPE;
     signal    next_state        :  STATE_TYPE;
 begin
@@ -271,6 +272,9 @@ begin
         signal    count_up        :  std_logic_vector(0 to FEEDBACK);
         signal    count_zero      :  std_logic_vector(0 to FEEDBACK);
         signal    count_last      :  std_logic_vector(0 to FEEDBACK);
+        signal    delimiter       :  std_logic;
+        signal    feedback_size   :  unsigned(SIZE_BITS-1 downto 0);
+        signal    feedback_add    :  unsigned(SIZE_BITS-1 downto 0);
         constant  ALL_1           :  std_logic_vector(0 to FEEDBACK) := (others => '1');
     begin
         ---------------------------------------------------------------------------
@@ -300,17 +304,25 @@ begin
         --
         ---------------------------------------------------------------------------
         process (CLK, RST)
-            variable  next_counter :  COUNTER_TYPE;
+            variable  next_counter   :  COUNTER_TYPE;
+            variable  next_zero      :  std_logic_vector(0 to FEEDBACK);
+            variable  next_last      :  std_logic_vector(0 to FEEDBACK);
+            variable  next_mask      :  std_logic_vector(0 to FEEDBACK);
+            variable  next_delimiter :  std_logic;
+            variable  upper_all_zero :  boolean;
+            variable  lower_all_last :  boolean;
         begin
             if (RST = '1') then
                     counter    <= (others => (others => '0'));
                     count_zero <= (others => '1');
                     count_last <= (others => '0');
+                    delimiter  <= '1';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     counter    <= (others => (others => '0'));
                     count_zero <= (others => '1');
                     count_last <= (others => '0');
+                    delimiter  <= '1';
                 else
                     for i in 0 to FEEDBACK loop
                         if (count_up(i) = '1') then
@@ -322,18 +334,37 @@ begin
                         else
                                 next_counter := counter(i);
                         end if;
-                        counter(i) <= next_counter;
                         if (next_counter = 0) then
-                            count_zero(i) <= '1';
+                            next_zero(i) := '1';
                         else
-                            count_zero(i) <= '0';
+                            next_zero(i) := '0';
                         end if;
                         if (next_counter = I_NUM-1) then
-                            count_last(i) <= '1';
+                            next_last(i) := '1';
                         else
-                            count_last(i) <= '0';
+                            next_last(i) := '0';
                         end if;
+                        counter(i)    <= next_counter;
+                        count_zero(i) <= next_zero(i);
+                        count_last(i) <= next_last(i);
                     end loop;
+                    next_delimiter := '0';
+                    next_mask      := (others => '0');
+                    for i in 0 to FEEDBACK loop
+                        upper_all_zero := ((next_zero and not next_mask) = ALL_1);
+                        lower_all_last := ((next_last and     next_mask) = ALL_1);
+                        if (upper_all_zero and lower_all_last) then
+                            next_delimiter := next_delimiter or '1';
+                        end if;
+                        for n in 0 to FEEDBACK loop
+                            if (n = 0) then
+                                next_mask(n) := '1';
+                            else
+                                next_mask(n) := next_mask(n-1);
+                            end if;
+                        end loop;
+                    end loop;
+                    delimiter <= next_delimiter;
                 end if;
             end if;
         end process;
@@ -345,30 +376,40 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (curr_state, intake_done, count_up, count_zero, count_last)
-            variable upper_zero :  boolean;
-            variable done_flag  :  boolean;
-        begin
-            if (curr_state = FLUSH_STATE) or
-               (curr_state = INTAKE_STATE and intake_done = TRUE) then
-                upper_zero := TRUE;
-                done_flag  := FALSE;
-                for i in FEEDBACK downto 0 loop
-                    if (upper_zero and count_up(i) = '1' and count_last(i) = '1') then
-                        done_flag  := TRUE;
-                    end if;
-                    if (upper_zero and count_zero(i) = '0') then
-                        upper_zero := FALSE;
-                    end if;
-                end loop;
-                state_done <= done_flag;
-            elsif (count_up(FEEDBACK) = '1' and count_last(FEEDBACK) = '1') then
-                state_done <= '1';
+        process (curr_state, intake_done, delimiter, intake_valid, intake_ready) begin
+            if ((curr_state = FLUSH_STATE) or
+                (curr_state = INTAKE_STATE and intake_done = TRUE)) and
+               (delimiter = '1' and intake_valid = '1' and intake_ready = '1') then
+                state_done <= TRUE;
             else
-                state_done <= '0';
+                state_done <= FALSE;
             end if;
         end process;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        process (CLK, RST) begin
+            if (RST = '1') then
+                    feedback_size <= (others => '0');
+                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+            elsif (CLK'event and CLK = '1') then
+                if (CLR = '1') then
+                    feedback_size <= (others => '0');
+                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+                elsif (curr_state = FLUSH_STATE or curr_state = INTAKE_STATE) then
+                    if (delimiter = '1' and intake_valid = '1' and intake_ready = '1') then
+                        feedback_size <= feedback_size + feedback_add;
+                        feedback_add  <= feedback_add  * I_NUM;
+                    end if;
+                else
+                    feedback_size <= (others => '0');
+                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+                end if;
+            end if;
+        end process;
+        FBK_OUT_SIZE <= std_logic_vector(feedback_size);
+        FBK_OUT_LAST <= '1' when (curr_state = INTAKE_STATE and intake_done = TRUE) or
+                                 (curr_state = FLUSH_STATE) else '0';
     end block;
-    
 end RTL;
 
