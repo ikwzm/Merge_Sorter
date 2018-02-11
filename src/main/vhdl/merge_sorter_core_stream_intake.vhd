@@ -90,6 +90,7 @@ architecture RTL of Merge_Sorter_Core_Stream_Intake is
     signal    intake_number     :  std_logic_vector(I_NUM_BITS     -1 downto 0);
     signal    intake_first      :  std_logic;
     signal    intake_done       :  boolean;
+    signal    outlet_valid      :  std_logic;
     signal    state_done        :  boolean;
     type      STATE_TYPE        is (IDLE_STATE, INTAKE_STATE, FLUSH_STATE);
     signal    curr_state        :  STATE_TYPE;
@@ -112,12 +113,8 @@ begin
             when INTAKE_STATE =>
                 if    (state_done  = TRUE) then
                     next_state <= IDLE_STATE;
-                    DONE       <= '1';
-                    if (intake_first = '0') then
-                        FBK_OUT_START <= '1';
-                    else
-                        FBK_OUT_START <= '0';
-                    end if;
+                    DONE          <= '1';
+                    FBK_OUT_START <= '1';
                 elsif (intake_done = TRUE) then
                     next_state    <= FLUSH_STATE;
                     DONE          <= '0';
@@ -241,23 +238,28 @@ begin
         if (curr_state = INTAKE_STATE) then
             if (O_READY = O_READY_ALL_1 and intake_valid = '1') then
                 O_VALID      <= (others => '1');
+                outlet_valid <= '1';
                 intake_ready <= '1';
             else
                 O_VALID      <= (others => '0');
+                outlet_valid <= '0';
                 intake_ready <= '0';
             end if;
             O_LAST <= (others => '1');
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
             if (O_READY = O_READY_ALL_1) then
-                O_VALID  <= (others => '1');
+                O_VALID      <= (others => '1');
+                outlet_valid <= '1';
             else
-                O_VALID  <= (others => '0');
+                O_VALID      <= (others => '0');
+                outlet_valid <= '0';
             end if;
             O_LAST       <= (others => '1');
             intake_ready <= '0';
         else
             O_VALID      <= (others => '0');
             O_LAST       <= (others => '0');
+            outlet_valid <= '0';
             intake_ready <= '0';
         end if;
     end process;
@@ -280,12 +282,11 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (curr_state, count_last, intake_valid, intake_ready)
+        process (curr_state, count_last, outlet_valid)
             variable next_count_up : boolean;
         begin
             if (curr_state = INTAKE_STATE or curr_state = FLUSH_STATE) and
-               (intake_valid = '1') and
-               (intake_ready = '1') then
+               (outlet_valid = '1') then
                 next_count_up := TRUE;
                 for i in 0 to FEEDBACK loop
                     if (next_count_up) then
@@ -307,7 +308,8 @@ begin
             variable  next_counter   :  COUNTER_TYPE;
             variable  next_zero      :  std_logic_vector(0 to FEEDBACK);
             variable  next_last      :  std_logic_vector(0 to FEEDBACK);
-            variable  next_mask      :  std_logic_vector(0 to FEEDBACK);
+            variable  upper_mask     :  std_logic_vector(0 to FEEDBACK);
+            variable  lower_mask     :  std_logic_vector(0 to FEEDBACK);
             variable  next_delimiter :  std_logic;
             variable  upper_all_zero :  boolean;
             variable  lower_all_last :  boolean;
@@ -318,7 +320,8 @@ begin
                     count_last <= (others => '0');
                     delimiter  <= '1';
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1') then
+                if (CLR = '1') or
+                   (curr_state = IDLE_STATE) then
                     counter    <= (others => (others => '0'));
                     count_zero <= (others => '1');
                     count_last <= (others => '0');
@@ -349,18 +352,21 @@ begin
                         count_last(i) <= next_last(i);
                     end loop;
                     next_delimiter := '0';
-                    next_mask      := (others => '0');
+                    upper_mask     := (others => '1');
+                    lower_mask     := (others => '0');
                     for i in 0 to FEEDBACK loop
-                        upper_all_zero := ((next_zero and not next_mask) = ALL_1);
-                        lower_all_last := ((next_last and     next_mask) = ALL_1);
+                        upper_all_zero := ((next_zero and upper_mask) = upper_mask);
+                        lower_all_last := ((next_last and lower_mask) = lower_mask);
                         if (upper_all_zero and lower_all_last) then
                             next_delimiter := next_delimiter or '1';
                         end if;
                         for n in 0 to FEEDBACK loop
                             if (n = 0) then
-                                next_mask(n) := '1';
+                                upper_mask(n) := '0';
+                                lower_mask(n) := '1';
                             else
-                                next_mask(n) := next_mask(n-1);
+                                upper_mask(n) := upper_mask(n-1);
+                                lower_mask(n) := lower_mask(n-1);
                             end if;
                         end loop;
                     end loop;
@@ -376,10 +382,10 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (curr_state, intake_done, delimiter, intake_valid, intake_ready) begin
+        process (curr_state, intake_done, delimiter, outlet_valid) begin
             if ((curr_state = FLUSH_STATE) or
                 (curr_state = INTAKE_STATE and intake_done = TRUE)) and
-               (delimiter = '1' and intake_valid = '1' and intake_ready = '1') then
+               (delimiter = '1' and outlet_valid = '1') then
                 state_done <= TRUE;
             else
                 state_done <= FALSE;
@@ -391,19 +397,19 @@ begin
         process (CLK, RST) begin
             if (RST = '1') then
                     feedback_size <= (others => '0');
-                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+                    feedback_add  <= to_unsigned(1, SIZE_BITS);
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     feedback_size <= (others => '0');
-                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+                    feedback_add  <= to_unsigned(1, SIZE_BITS);
                 elsif (curr_state = FLUSH_STATE or curr_state = INTAKE_STATE) then
-                    if (delimiter = '1' and intake_valid = '1' and intake_ready = '1') then
-                        feedback_size <= feedback_size + feedback_add;
-                        feedback_add  <= feedback_add  * I_NUM;
+                    if (delimiter = '1' and outlet_valid = '1') then
+                        feedback_size <= resize((feedback_size + feedback_add), SIZE_BITS);
+                        feedback_add  <= resize((feedback_add  * I_NUM       ), SIZE_BITS);
                     end if;
                 else
                     feedback_size <= (others => '0');
-                    feedback_add  <= to_unsigned(I_NUM, SIZE_BITS);
+                    feedback_add  <= to_unsigned(1, SIZE_BITS);
                 end if;
             end if;
         end process;

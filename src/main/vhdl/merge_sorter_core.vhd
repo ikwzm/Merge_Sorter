@@ -343,13 +343,11 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    stream_intake_start   :  std_logic;
     signal    stream_intake_data    :  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
     signal    stream_intake_info    :  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
     signal    stream_intake_last    :  std_logic_vector(I_NUM-1 downto 0);
     signal    stream_intake_valid   :  std_logic_vector(I_NUM-1 downto 0);
     signal    stream_intake_ready   :  std_logic_vector(I_NUM-1 downto 0);
-    signal    stream_intake_done    :  std_logic;
     signal    stream_start          :  std_logic;
     signal    stream_req            :  std_logic;
     signal    stream_ack            :  std_logic_vector(I_NUM-1 downto 0);
@@ -386,12 +384,9 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    feedback_start        :  std_logic;
     signal    feedback_out_start    :  std_logic;
     signal    feedback_out_size     :  std_logic_vector(SIZE_BITS-1 downto 0);
     signal    feedback_out_last     :  std_logic;
-    signal    feedback_busy         :  std_logic_vector(I_NUM    -1 downto 0);
-    signal    feedback_done         :  std_logic_vector(I_NUM    -1 downto 0);
     signal    feedback_data         :  std_logic_vector(DATA_BITS-1 downto 0);
     signal    feedback_none         :  std_logic;
     signal    feedback_last         :  std_logic;

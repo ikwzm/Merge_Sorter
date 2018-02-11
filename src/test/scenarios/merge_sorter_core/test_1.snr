@@ -1,0 +1,102 @@
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1 Start.
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1.1 Start.
+---
+- S:
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+  - OUT    : {GPO(0): 1}
+  - WAIT   : {GPI(0): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(0): 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+  - OUT    : {GPO(1): 1}
+  - WAIT   : {GPI(1): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(1): 0}
+- O:
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1.2 Start.
+---
+- S:
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+  - OUT    : {GPO(0): 1}
+  - WAIT   : {GPI(0): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(0): 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 1}
+  - OUT    : {GPO(1): 1}
+  - WAIT   : {GPI(1): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(1): 0}
+- O:
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1.3 Start.
+---
+- S:
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+  - OUT    : {GPO(0): 1}
+  - WAIT   : {GPI(0): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(0): 0}
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 1}
+  - OUT    : {GPO(1): 1}
+  - WAIT   : {GPI(1): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(1): 0}
+- O:
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1.4 Start.
+---
+- S:
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+  - OUT    : {GPO(0): 1}
+  - WAIT   : {GPI(0): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(0): 0}
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000004, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 1}
+  - OUT    : {GPO(1): 1}
+  - WAIT   : {GPI(1): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(1): 0}
+- O:
+  - XFER   : {DATA: 0x00000004, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1.5 Start.
+---
+- S:
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+  - OUT    : {GPO(0): 1}
+  - WAIT   : {GPI(0): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(0): 0}
+  - XFER   : {DATA: 0x00000005, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000004, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 1}
+  - OUT    : {GPO(1): 1}
+  - WAIT   : {GPI(1): 1, TIMEOUT: 10000}
+  - OUT    : {GPO(1): 0}
+- O:
+  - XFER   : {DATA: 0x00000005, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000004, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000003, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000002, USER: 0, LAST: 0}
+  - XFER   : {DATA: 0x00000001, USER: 0, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY    : Merge_Sorter_Core TEST 1 Done.
+---

@@ -172,13 +172,8 @@ begin
                     case curr_state is
                         when IDLE_STATE =>
                             if    (FBK_ENABLE = TRUE and FBK_REQ = '1') then
-                                if (FBK_OUT_START = '1' and unsigned(FBK_OUT_SIZE) = 0) then
-                                    curr_state         <= FBK_ACK_STATE;
-                                    fifo_outlet_enable <= '0';
-                                else
-                                    curr_state         <= FBK_RUN_STATE;
-                                    fifo_outlet_enable <= '0';
-                                end if;
+                                curr_state         <= FBK_RUN_STATE;
+                                fifo_outlet_enable <= '0';
                             elsif (MRG_ENABLE = TRUE and MRG_REQ = '1') then
                                 curr_state         <= MRG_RUN_STATE;
                                 fifo_outlet_enable <= '1';
@@ -249,36 +244,32 @@ begin
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            process (CLK, RST) begin
-                if (RST = '1') then
-                        outlet_size <= (others => '0');
-                        outlet_done <= '0';
-                elsif (CLK'event and CLK = '1') then
-                    if (CLR = '1') then
-                        outlet_size <= (others => '0');
-                        outlet_done <= '0';
-                    elsif (FBK_OUT_START = '1') then
-                        outlet_size <= std_logic_vector(unsigned(FBK_OUT_SIZE) - 1);
-                        outlet_done <= FBK_OUT_LAST;
-                    end if;
-                end if;
-            end process;
-            -----------------------------------------------------------------------
-            --
-            -----------------------------------------------------------------------
             process (CLK, RST)
-                variable next_counter :  unsigned(SIZE_BITS downto 0);
+                variable next_counter :  unsigned(SIZE_BITS   downto 0);
+                variable next_size    :  unsigned(SIZE_BITS-1 downto 0);
+                variable next_done    :  std_logic;
             begin
                 if (RST = '1') then
                         outlet_counter <= (others => '0');
                         outlet_next    <= FALSE;
                         outlet_last    <= FALSE;
+                        outlet_size    <= (others => '0');
+                        outlet_done    <= '0';
                 elsif (CLK'event and CLK = '1') then
                     if (CLR = '1') then
                         outlet_counter <= (others => '0');
                         outlet_next    <= FALSE;
                         outlet_last    <= FALSE;
+                        outlet_size    <= (others => '0');
+                        outlet_done    <= '0';
                     elsif (curr_state = FBK_RUN_STATE) then
+                        if (FBK_OUT_START = '1') then
+                            next_size  := unsigned(FBK_OUT_SIZE) - 1;
+                            next_done  := FBK_OUT_LAST;
+                        else
+                            next_size  := unsigned(outlet_size);
+                            next_done  := outlet_done;
+                        end if;
                         next_counter := "0" & unsigned(outlet_counter);
                         if (fifo_outlet_enable = '1') and
                            (fifo_outlet_valid  = '1') and
@@ -287,12 +278,22 @@ begin
                             next_counter := next_counter + 1;
                         end if;
                         outlet_counter <= std_logic_vector(next_counter(outlet_counter'range));
-                        outlet_next    <= (next_counter  < unsigned(outlet_size));
-                        outlet_last    <= (next_counter >= unsigned(outlet_size));
+                        outlet_next    <= (next_counter  < unsigned(next_size));
+                        outlet_last    <= (next_counter >= unsigned(next_size));
+                        outlet_size    <= std_logic_vector(next_size);
+                        outlet_done    <= next_done;
+                    elsif (curr_state = FBK_ACK_STATE) then
+                        outlet_counter <= outlet_counter;
+                        outlet_next    <= outlet_next;
+                        outlet_last    <= outlet_last;
+                        outlet_size    <= outlet_size;
+                        outlet_done    <= outlet_done;
                     else
                         outlet_counter <= (others => '0');
                         outlet_next    <= FALSE;
                         outlet_last    <= FALSE;
+                        outlet_size    <= (others => '0');
+                        outlet_done    <= '0';
                     end if;
                 end if;
             end process;

@@ -360,8 +360,8 @@ begin
             CLR             => CLEAR           , -- In  :
             STM_REQ_VALID   => S_GPO(0)        , -- In  :
             STM_REQ_READY   => S_GPI(0)        , -- Out :
-            STM_RES_VALID   => S_GPO(1)        , -- Out :
-            STM_RES_READY   => S_GPI(1)        , -- In  :
+            STM_RES_VALID   => S_GPI(1)        , -- Out :
+            STM_RES_READY   => S_GPO(1)        , -- In  :
             STM_IN_DATA     => s_data          , -- In  :
             STM_IN_STRB     => s_word_strb     , -- In  :
             STM_IN_LAST     => s_last          , -- In  :
@@ -369,8 +369,8 @@ begin
             STM_IN_READY    => s_ready         , -- Out :
             MRG_REQ_VALID   => S_GPO(2)        , -- In  :
             MRG_REQ_READY   => S_GPI(2)        , -- Out :
-            MRG_RES_VALID   => S_GPO(3)        , -- Out :
-            MRG_RES_READY   => S_GPI(3)        , -- In  :
+            MRG_RES_VALID   => S_GPI(3)        , -- Out :
+            MRG_RES_READY   => S_GPO(3)        , -- In  :
             MRG_IN_DATA     => i_flat_data     , -- In  :
             MRG_IN_NONE     => i_none          , -- In  :
             MRG_IN_DONE     => i_done          , -- In  :
