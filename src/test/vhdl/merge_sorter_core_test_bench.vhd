@@ -42,7 +42,7 @@ entity  Merge_Sorter_Core_Test_Bench is
         SCENARIO_FILE   :  STRING  := "test.snr";
         I_NUM           :  integer := 4;
         STM_ENABLE      :  integer := 1;
-        STM_FEEDBACK    :  integer := 1;
+        STM_FEEDBACK    :  integer := 2;
         STM_I_WORDS     :  integer := 1;
         MRG_ENABLE      :  integer := 1;
         MRG_FIFO_SIZE   :  integer := 64;
