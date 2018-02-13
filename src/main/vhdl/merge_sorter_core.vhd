@@ -348,10 +348,7 @@ architecture RTL of Merge_Sorter_Core is
     signal    stream_intake_last    :  std_logic_vector(I_NUM-1 downto 0);
     signal    stream_intake_valid   :  std_logic_vector(I_NUM-1 downto 0);
     signal    stream_intake_ready   :  std_logic_vector(I_NUM-1 downto 0);
-    signal    stream_start          :  std_logic;
-    signal    stream_req            :  std_logic;
-    signal    stream_ack            :  std_logic_vector(I_NUM-1 downto 0);
-    signal    stream_done           :  std_logic_vector(I_NUM-1 downto 0);
+    signal    stream_intake_start   :  std_logic;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -379,8 +376,11 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    merge_req             :  std_logic;
-    signal    merge_ack             :  std_logic_vector(I_NUM    -1 downto 0);
+    signal    fifo_stream_req       :  std_logic;
+    signal    fifo_stream_ack       :  std_logic_vector(I_NUM-1 downto 0);
+    signal    fifo_stream_done      :  std_logic_vector(I_NUM-1 downto 0);
+    signal    fifo_merge_req        :  std_logic;
+    signal    fifo_merge_ack        :  std_logic_vector(I_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -406,19 +406,19 @@ architecture RTL of Merge_Sorter_Core is
     type      STATE_TYPE            is (IDLE_STATE,
                                         STREAM_INIT_STATE,
                                         STREAM_RUN_STATE,
+                                        STREAM_NEXT_STATE,
                                         STREAM_DONE_STATE,
                                         MERGE_INIT_STATE,
                                         MERGE_RUN_STATE,
                                         MERGE_DONE_STATE
                                        );
     signal    curr_state           :  STATE_TYPE;
+    constant  ACK_ALL_1            :  std_logic_vector(I_NUM-1 downto 0) := (others => '1');
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FSM: process (CLK, RST)
-        constant ACK_ALL_1 :  std_logic_vector(I_NUM-1 downto 0) := (others => '1');
-    begin
+    FSM: process (CLK, RST) begin
         if (RST = '1') then
                 curr_state <= IDLE_STATE;
         elsif (CLK'event and CLK = '1') then
@@ -443,10 +443,16 @@ begin
                     when STREAM_RUN_STATE     =>
                         if    (STM_ENABLE = 0) then
                             curr_state <= IDLE_STATE;
-                        elsif (stream_ack = ACK_ALL_1 and stream_done  = ACK_ALL_1) then
+                        elsif (fifo_stream_ack = ACK_ALL_1 and fifo_stream_done  = ACK_ALL_1) then
                             curr_state <= STREAM_DONE_STATE;
-                        elsif (stream_ack = ACK_ALL_1 and stream_done /= ACK_ALL_1) then
-                            curr_state <= STREAM_INIT_STATE;
+                        elsif (fifo_stream_ack = ACK_ALL_1 and fifo_stream_done /= ACK_ALL_1) then
+                            curr_state <= STREAM_NEXT_STATE;
+                        else
+                            curr_state <= STREAM_RUN_STATE;
+                        end if;
+                    when STREAM_NEXT_STATE     =>
+                        if (STM_ENABLE = 0) then
+                            curr_state <= IDLE_STATE;
                         else
                             curr_state <= STREAM_RUN_STATE;
                         end if;
@@ -467,7 +473,7 @@ begin
                     when MERGE_RUN_STATE       =>
                         if    (MRG_ENABLE = 0) then
                             curr_state <= IDLE_STATE;
-                        elsif (merge_ack = ACK_ALL_1) then
+                        elsif (fifo_merge_ack = ACK_ALL_1) then
                             curr_state <= MERGE_DONE_STATE;
                         else
                             curr_state <= MERGE_RUN_STATE;
@@ -486,11 +492,9 @@ begin
             end if;
         end if;
     end process;
-    stream_start  <= '1' when (curr_state = STREAM_INIT_STATE) else '0';
-    stream_req    <= '1' when (curr_state = STREAM_INIT_STATE) or
-                              (curr_state = STREAM_RUN_STATE ) else '0';
-    merge_req     <= '1' when (curr_state = MERGE_INIT_STATE ) or
-                              (curr_state = MERGE_RUN_STATE  ) else '0';
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     STM_REQ_READY <= '1' when (curr_state = STREAM_INIT_STATE) else '0';
     STM_RES_VALID <= '1' when (curr_state = STREAM_DONE_STATE) else '0';
     MRG_REQ_READY <= '1' when (curr_state = MERGE_INIT_STATE ) else '0';
@@ -498,8 +502,17 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    stream_intake_start <= '1' when (curr_state = STREAM_INIT_STATE) or
+                                    (curr_state = STREAM_NEXT_STATE) else '0';
+    fifo_stream_req     <= '1' when (curr_state = STREAM_INIT_STATE) or
+                                    (curr_state = STREAM_NEXT_STATE) or
+                                    (curr_state = STREAM_RUN_STATE and fifo_stream_ack /= ACK_ALL_1) else '0';
+    fifo_merge_req      <= '1' when (curr_state = MERGE_INIT_STATE ) or
+                                    (curr_state = MERGE_RUN_STATE  ) else '0';
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     STM_INTAKE: if (STM_ENABLE /= 0) generate            -- 
-    begin                                                -- 
         QUEUE: Merge_Sorter_Core_Stream_Intake           -- 
             generic map (                                -- 
                 I_NUM           => I_NUM               , -- 
@@ -519,7 +532,7 @@ begin
                 CLK             => CLK                 , -- In  :
                 RST             => RST                 , -- In  :
                 CLR             => CLR                 , -- In  :
-                START           => stream_start        , -- In  :
+                START           => stream_intake_start , -- In  :
                 BUSY            => open                , -- Out :
                 DONE            => open                , -- Out :
                 FBK_OUT_START   => feedback_out_start  , -- Out :
@@ -553,10 +566,9 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FIFO: for i in 0 to I_NUM-1 generate
-    begin
-        U: Merge_Sorter_Core_Fifo
-            generic map (
+    FIFO: for i in 0 to I_NUM-1 generate                 -- 
+        U: Merge_Sorter_Core_Fifo                        -- 
+            generic map (                                -- 
                 FBK_ENABLE      => (STM_ENABLE /= 0)   , -- 
                 MRG_ENABLE      => (MRG_ENABLE /= 0)   , -- 
                 SIZE_BITS       => SIZE_BITS           , -- 
@@ -573,9 +585,9 @@ begin
                 CLK             => CLK                 , -- In  :
                 RST             => RST                 , -- In  :
                 CLR             => CLR                 , -- In  :
-                FBK_REQ         => stream_req          , -- In  :
-                FBK_ACK         => stream_ack       (i), -- Out :
-                FBK_DONE        => stream_done      (i), -- Out :
+                FBK_REQ         => fifo_stream_req     , -- In  :
+                FBK_ACK         => fifo_stream_ack  (i), -- Out :
+                FBK_DONE        => fifo_stream_done (i), -- Out :
                 FBK_OUT_START   => feedback_out_start  , -- In  :
                 FBK_OUT_SIZE    => feedback_out_size   , -- In  :
                 FBK_OUT_LAST    => feedback_out_last   , -- In  :
@@ -584,9 +596,9 @@ begin
                 FBK_IN_LAST     => feedback_last       , -- In  :
                 FBK_IN_VALID    => feedback_valid   (i), -- In  :
                 FBK_IN_READY    => feedback_ready   (i), -- Out :
-                MRG_REQ         => merge_req           , -- In  :
-                MRG_ACK         => merge_ack        (i), -- Out :
-                MRG_IN_DATA     => MRG_IN_DATA     ((i+1)*DATA_BITS-1 downto i*DATA_BITS) , -- In  :
+                MRG_REQ         => fifo_merge_req      , -- In  :
+                MRG_ACK         => fifo_merge_ack   (i), -- Out :
+                MRG_IN_DATA     => MRG_IN_DATA      ((i+1)*DATA_BITS-1 downto i*DATA_BITS) , -- In  :
                 MRG_IN_NONE     => MRG_IN_NONE      (i), -- In  :
                 MRG_IN_DONE     => MRG_IN_DONE      (i), -- In  :
                 MRG_IN_LAST     => MRG_IN_LAST      (i), -- In  :
@@ -597,8 +609,8 @@ begin
                 OUTLET_LAST     => fifo_intake_last (i), -- Out :
                 OUTLET_VALID    => fifo_intake_valid(i), -- Out :
                 OUTLET_READY    => fifo_intake_ready(i)  -- In  :
-            );
-    end generate;
+            );                                           -- 
+    end generate;                                        -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -614,8 +626,8 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    SORT: block
-    begin
+    SORT: block                                          -- 
+    begin                                                -- 
         TREE: Merge_Sorter_Tree                          -- 
             generic map (                                -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
@@ -641,7 +653,7 @@ begin
                 O_VALID         => sorted_word_valid   , -- Out :
                 O_READY         => sorted_word_ready     -- In  :
             );                                           -- 
-    end block;
+    end block;                                           -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

@@ -441,19 +441,22 @@ begin
         constant  PTR_BITS          :  integer := NUM_TO_BITS(FIFO_SIZE-1);
         type      MEM_TYPE          is array (integer range <>) of std_logic_vector(WORD_BITS-1 downto 0);
         signal    mem               :  MEM_TYPE(FIFO_SIZE -1 downto 0);
-        signal    curr_counter      :  unsigned(COUNT_BITS-1 downto 0);
+        signal    intake_counter    :  unsigned(COUNT_BITS-1 downto 0);
+        signal    outlet_counter    :  unsigned(COUNT_BITS-1 downto 0);
         signal    wr_ptr            :  unsigned(PTR_BITS  -1 downto 0);
         signal    rd_ptr            :  unsigned(PTR_BITS  -1 downto 0);
         signal    wr_addr           :  unsigned(PTR_BITS  -1 downto 0);
         signal    rd_addr           :  unsigned(PTR_BITS  -1 downto 0);
-        signal    wr_ena            :  std_logic;
-        signal    rd_ena            :  std_logic;
+        signal    wr_ena_i          :  std_logic;
+        signal    wr_ena_q          :  std_logic;
+        signal    rd_ena_i          :  std_logic;
+        signal    rd_ena_q          :  std_logic;
     begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        wr_ena  <= '1' when (fifo_intake_enable = '1' and fifo_intake_valid = '1' and fifo_intake_ready = '1') else '0';
-        rd_ena  <= '1' when (fifo_outlet_enable = '1' and fifo_outlet_valid = '1' and fifo_outlet_ready = '1') else '0';
+        wr_ena_i <= '1' when (fifo_intake_enable = '1' and fifo_intake_valid = '1' and fifo_intake_ready = '1') else '0';
+        rd_ena_i <= '1' when (fifo_outlet_enable = '1' and fifo_outlet_valid = '1' and fifo_outlet_ready = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -461,20 +464,20 @@ begin
             variable next_counter : unsigned(COUNT_BITS downto 0);
         begin
             if (RST = '1') then
-                    curr_counter      <= (others => '0');
+                    intake_counter    <= (others => '0');
                     fifo_intake_ready <= '0';
-                    fifo_outlet_valid <= '0';
+                    wr_ena_q          <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
-                    curr_counter      <= (others => '0');
+                    intake_counter    <= (others => '0');
                     fifo_intake_ready <= '0';
-                    fifo_outlet_valid <= '0';
+                    wr_ena_q          <= '0';
                 else
-                    next_counter := "0" & curr_counter;
-                    if (wr_ena = '1') then
+                    next_counter := "0" & intake_counter;
+                    if (wr_ena_i = '1') then
                         next_counter := next_counter + 1;
                     end if;
-                    if (rd_ena = '1') then
+                    if (rd_ena_q = '1') then
                         next_counter := next_counter - 1;
                     end if;
                     if (next_counter < FIFO_SIZE) then
@@ -482,12 +485,41 @@ begin
                     else
                         fifo_intake_ready <= '0';
                     end if;
+                    intake_counter <= next_counter(intake_counter'range);
+                    wr_ena_q       <= wr_ena_i;
+                end if;
+            end if;
+        end process;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        process (CLK, RST)
+            variable next_counter : unsigned(COUNT_BITS downto 0);
+        begin
+            if (RST = '1') then
+                    outlet_counter    <= (others => '0');
+                    fifo_outlet_valid <= '0';
+                    rd_ena_q          <= '0';
+            elsif (CLK'event and CLK = '1') then
+                if (CLR = '1') then
+                    outlet_counter    <= (others => '0');
+                    fifo_outlet_valid <= '0';
+                    rd_ena_q          <= '0';
+                else
+                    next_counter := "0" & outlet_counter;
+                    if (wr_ena_q = '1') then
+                        next_counter := next_counter + 1;
+                    end if;
+                    if (rd_ena_i = '1') then
+                        next_counter := next_counter - 1;
+                    end if;
                     if (next_counter > 0) then
                         fifo_outlet_valid <= '1';
                     else
                         fifo_outlet_valid <= '0';
                     end if;
-                    curr_counter <= next_counter(curr_counter'range);
+                    outlet_counter <= next_counter(outlet_counter'range);
+                    rd_ena_q       <= rd_ena_i;
                 end if;
             end if;
         end process;
@@ -500,7 +532,7 @@ begin
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     wr_ptr <= (others => '0');
-                elsif (wr_ena = '1') then
+                elsif (wr_ena_i = '1') then
                     wr_ptr <= wr_ptr + 1;
                 end if;
             end if;
@@ -520,13 +552,13 @@ begin
                 end if;
             end if;
         end process;
-        rd_addr <= rd_ptr + 1 when (rd_ena = '1') else rd_ptr;
+        rd_addr <= rd_ptr + 1 when (rd_ena_i = '1') else rd_ptr;
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         process (CLK) begin
             if (CLK'event and CLK = '1') then
-                if (wr_ena = '1') then
+                if (wr_ena_i = '1') then
                     mem(to_integer(to_01(wr_addr))) <= fifo_intake_word;
                 end if;
             end if;

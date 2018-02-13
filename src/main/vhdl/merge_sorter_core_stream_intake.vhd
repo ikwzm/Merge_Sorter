@@ -88,13 +88,13 @@ architecture RTL of Merge_Sorter_Core_Stream_Intake is
     signal    intake_valid      :  std_logic;
     signal    intake_ready      :  std_logic;
     signal    intake_number     :  std_logic_vector(I_NUM_BITS     -1 downto 0);
-    signal    intake_first      :  std_logic;
     signal    intake_done       :  boolean;
     signal    outlet_valid      :  std_logic;
     signal    state_done        :  boolean;
     type      STATE_TYPE        is (IDLE_STATE, INTAKE_STATE, FLUSH_STATE);
     signal    curr_state        :  STATE_TYPE;
     signal    next_state        :  STATE_TYPE;
+    signal    intake_first      :  std_logic;
 begin
     -------------------------------------------------------------------------------
     --
@@ -267,17 +267,31 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    COUNT: block
+    NONE:  if (FEEDBACK = 0) generate
+        intake_number <= (others => '0');
+        intake_first  <= '1';
+        state_done    <= (curr_state = INTAKE_STATE and intake_valid = '1' and intake_ready = '1') or
+                         (curr_state = FLUSH_STATE  and intake_valid = '1' and intake_ready = '1');
+        FBK_OUT_SIZE  <= (others => '0');
+        FBK_OUT_LAST  <= '1' when (curr_state = INTAKE_STATE and intake_done = TRUE) or
+                                  (curr_state = FLUSH_STATE) else '0';
+    end generate;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    COUNT: if (FEEDBACK > 0) generate
         subtype   COUNTER_TYPE    is unsigned(I_NUM_BITS-1 downto 0);
         type      COUNTER_VECTOR  is array (integer range <>) of COUNTER_TYPE;
-        signal    counter         :  COUNTER_VECTOR  (0 to FEEDBACK);
-        signal    count_up        :  std_logic_vector(0 to FEEDBACK);
-        signal    count_zero      :  std_logic_vector(0 to FEEDBACK);
-        signal    count_last      :  std_logic_vector(0 to FEEDBACK);
+        signal    counter         :  COUNTER_VECTOR  (1 to FEEDBACK);
+        signal    count_up        :  std_logic_vector(1 to FEEDBACK);
+        signal    count_zero      :  std_logic_vector(1 to FEEDBACK);
+        signal    count_last      :  std_logic_vector(1 to FEEDBACK);
         signal    delimiter       :  std_logic;
+        signal    count_all_zero  :  std_logic;
+        signal    count_all_last  :  std_logic;
         signal    feedback_size   :  unsigned(SIZE_BITS-1 downto 0);
         signal    feedback_add    :  unsigned(SIZE_BITS-1 downto 0);
-        constant  ALL_1           :  std_logic_vector(0 to FEEDBACK) := (others => '1');
+        constant  ALL_1           :  std_logic_vector(1 to FEEDBACK) := (others => '1');
     begin
         ---------------------------------------------------------------------------
         --
@@ -288,7 +302,7 @@ begin
             if (curr_state = INTAKE_STATE or curr_state = FLUSH_STATE) and
                (outlet_valid = '1') then
                 next_count_up := TRUE;
-                for i in 0 to FEEDBACK loop
+                for i in 1 to FEEDBACK loop
                     if (next_count_up) then
                         count_up(i)   <= '1';
                         next_count_up := (count_last(i) = '1');
@@ -306,28 +320,32 @@ begin
         ---------------------------------------------------------------------------
         process (CLK, RST)
             variable  next_counter   :  COUNTER_TYPE;
-            variable  next_zero      :  std_logic_vector(0 to FEEDBACK);
-            variable  next_last      :  std_logic_vector(0 to FEEDBACK);
-            variable  upper_mask     :  std_logic_vector(0 to FEEDBACK);
-            variable  lower_mask     :  std_logic_vector(0 to FEEDBACK);
+            variable  next_zero      :  std_logic_vector(count_zero'range);
+            variable  next_last      :  std_logic_vector(count_last'range);
+            variable  upper_mask     :  std_logic_vector(counter'range);
+            variable  lower_mask     :  std_logic_vector(counter'range);
             variable  next_delimiter :  std_logic;
             variable  upper_all_zero :  boolean;
             variable  lower_all_last :  boolean;
         begin
             if (RST = '1') then
-                    counter    <= (others => (others => '0'));
-                    count_zero <= (others => '1');
-                    count_last <= (others => '0');
-                    delimiter  <= '1';
+                    counter        <= (others => (others => '0'));
+                    count_zero     <= (others => '1');
+                    count_last     <= (others => '0');
+                    delimiter      <= '1';
+                    count_all_zero <= '1';
+                    count_all_last <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') or
                    (curr_state = IDLE_STATE) then
-                    counter    <= (others => (others => '0'));
-                    count_zero <= (others => '1');
-                    count_last <= (others => '0');
-                    delimiter  <= '1';
+                    counter        <= (others => (others => '0'));
+                    count_zero     <= (others => '1');
+                    count_last     <= (others => '0');
+                    delimiter      <= '1';
+                    count_all_zero <= '1';
+                    count_all_last <= '0';
                 else
-                    for i in 0 to FEEDBACK loop
+                    for i in counter'range loop
                         if (count_up(i) = '1') then
                             if (count_last(i) = '1') then
                                 next_counter := (others => '0');
@@ -351,24 +369,32 @@ begin
                         count_zero(i) <= next_zero(i);
                         count_last(i) <= next_last(i);
                     end loop;
+                    if (next_zero = ALL_1) then
+                        count_all_zero <= '1';
+                    else
+                        count_all_zero <= '0';
+                    end if;
+                    if (next_last = ALL_1) then
+                        count_all_last <= '1';
+                    else
+                        count_all_last <= '0';
+                    end if;
                     next_delimiter := '0';
-                    upper_mask     := (others => '1');
-                    lower_mask     := (others => '0');
-                    for i in 0 to FEEDBACK loop
+                    for i in counter'range loop
+                        for n in upper_mask'range loop
+                            if (n >= i) then
+                                upper_mask(n) := '1';
+                                lower_mask(n) := '0';
+                            else
+                                upper_mask(n) := '0';
+                                lower_mask(n) := '1';
+                            end if;
+                        end loop;
                         upper_all_zero := ((next_zero and upper_mask) = upper_mask);
                         lower_all_last := ((next_last and lower_mask) = lower_mask);
                         if (upper_all_zero and lower_all_last) then
                             next_delimiter := next_delimiter or '1';
                         end if;
-                        for n in 0 to FEEDBACK loop
-                            if (n = 0) then
-                                upper_mask(n) := '0';
-                                lower_mask(n) := '1';
-                            else
-                                upper_mask(n) := upper_mask(n-1);
-                                lower_mask(n) := lower_mask(n-1);
-                            end if;
-                        end loop;
                     end loop;
                     delimiter <= next_delimiter;
                 end if;
@@ -377,18 +403,28 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        intake_number <= std_logic_vector(counter(0));
-        intake_first  <= '1' when (count_zero = ALL_1) else '0';
+        intake_number <= std_logic_vector(counter(counter'low));
+        intake_first  <= '1' when (count_all_zero = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (curr_state, intake_done, delimiter, outlet_valid) begin
-            if ((curr_state = FLUSH_STATE) or
-                (curr_state = INTAKE_STATE and intake_done = TRUE)) and
-               (delimiter = '1' and outlet_valid = '1') then
-                state_done <= TRUE;
+        process (curr_state, intake_done, count_all_last, delimiter, outlet_valid) begin
+            if (curr_state = INTAKE_STATE) then
+                if  (outlet_valid = '1' and delimiter      = '1' and intake_done = TRUE) or
+                    (outlet_valid = '1' and count_all_last = '1') then
+                    state_done <= TRUE;
+                else
+                    state_done <= FALSE;
+                end if;
+            elsif (curr_state = FLUSH_STATE) then
+                if  (outlet_valid = '1' and delimiter      = '1') or
+                    (outlet_valid = '1' and count_all_last = '1') then
+                    state_done <= TRUE;
+                else
+                    state_done <= FALSE;
+                end if;
             else
-                state_done <= FALSE;
+                    state_done <= FALSE;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -416,6 +452,6 @@ begin
         FBK_OUT_SIZE <= std_logic_vector(feedback_size);
         FBK_OUT_LAST <= '1' when (curr_state = INTAKE_STATE and intake_done = TRUE) or
                                  (curr_state = FLUSH_STATE) else '0';
-    end block;
+    end generate;
 end RTL;
 
