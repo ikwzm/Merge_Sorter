@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_fifo.vhd
 --!     @brief   Merge Sorter Core Fifo Module :
---!     @version 0.0.4
---!     @date    2018/2/11
+--!     @version 0.0.5
+--!     @date    2018/2/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -42,13 +42,14 @@ entity  Merge_Sorter_Core_Fifo is
         MRG_ENABLE      :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
         FIFO_SIZE       :  integer :=   64;
+        LEVEL_SIZE      :  integer :=   32;
         DATA_BITS       :  integer :=   64;
         INFO_BITS       :  integer :=    8;
         INFO_NONE_POS   :  integer :=    0;
         INFO_DONE_POS   :  integer :=    1;
         INFO_FBK_POS    :  integer :=    2;
-        INFO_I_NUM_LO   :  integer :=    3;
-        INFO_I_NUM_HI   :  integer :=    7
+        INFO_FBK_NUM_LO :  integer :=    3;
+        INFO_FBK_NUM_HI :  integer :=    7
     );
     port (
         CLK             :  in  std_logic;
@@ -73,6 +74,7 @@ entity  Merge_Sorter_Core_Fifo is
         MRG_IN_LAST     :  in  std_logic;
         MRG_IN_VALID    :  in  std_logic := '0';
         MRG_IN_READY    :  out std_logic;
+        MRG_IN_LEVEL    :  out std_logic;
         OUTLET_DATA     :  out std_logic_vector(DATA_BITS-1 downto 0);
         OUTLET_INFO     :  out std_logic_vector(INFO_BITS-1 downto 0);
         OUTLET_LAST     :  out std_logic;
@@ -94,6 +96,7 @@ architecture RTL of Merge_Sorter_Core_Fifo is
     constant  WORD_NONE_POS         :  integer := DATA_BITS+1;
     constant  WORD_DONE_POS         :  integer := DATA_BITS+2;
     constant  DATA_NULL             :  std_logic_vector(DATA_BITS-1 downto 0) := (others => '0');
+    signal    fifo_intake_level     :  std_logic;
     signal    fifo_intake_valid     :  std_logic;
     signal    fifo_intake_ready     :  std_logic;
     signal    fifo_intake_enable    :  std_logic;
@@ -109,7 +112,10 @@ begin
     NONE: if (FIFO_SIZE = 0) generate
         FBK_ACK      <= '0';
         FBK_DONE     <= '0';
+        FBK_IN_READY <= '0';
         MRG_ACK      <= '0';
+        MRG_IN_READY <= '0';
+        MRG_IN_LEVEL <= '0';
         OUTLET_DATA  <= (others => '0');
         OUTLET_INFO  <= (others => '0');
         OUTLET_LAST  <= '0';
@@ -122,7 +128,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  NUM_BITS          :  integer := INFO_I_NUM_HI-INFO_I_NUM_LO+1;
+        constant  FBK_NUM_BITS      :  integer := INFO_FBK_NUM_HI-INFO_FBK_NUM_LO+1;
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -144,7 +150,7 @@ begin
         signal    fbk_outlet_done   :  std_logic;
         signal    fbk_outlet_next   :  std_logic;
         signal    fbk_outlet_last   :  std_logic;
-        signal    fbk_outlet_num    :  std_logic_vector(NUM_BITS -1 downto 0);
+        signal    fbk_outlet_num    :  std_logic_vector(FBK_NUM_BITS-1 downto 0);
         signal    fbk_state_done    :  boolean;
         ---------------------------------------------------------------------------
         --
@@ -309,7 +315,7 @@ begin
             fbk_outlet_next   <= '1' when (outlet_next and fbk_outlet_enable) else '0';
             fbk_outlet_last   <= '1' when (outlet_last and fbk_outlet_enable) else '0';
             fbk_outlet_done   <= '1' when (fbk_outlet_last = '1' and outlet_done = '1') else '0';
-            fbk_outlet_num    <= outlet_counter(NUM_BITS-1 downto 0) when (fbk_outlet_enable) else (others => '0');
+            fbk_outlet_num    <= outlet_counter(fbk_outlet_num'range) when (fbk_outlet_enable) else (others => '0');
             FBK_ACK           <= '1' when (curr_state = FBK_ACK_STATE) else '0';
             FBK_DONE          <= '1' when (curr_state = FBK_ACK_STATE and outlet_done = '1') else '0';
             -----------------------------------------------------------------------
@@ -394,6 +400,7 @@ begin
             mrg_intake_word(WORD_DONE_POS)                    <= MRG_IN_DONE       when (mrg_intake_enable) else '0';
             mrg_intake_ready                                  <= fifo_intake_ready when (mrg_intake_enable) else '0';
             MRG_IN_READY                                      <= fifo_intake_ready when (mrg_intake_enable) else '0';
+            MRG_IN_LEVEL                                      <= fifo_intake_level when (mrg_intake_enable) else '0';
         end generate;
         ---------------------------------------------------------------------------
         --
@@ -407,15 +414,16 @@ begin
             mrg_intake_word   <= (others => '0');
             mrg_intake_ready  <= '0';
             MRG_IN_READY      <= '0';
+            MRG_IN_LEVEL      <= '0';
             MRG_ACK           <= '0';
         end generate;
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        OUTLET_INFO(INFO_DONE_POS)                      <= fbk_outlet_done or mrg_outlet_done;
-        OUTLET_INFO(INFO_FBK_POS )                      <= fbk_outlet_next;
-        OUTLET_INFO(INFO_I_NUM_HI downto INFO_I_NUM_LO) <= fbk_outlet_num;
-        OUTLET_INFO(INFO_NONE_POS)                      <= fifo_outlet_word(WORD_NONE_POS) when (fifo_outlet_enable = '1') else '0';
+        OUTLET_INFO(INFO_DONE_POS)                          <= fbk_outlet_done or mrg_outlet_done;
+        OUTLET_INFO(INFO_FBK_POS )                          <= fbk_outlet_next;
+        OUTLET_INFO(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) <= fbk_outlet_num;
+        OUTLET_INFO(INFO_NONE_POS)                          <= fifo_outlet_word(WORD_NONE_POS) when (fifo_outlet_enable = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -466,11 +474,13 @@ begin
             if (RST = '1') then
                     intake_counter    <= (others => '0');
                     fifo_intake_ready <= '0';
+                    fifo_intake_level <= '0';
                     wr_ena_q          <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     intake_counter    <= (others => '0');
                     fifo_intake_ready <= '0';
+                    fifo_intake_level <= '0';
                     wr_ena_q          <= '0';
                 else
                     next_counter := "0" & intake_counter;
@@ -484,6 +494,11 @@ begin
                         fifo_intake_ready <= '1';
                     else
                         fifo_intake_ready <= '0';
+                    end if;
+                    if (next_counter >= LEVEL_SIZE) then
+                        fifo_intake_level <= '1';
+                    else
+                        fifo_intake_level <= '0';
                     end if;
                     intake_counter <= next_counter(intake_counter'range);
                     wr_ena_q       <= wr_ena_i;

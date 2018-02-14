@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.0.4
---!     @date    2018/2/9
+--!     @version 0.0.5
+--!     @date    2018/2/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -38,18 +38,18 @@ library ieee;
 use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Stream_Intake is
     generic (
-        I_NUM           :  integer :=  8;
-        I_WORDS         :  integer :=  1;
+        O_NUM           :  integer :=  8;
+        I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
-        I_NUM_BITS      :  integer :=  3;
+        O_NUM_BITS      :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
         DATA_BITS       :  integer := 64;
         INFO_BITS       :  integer :=  8;
         INFO_NONE_POS   :  integer :=  0;
         INFO_DONE_POS   :  integer :=  1;
         INFO_FBK_POS    :  integer :=  2;
-        INFO_I_NUM_LO   :  integer :=  3;
-        INFO_I_NUM_HI   :  integer :=  7
+        INFO_FBK_NUM_LO :  integer :=  3;
+        INFO_FBK_NUM_HI :  integer :=  7
     );
     port (
         CLK             :  in  std_logic;
@@ -59,18 +59,18 @@ entity  Merge_Sorter_Core_Stream_Intake is
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(        SIZE_BITS-1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(      SIZE_BITS-1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(I_WORDS*DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(I_WORDS          -1 downto 0);
+        I_DATA          :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(I_NUM          -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_DATA          :  out std_logic_vector(I_NUM  *DATA_BITS-1 downto 0);
-        O_INFO          :  out std_logic_vector(I_NUM  *INFO_BITS-1 downto 0);
-        O_LAST          :  out std_logic_vector(I_NUM            -1 downto 0);
-        O_VALID         :  out std_logic_vector(I_NUM            -1 downto 0);
-        O_READY         :  in  std_logic_vector(I_NUM            -1 downto 0)
+        O_DATA          :  out std_logic_vector(O_NUM*DATA_BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(O_NUM*INFO_BITS-1 downto 0);
+        O_LAST          :  out std_logic_vector(O_NUM          -1 downto 0);
+        O_VALID         :  out std_logic_vector(O_NUM          -1 downto 0);
+        O_READY         :  in  std_logic_vector(O_NUM          -1 downto 0)
     );
 end Merge_Sorter_Core_Stream_Intake;
 -----------------------------------------------------------------------------------
@@ -82,12 +82,12 @@ use     ieee.numeric_std.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
 architecture RTL of Merge_Sorter_Core_Stream_Intake is
-    signal    queue_valid       :  std_logic_vector(I_NUM          -1 downto 0);
-    signal    intake_data       :  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+    signal    queue_valid       :  std_logic_vector(O_NUM          -1 downto 0);
+    signal    intake_data       :  std_logic_vector(O_NUM*DATA_BITS-1 downto 0);
     signal    intake_last       :  std_logic;
     signal    intake_valid      :  std_logic;
     signal    intake_ready      :  std_logic;
-    signal    intake_number     :  std_logic_vector(I_NUM_BITS     -1 downto 0);
+    signal    intake_number     :  std_logic_vector(O_NUM_BITS     -1 downto 0);
     signal    intake_done       :  boolean;
     signal    outlet_valid      :  std_logic;
     signal    state_done        :  boolean;
@@ -163,14 +163,14 @@ begin
         generic map (                                -- 
             WORD_BITS       => DATA_BITS           , --
             STRB_BITS       => 1                   , -- 
-            I_WIDTH         => I_WORDS             , -- 
-            O_WIDTH         => I_NUM               , -- 
+            I_WIDTH         => I_NUM               , -- 
+            O_WIDTH         => O_NUM               , -- 
             QUEUE_SIZE      => 0                   , --
             VALID_MIN       => queue_valid'low     , -- 
             VALID_MAX       => queue_valid'high    , -- 
-            O_VAL_SIZE      => I_NUM               , -- 
-            O_SHIFT_MIN     => I_NUM               , -- 
-            O_SHIFT_MAX     => I_NUM               , -- 
+            O_VAL_SIZE      => O_NUM               , -- 
+            O_SHIFT_MIN     => O_NUM               , -- 
+            O_SHIFT_MAX     => O_NUM               , -- 
             I_JUSTIFIED     => 1                   , -- 
             FLUSH_ENABLE    => 0                     -- 
         )                                            -- 
@@ -198,7 +198,7 @@ begin
     -------------------------------------------------------------------------------
     process (curr_state, intake_number, queue_valid, intake_first, intake_last) begin
         if (curr_state = INTAKE_STATE) then
-            for i in 0 to I_NUM-1 loop
+            for i in 0 to O_NUM-1 loop
                 if (queue_valid(i) = '0') then
                     O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
                 else
@@ -216,14 +216,14 @@ begin
                 else
                     O_INFO(i*INFO_BITS+INFO_FBK_POS)  <= '1';
                 end if;
-                O_INFO(i*INFO_BITS+INFO_I_NUM_HI downto i*INFO_BITS+INFO_I_NUM_LO) <= intake_number;
+                O_INFO(i*INFO_BITS+INFO_FBK_NUM_HI downto i*INFO_BITS+INFO_FBK_NUM_LO) <= intake_number;
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
-            for i in 0 to I_NUM-1 loop
+            for i in 0 to O_NUM-1 loop
                 O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '0';
                 O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
                 O_INFO(i*INFO_BITS+INFO_FBK_POS ) <= '1';
-                O_INFO(i*INFO_BITS+INFO_I_NUM_HI downto i*INFO_BITS+INFO_I_NUM_LO) <= intake_number;
+                O_INFO(i*INFO_BITS+INFO_FBK_NUM_HI downto i*INFO_BITS+INFO_FBK_NUM_LO) <= intake_number;
             end loop;
         else
             O_INFO <= (others => '0');
@@ -280,7 +280,7 @@ begin
     --
     -------------------------------------------------------------------------------
     COUNT: if (FEEDBACK > 0) generate
-        subtype   COUNTER_TYPE    is unsigned(I_NUM_BITS-1 downto 0);
+        subtype   COUNTER_TYPE    is unsigned(O_NUM_BITS-1 downto 0);
         type      COUNTER_VECTOR  is array (integer range <>) of COUNTER_TYPE;
         signal    counter         :  COUNTER_VECTOR  (1 to FEEDBACK);
         signal    count_up        :  std_logic_vector(1 to FEEDBACK);
@@ -360,7 +360,7 @@ begin
                         else
                             next_zero(i) := '0';
                         end if;
-                        if (next_counter = I_NUM-1) then
+                        if (next_counter = O_NUM-1) then
                             next_last(i) := '1';
                         else
                             next_last(i) := '0';
@@ -441,7 +441,7 @@ begin
                 elsif (curr_state = FLUSH_STATE or curr_state = INTAKE_STATE) then
                     if (delimiter = '1' and outlet_valid = '1') then
                         feedback_size <= resize((feedback_size + feedback_add), SIZE_BITS);
-                        feedback_add  <= resize((feedback_add  * I_NUM       ), SIZE_BITS);
+                        feedback_add  <= resize((feedback_add  * O_NUM       ), SIZE_BITS);
                     end if;
                 else
                     feedback_size <= (others => '0');

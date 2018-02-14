@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_testbench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
---!     @version 0.0.4
---!     @date    2018/2/11
+--!     @version 0.0.5
+--!     @date    2018/2/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -40,11 +40,11 @@ entity  Merge_Sorter_Core_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
-        I_NUM           :  integer := 4;
-        STM_ENABLE      :  integer := 1;
+        IN_NUM          :  integer := 4;
+        STM_ENABLE      :  boolean := TRUE;
         STM_FEEDBACK    :  integer := 2;
-        STM_I_WORDS     :  integer := 1;
-        MRG_ENABLE      :  integer := 1;
+        STM_IN_NUM      :  integer := 1;
+        MRG_ENABLE      :  boolean := TRUE;
         MRG_FIFO_SIZE   :  integer := 64;
         SORT_ORDER      :  integer := 0
     );
@@ -75,7 +75,7 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     constant   DATA_BITS    :  integer := 32;
     constant   COMP_HIGH    :  integer := 31;
     constant   COMP_LOW     :  integer :=  0;
-    constant   INFO_BITS    :  integer :=  2;
+    constant   USER_BITS    :  integer :=  2;
     constant   SYNC_WIDTH   :  integer :=  2;
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;
@@ -89,37 +89,38 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     -------------------------------------------------------------------------------
     -- シンクロ用信号
     -------------------------------------------------------------------------------
-    signal     SYNC         : SYNC_SIG_VECTOR (SYNC_WIDTH     -1 downto 0);
+    signal     SYNC         : SYNC_SIG_VECTOR (SYNC_WIDTH-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     constant   I_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => INFO_BITS,
+                                   USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
-    type       I_INFO_VECTOR is array (integer range <>) of std_logic_vector(INFO_BITS-1 downto 0);
-    signal     i_data       :  I_DATA_VECTOR   (I_NUM-1 downto 0);
-    signal     i_info       :  I_INFO_VECTOR   (I_NUM-1 downto 0);
-    signal     i_last       :  std_logic_vector(I_NUM-1 downto 0);
-    signal     i_valid      :  std_logic_vector(I_NUM-1 downto 0);
-    signal     i_ready      :  std_logic_vector(I_NUM-1 downto 0);
-    signal     i_flat_data  :  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
-    signal     i_none       :  std_logic_vector(I_NUM          -1 downto 0);
-    signal     i_done       :  std_logic_vector(I_NUM          -1 downto 0);
+    type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(USER_BITS-1 downto 0);
+    signal     i_data       :  I_DATA_VECTOR   (IN_NUM-1 downto 0);
+    signal     i_user       :  I_USER_VECTOR   (IN_NUM-1 downto 0);
+    signal     i_last       :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     i_valid      :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     i_ready      :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     i_flat_data  :  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
+    signal     i_none       :  std_logic_vector(IN_NUM          -1 downto 0);
+    signal     i_done       :  std_logic_vector(IN_NUM          -1 downto 0);
+    signal     i_level      :  std_logic_vector(IN_NUM          -1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     constant   S_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => INFO_BITS,
+                                   USER  => USER_BITS,
                                    DEST  => 4,
-                                   DATA  => STM_I_WORDS*DATA_BITS
+                                   DATA  => STM_IN_NUM*DATA_BITS
                                );
     signal     s_data       :  std_logic_vector(S_WIDTH.DATA  -1 downto 0);
-    signal     s_word_strb  :  std_logic_vector(STM_I_WORDS   -1 downto 0);
+    signal     s_word_strb  :  std_logic_vector(STM_IN_NUM    -1 downto 0);
     signal     s_last       :  std_logic;
     signal     s_valid      :  std_logic;
     signal     s_ready      :  std_logic;
@@ -130,7 +131,7 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     -------------------------------------------------------------------------------
     constant   O_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => INFO_BITS,
+                                   USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
@@ -159,20 +160,21 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     signal     O_FINISH     :  std_logic;
     signal     S_REPORT     :  REPORT_STATUS_TYPE;
     signal     S_FINISH     :  std_logic;
-    signal     I_REPORT     :  REPORT_STATUS_VECTOR(I_NUM-1 downto 0);
-    signal     I_FINISH     :  std_logic_vector    (I_NUM-1 downto 0);
+    signal     I_REPORT     :  REPORT_STATUS_VECTOR(IN_NUM-1 downto 0);
+    signal     I_FINISH     :  std_logic_vector    (IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     component  Merge_Sorter_Core 
         generic (
-            SORT_ORDER      :  integer :=  0;
-            I_NUM           :  integer :=  8;
-            STM_ENABLE      :  integer :=  1;
-            STM_I_WORDS     :  integer :=  1;
+            IN_NUM          :  integer :=  4;
+            STM_ENABLE      :  boolean := TRUE;
+            STM_IN_NUM      :  integer :=  1;
             STM_FEEDBACK    :  integer :=  1;
-            MRG_ENABLE      :  integer :=  1;
+            MRG_ENABLE      :  boolean := TRUE;
             MRG_FIFO_SIZE   :  integer := 64;
+            MRG_LEVEL_SIZE  :  integer := 32;
+            SORT_ORDER      :  integer :=  0;
             DATA_BITS       :  integer := 64;
             COMP_HIGH       :  integer := 63;
             COMP_LOW        :  integer := 32
@@ -185,8 +187,8 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
             STM_REQ_READY   :  out std_logic;
             STM_RES_VALID   :  out std_logic;
             STM_RES_READY   :  in  std_logic;
-            STM_IN_DATA     :  in  std_logic_vector(STM_I_WORDS*DATA_BITS-1 downto 0);
-            STM_IN_STRB     :  in  std_logic_vector(STM_I_WORDS          -1 downto 0);
+            STM_IN_DATA     :  in  std_logic_vector(STM_IN_NUM*DATA_BITS-1 downto 0);
+            STM_IN_STRB     :  in  std_logic_vector(STM_IN_NUM          -1 downto 0);
             STM_IN_LAST     :  in  std_logic;
             STM_IN_VALID    :  in  std_logic;
             STM_IN_READY    :  out std_logic;
@@ -194,13 +196,14 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
             MRG_REQ_READY   :  out std_logic;
             MRG_RES_VALID   :  out std_logic;
             MRG_RES_READY   :  in  std_logic;
-            MRG_IN_DATA     :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
-            MRG_IN_NONE     :  in  std_logic_vector(I_NUM          -1 downto 0);
-            MRG_IN_DONE     :  in  std_logic_vector(I_NUM          -1 downto 0);
-            MRG_IN_LAST     :  in  std_logic_vector(I_NUM          -1 downto 0);
-            MRG_IN_VALID    :  in  std_logic_vector(I_NUM          -1 downto 0);
-            MRG_IN_READY    :  out std_logic_vector(I_NUM          -1 downto 0);
-            OUTLET_DATA     :  out std_logic_vector(      DATA_BITS-1 downto 0);
+            MRG_IN_DATA     :  in  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
+            MRG_IN_NONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
+            MRG_IN_DONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
+            MRG_IN_LAST     :  in  std_logic_vector(IN_NUM          -1 downto 0);
+            MRG_IN_VALID    :  in  std_logic_vector(IN_NUM          -1 downto 0);
+            MRG_IN_READY    :  out std_logic_vector(IN_NUM          -1 downto 0);
+            MRG_IN_LEVEL    :  out std_logic_vector(IN_NUM          -1 downto 0);
+            OUTLET_DATA     :  out std_logic_vector(       DATA_BITS-1 downto 0);
             OUTLET_LAST     :  out std_logic;
             OUTLET_VALID    :  out std_logic;
             OUTLET_READY    :  in  std_logic
@@ -300,8 +303,8 @@ begin
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    I_MASTER:  for i in 0 to I_NUM-1 generate        --
-        constant  gpi  : std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
+    I_MASTER:  for i in 0 to IN_NUM-1 generate        --
+        signal    gpi  : std_logic_vector(GPI_WIDTH-1 downto 0);
         constant  name : string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
@@ -322,7 +325,7 @@ begin
                 TDATA           => i_data  (i)     , -- Out :
                 TSTRB           => open            , -- Out :
                 TKEEP           => open            , -- Out :
-                TUSER           => i_info  (i)     , -- Out :
+                TUSER           => i_user  (i)     , -- Out :
                 TDEST           => open            , -- Out :
                 TID             => open            , -- Out :
                 TLAST           => i_last  (i)     , -- Out :
@@ -335,21 +338,24 @@ begin
                 FINISH          => I_FINISH(i)       -- Out :
             );                                       -- 
         i_flat_data((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= i_data(i);
-        i_none(i) <= i_info(i)(0);
-        i_done(i) <= i_info(i)(1);
+        i_none(i) <= i_user(i)(0);
+        i_done(i) <= i_user(i)(1);
+        gpi(0)    <= i_level(i);
+        gpi(gpi'high downto 1) <= (gpi'high downto 1 => '0');
     end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Merge_Sorter_Core               -- 
-        generic map (                    -- 
+    DUT: Merge_Sorter_Core                       -- 
+        generic map (                            -- 
             SORT_ORDER      => SORT_ORDER      , -- 
-            I_NUM           => I_NUM           , --
+            IN_NUM          => IN_NUM          , --
             STM_ENABLE      => STM_ENABLE      , --
-            STM_I_WORDS     => STM_I_WORDS     , -- 
+            STM_IN_NUM      => STM_IN_NUM      , -- 
             STM_FEEDBACK    => STM_FEEDBACK    , -- 
             MRG_ENABLE      => MRG_ENABLE      , --
             MRG_FIFO_SIZE   => MRG_FIFO_SIZE   , --
+            MRG_LEVEL_SIZE  => MRG_FIFO_SIZE/2 , --
             DATA_BITS       => DATA_BITS       , --
             COMP_HIGH       => COMP_HIGH       , -- 
             COMP_LOW        => COMP_LOW          -- 
@@ -377,6 +383,7 @@ begin
             MRG_IN_LAST     => i_last          , -- In  :
             MRG_IN_VALID    => i_valid         , -- In  :
             MRG_IN_READY    => i_ready         , -- Out :
+            MRG_IN_LEVEL    => i_level         , -- Out :
             OUTLET_DATA     => o_data          , -- Out :
             OUTLET_LAST     => o_last          , -- Out :
             OUTLET_VALID    => o_valid         , -- Out :
