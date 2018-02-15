@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree_testbench.vhd
 --!     @brief   Merge Sorter Tree Test Bench :
---!     @version 0.0.3
---!     @date    2018/2/4
+--!     @version 0.0.5
+--!     @date    2018/2/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -312,4 +312,45 @@ begin
         wait;
     end process;
 end Model;
-
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X04_O0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_O0";
+        SCENARIO_FILE   :  STRING  := "test_x04_o0.snr"
+    );
+end     Merge_Sorter_Tree_Test_Bench_X04_O0;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X04_O0 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            I_NUM           => 4,
+            SORT_ORDER      => 0
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X02_O1 is
+    generic (
+        NAME            :  STRING  := "TEST_X02_O1";
+        SCENARIO_FILE   :  STRING  := "test_x02_o1.snr"
+    );
+end     Merge_Sorter_Tree_Test_Bench_X02_O1;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X02_O1 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            I_NUM           => 2,
+            SORT_ORDER      => 1
+        );
+end Model;
