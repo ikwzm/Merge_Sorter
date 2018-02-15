@@ -74,7 +74,7 @@ module ScenarioWriter
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and not last.nil?)? 1 : 0
         if data.nil? then
-          @file.printf("  - XFER   : {DATA: 32'h--------, USER: 1, LAST: %d}\n", _last)
+          @file.printf("  - XFER   : {DATA: 0x%08X, USER: 1, LAST: %d}\n", 0,    _last)
         else
           @file.printf("  - XFER   : {DATA: 0x%08X, USER: 0, LAST: %d}\n", data, _last)
         end 
