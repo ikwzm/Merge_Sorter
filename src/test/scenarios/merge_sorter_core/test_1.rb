@@ -1,4 +1,4 @@
-require_relative './scenario_writer.rb'
+require_relative '../scripts/scenario_writer.rb'
 
 File.open('test_1.snr','w') do |file|
 
