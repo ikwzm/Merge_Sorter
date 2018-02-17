@@ -1,0 +1,9 @@
+---
+- S  : 
+  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}
+- MARCHAL  : 
+  - SAY     : Merge_Sorter_Corte(I_NUM=4,MRG_ENABLE=true,STM_ENABLE=false,STM_FEEDBACK=0) TEST 1 Start.
+---
+- MARCHAL  : 
+  - SAY     : Merge_Sorter_Corte(I_NUM=4,MRG_ENABLE=true,STM_ENABLE=false,STM_FEEDBACK=0) TEST 1 Done.
+---

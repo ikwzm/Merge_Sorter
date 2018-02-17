@@ -417,4 +417,133 @@ begin
         wait;
     end process;
 end Model;
-
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_M1_S1_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_m1_s1_f2.snr"
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            IN_NUM          => 4,
+            STM_ENABLE      => TRUE,
+            STM_FEEDBACK    => 2,
+            STM_IN_NUM      => 1,
+            MRG_ENABLE      => TRUE,
+            MRG_FIFO_SIZE   => 64,
+            SORT_ORDER      => 0
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_M1_S0_F0";
+        SCENARIO_FILE   :  STRING  := "test_x04_m1_s0_f0.snr"
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            IN_NUM          => 4,
+            STM_ENABLE      => FALSE,
+            STM_FEEDBACK    => 0,
+            STM_IN_NUM      => 1,
+            MRG_ENABLE      => TRUE,
+            MRG_FIFO_SIZE   => 64,
+            SORT_ORDER      => 0
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_M0_S1_F0";
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f0.snr"
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            IN_NUM          => 4,
+            STM_ENABLE      => TRUE,
+            STM_FEEDBACK    => 0,
+            STM_IN_NUM      => 1,
+            MRG_ENABLE      => FALSE,
+            MRG_FIFO_SIZE   => 64,
+            SORT_ORDER      => 0
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_M0_S1_F1";
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f1.snr"
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            IN_NUM          => 4,
+            STM_ENABLE      => TRUE,
+            STM_FEEDBACK    => 1,
+            STM_IN_NUM      => 1,
+            MRG_ENABLE      => FALSE,
+            MRG_FIFO_SIZE   => 64,
+            SORT_ORDER      => 0
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_M0_S1_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f2.snr"
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            IN_NUM          => 4,
+            STM_ENABLE      => TRUE,
+            STM_FEEDBACK    => 2,
+            STM_IN_NUM      => 1,
+            MRG_ENABLE      => FALSE,
+            MRG_FIFO_SIZE   => 64,
+            SORT_ORDER      => 0
+        );
+end Model;

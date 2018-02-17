@@ -82,6 +82,6 @@ set_property "top" "Merge_Sorter_Core"  $obj
 # Set 'sim_1' fileset properties
 #
 set obj [get_filesets sim_1]
-set_property "top" "Merge_Sorter_Core_Test_Bench"  $obj
-set_property "generic" "SCENARIO_FILE=../../../../../../src/test/scenarios/merge_sorter_core/test_1.snr" $obj
+set_property "top" "Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2"  $obj
+set_property "generic" "SCENARIO_FILE=../../../../../../src/test/scenarios/merge_sorter_core/test_x04_m1_s1_f2.snr" $obj
 
