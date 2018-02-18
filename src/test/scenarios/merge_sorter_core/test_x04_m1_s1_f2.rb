@@ -1,4 +1,5 @@
 require_relative './test_1.rb'
+require_relative './test_2.rb'
 
 i_num              = 4
 mrg_enable         = true
@@ -9,5 +10,6 @@ scenario_file_name = sprintf("test_x%02d_m%d_s%d_f%d.snr", i_num, (mrg_enable)? 
 
 File.open(scenario_file_name,'w') do |file|
   test_1(file, i_num, mrg_enable, stm_enable, stm_feedback)
+  test_2(file, i_num, mrg_enable, stm_enable, stm_feedback)
 end
 

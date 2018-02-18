@@ -55,29 +55,57 @@ module ScenarioWriter
       @file.puts "  - OUT    : {GPO(1): 0}"
     end
 
-    def transfer(vector,last=nil)
+    def send_merge_request(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(2): 1}"
+      @file.puts "  - WAIT   : {GPI(2): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(2): 0}"
+    end
+
+    def wait_merge_response(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(3): 1}"
+      @file.puts "  - WAIT   : {GPI(3): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(3): 0}"
+    end
+
+    def transfer(vector, last=false, done=false)
       my_name
       vector.each_with_index do |data, index|
-        _last = (index == vector.length-1 and not last.nil?)? 1 : 0
+        _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          @file.printf("  - XFER   : {DATA: 0x%08X, USER: 1, LAST: %d}\n", 0,    _last)
+          _user = 1
+          _data = 0
         else
-          @file.printf("  - XFER   : {DATA: 0x%08X, USER: 0, LAST: %d}\n", data, _last)
-        end 
+          _user = 0
+          _data = data
+        end
+        _user |= 0x02 if done == true
+        @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
   end
 
   class OutletStream < Writer
-    def transfer(vector,last=nil)
+    def transfer(vector, last=false, done=false)
       my_name
       vector.each_with_index do |data, index|
-        _last = (index == vector.length-1 and not last.nil?)? 1 : 0
+        _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          @file.printf("  - XFER   : {DATA: 0x%08X, USER: 1, LAST: %d}\n", 0,    _last)
+          _user = 1
+          _data = 0
         else
-          @file.printf("  - XFER   : {DATA: 0x%08X, USER: 0, LAST: %d}\n", data, _last)
-        end 
+          _user = 0
+          _data = data
+        end
+        _user |= 0x02 if done == true
+        @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
   end
