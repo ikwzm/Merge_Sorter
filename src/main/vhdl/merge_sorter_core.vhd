@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.0.5
---!     @date    2018/2/14
+--!     @version 0.0.6
+--!     @date    2018/2/20
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -63,21 +63,25 @@ entity  Merge_Sorter_Core is
         STM_IN_LAST     :  in  std_logic;
         STM_IN_VALID    :  in  std_logic;
         STM_IN_READY    :  out std_logic;
+        STM_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+        STM_OUT_LAST    :  out std_logic;
+        STM_OUT_VALID   :  out std_logic;
+        STM_OUT_READY   :  in  std_logic;
         MRG_REQ_VALID   :  in  std_logic;
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-        MRG_IN_DONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(IN_NUM          -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(IN_NUM          -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(IN_NUM          -1 downto 0);
-        OUTLET_DATA     :  out std_logic_vector(       DATA_BITS-1 downto 0);
-        OUTLET_LAST     :  out std_logic;
-        OUTLET_VALID    :  out std_logic;
-        OUTLET_READY    :  in  std_logic
+        MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_DONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+        MRG_OUT_LAST    :  out std_logic;
+        MRG_OUT_VALID   :  out std_logic;
+        MRG_OUT_READY   :  in  std_logic
     );
 end Merge_Sorter_Core;
 -----------------------------------------------------------------------------------
@@ -407,14 +411,26 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    signal    stream_out_req        :  std_logic;
+    signal    stream_out_done       :  std_logic;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    signal    merge_out_req         :  std_logic;
+    signal    merge_out_done        :  std_logic;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     type      STATE_TYPE            is (IDLE_STATE,
                                         STREAM_INIT_STATE,
                                         STREAM_RUN_STATE,
                                         STREAM_NEXT_STATE,
-                                        STREAM_DONE_STATE,
+                                        STREAM_EXIT_STATE,
+                                        STREAM_RES_STATE,
                                         MERGE_INIT_STATE,
                                         MERGE_RUN_STATE,
-                                        MERGE_DONE_STATE
+                                        MERGE_EXIT_STATE,
+                                        MERGE_RES_STATE
                                        );
     signal    curr_state           :  STATE_TYPE;
     constant  ACK_ALL_1            :  std_logic_vector(IN_NUM-1 downto 0) := (others => '1');
@@ -430,7 +446,7 @@ begin
                 curr_state <= IDLE_STATE;
             else
                 case curr_state is
-                    when IDLE_STATE            =>
+                    when IDLE_STATE         =>
                         if    (STM_ENABLE = TRUE and STM_REQ_VALID = '1') then
                             curr_state <= STREAM_INIT_STATE;
                         elsif (MRG_ENABLE = TRUE and MRG_REQ_VALID = '1') then
@@ -438,18 +454,18 @@ begin
                         else
                             curr_state <= IDLE_STATE;
                         end if;
-                    when STREAM_INIT_STATE    =>
+                    when STREAM_INIT_STATE  =>
                         if (STM_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= STREAM_RUN_STATE;
                         end if;
-                    when STREAM_RUN_STATE     =>
+                    when STREAM_RUN_STATE   =>
                         if    (STM_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (STM_FEEDBACK = 0) then
                             if    (feedback_out_start = '1' and feedback_out_last = '1') then
-                                curr_state <= STREAM_DONE_STATE;
+                                curr_state <= STREAM_EXIT_STATE;
                             elsif (feedback_out_start = '1' and feedback_out_last = '0') then
                                 curr_state <= STREAM_NEXT_STATE;
                             else
@@ -457,48 +473,64 @@ begin
                             end if;
                         else
                             if    (fifo_stream_ack = ACK_ALL_1 and fifo_stream_done  = ACK_ALL_1) then
-                                curr_state <= STREAM_DONE_STATE;
+                                curr_state <= STREAM_EXIT_STATE;
                             elsif (fifo_stream_ack = ACK_ALL_1 and fifo_stream_done /= ACK_ALL_1) then
                                 curr_state <= STREAM_NEXT_STATE;
                             else
                                 curr_state <= STREAM_RUN_STATE;
                             end if;
                         end if;
-                    when STREAM_NEXT_STATE     =>
-                        if (STM_ENABLE = FALSE) then
+                    when STREAM_NEXT_STATE  =>
+                        if    (STM_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= STREAM_RUN_STATE;
                         end if;
-                    when STREAM_DONE_STATE     =>
+                    when STREAM_EXIT_STATE  =>
+                        if    (STM_ENABLE = FALSE) then
+                            curr_state <= IDLE_STATE;
+                        elsif (stream_out_done = '1') then
+                            curr_state <= STREAM_RES_STATE;
+                        else
+                            curr_state <= STREAM_EXIT_STATE;
+                        end if;
+                    when STREAM_RES_STATE   =>
                         if    (STM_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (STM_RES_READY = '1') then
                             curr_state <= IDLE_STATE;
                         else
-                            curr_state <= STREAM_DONE_STATE;
+                            curr_state <= STREAM_RES_STATE;
                         end if;
-                    when MERGE_INIT_STATE     =>
+                    when MERGE_INIT_STATE   =>
                         if (MRG_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= MERGE_RUN_STATE;
                         end if;
-                    when MERGE_RUN_STATE       =>
+                    when MERGE_RUN_STATE    =>
                         if    (MRG_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (fifo_merge_ack = ACK_ALL_1) then
-                            curr_state <= MERGE_DONE_STATE;
+                            curr_state <= MERGE_EXIT_STATE;
                         else
                             curr_state <= MERGE_RUN_STATE;
                         end if;
-                    when MERGE_DONE_STATE      =>
+                    when MERGE_EXIT_STATE   =>
+                        if    (MRG_ENABLE = FALSE) then
+                            curr_state <= IDLE_STATE;
+                        elsif (merge_out_done = '1') then
+                            curr_state <= MERGE_RES_STATE;
+                        else
+                            curr_state <= MERGE_EXIT_STATE;
+                        end if;
+                    when MERGE_RES_STATE   =>
                         if    (MRG_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (MRG_RES_READY = '1') then
                             curr_state <= IDLE_STATE;
                         else
-                            curr_state <= MERGE_DONE_STATE;
+                            curr_state <= MERGE_RES_STATE;
                         end if;
                     when others =>
                         curr_state <= IDLE_STATE;
@@ -510,9 +542,9 @@ begin
     --
     -------------------------------------------------------------------------------
     STM_REQ_READY <= '1' when (curr_state = STREAM_INIT_STATE) else '0';
-    STM_RES_VALID <= '1' when (curr_state = STREAM_DONE_STATE) else '0';
+    STM_RES_VALID <= '1' when (curr_state = STREAM_RES_STATE ) else '0';
     MRG_REQ_READY <= '1' when (curr_state = MERGE_INIT_STATE ) else '0';
-    MRG_RES_VALID <= '1' when (curr_state = MERGE_DONE_STATE ) else '0';
+    MRG_RES_VALID <= '1' when (curr_state = MERGE_RES_STATE  ) else '0';
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -523,6 +555,13 @@ begin
                                     (curr_state = STREAM_RUN_STATE and fifo_stream_ack /= ACK_ALL_1) else '0';
     fifo_merge_req      <= '1' when (curr_state = MERGE_INIT_STATE ) or
                                     (curr_state = MERGE_RUN_STATE  ) else '0';
+    stream_out_req      <= '1' when (curr_state = STREAM_INIT_STATE) or
+                                    (curr_state = STREAM_NEXT_STATE) or
+                                    (curr_state = STREAM_RUN_STATE ) or
+                                    (curr_state = STREAM_EXIT_STATE) else '0';
+    merge_out_req       <= '1' when (curr_state = MERGE_INIT_STATE ) or
+                                    (curr_state = MERGE_RUN_STATE  ) or
+                                    (curr_state = MERGE_EXIT_STATE ) else '0';
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -753,6 +792,14 @@ begin
     --
     -------------------------------------------------------------------------------
     OUTLET: block
+        signal    queue_data     :  std_logic_vector(DATA_BITS-1 downto 0);
+        signal    queue_last     :  std_logic;
+        signal    queue_valid    :  std_logic;
+        signal    queue_ready    :  std_logic;
+        signal    stream_q_valid :  std_logic;
+        signal    stream_q_ready :  std_logic;
+        signal    merge_q_valid  :  std_logic;
+        signal    merge_q_ready  :  std_logic;
     begin
         ---------------------------------------------------------------------------
         --
@@ -778,11 +825,88 @@ begin
                 I_LAST          => outlet_i_last       , -- In  :
                 I_VALID         => outlet_i_valid      , -- In  :
                 I_READY         => outlet_i_ready      , -- Out :
-                O_DATA          => OUTLET_DATA         , -- Out :
+                O_DATA          => queue_data          , -- Out :
                 O_INFO          => open                , -- Out :
-                O_LAST          => OUTLET_LAST         , -- Out :
-                O_VALID         => OUTLET_VALID        , -- Out :
-                O_READY         => OUTLET_READY          -- In  :
-            );                                           -- 
+                O_LAST          => queue_last          , -- Out :
+                O_VALID         => queue_valid         , -- Out :
+                O_READY         => queue_ready           -- In  :
+            );                                           --
+        queue_ready <= stream_q_ready or merge_q_ready;  -- 
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        STM_ON: if (STM_ENABLE = TRUE) generate
+            signal   stream_o_done :  std_logic;
+            signal   stream_q_done :  std_logic;
+        begin 
+            STM_OUT_DATA    <= queue_data;
+            STM_OUT_LAST    <= queue_last;
+            STM_OUT_VALID   <= stream_q_valid;
+            stream_q_valid  <= '1' when (stream_out_req = '1' and queue_valid    = '1') else '0';
+            stream_q_ready  <= '1' when (stream_out_req = '1' and STM_OUT_READY  = '1') else '0';
+            stream_o_done   <= '1' when (stream_q_valid = '1' and stream_q_ready = '1' and queue_last = '1') else '0';
+            stream_out_done <= '1' when (stream_out_req = '1' and stream_o_done  = '1') or
+                                        (stream_out_req = '1' and stream_q_done  = '1') else '0';
+            process (CLK, RST) begin
+                if (RST = '1') then
+                    stream_q_done <= '0';
+                elsif (CLK'event and CLK = '1') then
+                    if (CLR = '1' or stream_out_req = '0') then
+                        stream_q_done <= '0';
+                    else
+                        stream_q_done <= stream_o_done;
+                    end if;
+                end if;
+            end process;
+        end generate;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        STM_OFF: if (STM_ENABLE = FALSE) generate
+            STM_OUT_DATA    <= (others => '0');
+            STM_OUT_LAST    <= '0';
+            STM_OUT_VALID   <= '0';
+            stream_q_valid  <= '0';
+            stream_q_ready  <= '0';
+            stream_out_done <= '0';
+        end generate;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        MRG_ON: if (MRG_ENABLE = TRUE) generate
+            signal   merge_o_done :  std_logic;
+            signal   merge_q_done :  std_logic;
+        begin
+            MRG_OUT_DATA    <= queue_data;
+            MRG_OUT_LAST    <= queue_last;
+            MRG_OUT_VALID   <= merge_q_valid;
+            merge_q_valid   <= '1' when (merge_out_req = '1' and queue_valid   = '1') else '0';
+            merge_q_ready   <= '1' when (merge_out_req = '1' and MRG_OUT_READY = '1') else '0';
+            merge_o_done    <= '1' when (merge_q_valid = '1' and merge_q_ready = '1' and queue_last = '1') else '0';
+            merge_out_done  <= '1' when (merge_out_req = '1' and merge_o_done  = '1') or
+                                        (merge_out_req = '1' and merge_q_done  = '1') else '0';
+            process (CLK, RST) begin
+                if (RST = '1') then
+                    merge_q_done <= '0';
+                elsif (CLK'event and CLK = '1') then
+                    if (CLR = '1' or merge_out_req = '0') then
+                        merge_q_done <= '0';
+                    else
+                        merge_q_done <= merge_o_done;
+                    end if;
+                end if;
+            end process;
+        end generate;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        MRG_OFF: if (MRG_ENABLE = FALSE) generate
+            MRG_OUT_DATA    <= (others => '0');
+            MRG_OUT_LAST    <= '0';
+            MRG_OUT_VALID   <= '0';
+            merge_q_valid   <= '0';
+            merge_q_ready   <= '0';
+            merge_out_done  <= '0';
+        end generate;
     end block;
 end RTL;

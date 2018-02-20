@@ -30,51 +30,6 @@ module ScenarioWriter
       
   class IntakeStream < Writer
 
-    def init
-      my_name
-      @file.puts "  - OUT    : {GPO(0): 0, GPO(1): 0, GPO(2): 0, GPO(3): 0}"
-    end
-
-    def send_stream_request(timeout=nil)
-      my_name
-      if not timeout.nil? then
-        _timeout = ", TIMEOUT: #{timeout}"
-      end
-      @file.puts "  - OUT    : {GPO(0): 1}"
-      @file.puts "  - WAIT   : {GPI(0): 1#{_timeout}}"
-      @file.puts "  - OUT    : {GPO(0): 0}"
-    end
-
-    def wait_stream_response(timeout=nil)
-      my_name
-      if not timeout.nil? then
-        _timeout = ", TIMEOUT: #{timeout}"
-      end
-      @file.puts "  - OUT    : {GPO(1): 1}"
-      @file.puts "  - WAIT   : {GPI(1): 1#{_timeout}}"
-      @file.puts "  - OUT    : {GPO(1): 0}"
-    end
-
-    def send_merge_request(timeout=nil)
-      my_name
-      if not timeout.nil? then
-        _timeout = ", TIMEOUT: #{timeout}"
-      end
-      @file.puts "  - OUT    : {GPO(2): 1}"
-      @file.puts "  - WAIT   : {GPI(2): 1#{_timeout}}"
-      @file.puts "  - OUT    : {GPO(2): 0}"
-    end
-
-    def wait_merge_response(timeout=nil)
-      my_name
-      if not timeout.nil? then
-        _timeout = ", TIMEOUT: #{timeout}"
-      end
-      @file.puts "  - OUT    : {GPO(3): 1}"
-      @file.puts "  - WAIT   : {GPI(3): 1#{_timeout}}"
-      @file.puts "  - OUT    : {GPO(3): 0}"
-    end
-
     def transfer(vector, last=false, done=false)
       my_name
       vector.each_with_index do |data, index|
@@ -93,6 +48,12 @@ module ScenarioWriter
   end
 
   class OutletStream < Writer
+
+    def init
+      my_name
+      @file.puts "  - OUT    : {GPO(0): 0, GPO(1): 0}"
+    end
+
     def transfer(vector, last=false, done=false)
       my_name
       vector.each_with_index do |data, index|
@@ -108,6 +69,27 @@ module ScenarioWriter
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
+
+    def send_request(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(0): 1}"
+      @file.puts "  - WAIT   : {GPI(0): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(0): 0}"
+    end
+
+    def wait_response(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(1): 1}"
+      @file.puts "  - WAIT   : {GPI(1): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(1): 0}"
+    end
+
   end
     
 end

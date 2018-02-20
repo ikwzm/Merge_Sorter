@@ -5,17 +5,17 @@ def test_2(file, i_num, mrg_enable, stm_enable, stm_feedback, count=100)
   title    = sprintf("Merge_Sorter_Corte(I_NUM=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", i_num, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
-  control  = ScenarioWriter::IntakeStream.new("S" , file)
+  other    = ScenarioWriter::OutletStream.new("STM_O", file)
   intake   = (0..i_num-1).to_a.map{ |i|
-               name = sprintf("I%02X", i)
+               name = sprintf("MRG_I%02X", i)
                ScenarioWriter::IntakeStream.new(name, file)
              }
-  outlet   = ScenarioWriter::OutletStream.new("O" , file)
+  outlet   = ScenarioWriter::OutletStream.new("MRG_O", file)
   
   merchal.sync
   merchal.init
-  control.init
   outlet.init
+  other.init
   merchal.say "#{title} Start."
 
   if mrg_enable == true then
@@ -23,7 +23,7 @@ def test_2(file, i_num, mrg_enable, stm_enable, stm_feedback, count=100)
     count.times do |test_num|
       merchal.sync
       merchal.say "#{title}.#{test_num+1} Start."
-      control.send_merge_request
+      outlet.send_request
 
       block_count = random.rand(1..4)
       block_count.times do |block_num|
@@ -45,7 +45,7 @@ def test_2(file, i_num, mrg_enable, stm_enable, stm_feedback, count=100)
         end 
         outlet.transfer(outlet_data, outlet_last)
       end
-      control.wait_merge_response
+      outlet.wait_response
     end
   end 
 

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_testbench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
---!     @version 0.0.5
---!     @date    2018/2/14
+--!     @version 0.0.6
+--!     @date    2018/2/20
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -93,7 +93,7 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant   I_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
+    constant   MRG_I_WIDTH  :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
                                    USER  => USER_BITS,
                                    DEST  => 4,
@@ -101,67 +101,89 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
                                );
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
     type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(USER_BITS-1 downto 0);
-    signal     i_data       :  I_DATA_VECTOR   (IN_NUM-1 downto 0);
-    signal     i_user       :  I_USER_VECTOR   (IN_NUM-1 downto 0);
-    signal     i_last       :  std_logic_vector(IN_NUM-1 downto 0);
-    signal     i_valid      :  std_logic_vector(IN_NUM-1 downto 0);
-    signal     i_ready      :  std_logic_vector(IN_NUM-1 downto 0);
-    signal     i_flat_data  :  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
-    signal     i_none       :  std_logic_vector(IN_NUM          -1 downto 0);
-    signal     i_done       :  std_logic_vector(IN_NUM          -1 downto 0);
-    signal     i_level      :  std_logic_vector(IN_NUM          -1 downto 0);
+    signal     mrg_i_data   :  I_DATA_VECTOR   (IN_NUM-1 downto 0);
+    signal     mrg_i_user   :  I_USER_VECTOR   (IN_NUM-1 downto 0);
+    signal     mrg_i_last   :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_valid  :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_ready  :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_word   :  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
+    signal     mrg_i_none   :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_done   :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_level  :  std_logic_vector(IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant   S_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
+    constant   STM_I_WIDTH  :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
                                    USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => STM_IN_NUM*DATA_BITS
                                );
-    signal     s_data       :  std_logic_vector(S_WIDTH.DATA  -1 downto 0);
-    signal     s_word_strb  :  std_logic_vector(STM_IN_NUM    -1 downto 0);
-    signal     s_last       :  std_logic;
-    signal     s_valid      :  std_logic;
-    signal     s_ready      :  std_logic;
-    signal     s_keep       :  std_logic_vector(S_WIDTH.DATA/8-1 downto 0) := (others => '1');
-    signal     s_strb       :  std_logic_vector(S_WIDTH.DATA/8-1 downto 0) := (others => '1');
+    signal     stm_i_data   :  std_logic_vector(STM_I_WIDTH.DATA  -1 downto 0);
+    signal     stm_i_ena    :  std_logic_vector(STM_IN_NUM        -1 downto 0);
+    signal     stm_i_last   :  std_logic;
+    signal     stm_i_valid  :  std_logic;
+    signal     stm_i_ready  :  std_logic;
+    signal     stm_i_keep   :  std_logic_vector(STM_I_WIDTH.DATA/8-1 downto 0) := (others => '1');
+    signal     stm_i_strb   :  std_logic_vector(STM_I_WIDTH.DATA/8-1 downto 0) := (others => '1');
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant   O_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
+    constant   STM_O_WIDTH  :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
                                    USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
-    signal     o_data       :  std_logic_vector(DATA_BITS   -1 downto 0);
-    signal     o_last       :  std_logic;
-    signal     o_valid      :  std_logic;
-    signal     o_ready      :  std_logic;
-    constant   o_keep       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
-    constant   o_strb       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
-    constant   o_id         :  std_logic_vector(O_WIDTH.ID  -1 downto 0) := (others => '0');
-    constant   o_dest       :  std_logic_vector(O_WIDTH.DEST-1 downto 0) := (others => '0');
-    constant   o_user       :  std_logic_vector(O_WIDTH.USER-1 downto 0) := (others => '0');
+    signal     stm_o_data   :  std_logic_vector(    DATA_BITS   -1 downto 0);
+    signal     stm_o_last   :  std_logic;
+    signal     stm_o_valid  :  std_logic;
+    signal     stm_o_ready  :  std_logic;
+    constant   stm_o_keep   :  std_logic_vector(    DATA_BITS/8 -1 downto 0) := (others => '1');
+    constant   stm_o_strb   :  std_logic_vector(    DATA_BITS/8 -1 downto 0) := (others => '1');
+    constant   stm_o_id     :  std_logic_vector(STM_O_WIDTH.ID  -1 downto 0) := (others => '0');
+    constant   stm_o_dest   :  std_logic_vector(STM_O_WIDTH.DEST-1 downto 0) := (others => '0');
+    constant   stm_o_user   :  std_logic_vector(STM_O_WIDTH.USER-1 downto 0) := (others => '0');
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    constant   MRG_O_WIDTH  :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
+                                   ID    => 4,
+                                   USER  => USER_BITS,
+                                   DEST  => 4,
+                                   DATA  => DATA_BITS
+                               );
+    signal     mrg_o_data   :  std_logic_vector(    DATA_BITS   -1 downto 0);
+    signal     mrg_o_last   :  std_logic;
+    signal     mrg_o_valid  :  std_logic;
+    signal     mrg_o_ready  :  std_logic;
+    constant   mrg_o_keep   :  std_logic_vector(    DATA_BITS/8 -1 downto 0) := (others => '1');
+    constant   mrg_o_strb   :  std_logic_vector(    DATA_BITS/8 -1 downto 0) := (others => '1');
+    constant   mrg_o_id     :  std_logic_vector(MRG_O_WIDTH.ID  -1 downto 0) := (others => '0');
+    constant   mrg_o_dest   :  std_logic_vector(MRG_O_WIDTH.DEST-1 downto 0) := (others => '0');
+    constant   mrg_o_user   :  std_logic_vector(MRG_O_WIDTH.USER-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- GPIO(General Purpose Input/Output)
     -------------------------------------------------------------------------------
-    signal     O_GPI        :  std_logic_vector(GPI_WIDTH   -1 downto 0);
-    signal     O_GPO        :  std_logic_vector(GPO_WIDTH   -1 downto 0);
-    signal     S_GPI        :  std_logic_vector(GPI_WIDTH   -1 downto 0);
-    signal     S_GPO        :  std_logic_vector(GPO_WIDTH   -1 downto 0);
+    signal     STM_O_GPI    :  std_logic_vector(GPI_WIDTH   -1 downto 0);
+    signal     STM_O_GPO    :  std_logic_vector(GPO_WIDTH   -1 downto 0);
+    signal     STM_I_GPI    :  std_logic_vector(GPI_WIDTH   -1 downto 0);
+    signal     STM_I_GPO    :  std_logic_vector(GPO_WIDTH   -1 downto 0);
+    signal     MRG_O_GPI    :  std_logic_vector(GPI_WIDTH   -1 downto 0);
+    signal     MRG_O_GPO    :  std_logic_vector(GPO_WIDTH   -1 downto 0);
     -------------------------------------------------------------------------------
     -- 各種状態出力.
     -------------------------------------------------------------------------------
     signal     N_REPORT     :  REPORT_STATUS_TYPE;
     signal     N_FINISH     :  std_logic;
-    signal     O_REPORT     :  REPORT_STATUS_TYPE;
-    signal     O_FINISH     :  std_logic;
-    signal     S_REPORT     :  REPORT_STATUS_TYPE;
-    signal     S_FINISH     :  std_logic;
-    signal     I_REPORT     :  REPORT_STATUS_VECTOR(IN_NUM-1 downto 0);
-    signal     I_FINISH     :  std_logic_vector    (IN_NUM-1 downto 0);
+    signal     STM_O_REPORT :  REPORT_STATUS_TYPE;
+    signal     STM_O_FINISH :  std_logic;
+    signal     STM_I_REPORT :  REPORT_STATUS_TYPE;
+    signal     STM_I_FINISH :  std_logic;
+    signal     MRG_O_REPORT :  REPORT_STATUS_TYPE;
+    signal     MRG_O_FINISH :  std_logic;
+    signal     MRG_I_REPORT :  REPORT_STATUS_VECTOR(IN_NUM-1 downto 0);
+    signal     MRG_I_FINISH :  std_logic_vector    (IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -192,21 +214,25 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
             STM_IN_LAST     :  in  std_logic;
             STM_IN_VALID    :  in  std_logic;
             STM_IN_READY    :  out std_logic;
+            STM_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+            STM_OUT_LAST    :  out std_logic;
+            STM_OUT_VALID   :  out std_logic;
+            STM_OUT_READY   :  in  std_logic;
             MRG_REQ_VALID   :  in  std_logic;
             MRG_REQ_READY   :  out std_logic;
             MRG_RES_VALID   :  out std_logic;
             MRG_RES_READY   :  in  std_logic;
-            MRG_IN_DATA     :  in  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
-            MRG_IN_NONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-            MRG_IN_DONE     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-            MRG_IN_LAST     :  in  std_logic_vector(IN_NUM          -1 downto 0);
-            MRG_IN_VALID    :  in  std_logic_vector(IN_NUM          -1 downto 0);
-            MRG_IN_READY    :  out std_logic_vector(IN_NUM          -1 downto 0);
-            MRG_IN_LEVEL    :  out std_logic_vector(IN_NUM          -1 downto 0);
-            OUTLET_DATA     :  out std_logic_vector(       DATA_BITS-1 downto 0);
-            OUTLET_LAST     :  out std_logic;
-            OUTLET_VALID    :  out std_logic;
-            OUTLET_READY    :  in  std_logic
+            MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
+            MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_IN_DONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_IN_LEVEL    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+            MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+            MRG_OUT_LAST    :  out std_logic;
+            MRG_OUT_VALID   :  out std_logic;
+            MRG_OUT_READY   :  in  std_logic
         );
     end component;
 begin
@@ -232,13 +258,13 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    O: AXI4_STREAM_SLAVE_PLAYER                  -- 
+    STM_O: AXI4_STREAM_SLAVE_PLAYER              -- 
         generic map (                            -- 
             SCENARIO_FILE   => SCENARIO_FILE   , --
-            NAME            => "O"             , --
+            NAME            => "STM_O"         , --
             OUTPUT_DELAY    => DELAY           , --
             SYNC_PLUG_NUM   => 2               , --
-            WIDTH           => O_WIDTH         , --
+            WIDTH           => STM_O_WIDTH     , --
             SYNC_WIDTH      => SYNC_WIDTH      , --
             GPI_WIDTH       => GPI_WIDTH       , --
             GPO_WIDTH       => GPO_WIDTH       , --
@@ -247,31 +273,64 @@ begin
         port map(                                -- 
             ACLK            => CLOCK           , -- In  :
             ARESETn         => ARESETn         , -- In  :
-            TDATA           => o_data          , -- In  :
-            TSTRB           => o_strb          , -- In  :
-            TKEEP           => o_keep          , -- In  :
-            TUSER           => o_user          , -- In  :
-            TDEST           => o_dest          , -- In  :
-            TID             => o_id            , -- In  :
-            TLAST           => o_last          , -- In  :
-            TVALID          => o_valid         , -- In  :
-            TREADY          => o_ready         , -- Out :
+            TDATA           => stm_o_data      , -- In  :
+            TSTRB           => stm_o_strb      , -- In  :
+            TKEEP           => stm_o_keep      , -- In  :
+            TUSER           => stm_o_user      , -- In  :
+            TDEST           => stm_o_dest      , -- In  :
+            TID             => stm_o_id        , -- In  :
+            TLAST           => stm_o_last      , -- In  :
+            TVALID          => stm_o_valid     , -- In  :
+            TREADY          => stm_o_ready     , -- Out :
             SYNC            => SYNC            , -- I/O :
-            GPI             => O_GPI           , -- In  :
-            GPO             => O_GPO           , -- Out :
-            REPORT_STATUS   => O_REPORT        , -- Out :
-            FINISH          => O_FINISH          -- Out :
+            GPI             => STM_O_GPI       , -- In  :
+            GPO             => STM_O_GPO       , -- Out :
+            REPORT_STATUS   => STM_O_REPORT    , -- Out :
+            FINISH          => STM_O_FINISH      -- Out :
         );                                       --
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    S: AXI4_STREAM_MASTER_PLAYER                 -- 
+    MRG_O: AXI4_STREAM_SLAVE_PLAYER              -- 
         generic map (                            -- 
             SCENARIO_FILE   => SCENARIO_FILE   , --
-            NAME            => "S"             , --
+            NAME            => "MRG_O"         , --
             OUTPUT_DELAY    => DELAY           , --
             SYNC_PLUG_NUM   => 3               , --
-            WIDTH           => S_WIDTH         , --
+            WIDTH           => MRG_O_WIDTH     , --
+            SYNC_WIDTH      => SYNC_WIDTH      , --
+            GPI_WIDTH       => GPI_WIDTH       , --
+            GPO_WIDTH       => GPO_WIDTH       , --
+            FINISH_ABORT    => FALSE             --
+        )                                        -- 
+        port map(                                -- 
+            ACLK            => CLOCK           , -- In  :
+            ARESETn         => ARESETn         , -- In  :
+            TDATA           => mrg_o_data      , -- In  :
+            TSTRB           => mrg_o_strb      , -- In  :
+            TKEEP           => mrg_o_keep      , -- In  :
+            TUSER           => mrg_o_user      , -- In  :
+            TDEST           => mrg_o_dest      , -- In  :
+            TID             => mrg_o_id        , -- In  :
+            TLAST           => mrg_o_last      , -- In  :
+            TVALID          => mrg_o_valid     , -- In  :
+            TREADY          => mrg_o_ready     , -- Out :
+            SYNC            => SYNC            , -- I/O :
+            GPI             => MRG_O_GPI       , -- In  :
+            GPO             => MRG_O_GPO       , -- Out :
+            REPORT_STATUS   => MRG_O_REPORT    , -- Out :
+            FINISH          => MRG_O_FINISH      -- Out :
+        );                                       --
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    STM_I: AXI4_STREAM_MASTER_PLAYER             -- 
+        generic map (                            -- 
+            SCENARIO_FILE   => SCENARIO_FILE   , --
+            NAME            => "STM_I"         , --
+            OUTPUT_DELAY    => DELAY           , --
+            SYNC_PLUG_NUM   => 4               , --
+            WIDTH           => STM_I_WIDTH     , --
             SYNC_WIDTH      => SYNC_WIDTH      , --
             GPI_WIDTH       => GPI_WIDTH       , --
             GPO_WIDTH       => GPO_WIDTH       , --
@@ -280,24 +339,24 @@ begin
         port map (                               -- 
             ACLK            => CLOCK           , -- In  :
             ARESETn         => ARESETn         , -- In  :
-            TDATA           => s_data          , -- Out :
-            TSTRB           => s_strb          , -- Out :
-            TKEEP           => s_keep          , -- Out :
+            TDATA           => stm_i_data      , -- Out :
+            TSTRB           => stm_i_strb      , -- Out :
+            TKEEP           => stm_i_keep      , -- Out :
             TUSER           => open            , -- Out :
             TDEST           => open            , -- Out :
             TID             => open            , -- Out :
-            TLAST           => s_last          , -- Out :
-            TVALID          => s_valid         , -- Out :
-            TREADY          => s_ready         , -- In  :
+            TLAST           => stm_i_last      , -- Out :
+            TVALID          => stm_i_valid     , -- Out :
+            TREADY          => stm_i_ready     , -- In  :
             SYNC            => SYNC            , -- I/O :
-            GPI             => S_GPI           , -- In  :
-            GPO             => S_GPO           , -- Out :
-            REPORT_STATUS   => S_REPORT        , -- Out :
-            FINISH          => S_FINISH          -- Out :
+            GPI             => STM_I_GPI       , -- In  :
+            GPO             => STM_I_GPO       , -- Out :
+            REPORT_STATUS   => STM_I_REPORT    , -- Out :
+            FINISH          => STM_I_FINISH      -- Out :
         );                                       --
-    process(s_strb) begin
-        for i in s_word_strb'range loop
-            s_word_strb(i) <= s_strb(i*(DATA_BITS/8));
+    process(stm_i_strb) begin
+        for i in stm_i_ena'range loop
+            stm_i_ena(i) <= stm_i_strb(i*(DATA_BITS/8));
         end loop;
     end process;
     -------------------------------------------------------------------------------
@@ -305,15 +364,15 @@ begin
     -------------------------------------------------------------------------------
     I_MASTER:  for i in 0 to IN_NUM-1 generate        --
         signal    gpi  : std_logic_vector(GPI_WIDTH-1 downto 0);
-        constant  name : string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
+        constant  name : string(1 to 7) := string'("MRG_I") & HEX_TO_STRING(i,8);
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
             generic map (                            -- 
                 SCENARIO_FILE   => SCENARIO_FILE   , --
                 NAME            => name            , --
                 OUTPUT_DELAY    => DELAY           , --
-                SYNC_PLUG_NUM   => 4+i             , --
-                WIDTH           => I_WIDTH         , --
+                SYNC_PLUG_NUM   => 5+i             , --
+                WIDTH           => MRG_I_WIDTH     , --
                 SYNC_WIDTH      => SYNC_WIDTH      , --
                 GPI_WIDTH       => GPI_WIDTH       , --
                 GPO_WIDTH       => GPO_WIDTH       , --
@@ -322,25 +381,25 @@ begin
             port map (                               -- 
                 ACLK            => CLOCK           , -- In  :
                 ARESETn         => ARESETn         , -- In  :
-                TDATA           => i_data  (i)     , -- Out :
+                TDATA           => mrg_i_data  (i) , -- Out :
                 TSTRB           => open            , -- Out :
                 TKEEP           => open            , -- Out :
-                TUSER           => i_user  (i)     , -- Out :
+                TUSER           => mrg_i_user  (i) , -- Out :
                 TDEST           => open            , -- Out :
                 TID             => open            , -- Out :
-                TLAST           => i_last  (i)     , -- Out :
-                TVALID          => i_valid (i)     , -- Out :
-                TREADY          => i_ready (i)     , -- In  :
+                TLAST           => mrg_i_last  (i) , -- Out :
+                TVALID          => mrg_i_valid (i) , -- Out :
+                TREADY          => mrg_i_ready (i) , -- In  :
                 SYNC            => SYNC            , -- I/O :
                 GPI             => gpi             , -- In  :
                 GPO             => open            , -- Out :
-                REPORT_STATUS   => I_REPORT(i)     , -- Out :
-                FINISH          => I_FINISH(i)       -- Out :
+                REPORT_STATUS   => MRG_I_REPORT(i) , -- Out :
+                FINISH          => MRG_I_FINISH(i)   -- Out :
             );                                       -- 
-        i_flat_data((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= i_data(i);
-        i_none(i) <= i_user(i)(0);
-        i_done(i) <= i_user(i)(1);
-        gpi(0)    <= i_level(i);
+        mrg_i_word((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= mrg_i_data(i);
+        mrg_i_none(i) <= mrg_i_user(i)(0);
+        mrg_i_done(i) <= mrg_i_user(i)(1);
+        gpi(0)        <= mrg_i_level(i);
         gpi(gpi'high downto 1) <= (gpi'high downto 1 => '0');
     end generate;
     -------------------------------------------------------------------------------
@@ -364,30 +423,34 @@ begin
             CLK             => CLOCK           , -- In  :
             RST             => RESET           , -- In  :
             CLR             => CLEAR           , -- In  :
-            STM_REQ_VALID   => S_GPO(0)        , -- In  :
-            STM_REQ_READY   => S_GPI(0)        , -- Out :
-            STM_RES_VALID   => S_GPI(1)        , -- Out :
-            STM_RES_READY   => S_GPO(1)        , -- In  :
-            STM_IN_DATA     => s_data          , -- In  :
-            STM_IN_STRB     => s_word_strb     , -- In  :
-            STM_IN_LAST     => s_last          , -- In  :
-            STM_IN_VALID    => s_valid         , -- In  :
-            STM_IN_READY    => s_ready         , -- Out :
-            MRG_REQ_VALID   => S_GPO(2)        , -- In  :
-            MRG_REQ_READY   => S_GPI(2)        , -- Out :
-            MRG_RES_VALID   => S_GPI(3)        , -- Out :
-            MRG_RES_READY   => S_GPO(3)        , -- In  :
-            MRG_IN_DATA     => i_flat_data     , -- In  :
-            MRG_IN_NONE     => i_none          , -- In  :
-            MRG_IN_DONE     => i_done          , -- In  :
-            MRG_IN_LAST     => i_last          , -- In  :
-            MRG_IN_VALID    => i_valid         , -- In  :
-            MRG_IN_READY    => i_ready         , -- Out :
-            MRG_IN_LEVEL    => i_level         , -- Out :
-            OUTLET_DATA     => o_data          , -- Out :
-            OUTLET_LAST     => o_last          , -- Out :
-            OUTLET_VALID    => o_valid         , -- Out :
-            OUTLET_READY    => o_ready           -- In  :
+            STM_REQ_VALID   => STM_O_GPO(0)    , -- In  :
+            STM_REQ_READY   => STM_O_GPI(0)    , -- Out :
+            STM_RES_VALID   => STM_O_GPI(1)    , -- Out :
+            STM_RES_READY   => STM_O_GPO(1)    , -- In  :
+            STM_IN_DATA     => stm_i_data      , -- In  :
+            STM_IN_STRB     => stm_i_ena       , -- In  :
+            STM_IN_LAST     => stm_i_last      , -- In  :
+            STM_IN_VALID    => stm_i_valid     , -- In  :
+            STM_IN_READY    => stm_i_ready     , -- Out :
+            STM_OUT_DATA    => stm_o_data      , -- Out :
+            STM_OUT_LAST    => stm_o_last      , -- Out :
+            STM_OUT_VALID   => stm_o_valid     , -- Out :
+            STM_OUT_READY   => stm_o_ready     , -- In  :
+            MRG_REQ_VALID   => MRG_O_GPO(0)    , -- In  :
+            MRG_REQ_READY   => MRG_O_GPI(0)    , -- Out :
+            MRG_RES_VALID   => MRG_O_GPI(1)    , -- Out :
+            MRG_RES_READY   => MRG_O_GPO(1)    , -- In  :
+            MRG_IN_DATA     => mrg_i_word      , -- In  :
+            MRG_IN_NONE     => mrg_i_none      , -- In  :
+            MRG_IN_DONE     => mrg_i_done      , -- In  :
+            MRG_IN_LAST     => mrg_i_last      , -- In  :
+            MRG_IN_VALID    => mrg_i_valid     , -- In  :
+            MRG_IN_READY    => mrg_i_ready     , -- Out :
+            MRG_IN_LEVEL    => mrg_i_level     , -- Out :
+            MRG_OUT_DATA    => mrg_o_data      , -- Out :
+            MRG_OUT_LAST    => mrg_o_last      , -- Out :
+            MRG_OUT_VALID   => mrg_o_valid     , -- Out :
+            MRG_OUT_READY   => mrg_o_ready       -- In  :
         );                                       --
     -------------------------------------------------------------------------------
     -- 
@@ -406,13 +469,18 @@ begin
     begin
         wait until (N_FINISH'event and N_FINISH = '1');
         wait for DELAY;
-        WRITE(L,T);                                                   WRITELINE(OUTPUT,L);
-        WRITE(L,T & "ERROR REPORT " & NAME);                          WRITELINE(OUTPUT,L);
-        WRITE(L,T);                                                   WRITELINE(OUTPUT,L);
-        WRITE(L,T & "  Error    : ");WRITE(L,O_REPORT.error_count   );WRITELINE(OUTPUT,L);
-        WRITE(L,T & "  Mismatch : ");WRITE(L,O_REPORT.mismatch_count);WRITELINE(OUTPUT,L);
-        WRITE(L,T & "  Warning  : ");WRITE(L,O_REPORT.warning_count );WRITELINE(OUTPUT,L);
-        WRITE(L,T);                                                   WRITELINE(OUTPUT,L);
+        WRITE(L,T);                                                       WRITELINE(OUTPUT,L);
+        WRITE(L,T & "ERROR REPORT " & NAME);                              WRITELINE(OUTPUT,L);
+        WRITE(L,T);                                                       WRITELINE(OUTPUT,L);
+        WRITE(L,T & "[STREAM]"     );                                     WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Error    : ");WRITE(L,STM_O_REPORT.error_count   );WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Mismatch : ");WRITE(L,STM_O_REPORT.mismatch_count);WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Warning  : ");WRITE(L,STM_O_REPORT.warning_count );WRITELINE(OUTPUT,L);
+        WRITE(L,T & "[MERGE]"      );                                     WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Error    : ");WRITE(L,MRG_O_REPORT.error_count   );WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Mismatch : ");WRITE(L,MRG_O_REPORT.mismatch_count);WRITELINE(OUTPUT,L);
+        WRITE(L,T & "  Warning  : ");WRITE(L,MRG_O_REPORT.warning_count );WRITELINE(OUTPUT,L);
+        WRITE(L,T);                                                       WRITELINE(OUTPUT,L);
         assert FALSE report "Simulation complete." severity FAILURE;
         wait;
     end process;
