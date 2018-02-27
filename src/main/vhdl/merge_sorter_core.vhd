@@ -713,14 +713,14 @@ begin
     --
     -------------------------------------------------------------------------------
     FEEDBACK_ON: if (STM_ENABLE = TRUE and STM_FEEDBACK > 0) generate
-        constant  INFO_MASK_LO      :  integer := 1;
-        constant  INFO_MASK_HI      :  integer := INFO_MASK_LO + IN_NUM - 1;
+        constant  INFO_MASK_LO      :  integer := INFO_NONE_POS + 1;
+        constant  INFO_MASK_HI      :  integer := INFO_MASK_LO  + IN_NUM - 1;
         signal    queue_i_info      :  std_logic_vector(INFO_MASK_HI downto 0);
-        signal    queue_i_mask      :  std_logic_vector(IN_NUM-1      downto 0);
+        signal    queue_i_mask      :  std_logic_vector(IN_NUM-1     downto 0);
         signal    queue_i_valid     :  std_logic;
         signal    queue_i_ready     :  std_logic;
         signal    queue_o_info      :  std_logic_vector(INFO_MASK_HI downto 0);
-        signal    queue_o_mask      :  std_logic_vector(IN_NUM-1      downto 0);
+        signal    queue_o_mask      :  std_logic_vector(IN_NUM-1     downto 0);
         signal    queue_o_valid     :  std_logic;
         signal    queue_o_ready     :  std_logic;
     begin
