@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core_testbench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
 --!     @version 0.0.6
---!     @date    2018/2/20
+--!     @date    2018/2/27
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -56,6 +56,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Core;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -184,57 +185,6 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     signal     MRG_O_FINISH :  std_logic;
     signal     MRG_I_REPORT :  REPORT_STATUS_VECTOR(IN_NUM-1 downto 0);
     signal     MRG_I_FINISH :  std_logic_vector    (IN_NUM-1 downto 0);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component  Merge_Sorter_Core 
-        generic (
-            IN_NUM          :  integer :=  4;
-            STM_ENABLE      :  boolean := TRUE;
-            STM_IN_NUM      :  integer :=  1;
-            STM_FEEDBACK    :  integer :=  1;
-            MRG_ENABLE      :  boolean := TRUE;
-            MRG_FIFO_SIZE   :  integer := 64;
-            MRG_LEVEL_SIZE  :  integer := 32;
-            SORT_ORDER      :  integer :=  0;
-            DATA_BITS       :  integer := 64;
-            COMP_HIGH       :  integer := 63;
-            COMP_LOW        :  integer := 32
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            STM_REQ_VALID   :  in  std_logic;
-            STM_REQ_READY   :  out std_logic;
-            STM_RES_VALID   :  out std_logic;
-            STM_RES_READY   :  in  std_logic;
-            STM_IN_DATA     :  in  std_logic_vector(STM_IN_NUM*DATA_BITS-1 downto 0);
-            STM_IN_STRB     :  in  std_logic_vector(STM_IN_NUM          -1 downto 0);
-            STM_IN_LAST     :  in  std_logic;
-            STM_IN_VALID    :  in  std_logic;
-            STM_IN_READY    :  out std_logic;
-            STM_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
-            STM_OUT_LAST    :  out std_logic;
-            STM_OUT_VALID   :  out std_logic;
-            STM_OUT_READY   :  in  std_logic;
-            MRG_REQ_VALID   :  in  std_logic;
-            MRG_REQ_READY   :  out std_logic;
-            MRG_RES_VALID   :  out std_logic;
-            MRG_RES_READY   :  in  std_logic;
-            MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
-            MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_IN_DONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_IN_LEVEL    :  out std_logic_vector(    IN_NUM          -1 downto 0);
-            MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
-            MRG_OUT_LAST    :  out std_logic;
-            MRG_OUT_VALID   :  out std_logic;
-            MRG_OUT_READY   :  in  std_logic
-        );
-    end component;
 begin
     -------------------------------------------------------------------------------
     -- 

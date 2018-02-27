@@ -2,6 +2,7 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_co
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_queue.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_core_components.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/components.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_register.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/util.vhd
