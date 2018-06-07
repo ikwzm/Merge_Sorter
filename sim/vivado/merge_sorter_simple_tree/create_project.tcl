@@ -3,11 +3,12 @@
 #
 
 set project_directory       [file dirname [info script]]
-set project_name            "merge_sorter_tree"
+set project_name            "merge_sorter_simple_tree"
 set device_parts            "xc7z020clg400-1"
 #
 # Create project
 #
+cd $project_directory
 create_project -force $project_name $project_directory
 #
 # Set project properties
@@ -77,11 +78,11 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 # Set 'sources_1' fileset properties
 #
 set obj [get_filesets sources_1]
-set_property "top" "Merge_Sorter_Tree"  $obj
+set_property "top" "Merge_Sorter_Simple_Tree"  $obj
 #
 # Set 'sim_1' fileset properties
 #
 set obj [get_filesets sim_1]
-set_property "top" "Merge_Sorter_Tree_Test_Bench_X04_O0"  $obj
-set_property "generic" "SCENARIO_FILE=../../../../../../src/test/scenarios/merge_sorter_tree/test_x04_o0.snr" $obj
+set_property "top" "Merge_Sorter_Simple_Tree_Test_Bench_X04_O0"  $obj
+set_property "generic" "SCENARIO_FILE=../../../../../../src/test/scenarios/merge_sorter_simple_tree/test_x04_o0.snr" $obj
 

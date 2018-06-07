@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_tree.vhd
---!     @brief   Merge Sorter Tree Module :
+--!     @file    merge_sorter_simple_tree.vhd
+--!     @brief   Merge Sorter Simple Tree Module :
 --!     @version 0.0.5
---!     @date    2018/2/14
+--!     @date    2018/6/7
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Tree is
+entity  Merge_Sorter_Simple_Tree is
     generic (
         I_NUM       :  integer :=  8;
         DATA_BITS   :  integer := 64;
@@ -61,13 +61,13 @@ entity  Merge_Sorter_Tree is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Tree;
+end Merge_Sorter_Simple_Tree;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-architecture RTL of Merge_Sorter_Tree is
+architecture RTL of Merge_Sorter_Simple_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Tree
+    component Merge_Sorter_Simple_Tree
         generic (
             I_NUM           :  integer :=  8;
             DATA_BITS       :  integer := 64;
@@ -211,7 +211,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        A: Merge_Sorter_Tree                                        -- 
+        A: Merge_Sorter_Simple_Tree                                 -- 
             generic map (                                           -- 
                 I_NUM       => A_I_NUM                            , --
                 DATA_BITS   => DATA_BITS                          , --
@@ -239,7 +239,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        B: Merge_Sorter_Tree                                        -- 
+        B: Merge_Sorter_Simple_Tree                                 -- 
             generic map (                                           -- 
                 I_NUM       => B_I_NUM                            , --
                 DATA_BITS   => DATA_BITS                          , --
@@ -267,7 +267,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        NODE: Merge_Sorter_Simple_Cell       -- 
+        CELL: Merge_Sorter_Simple_Cell       -- 
            generic map(                      -- 
                 SORT_ORDER  => SORT_ORDER  , -- 
                 DATA_BITS   => DATA_BITS   , -- 

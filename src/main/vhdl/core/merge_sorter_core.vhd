@@ -94,7 +94,7 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Tree
+    component Merge_Sorter_Simple_Tree
         generic (
             I_NUM           :  integer :=  8;
             DATA_BITS       :  integer := 64;
@@ -398,8 +398,8 @@ architecture RTL of Merge_Sorter_Core is
     signal    feedback_data         :  std_logic_vector(DATA_BITS-1 downto 0);
     signal    feedback_none         :  std_logic;
     signal    feedback_last         :  std_logic;
-    signal    feedback_valid        :  std_logic_vector(IN_NUM    -1 downto 0);
-    signal    feedback_ready        :  std_logic_vector(IN_NUM    -1 downto 0);
+    signal    feedback_valid        :  std_logic_vector(IN_NUM   -1 downto 0);
+    signal    feedback_ready        :  std_logic_vector(IN_NUM   -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -683,11 +683,11 @@ begin
     -------------------------------------------------------------------------------
     SORT: block                                          -- 
     begin                                                -- 
-        TREE: Merge_Sorter_Tree                          -- 
+        TREE: Merge_Sorter_Simple_Tree                   -- 
             generic map (                                -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 
-                I_NUM           => IN_NUM               , -- 
+                I_NUM           => IN_NUM              , -- 
                 DATA_BITS       => DATA_BITS           , -- 
                 COMP_HIGH       => COMP_HIGH           , -- 
                 COMP_LOW        => COMP_LOW            , -- 

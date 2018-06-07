@@ -287,9 +287,9 @@ component Merge_Sorter_Queue
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Tree                                                     --
+--! @brief Merge_Sorter_Simple_Tree                                                     --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Tree
+component Merge_Sorter_Simple_Tree
     generic (
         I_NUM       :  integer :=  8;
         DATA_BITS   :  integer := 64;
