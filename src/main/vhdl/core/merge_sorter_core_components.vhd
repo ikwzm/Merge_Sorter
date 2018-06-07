@@ -230,9 +230,9 @@ component Merge_Sorter_Drop_None
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Node                                                     --
+--! @brief Merge_Sorter_Simple_Cell
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Node
+component Merge_Sorter_Simple_Cell
     generic (
         SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;

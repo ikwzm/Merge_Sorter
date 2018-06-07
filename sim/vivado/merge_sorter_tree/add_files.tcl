@@ -1,6 +1,6 @@
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_compare.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_queue.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_simple_cell.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_core_components.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/components.vhd

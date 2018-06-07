@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_node.vhd
---!     @brief   Merge Sorter Node Module :
+--!     @file    merge_sorter_simple_cell.vhd
+--!     @brief   Merge Sorter Simple Cell Module :
 --!     @version 0.0.3
---!     @date    2018/2/4
+--!     @date    2018/6/7
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Node is
+entity  Merge_Sorter_Simple_Cell is
     generic (
         SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;
@@ -64,13 +64,13 @@ entity  Merge_Sorter_Node is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Node;
+end Merge_Sorter_Simple_Cell;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-architecture RTL of Merge_Sorter_Node is
+architecture RTL of Merge_Sorter_Simple_Cell is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE

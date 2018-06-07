@@ -71,7 +71,7 @@ architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Node
+    component Merge_Sorter_Simple_Cell
         generic (
             SORT_ORDER      :  integer :=  0;
             DATA_BITS       :  integer := 64;
@@ -267,7 +267,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        NODE: Merge_Sorter_Node              -- 
+        NODE: Merge_Sorter_Simple_Cell       -- 
            generic map(                      -- 
                 SORT_ORDER  => SORT_ORDER  , -- 
                 DATA_BITS   => DATA_BITS   , -- 
