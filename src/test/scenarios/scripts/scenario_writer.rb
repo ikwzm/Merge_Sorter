@@ -1,6 +1,11 @@
 
 module ScenarioWriter
 
+  NONE_BIT = 0x01
+  PRIO_BIT = 0x02
+  POST_BIT = 0x04
+  DONE_BIT = 0x08
+
   class Writer
     def initialize(name, file)
       @name = name
@@ -35,13 +40,20 @@ module ScenarioWriter
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          _user = 5
+          _user = NONE_BIT | POST_BIT
           _data = 0
+        elsif data.kind_of?(Hash) then
+          _user  = data.fetch(:User, 0)
+          _user |= DONE_BIT if (data.fetch(:Done    , 0) == 1)
+          _user |= POST_BIT if (data.fetch(:PostPend, 0) == 1)
+          _user |= PRIO_BIT if (data.fetch(:Priority, 0) == 1)
+          _user |= NONE_BIT if (data.fetch(:None    , 0) == 1)
+          _data  = data.fetch(:Data, 0)
         else
           _user = 0
           _data = data
         end
-        _user |= 0x08 if done == true
+        _user |= DONE_BIT if done == true
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
@@ -59,13 +71,20 @@ module ScenarioWriter
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          _user = 5
+          _user = NONE_BIT | POST_BIT
           _data = 0
+        elsif data.kind_of?(Hash) then
+          _user  = data.fetch(:User, 0)
+          _user |= DONE_BIT if (data.fetch(:Done    , 0) == 1)
+          _user |= POST_BIT if (data.fetch(:PostPend, 0) == 1)
+          _user |= PRIO_BIT if (data.fetch(:Priority, 0) == 1)
+          _user |= NONE_BIT if (data.fetch(:None    , 0) == 1)
+          _data  = data.fetch(:Data, 0)
         else
           _user = 0
           _data = data
         end
-        _user |= 0x08 if done == true
+        _user |= DONE_BIT if done == true
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end

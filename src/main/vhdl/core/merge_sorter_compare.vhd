@@ -79,15 +79,21 @@ begin
             comp_a := unsigned(A_DATA(COMP_HIGH downto COMP_LOW));
             comp_b := unsigned(B_DATA(COMP_HIGH downto COMP_LOW));
             a_gt_b := (comp_a > comp_b);
-            if (B_PRIORITY  = '1') or
-               (A_POSTPOND  = '1') or
-               (SORT_ORDER  = 0 and a_gt_b = FALSE) or
-               (SORT_ORDER /= 0 and a_gt_b = TRUE ) then
-                SEL_A <= '0';
-                SEL_B <= '1';
-            else
+            if    (A_PRIORITY  = '1') or
+                  (B_POSTPOND  = '1') then
                 SEL_A <= '1';
                 SEL_B <= '0';
+            elsif (B_PRIORITY  = '1') or
+                  (A_POSTPOND  = '1') then
+                SEL_A <= '0';
+                SEL_B <= '1';
+            elsif (SORT_ORDER  = 0 and a_gt_b = TRUE ) or
+                  (SORT_ORDER /= 0 and a_gt_b = FALSE) then
+                SEL_A <= '1';
+                SEL_B <= '0';
+            else
+                SEL_A <= '0';
+                SEL_B <= '1';
             end if;
                 READY <= '1';
         else
