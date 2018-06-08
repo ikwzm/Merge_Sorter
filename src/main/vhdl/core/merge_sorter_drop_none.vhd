@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_drop_none.vhd
 --!     @brief   Merge Sorter Drop None Module :
---!     @version 0.0.1
---!     @date    2018/1/30
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

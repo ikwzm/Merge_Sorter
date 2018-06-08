@@ -35,13 +35,13 @@ module ScenarioWriter
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          _user = 1
+          _user = 5
           _data = 0
         else
           _user = 0
           _data = data
         end
-        _user |= 0x02 if done == true
+        _user |= 0x08 if done == true
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
@@ -59,13 +59,13 @@ module ScenarioWriter
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
-          _user = 1
+          _user = 5
           _data = 0
         else
           _user = 0
           _data = data
         end
-        _user |= 0x02 if done == true
+        _user |= 0x08 if done == true
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end

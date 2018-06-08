@@ -8,6 +8,7 @@ set device_parts            "xc7z020clg400-1"
 #
 # Create project
 #
+cd $project_directory
 create_project -force $project_name $project_directory
 #
 # Set project properties

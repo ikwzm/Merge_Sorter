@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_compare.vhd
 --!     @brief   Merge Sorter Compare Module :
---!     @version 0.0.1
---!     @date    2018/1/28
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -48,9 +48,11 @@ entity  Merge_Sorter_Compare is
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
         A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        A_NONE      :  in  std_logic;
+        A_PRIORITY  :  in  std_logic;
+        A_POSTPOND  :  in  std_logic;
         B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        B_NONE      :  in  std_logic;
+        B_PRIORITY  :  in  std_logic;
+        B_POSTPOND  :  in  std_logic;
         VALID       :  in  std_logic;
         READY       :  out std_logic;
         SEL_A       :  out std_logic;
@@ -68,7 +70,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    process(VALID, A_NONE, A_DATA, B_NONE, B_DATA) 
+    process(VALID, A_PRIORITY, A_POSTPOND, A_DATA, B_PRIORITY, B_POSTPOND, B_DATA) 
         variable comp_a  :  unsigned(COMP_HIGH-COMP_LOW downto 0);
         variable comp_b  :  unsigned(COMP_HIGH-COMP_LOW downto 0);
         variable a_gt_b  :  boolean;
@@ -77,22 +79,15 @@ begin
             comp_a := unsigned(A_DATA(COMP_HIGH downto COMP_LOW));
             comp_b := unsigned(B_DATA(COMP_HIGH downto COMP_LOW));
             a_gt_b := (comp_a > comp_b);
-            if    (A_NONE = '1' and B_NONE = '1') then
-                SEL_A <= '1';
-                SEL_B <= '0';
-            elsif (A_NONE = '0' and B_NONE = '1') then
-                SEL_A <= '1';
-                SEL_B <= '0';
-            elsif (A_NONE = '1' and B_NONE = '0') then
+            if (B_PRIORITY  = '1') or
+               (A_POSTPOND  = '1') or
+               (SORT_ORDER  = 0 and a_gt_b = FALSE) or
+               (SORT_ORDER /= 0 and a_gt_b = TRUE ) then
                 SEL_A <= '0';
                 SEL_B <= '1';
-            elsif (SORT_ORDER  = 0 and a_gt_b = TRUE ) or
-                  (SORT_ORDER /= 0 and a_gt_b = FALSE) then
-                SEL_A <= '1';
-                SEL_B <= '0';
             else
-                SEL_A <= '0';
-                SEL_B <= '1';
+                SEL_A <= '1';
+                SEL_B <= '0';
             end if;
                 READY <= '1';
         else

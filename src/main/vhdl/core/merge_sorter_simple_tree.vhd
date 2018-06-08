@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_simple_tree.vhd
 --!     @brief   Merge Sorter Simple Tree Module :
---!     @version 0.0.5
---!     @date    2018/6/7
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -40,7 +40,7 @@ entity  Merge_Sorter_Simple_Tree is
     generic (
         I_NUM       :  integer :=  8;
         DATA_BITS   :  integer := 64;
-        INFO_BITS   :  integer :=  1;
+        INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32;

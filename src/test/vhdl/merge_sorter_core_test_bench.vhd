@@ -76,7 +76,7 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     constant   DATA_BITS    :  integer := 32;
     constant   COMP_HIGH    :  integer := 31;
     constant   COMP_LOW     :  integer :=  0;
-    constant   USER_BITS    :  integer :=  2;
+    constant   USER_BITS    :  integer :=  4;
     constant   SYNC_WIDTH   :  integer :=  2;
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;
@@ -108,8 +108,7 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     signal     mrg_i_valid  :  std_logic_vector(IN_NUM-1 downto 0);
     signal     mrg_i_ready  :  std_logic_vector(IN_NUM-1 downto 0);
     signal     mrg_i_word   :  std_logic_vector(IN_NUM*DATA_BITS-1 downto 0);
-    signal     mrg_i_none   :  std_logic_vector(IN_NUM-1 downto 0);
-    signal     mrg_i_done   :  std_logic_vector(IN_NUM-1 downto 0);
+    signal     mrg_i_atrb   :  std_logic_vector(IN_NUM*USER_BITS-1 downto 0);
     signal     mrg_i_level  :  std_logic_vector(IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
@@ -347,9 +346,8 @@ begin
                 FINISH          => MRG_I_FINISH(i)   -- Out :
             );                                       -- 
         mrg_i_word((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= mrg_i_data(i);
-        mrg_i_none(i) <= mrg_i_user(i)(0);
-        mrg_i_done(i) <= mrg_i_user(i)(1);
-        gpi(0)        <= mrg_i_level(i);
+        mrg_i_atrb((i+1)*USER_BITS-1 downto i*USER_BITS) <= mrg_i_user(i);
+        gpi(0)                 <= mrg_i_level(i);
         gpi(gpi'high downto 1) <= (gpi'high downto 1 => '0');
     end generate;
     -------------------------------------------------------------------------------
@@ -391,8 +389,7 @@ begin
             MRG_RES_VALID   => MRG_O_GPI(1)    , -- Out :
             MRG_RES_READY   => MRG_O_GPO(1)    , -- In  :
             MRG_IN_DATA     => mrg_i_word      , -- In  :
-            MRG_IN_NONE     => mrg_i_none      , -- In  :
-            MRG_IN_DONE     => mrg_i_done      , -- In  :
+            MRG_IN_ATRB     => mrg_i_atrb      , -- In  :
             MRG_IN_LAST     => mrg_i_last      , -- In  :
             MRG_IN_VALID    => mrg_i_valid     , -- In  :
             MRG_IN_READY    => mrg_i_ready     , -- Out :

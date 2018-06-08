@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.0.6
---!     @date    2018/2/20
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -48,7 +48,12 @@ entity  Merge_Sorter_Core is
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
         COMP_HIGH       :  integer :=   63;
-        COMP_LOW        :  integer :=   32
+        COMP_LOW        :  integer :=   32;
+        ATRB_BITS       :  integer :=    4;
+        ATRB_NONE_POS   :  integer :=    0;
+        ATRB_PRIO_POS   :  integer :=    1;
+        ATRB_POST_POS   :  integer :=    2;
+        ATRB_DONE_POS   :  integer :=    3
     );
     port (
         CLK             :  in  std_logic;
@@ -72,8 +77,7 @@ entity  Merge_Sorter_Core is
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
         MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_DONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_ATRB     :  in  std_logic_vector(    IN_NUM*ATRB_BITS-1 downto 0);
         MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
         MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
         MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
@@ -98,7 +102,7 @@ architecture RTL of Merge_Sorter_Core is
         generic (
             I_NUM           :  integer :=  8;
             DATA_BITS       :  integer := 64;
-            INFO_BITS       :  integer :=  2;
+            INFO_BITS       :  integer :=  3;
             SORT_ORDER      :  integer :=  0;
             COMP_HIGH       :  integer := 63;
             COMP_LOW        :  integer := 32;
@@ -133,10 +137,17 @@ architecture RTL of Merge_Sorter_Core is
             DATA_BITS       :  integer := 64;
             INFO_BITS       :  integer :=  8;
             INFO_NONE_POS   :  integer :=  0;
-            INFO_DONE_POS   :  integer :=  1;
-            INFO_FBK_POS    :  integer :=  2;
-            INFO_FBK_NUM_LO :  integer :=  3;
-            INFO_FBK_NUM_HI :  integer :=  7
+            INFO_PRIO_POS   :  integer :=  1;
+            INFO_POST_POS   :  integer :=  2;
+            INFO_DONE_POS   :  integer :=  3;
+            INFO_FBK_POS    :  integer :=  4;
+            INFO_FBK_NUM_LO :  integer :=  5;
+            INFO_FBK_NUM_HI :  integer :=  9;
+            ATRB_BITS       :  integer :=  4;
+            ATRB_NONE_POS   :  integer :=  0;
+            ATRB_PRIO_POS   :  integer :=  1;
+            ATRB_POST_POS   :  integer :=  2;
+            ATRB_DONE_POS   :  integer :=  3
         );
         port (
             CLK             :  in  std_logic;
@@ -149,15 +160,14 @@ architecture RTL of Merge_Sorter_Core is
             FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS-1 downto 0);
             FBK_OUT_LAST    :  in  std_logic := '0';
             FBK_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            FBK_IN_NONE     :  in  std_logic := '0';
+            FBK_IN_ATRB     :  in  std_logic_vector(ATRB_BITS-1 downto 0) := (others => '0');
             FBK_IN_LAST     :  in  std_logic;
             FBK_IN_VALID    :  in  std_logic := '0';
             FBK_IN_READY    :  out std_logic;
             MRG_REQ         :  in  std_logic := '0';
             MRG_ACK         :  out std_logic;
             MRG_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            MRG_IN_NONE     :  in  std_logic := '0';
-            MRG_IN_DONE     :  in  std_logic := '1';
+            MRG_IN_ATRB     :  in  std_logic_vector(ATRB_BITS-1 downto 0) := (others => '0');
             MRG_IN_LAST     :  in  std_logic;
             MRG_IN_VALID    :  in  std_logic := '0';
             MRG_IN_READY    :  out std_logic;
@@ -182,10 +192,12 @@ architecture RTL of Merge_Sorter_Core is
             DATA_BITS       :  integer := 64;
             INFO_BITS       :  integer :=  8;
             INFO_NONE_POS   :  integer :=  0;
-            INFO_DONE_POS   :  integer :=  1;
-            INFO_FBK_POS    :  integer :=  2;
-            INFO_FBK_NUM_LO :  integer :=  3;
-            INFO_FBK_NUM_HI :  integer :=  7
+            INFO_PRIO_POS   :  integer :=  1;
+            INFO_POST_POS   :  integer :=  2;
+            INFO_DONE_POS   :  integer :=  3;
+            INFO_FBK_POS    :  integer :=  4;
+            INFO_FBK_NUM_LO :  integer :=  5;
+            INFO_FBK_NUM_HI :  integer :=  9
         );
         port (
             CLK             :  in  std_logic;
@@ -342,10 +354,12 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  INFO_NONE_POS         :  integer := 0;
-    constant  INFO_DONE_POS         :  integer := 1;
-    constant  INFO_FBK_POS          :  integer := 2;
-    constant  INFO_FBK_NUM_LO       :  integer := 3;
+    constant  INFO_NONE_POS         :  integer := ATRB_NONE_POS;
+    constant  INFO_PRIO_POS         :  integer := ATRB_PRIO_POS;
+    constant  INFO_POST_POS         :  integer := ATRB_POST_POS;
+    constant  INFO_DONE_POS         :  integer := ATRB_DONE_POS;
+    constant  INFO_FBK_POS          :  integer := ATRB_BITS;
+    constant  INFO_FBK_NUM_LO       :  integer := INFO_FBK_POS    + 1;
     constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + IN_NUM_BITS - 1;
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
     -------------------------------------------------------------------------------
@@ -396,7 +410,7 @@ architecture RTL of Merge_Sorter_Core is
     signal    feedback_out_size     :  std_logic_vector(SIZE_BITS-1 downto 0);
     signal    feedback_out_last     :  std_logic;
     signal    feedback_data         :  std_logic_vector(DATA_BITS-1 downto 0);
-    signal    feedback_none         :  std_logic;
+    signal    feedback_atrb         :  std_logic_vector(ATRB_BITS-1 downto 0);
     signal    feedback_last         :  std_logic;
     signal    feedback_valid        :  std_logic_vector(IN_NUM   -1 downto 0);
     signal    feedback_ready        :  std_logic_vector(IN_NUM   -1 downto 0);
@@ -576,6 +590,8 @@ begin
                 DATA_BITS       => DATA_BITS           , -- 
                 INFO_BITS       => INFO_BITS           , -- 
                 INFO_NONE_POS   => INFO_NONE_POS       , -- 
+                INFO_PRIO_POS   => INFO_PRIO_POS       , -- 
+                INFO_POST_POS   => INFO_POST_POS       , -- 
                 INFO_DONE_POS   => INFO_DONE_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
                 INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
@@ -630,10 +646,17 @@ begin
                 DATA_BITS       => DATA_BITS           , -- 
                 INFO_BITS       => INFO_BITS           , -- 
                 INFO_NONE_POS   => INFO_NONE_POS       , -- 
+                INFO_PRIO_POS   => INFO_PRIO_POS       , -- 
+                INFO_POST_POS   => INFO_POST_POS       , -- 
                 INFO_DONE_POS   => INFO_DONE_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
                 INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
-                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI       -- 
+                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI     , -- 
+                ATRB_BITS       => ATRB_BITS           , -- 
+                ATRB_NONE_POS   => ATRB_NONE_POS       , -- 
+                ATRB_PRIO_POS   => ATRB_PRIO_POS       , -- 
+                ATRB_POST_POS   => ATRB_POST_POS       , -- 
+                ATRB_DONE_POS   => ATRB_DONE_POS         -- 
             )                                            -- 
             port map (                                   -- 
                 CLK             => CLK                 , -- In  :
@@ -646,15 +669,14 @@ begin
                 FBK_OUT_SIZE    => feedback_out_size   , -- In  :
                 FBK_OUT_LAST    => feedback_out_last   , -- In  :
                 FBK_IN_DATA     => feedback_data       , -- In  :
-                FBK_IN_NONE     => feedback_none       , -- In  :
+                FBK_IN_ATRB     => feedback_atrb       , -- In  :
                 FBK_IN_LAST     => feedback_last       , -- In  :
                 FBK_IN_VALID    => feedback_valid   (i), -- In  :
                 FBK_IN_READY    => feedback_ready   (i), -- Out :
                 MRG_REQ         => fifo_merge_req      , -- In  :
                 MRG_ACK         => fifo_merge_ack   (i), -- Out :
                 MRG_IN_DATA     => MRG_IN_DATA      ((i+1)*DATA_BITS-1 downto i*DATA_BITS), -- In  :
-                MRG_IN_NONE     => MRG_IN_NONE      (i), -- In  :
-                MRG_IN_DONE     => MRG_IN_DONE      (i), -- In  :
+                MRG_IN_ATRB     => MRG_IN_ATRB      ((i+1)*ATRB_BITS-1 downto i*ATRB_BITS), -- In  :
                 MRG_IN_LAST     => MRG_IN_LAST      (i), -- In  :
                 MRG_IN_VALID    => MRG_IN_VALID     (i), -- In  :
                 MRG_IN_READY    => MRG_IN_READY     (i), -- Out :
@@ -713,16 +735,19 @@ begin
     --
     -------------------------------------------------------------------------------
     FEEDBACK_ON: if (STM_ENABLE = TRUE and STM_FEEDBACK > 0) generate
-        constant  INFO_MASK_LO      :  integer := INFO_NONE_POS + 1;
-        constant  INFO_MASK_HI      :  integer := INFO_MASK_LO  + IN_NUM - 1;
-        signal    queue_i_info      :  std_logic_vector(INFO_MASK_HI downto 0);
-        signal    queue_i_mask      :  std_logic_vector(IN_NUM-1     downto 0);
-        signal    queue_i_valid     :  std_logic;
-        signal    queue_i_ready     :  std_logic;
-        signal    queue_o_info      :  std_logic_vector(INFO_MASK_HI downto 0);
-        signal    queue_o_mask      :  std_logic_vector(IN_NUM-1     downto 0);
-        signal    queue_o_valid     :  std_logic;
-        signal    queue_o_ready     :  std_logic;
+        constant  QUEUE_INFO_NONE_POS   :  integer := 0;
+        constant  QUEUE_INFO_PRIO_POS   :  integer := 1;
+        constant  QUEUE_INFO_POST_POS   :  integer := 2;
+        constant  QUEUE_INFO_MASK_LO    :  integer := QUEUE_INFO_POST_POS + 1;
+        constant  QUEUE_INFO_MASK_HI    :  integer := QUEUE_INFO_MASK_LO  + IN_NUM - 1;
+        signal    queue_i_info          :  std_logic_vector(QUEUE_INFO_MASK_HI downto 0);
+        signal    queue_i_mask          :  std_logic_vector(IN_NUM-1           downto 0);
+        signal    queue_i_valid         :  std_logic;
+        signal    queue_i_ready         :  std_logic;
+        signal    queue_o_info          :  std_logic_vector(QUEUE_INFO_MASK_HI downto 0);
+        signal    queue_o_mask          :  std_logic_vector(IN_NUM-1           downto 0);
+        signal    queue_o_valid         :  std_logic;
+        signal    queue_o_ready         :  std_logic;
     begin
         ---------------------------------------------------------------------------
         --
@@ -743,8 +768,10 @@ begin
                                       (sorted_word_info(INFO_FBK_POS) = '1' and queue_i_ready     = '1') else '0';
         outlet_i_valid    <= '1' when (sorted_word_info(INFO_FBK_POS) = '0' and sorted_word_valid = '1') else '0';
         queue_i_valid     <= '1' when (sorted_word_info(INFO_FBK_POS) = '1' and sorted_word_valid = '1') else '0';
-        queue_i_info(INFO_MASK_HI downto INFO_MASK_LO) <= queue_i_mask;
-        queue_i_info(INFO_NONE_POS                   ) <= sorted_word_info(INFO_NONE_POS);
+        queue_i_info(QUEUE_INFO_MASK_HI downto QUEUE_INFO_MASK_LO) <= queue_i_mask;
+        queue_i_info(QUEUE_INFO_NONE_POS                         ) <= sorted_word_info(INFO_NONE_POS);
+        queue_i_info(QUEUE_INFO_PRIO_POS                         ) <= sorted_word_info(INFO_PRIO_POS);
+        queue_i_info(QUEUE_INFO_POST_POS                         ) <= sorted_word_info(INFO_POST_POS);
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -772,8 +799,11 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        queue_o_mask   <= queue_o_info(INFO_MASK_HI downto INFO_MASK_LO);
-        feedback_none  <= queue_o_info(INFO_NONE_POS);
+        queue_o_mask                 <= queue_o_info(QUEUE_INFO_MASK_HI downto QUEUE_INFO_MASK_LO);
+        feedback_atrb(ATRB_NONE_POS) <= queue_o_info(QUEUE_INFO_NONE_POS);
+        feedback_atrb(ATRB_PRIO_POS) <= queue_o_info(QUEUE_INFO_PRIO_POS);
+        feedback_atrb(ATRB_POST_POS) <= queue_o_info(QUEUE_INFO_POST_POS);
+        feedback_atrb(ATRB_DONE_POS) <= '0';
         feedback_valid <= queue_o_mask when (queue_o_valid = '1') else (others => '0');
         queue_o_ready  <= or_reduce(queue_o_mask and feedback_ready);
     end generate;
@@ -784,9 +814,9 @@ begin
         outlet_i_valid    <= sorted_word_valid;
         sorted_word_ready <= outlet_i_ready;
         feedback_data     <= (others => '0');
+        feedback_atrb     <= (others => '0');
         feedback_valid    <= (others => '0');
         feedback_last     <= '0';
-        feedback_none     <= '0';
     end generate;
     -------------------------------------------------------------------------------
     --

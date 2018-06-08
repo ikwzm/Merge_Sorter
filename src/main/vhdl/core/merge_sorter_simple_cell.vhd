@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_simple_cell.vhd
 --!     @brief   Merge Sorter Simple Cell Module :
---!     @version 0.0.3
---!     @date    2018/6/7
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -42,7 +42,7 @@ entity  Merge_Sorter_Simple_Cell is
         DATA_BITS   :  integer := 64;
         COMP_HIGH   :  integer := 63;
         COMP_LOW    :  integer := 32;
-        INFO_BITS   :  integer :=  1
+        INFO_BITS   :  integer :=  3
     );
     port (
         CLK         :  in  std_logic;
@@ -100,9 +100,11 @@ architecture RTL of Merge_Sorter_Simple_Cell is
             RST         :  in  std_logic;
             CLR         :  in  std_logic;
             A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            A_NONE      :  in  std_logic;
+            A_PRIORITY  :  in  std_logic;
+            A_POSTPOND  :  in  std_logic;
             B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            B_NONE      :  in  std_logic;
+            B_PRIORITY  :  in  std_logic;
+            B_POSTPOND  :  in  std_logic;
             VALID       :  in  std_logic;
             READY       :  out std_logic;
             SEL_A       :  out std_logic;
@@ -125,9 +127,11 @@ begin
             RST         => RST         , -- In  :
             CLR         => CLR         , -- In  :
             A_DATA      => A_DATA      , -- In  :
-            A_NONE      => A_INFO(0)   , -- In  :
+            A_PRIORITY  => A_INFO(1)   , -- In  :
+            A_POSTPOND  => A_INFO(2)   , -- In  :
             B_DATA      => B_DATA      , -- In  :
-            B_NONE      => B_INFO(0)   , -- In  :
+            B_PRIORITY  => B_INFO(1)   , -- In  :
+            B_POSTPOND  => B_INFO(2)   , -- In  :
             VALID       => comp_valid  , -- In  :
             READY       => comp_ready  , -- Out :
             SEL_A       => comp_sel_a  , -- Out :

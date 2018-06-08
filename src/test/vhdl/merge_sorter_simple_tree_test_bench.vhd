@@ -71,7 +71,7 @@ architecture Model of Merge_Sorter_Simple_Tree_Test_Bench is
     constant   DATA_BITS    :  integer := 32;
     constant   COMP_HIGH    :  integer := 31;
     constant   COMP_LOW     :  integer :=  0;
-    constant   INFO_BITS    :  integer :=  1;
+    constant   INFO_BITS    :  integer :=  4;
     constant   SYNC_WIDTH   :  integer :=  2;
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;

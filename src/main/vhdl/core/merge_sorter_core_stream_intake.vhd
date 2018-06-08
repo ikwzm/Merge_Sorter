@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.0.5
---!     @date    2018/2/14
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -46,10 +46,12 @@ entity  Merge_Sorter_Core_Stream_Intake is
         DATA_BITS       :  integer := 64;
         INFO_BITS       :  integer :=  8;
         INFO_NONE_POS   :  integer :=  0;
-        INFO_DONE_POS   :  integer :=  1;
-        INFO_FBK_POS    :  integer :=  2;
-        INFO_FBK_NUM_LO :  integer :=  3;
-        INFO_FBK_NUM_HI :  integer :=  7
+        INFO_PRIO_POS   :  integer :=  1;
+        INFO_POST_POS   :  integer :=  2;
+        INFO_DONE_POS   :  integer :=  3;
+        INFO_FBK_POS    :  integer :=  4;
+        INFO_FBK_NUM_LO :  integer :=  5;
+        INFO_FBK_NUM_HI :  integer :=  9
     );
     port (
         CLK             :  in  std_logic;
@@ -201,8 +203,12 @@ begin
             for i in 0 to O_NUM-1 loop
                 if (queue_valid(i) = '0') then
                     O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
+                    O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
+                    O_INFO(i*INFO_BITS+INFO_POST_POS) <= '1';
                 else
                     O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '0';
+                    O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
+                    O_INFO(i*INFO_BITS+INFO_POST_POS) <= '0';
                 end if;
                 if  (FEEDBACK     =  0  and intake_last = '1') or
                     (intake_first = '1' and intake_last = '1') then
@@ -220,8 +226,10 @@ begin
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
             for i in 0 to O_NUM-1 loop
-                O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '0';
                 O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
+                O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
+                O_INFO(i*INFO_BITS+INFO_POST_POS) <= '1';
+                O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '0';
                 O_INFO(i*INFO_BITS+INFO_FBK_POS ) <= '1';
                 O_INFO(i*INFO_BITS+INFO_FBK_NUM_HI downto i*INFO_BITS+INFO_FBK_NUM_LO) <= intake_number;
             end loop;

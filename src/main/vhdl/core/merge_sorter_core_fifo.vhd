@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_fifo.vhd
 --!     @brief   Merge Sorter Core Fifo Module :
---!     @version 0.0.5
---!     @date    2018/2/14
+--!     @version 0.0.8
+--!     @date    2018/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -47,9 +47,16 @@ entity  Merge_Sorter_Core_Fifo is
         INFO_BITS       :  integer :=    8;
         INFO_NONE_POS   :  integer :=    0;
         INFO_DONE_POS   :  integer :=    1;
-        INFO_FBK_POS    :  integer :=    2;
-        INFO_FBK_NUM_LO :  integer :=    3;
-        INFO_FBK_NUM_HI :  integer :=    7
+        INFO_PRIO_POS   :  integer :=    2;
+        INFO_POST_POS   :  integer :=    3;
+        INFO_FBK_POS    :  integer :=    4;
+        INFO_FBK_NUM_LO :  integer :=    5;
+        INFO_FBK_NUM_HI :  integer :=    9;
+        ATRB_BITS       :  integer :=    4;
+        ATRB_NONE_POS   :  integer :=    0;
+        ATRB_PRIO_POS   :  integer :=    1;
+        ATRB_POST_POS   :  integer :=    2;
+        ATRB_DONE_POS   :  integer :=    3
     );
     port (
         CLK             :  in  std_logic;
@@ -62,15 +69,14 @@ entity  Merge_Sorter_Core_Fifo is
         FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS-1 downto 0);
         FBK_OUT_LAST    :  in  std_logic := '0';
         FBK_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        FBK_IN_NONE     :  in  std_logic := '0';
+        FBK_IN_ATRB     :  in  std_logic_vector(ATRB_BITS-1 downto 0) := (others => '0');
         FBK_IN_LAST     :  in  std_logic;
         FBK_IN_VALID    :  in  std_logic := '0';
         FBK_IN_READY    :  out std_logic;
         MRG_REQ         :  in  std_logic := '0';
         MRG_ACK         :  out std_logic;
         MRG_IN_DATA     :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic := '0';
-        MRG_IN_DONE     :  in  std_logic := '1';
+        MRG_IN_ATRB     :  in  std_logic_vector(ATRB_BITS-1 downto 0) := (others => '0');
         MRG_IN_LAST     :  in  std_logic;
         MRG_IN_VALID    :  in  std_logic := '0';
         MRG_IN_READY    :  out std_logic;
@@ -89,13 +95,18 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 architecture RTL of Merge_Sorter_Core_Fifo is
-    constant  WORD_BITS             :  integer := DATA_BITS+3;
     constant  WORD_DATA_LO          :  integer := 0;
-    constant  WORD_DATA_HI          :  integer := DATA_BITS-1;
-    constant  WORD_LAST_POS         :  integer := DATA_BITS;
-    constant  WORD_NONE_POS         :  integer := DATA_BITS+1;
-    constant  WORD_DONE_POS         :  integer := DATA_BITS+2;
+    constant  WORD_DATA_HI          :  integer := WORD_DATA_LO + DATA_BITS - 1;
+    constant  WORD_ATRB_LO          :  integer := WORD_DATA_HI + 1;
+    constant  WORD_NONE_POS         :  integer := WORD_ATRB_LO + ATRB_NONE_POS;
+    constant  WORD_PRIO_POS         :  integer := WORD_ATRB_LO + ATRB_PRIO_POS;
+    constant  WORD_POST_POS         :  integer := WORD_ATRB_LO + ATRB_POST_POS;
+    constant  WORD_DONE_POS         :  integer := WORD_ATRB_LO + ATRB_DONE_POS;
+    constant  WORD_ATRB_HI          :  integer := WORD_ATRB_LO + ATRB_BITS - 1;
+    constant  WORD_LAST_POS         :  integer := WORD_ATRB_HI + 1;
+    constant  WORD_BITS             :  integer := WORD_LAST_POS+ 1;
     constant  DATA_NULL             :  std_logic_vector(DATA_BITS-1 downto 0) := (others => '0');
+    constant  ATRB_NULL             :  std_logic_vector(ATRB_BITS-1 downto 0) := (others => '0');
     signal    fifo_intake_level     :  std_logic;
     signal    fifo_intake_valid     :  std_logic;
     signal    fifo_intake_ready     :  std_logic;
@@ -322,13 +333,15 @@ begin
             --
             -----------------------------------------------------------------------
             fbk_intake_enable <= (curr_state = FBK_RUN_STATE);
-            fbk_intake_valid                                  <= FBK_IN_VALID      when (fbk_intake_enable) else '0';
-            fbk_intake_word(WORD_DATA_HI downto WORD_DATA_LO) <= FBK_IN_DATA       when (fbk_intake_enable) else DATA_NULL;
-            fbk_intake_word(WORD_LAST_POS)                    <= FBK_IN_LAST       when (fbk_intake_enable) else '0';
-            fbk_intake_word(WORD_NONE_POS)                    <= FBK_IN_NONE       when (fbk_intake_enable) else '0';
+            fbk_intake_valid                                  <= FBK_IN_VALID               when (fbk_intake_enable) else '0';
+            fbk_intake_word(WORD_DATA_HI downto WORD_DATA_LO) <= FBK_IN_DATA                when (fbk_intake_enable) else DATA_NULL;
+            fbk_intake_word(WORD_NONE_POS)                    <= FBK_IN_ATRB(ATRB_NONE_POS) when (fbk_intake_enable) else '0';
+            fbk_intake_word(WORD_PRIO_POS)                    <= FBK_IN_ATRB(ATRB_PRIO_POS) when (fbk_intake_enable) else '0';
+            fbk_intake_word(WORD_POST_POS)                    <= FBK_IN_ATRB(ATRB_POST_POS) when (fbk_intake_enable) else '0';
             fbk_intake_word(WORD_DONE_POS)                    <= '0';
-            fbk_intake_ready                                  <= fifo_intake_ready when (fbk_intake_enable) else '0';
-            FBK_IN_READY                                      <= fifo_intake_ready when (fbk_intake_enable) else '0';
+            fbk_intake_word(WORD_LAST_POS)                    <= FBK_IN_LAST                when (fbk_intake_enable) else '0';
+            fbk_intake_ready                                  <= fifo_intake_ready          when (fbk_intake_enable) else '0';
+            FBK_IN_READY                                      <= fifo_intake_ready          when (fbk_intake_enable) else '0';
         end generate;
         ---------------------------------------------------------------------------
         --
@@ -365,8 +378,8 @@ begin
                     elsif (curr_state = MRG_RUN_STATE) then
                         if (mrg_state_done = TRUE) then
                             fifo_flush <= FALSE;
-                        elsif (mrg_intake_valid  = '1' and mrg_intake_ready = '1') and
-                              (MRG_IN_LAST       = '1' and MRG_IN_DONE      = '1') then
+                        elsif (mrg_intake_valid  = '1' and mrg_intake_ready           = '1') and
+                              (MRG_IN_LAST       = '1' and MRG_IN_ATRB(ATRB_DONE_POS) = '1') then
                             fifo_flush <= TRUE;
                         end if;
                     else
@@ -395,9 +408,8 @@ begin
             mrg_intake_enable <= (curr_state = MRG_RUN_STATE and fifo_flush = FALSE);
             mrg_intake_valid                                  <= MRG_IN_VALID      when (mrg_intake_enable) else '0';
             mrg_intake_word(WORD_DATA_HI downto WORD_DATA_LO) <= MRG_IN_DATA       when (mrg_intake_enable) else DATA_NULL;
+            mrg_intake_word(WORD_ATRB_HI downto WORD_ATRB_LO) <= MRG_IN_ATRB       when (mrg_intake_enable) else ATRB_NULL;
             mrg_intake_word(WORD_LAST_POS)                    <= MRG_IN_LAST       when (mrg_intake_enable) else '0';
-            mrg_intake_word(WORD_NONE_POS)                    <= MRG_IN_NONE       when (mrg_intake_enable) else '0';
-            mrg_intake_word(WORD_DONE_POS)                    <= MRG_IN_DONE       when (mrg_intake_enable) else '0';
             mrg_intake_ready                                  <= fifo_intake_ready when (mrg_intake_enable) else '0';
             MRG_IN_READY                                      <= fifo_intake_ready when (mrg_intake_enable) else '0';
             MRG_IN_LEVEL                                      <= fifo_intake_level when (mrg_intake_enable) else '0';
@@ -424,6 +436,8 @@ begin
         OUTLET_INFO(INFO_FBK_POS )                          <= fbk_outlet_next;
         OUTLET_INFO(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) <= fbk_outlet_num;
         OUTLET_INFO(INFO_NONE_POS)                          <= fifo_outlet_word(WORD_NONE_POS) when (fifo_outlet_enable = '1') else '0';
+        OUTLET_INFO(INFO_PRIO_POS)                          <= fifo_outlet_word(WORD_PRIO_POS) when (fifo_outlet_enable = '1') else '0';
+        OUTLET_INFO(INFO_POST_POS)                          <= fifo_outlet_word(WORD_POST_POS) when (fifo_outlet_enable = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
