@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_compare.vhd
 --!     @brief   Merge Sorter Compare Module :
---!     @version 0.0.8
---!     @date    2018/6/8
+--!     @version 0.0.9
+--!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

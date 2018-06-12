@@ -5,7 +5,7 @@
 - Library:
     Name     :  merge_sorter
     Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
-    PathList :  ["../../../src/main/vhdl/core"]
+    PathList :  ["../../../src/main/vhdl/"]
 
 - Library:
     Name     :  pipework

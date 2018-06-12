@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_queue.vhd
---!     @brief   Merge Sorter Queue Module :
---!     @version 0.0.1
---!     @date    2018/1/28
+--!     @file    merge_sorter_drop_none.vhd
+--!     @brief   Merge Sorter Drop None Module :
+--!     @version 0.0.9
+--!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,9 +36,8 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Queue is
+entity  Merge_Sorter_Drop_None is
     generic (
-        QUEUE_SIZE  :  integer :=  2;
         DATA_BITS   :  integer := 64;
         INFO_BITS   :  integer :=  1
     );
@@ -57,50 +56,66 @@ entity  Merge_Sorter_Queue is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Queue;
+end Merge_Sorter_Drop_None;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 library PipeWork;
-use     PipeWork.Components.QUEUE_REGISTER;
-architecture RTL of Merge_Sorter_Queue is
+use     PipeWork.Components.REDUCER;
+architecture RTL of Merge_Sorter_Drop_None is
     constant  WORD_DATA_LO_POS  :  integer := 0;
     constant  WORD_DATA_HI_POS  :  integer := WORD_DATA_LO_POS + DATA_BITS - 1;
     constant  WORD_INFO_LO_POS  :  integer := WORD_DATA_HI_POS + 1;
     constant  WORD_INFO_HI_POS  :  integer := WORD_INFO_LO_POS + INFO_BITS - 1;
-    constant  WORD_LAST_POS     :  integer := WORD_INFO_HI_POS + 1;
     constant  WORD_LO_POS       :  integer := WORD_DATA_LO_POS;
-    constant  WORD_HI_POS       :  integer := WORD_LAST_POS;
+    constant  WORD_HI_POS       :  integer := WORD_INFO_HI_POS;
     constant  WORD_BITS         :  integer := WORD_HI_POS - WORD_LO_POS + 1;
-    signal    i_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
-    signal    q_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
-    signal    q_valid           :  std_logic_vector(QUEUE_SIZE  downto           0);
+    signal    i_strb            :  std_logic_vector(0 downto 0);
+    signal    i_word            :  std_logic_vector(WORD_BITS-1 downto 0);
+    signal    o_word            :  std_logic_vector(WORD_BITS-1 downto 0);
 begin
-    Q: QUEUE_REGISTER                    -- 
-        generic map (                    -- 
-            QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            DATA_BITS   => WORD_BITS     --
-        )                                -- 
-        port map (                       -- 
-            CLK         => CLK         , -- In  :
-            RST         => RST         , -- In  :
-            CLR         => CLR         , -- In  :
-            I_DATA      => i_word      , -- In  :
-            I_VAL       => I_VALID     , -- In  :
-            I_RDY       => I_READY     , -- Out :
-            O_DATA      => open        , -- Out :
-            O_VAL       => open        , -- Out :
-            Q_DATA      => q_word      , -- Out :
-            Q_VAL       => q_valid     , -- Out :
-            Q_RDY       => O_READY       -- In  :
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    Q: REDUCER                               -- 
+        generic map (                        -- 
+            WORD_BITS       => WORD_BITS,    --
+            STRB_BITS       => 1,            -- 
+            I_WIDTH         => 1,            -- 
+            O_WIDTH         => 1,            -- 
+            QUEUE_SIZE      => 3,            -- 3word分のキューを用意
+            VALID_MIN       => 0,            -- 
+            VALID_MAX       => 0,            -- 
+            O_VAL_SIZE      => 2,            -- 2word分貯めてからO_VALIDをアサート
+            O_SHIFT_MIN     => 1,            -- 
+            O_SHIFT_MAX     => 1,            -- 
+            I_JUSTIFIED     => 1,            -- 
+            FLUSH_ENABLE    => 0             -- 
+        )                                    -- 
+        port map (                           -- 
+            CLK             => CLK         , -- In  :
+            RST             => RST         , -- In  :
+            CLR             => CLR         , -- In  :
+            I_DATA          => i_word      , -- In  :
+            I_STRB          => i_strb      , -- In  :
+            I_DONE          => I_LAST      , -- In  :
+            I_VAL           => I_VALID     , -- In  :
+            I_RDY           => I_READY     , -- Out :
+            O_DATA          => o_word      , -- Out :
+            O_DONE          => O_LAST      , -- Out :
+            O_VAL           => O_VALID     , -- Out :
+            O_RDY           => O_READY       -- In  :
         );
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    i_strb <= "1" when (I_INFO(0) = '0') else "0";
     i_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS) <= I_DATA;
     i_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS) <= I_INFO;
-    i_word(WORD_LAST_POS                           ) <= I_LAST;
-    O_DATA <= q_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS);
-    O_INFO <= q_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS);
-    O_LAST <= q_word(WORD_LAST_POS);
-    O_VALID<= q_valid(0);
+    O_DATA <= o_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS);
+    O_INFO <= o_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS);
 end RTL;
+
+        

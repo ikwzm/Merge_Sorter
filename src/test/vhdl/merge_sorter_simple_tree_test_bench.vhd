@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_simple_tree_testbench.vhd
 --!     @brief   Merge Sorter Simple Tree Test Bench :
---!     @version 0.0.6
---!     @date    2018/2/27
+--!     @version 0.0.9
+--!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -51,7 +51,6 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Simple_Tree;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -136,6 +135,35 @@ architecture Model of Merge_Sorter_Simple_Tree_Test_Bench is
     signal     O_FINISH     : std_logic;
     signal     I_REPORT     : REPORT_STATUS_VECTOR(I_NUM-1 downto 0);
     signal     I_FINISH     : std_logic_vector    (I_NUM-1 downto 0);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    component  Merge_Sorter_Simple_Tree
+        generic (
+            I_NUM       :  integer :=  8;
+            DATA_BITS   :  integer := 64;
+            INFO_BITS   :  integer :=  3;
+            SORT_ORDER  :  integer :=  0;
+            COMP_HIGH   :  integer := 63;
+            COMP_LOW    :  integer := 32;
+            QUEUE_SIZE  :  integer :=  2
+        );
+        port (
+            CLK         :  in  std_logic;
+            RST         :  in  std_logic;
+            CLR         :  in  std_logic;
+            I_DATA      :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
+            I_LAST      :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_VALID     :  in  std_logic_vector(I_NUM          -1 downto 0);
+            I_READY     :  out std_logic_vector(I_NUM          -1 downto 0);
+            O_DATA      :  out std_logic_vector(      DATA_BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(      INFO_BITS-1 downto 0);
+            O_LAST      :  out std_logic;
+            O_VALID     :  out std_logic;
+            O_READY     :  in  std_logic
+        );
+    end component;
 begin
     -------------------------------------------------------------------------------
     -- 
