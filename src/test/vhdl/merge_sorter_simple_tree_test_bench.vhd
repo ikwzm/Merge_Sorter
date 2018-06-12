@@ -41,7 +41,8 @@ entity  Merge_Sorter_Simple_Tree_Test_Bench is
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
         I_NUM           :  integer :=  4;
-        SORT_ORDER      :  integer :=  0
+        SORT_ORDER      :  integer :=  0;
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Simple_Tree_Test_Bench;
 -----------------------------------------------------------------------------------
@@ -289,10 +290,13 @@ begin
     -- 
     -------------------------------------------------------------------------------
     process begin
-        CLOCK <= '0';
-        wait for PERIOD / 2;
-        CLOCK <= '1';
-        wait for PERIOD / 2;
+        loop
+            CLOCK  <= '0'; wait for PERIOD / 2;
+            CLOCK  <= '1'; wait for PERIOD / 2;
+            exit when(N_FINISH = '1');
+        end loop;
+        CLOCK  <= '0';
+        wait;
     end process;
 
     ARESETn <= '1' when (RESET = '0') else '0';
@@ -308,7 +312,15 @@ begin
         WRITE(L,T & "  Mismatch : ");WRITE(L,O_REPORT.mismatch_count);WRITELINE(OUTPUT,L);
         WRITE(L,T & "  Warning  : ");WRITE(L,O_REPORT.warning_count );WRITELINE(OUTPUT,L);
         WRITE(L,T);                                                   WRITELINE(OUTPUT,L);
-        assert FALSE report "Simulation complete." severity FAILURE;
+        assert (O_REPORT.error_count    = 0)
+            report "Simulation complete(error)."    severity FAILURE;
+        assert (O_REPORT.mismatch_count = 0)
+            report "Simulation complete(mismatch)." severity FAILURE;
+        if (FINISH_ABORT) then
+            assert FALSE report "Simulation complete(success)."  severity FAILURE;
+        else
+            assert FALSE report "Simulation complete(success)."  severity NOTE;
+        end if;
         wait;
     end process;
 end Model;
@@ -320,7 +332,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Simple_Tree_Test_Bench_X04_O0 is
     generic (
         NAME            :  STRING  := "TEST_X04_O0";
-        SCENARIO_FILE   :  STRING  := "test_x04_o0.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_o0.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Simple_Tree_Test_Bench_X04_O0;
 architecture Model of Merge_Sorter_Simple_Tree_Test_Bench_X04_O0 is
@@ -330,7 +343,8 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             I_NUM           => 4,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
 -----------------------------------------------------------------------------------
@@ -341,7 +355,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Simple_Tree_Test_Bench_X02_O1 is
     generic (
         NAME            :  STRING  := "TEST_X02_O1";
-        SCENARIO_FILE   :  STRING  := "test_x02_o1.snr"
+        SCENARIO_FILE   :  STRING  := "test_x02_o1.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Simple_Tree_Test_Bench_X02_O1;
 architecture Model of Merge_Sorter_Simple_Tree_Test_Bench_X02_O1 is
@@ -351,6 +366,7 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             I_NUM           => 2,
-            SORT_ORDER      => 1
+            SORT_ORDER      => 1,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
