@@ -8,7 +8,7 @@ DUMMY_PLUG_SRC_PATH  = $(DUMMY_PLUG_PATH)/src/main/vhdl
 DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl-0.35/dummy_plug
 DUMMY_PLUG_TOOL_PATH = $(DUMMY_PLUG_PATH)/tools
 
-SCENARIO_PATH        = ../../../src/test/scenarios/merge_sorter_simple_tree
+SCENARIO_PATH        = ../../../src/test/scenarios/single_way_tree
 
 COPY       = cp
 REMOVE     = -rm
@@ -17,17 +17,17 @@ GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
 test   : test_x04_o0 test_x02_o1 
 
-test_x02_o1 : test_x02_o1.snr merge_sorter_simple_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Simple_Tree_Test_Bench_X02_O1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Simple_Tree_Test_Bench_X02_O1
+test_x02_o1 : test_x02_o1.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1
 
 
-test_x04_o0 : test_x04_o0.snr merge_sorter_simple_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Simple_Tree_Test_Bench_X04_O0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Simple_Tree_Test_Bench_X04_O0
+test_x04_o0 : test_x04_o0.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0
 
 
-dut    : merge_sorter_simple_tree.o
+dut    : merge_sorter_single_way_tree.o
 
 test_x02_o1.snr : $(SCENARIO_PATH)/test_x02_o1.snr
 	$(COPY) $< $@

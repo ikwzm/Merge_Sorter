@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_simple_cell.vhd
---!     @brief   Merge Sorter Simple Cell Module :
+--!     @file    merge_sorter_single_way_cell.vhd
+--!     @brief   Merge Sorter Single Way Cell Module :
 --!     @version 0.0.9
 --!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Simple_Cell is
+entity  Merge_Sorter_Single_Way_Cell is
     generic (
         SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;
@@ -64,13 +64,13 @@ entity  Merge_Sorter_Simple_Cell is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Simple_Cell;
+end Merge_Sorter_Single_Way_Cell;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-architecture RTL of Merge_Sorter_Simple_Cell is
+architecture RTL of Merge_Sorter_Single_Way_Cell is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE

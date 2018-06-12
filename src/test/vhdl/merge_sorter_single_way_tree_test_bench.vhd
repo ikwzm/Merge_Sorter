@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_simple_tree_testbench.vhd
---!     @brief   Merge Sorter Simple Tree Test Bench :
+--!     @file    merge_sorter_single_way_tree_testbench.vhd
+--!     @brief   Merge Sorter Single Way Tree Test Bench :
 --!     @version 0.0.9
 --!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Simple_Tree_Test_Bench is
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
@@ -44,7 +44,7 @@ entity  Merge_Sorter_Simple_Tree_Test_Bench is
         SORT_ORDER      :  integer :=  0;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Simple_Tree_Test_Bench;
+end     Merge_Sorter_Single_Way_Tree_Test_Bench;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ use     DUMMY_PLUG.UTIL.HEX_TO_STRING;
 use     DUMMY_PLUG.CORE.MARCHAL;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_TYPE;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_VECTOR;
-architecture Model of Merge_Sorter_Simple_Tree_Test_Bench is
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     -- 各種定数
     -------------------------------------------------------------------------------
@@ -139,7 +139,7 @@ architecture Model of Merge_Sorter_Simple_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component  Merge_Sorter_Simple_Tree
+    component  Merge_Sorter_Single_Way_Tree
         generic (
             I_NUM       :  integer :=  8;
             DATA_BITS   :  integer := 64;
@@ -261,7 +261,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Merge_Sorter_Simple_Tree        -- 
+    DUT: Merge_Sorter_Single_Way_Tree        -- 
         generic map (                    -- 
             SORT_ORDER  => SORT_ORDER  , -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
@@ -329,16 +329,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Simple_Tree_Test_Bench_X04_O0 is
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0 is
     generic (
         NAME            :  STRING  := "TEST_X04_O0";
         SCENARIO_FILE   :  STRING  := "test_x04_o0.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Simple_Tree_Test_Bench_X04_O0;
-architecture Model of Merge_Sorter_Simple_Tree_Test_Bench_X04_O0 is
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0 is
 begin
-    TEST: entity WORK.Merge_Sorter_Simple_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
@@ -352,16 +352,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Simple_Tree_Test_Bench_X02_O1 is
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1 is
     generic (
         NAME            :  STRING  := "TEST_X02_O1";
         SCENARIO_FILE   :  STRING  := "test_x02_o1.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Simple_Tree_Test_Bench_X02_O1;
-architecture Model of Merge_Sorter_Simple_Tree_Test_Bench_X02_O1 is
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1 is
 begin
-    TEST: entity WORK.Merge_Sorter_Simple_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,

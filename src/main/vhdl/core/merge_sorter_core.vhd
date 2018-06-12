@@ -98,7 +98,7 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Simple_Tree
+    component Merge_Sorter_Single_Way_Tree
         generic (
             I_NUM           :  integer :=  8;
             DATA_BITS       :  integer := 64;
@@ -705,7 +705,7 @@ begin
     -------------------------------------------------------------------------------
     SORT: block                                          -- 
     begin                                                -- 
-        TREE: Merge_Sorter_Simple_Tree                   -- 
+        TREE: Merge_Sorter_Single_Way_Tree               -- 
             generic map (                                -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 

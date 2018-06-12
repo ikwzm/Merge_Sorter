@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_testbench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
---!     @version 0.0.6
---!     @date    2018/2/27
+--!     @version 0.0.9
+--!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -46,7 +46,8 @@ entity  Merge_Sorter_Core_Test_Bench is
         STM_IN_NUM      :  integer := 1;
         MRG_ENABLE      :  boolean := TRUE;
         MRG_FIFO_SIZE   :  integer := 64;
-        SORT_ORDER      :  integer := 0
+        SORT_ORDER      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench;
 -----------------------------------------------------------------------------------
@@ -403,10 +404,13 @@ begin
     -- 
     -------------------------------------------------------------------------------
     process begin
-        CLOCK <= '0';
-        wait for PERIOD / 2;
-        CLOCK <= '1';
-        wait for PERIOD / 2;
+        loop
+            CLOCK  <= '0'; wait for PERIOD / 2;
+            CLOCK  <= '1'; wait for PERIOD / 2;
+            exit when(N_FINISH = '1');
+        end loop;
+        CLOCK  <= '0';
+        wait;
     end process;
 
     ARESETn <= '1' when (RESET = '0') else '0';
@@ -428,7 +432,17 @@ begin
         WRITE(L,T & "  Mismatch : ");WRITE(L,MRG_O_REPORT.mismatch_count);WRITELINE(OUTPUT,L);
         WRITE(L,T & "  Warning  : ");WRITE(L,MRG_O_REPORT.warning_count );WRITELINE(OUTPUT,L);
         WRITE(L,T);                                                       WRITELINE(OUTPUT,L);
-        assert FALSE report "Simulation complete." severity FAILURE;
+        assert (STM_O_REPORT.error_count    = 0) and
+               (MRG_O_REPORT.error_count    = 0) 
+            report "Simulation complete(error)."    severity FAILURE;
+        assert (STM_O_REPORT.mismatch_count = 0) and
+               (MRG_O_REPORT.mismatch_count = 0)
+            report "Simulation complete(mismatch)." severity FAILURE;
+        if (FINISH_ABORT) then
+            assert FALSE report "Simulation complete(success)."  severity FAILURE;
+        else
+            assert FALSE report "Simulation complete(success)."  severity NOTE;
+        end if;
         wait;
     end process;
 end Model;
@@ -440,7 +454,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_M1_S1_F2";
-        SCENARIO_FILE   :  STRING  := "test_x04_m1_s1_f2.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_m1_s1_f2.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2;
 architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
@@ -455,7 +470,8 @@ begin
             STM_IN_NUM      => 1,
             MRG_ENABLE      => TRUE,
             MRG_FIFO_SIZE   => 64,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
 -----------------------------------------------------------------------------------
@@ -466,7 +482,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_M1_S0_F0";
-        SCENARIO_FILE   :  STRING  := "test_x04_m1_s0_f0.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_m1_s0_f0.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0;
 architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
@@ -481,7 +498,8 @@ begin
             STM_IN_NUM      => 1,
             MRG_ENABLE      => TRUE,
             MRG_FIFO_SIZE   => 64,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
 -----------------------------------------------------------------------------------
@@ -492,7 +510,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F0";
-        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f0.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f0.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0;
 architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
@@ -507,7 +526,8 @@ begin
             STM_IN_NUM      => 1,
             MRG_ENABLE      => FALSE,
             MRG_FIFO_SIZE   => 64,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
 -----------------------------------------------------------------------------------
@@ -518,7 +538,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F1";
-        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f1.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f1.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1;
 architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
@@ -533,7 +554,8 @@ begin
             STM_IN_NUM      => 1,
             MRG_ENABLE      => FALSE,
             MRG_FIFO_SIZE   => 64,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
 -----------------------------------------------------------------------------------
@@ -544,7 +566,8 @@ use     ieee.std_logic_1164.all;
 entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F2";
-        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f2.snr"
+        SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f2.snr";
+        FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2;
 architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
@@ -559,6 +582,7 @@ begin
             STM_IN_NUM      => 1,
             MRG_ENABLE      => FALSE,
             MRG_FIFO_SIZE   => 64,
-            SORT_ORDER      => 0
+            SORT_ORDER      => 0,
+            FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
