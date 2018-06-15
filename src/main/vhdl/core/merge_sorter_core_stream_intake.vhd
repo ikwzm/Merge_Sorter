@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.0.9
---!     @date    2018/6/9
+--!     @version 0.1.0
+--!     @date    2018/6/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,22 +36,20 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 entity  Merge_Sorter_Core_Stream_Intake is
     generic (
+        WORD_PARAM      :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
         O_NUM           :  integer :=  8;
         I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
         O_NUM_BITS      :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
-        DATA_BITS       :  integer := 64;
-        INFO_BITS       :  integer :=  8;
-        INFO_NONE_POS   :  integer :=  0;
-        INFO_PRIO_POS   :  integer :=  1;
-        INFO_POST_POS   :  integer :=  2;
-        INFO_DONE_POS   :  integer :=  3;
-        INFO_FBK_POS    :  integer :=  4;
-        INFO_FBK_NUM_LO :  integer :=  5;
-        INFO_FBK_NUM_HI :  integer :=  9
+        INFO_EBLK_POS   :  integer :=  0;
+        INFO_FBK_POS    :  integer :=  1;
+        INFO_FBK_NUM_LO :  integer :=  2;
+        INFO_FBK_NUM_HI :  integer :=  5
     );
     port (
         CLK             :  in  std_logic;
@@ -61,18 +59,17 @@ entity  Merge_Sorter_Core_Stream_Intake is
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(      SIZE_BITS-1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                 -1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(I_NUM          -1 downto 0);
+        I_DATA          :  in  std_logic_vector(I_NUM*WORD_PARAM.DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(I_NUM                     -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_DATA          :  out std_logic_vector(O_NUM*DATA_BITS-1 downto 0);
-        O_INFO          :  out std_logic_vector(O_NUM*INFO_BITS-1 downto 0);
-        O_LAST          :  out std_logic_vector(O_NUM          -1 downto 0);
-        O_VALID         :  out std_logic_vector(O_NUM          -1 downto 0);
-        O_READY         :  in  std_logic_vector(O_NUM          -1 downto 0)
+        O_WORD          :  out std_logic_vector(O_NUM*WORD_PARAM.BITS     -1 downto 0);
+        O_LAST          :  out std_logic_vector(O_NUM                     -1 downto 0);
+        O_VALID         :  out std_logic_vector(O_NUM                     -1 downto 0);
+        O_READY         :  in  std_logic_vector(O_NUM                     -1 downto 0)
     );
 end Merge_Sorter_Core_Stream_Intake;
 -----------------------------------------------------------------------------------
@@ -83,7 +80,10 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 architecture RTL of Merge_Sorter_Core_Stream_Intake is
+    constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
     signal    queue_valid       :  std_logic_vector(O_NUM          -1 downto 0);
     signal    intake_data       :  std_logic_vector(O_NUM*DATA_BITS-1 downto 0);
     signal    intake_last       :  std_logic;
@@ -194,47 +194,50 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    O_DATA <= intake_data when (curr_state = INTAKE_STATE) else (others => '0');
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    process (curr_state, intake_number, queue_valid, intake_first, intake_last) begin
+    process (curr_state, intake_data, intake_number, queue_valid, intake_first, intake_last)
+        variable word      :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        constant null_data :  std_logic_vector(DATA_BITS      -1 downto 0) := (others => '0');
+    begin
         if (curr_state = INTAKE_STATE) then
             for i in 0 to O_NUM-1 loop
+                word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := intake_data((i+1)*DATA_BITS-1 downto i*DATA_BITS);
                 if (queue_valid(i) = '0') then
-                    O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
-                    O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
-                    O_INFO(i*INFO_BITS+INFO_POST_POS) <= '1';
+                    word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
+                    word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
+                    word(WORD_PARAM.ATRB_POSTPEND_POS) := '1';
                 else
-                    O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '0';
-                    O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
-                    O_INFO(i*INFO_BITS+INFO_POST_POS) <= '0';
+                    word(WORD_PARAM.ATRB_NONE_POS    ) := '0';
+                    word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
+                    word(WORD_PARAM.ATRB_POSTPEND_POS) := '0';
                 end if;
                 if  (FEEDBACK     =  0  and intake_last = '1') or
                     (intake_first = '1' and intake_last = '1') then
-                    O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '1';
+                    word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '1';
                 else
-                    O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '0';
+                    word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '0';
                 end if;
                 if  (FEEDBACK     =  0                       ) or
                     (intake_first = '1' and intake_last = '1') then
-                    O_INFO(i*INFO_BITS+INFO_FBK_POS)  <= '0';
+                    word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '0';
                 else
-                    O_INFO(i*INFO_BITS+INFO_FBK_POS)  <= '1';
+                    word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '1';
                 end if;
-                O_INFO(i*INFO_BITS+INFO_FBK_NUM_HI downto i*INFO_BITS+INFO_FBK_NUM_LO) <= intake_number;
+                word(WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO) := intake_number;
+                O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
             for i in 0 to O_NUM-1 loop
-                O_INFO(i*INFO_BITS+INFO_NONE_POS) <= '1';
-                O_INFO(i*INFO_BITS+INFO_PRIO_POS) <= '0';
-                O_INFO(i*INFO_BITS+INFO_POST_POS) <= '1';
-                O_INFO(i*INFO_BITS+INFO_DONE_POS) <= '0';
-                O_INFO(i*INFO_BITS+INFO_FBK_POS ) <= '1';
-                O_INFO(i*INFO_BITS+INFO_FBK_NUM_HI downto i*INFO_BITS+INFO_FBK_NUM_LO) <= intake_number;
+                word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := null_data;
+                word(WORD_PARAM.ATRB_NONE_POS        ) := '1';
+                word(WORD_PARAM.ATRB_PRIORITY_POS    ) := '0';
+                word(WORD_PARAM.ATRB_POSTPEND_POS    ) := '1';
+                word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '0';
+                word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '1';
+                word(WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO) := intake_number;
+                O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
             end loop;
         else
-            O_INFO <= (others => '0');
+            O_WORD <= (others => '0');
         end if;
     end process;
     -------------------------------------------------------------------------------

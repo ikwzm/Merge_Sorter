@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_single_way_cell.vhd
 --!     @brief   Merge Sorter Single Way Cell Module :
---!     @version 0.0.9
---!     @date    2018/6/12
+--!     @version 0.1.0
+--!     @date    2018/6/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,30 +36,30 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 entity  Merge_Sorter_Single_Way_Cell is
     generic (
-        SORT_ORDER  :  integer :=  0;
-        DATA_BITS   :  integer := 64;
-        COMP_HIGH   :  integer := 63;
-        COMP_LOW    :  integer := 32;
-        INFO_BITS   :  integer :=  3
+        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        INFO_BITS   :  integer :=  1;
+        SORT_ORDER  :  integer :=  0
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        A_INFO      :  in  std_logic_vector(INFO_BITS-1 downto 0);
+        A_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        A_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
         A_LAST      :  in  std_logic;
         A_VALID     :  in  std_logic;
         A_READY     :  out std_logic;
-        B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        B_INFO      :  in  std_logic_vector(INFO_BITS-1 downto 0);
+        B_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        B_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
         B_LAST      :  in  std_logic;
         B_VALID     :  in  std_logic;
         B_READY     :  out std_logic;
-        O_DATA      :  out std_logic_vector(DATA_BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS-1 downto 0);
+        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -70,6 +70,9 @@ end Merge_Sorter_Single_Way_Cell;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Compare;
 architecture RTL of Merge_Sorter_Single_Way_Cell is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
@@ -81,61 +84,59 @@ architecture RTL of Merge_Sorter_Single_Way_Cell is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    signal    a_data            :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
+    signal    a_priority        :  std_logic;
+    signal    a_postpend        :  std_logic;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    signal    b_data            :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
+    signal    b_priority        :  std_logic;
+    signal    b_postpend        :  std_logic;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     signal    comp_valid        :  std_logic;
     signal    comp_ready        :  std_logic;
     signal    comp_sel_a        :  std_logic;
     signal    comp_sel_b        :  std_logic;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Merge_Sorter_Compare is
-        generic (
-            SORT_ORDER  :  integer :=  0;
-            DATA_BITS   :  integer := 64;
-            COMP_HIGH   :  integer := 63;
-            COMP_LOW    :  integer := 32
-        );
-        port (
-            CLK         :  in  std_logic;
-            RST         :  in  std_logic;
-            CLR         :  in  std_logic;
-            A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            A_PRIORITY  :  in  std_logic;
-            A_POSTPOND  :  in  std_logic;
-            B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-            B_PRIORITY  :  in  std_logic;
-            B_POSTPOND  :  in  std_logic;
-            VALID       :  in  std_logic;
-            READY       :  out std_logic;
-            SEL_A       :  out std_logic;
-            SEL_B       :  out std_logic
-        );
-    end component;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    COMP: Merge_Sorter_Compare           --
-        generic map(                     -- 
-            SORT_ORDER  => SORT_ORDER  , -- 
-            DATA_BITS   => DATA_BITS   , -- 
-            COMP_HIGH   => COMP_HIGH   , -- 
-            COMP_LOW    => COMP_LOW      -- 
-        )                                -- 
-        port map (                       --
-            CLK         => CLK         , -- In  :
-            RST         => RST         , -- In  :
-            CLR         => CLR         , -- In  :
-            A_DATA      => A_DATA      , -- In  :
-            A_PRIORITY  => A_INFO(1)   , -- In  :
-            A_POSTPOND  => A_INFO(2)   , -- In  :
-            B_DATA      => B_DATA      , -- In  :
-            B_PRIORITY  => B_INFO(1)   , -- In  :
-            B_POSTPOND  => B_INFO(2)   , -- In  :
-            VALID       => comp_valid  , -- In  :
-            READY       => comp_ready  , -- Out :
-            SEL_A       => comp_sel_a  , -- Out :
-            SEL_B       => comp_sel_b    -- Out :
+    a_data     <= A_WORD(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+    a_priority <= A_WORD(WORD_PARAM.ATRB_PRIORITY_POS);
+    a_postpend <= A_WORD(WORD_PARAM.ATRB_POSTPEND_POS);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    b_data     <= B_WORD(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+    b_priority <= B_WORD(WORD_PARAM.ATRB_PRIORITY_POS);
+    b_postpend <= B_WORD(WORD_PARAM.ATRB_POSTPEND_POS);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    COMP: Merge_Sorter_Compare                            --
+        generic map(                                      -- 
+            SORT_ORDER  => SORT_ORDER                   , -- 
+            DATA_BITS   => WORD_PARAM.DATA_BITS         , -- 
+            COMP_HIGH   => WORD_PARAM.DATA_COMPARE_HI   , -- 
+            COMP_LOW    => WORD_PARAM.DATA_COMPARE_LO     -- 
+        )                                                 -- 
+        port map (                                        --
+            CLK         => CLK                          , -- In  :
+            RST         => RST                          , -- In  :
+            CLR         => CLR                          , -- In  :
+            A_DATA      => a_data                       , -- In  :
+            A_PRIORITY  => a_priority                   , -- In  :
+            A_POSTPOND  => a_postpend                   , -- In  :
+            B_DATA      => b_data                       , -- In  :
+            B_PRIORITY  => b_priority                   , -- In  :
+            B_POSTPOND  => b_postpend                   , -- In  :
+            VALID       => comp_valid                   , -- In  :
+            READY       => comp_ready                   , -- Out :
+            SEL_A       => comp_sel_a                   , -- Out :
+            SEL_B       => comp_sel_b                     -- Out :
         );
     -------------------------------------------------------------------------------
     --
@@ -235,8 +236,8 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    O_DATA  <= B_DATA when (temp_state = B_SEL_STATE  ) or
-                           (temp_state = B_FLUSH_STATE) else A_DATA;
+    O_WORD  <= B_WORD when (temp_state = B_SEL_STATE  ) or
+                           (temp_state = B_FLUSH_STATE) else A_WORD;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

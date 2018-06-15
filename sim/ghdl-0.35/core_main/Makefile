@@ -22,6 +22,9 @@ test   : test_x04_m1_s1_f2 \
          test_x04_m0_s1_f2 \
          $(END_LIST)
 
+clean  :
+	$(REMOVE) source.mk *.o *.cf
+
 dut    : merge_sorter_core_main.o
 
 test_x04_m1_s1_f2 : test_x04_m1_s1_f2.snr merge_sorter_core_main_test_bench.o dut 

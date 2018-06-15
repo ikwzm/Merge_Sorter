@@ -15,7 +15,10 @@ REMOVE     = -rm
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
-test   : test_x04_o0 test_x02_o1 
+test   : test_x04_o0 test_x02_o1
+
+clean  :
+	$(REMOVE) *.o *.snr sources.mk
 
 test_x02_o1 : test_x02_o1.snr merge_sorter_single_way_tree_test_bench.o dut 
 	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1

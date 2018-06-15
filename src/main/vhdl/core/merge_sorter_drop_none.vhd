@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_drop_none.vhd
 --!     @brief   Merge Sorter Drop None Module :
---!     @version 0.0.9
---!     @date    2018/6/12
+--!     @version 0.1.0
+--!     @date    2018/6/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,22 +36,24 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 entity  Merge_Sorter_Drop_None is
     generic (
-        DATA_BITS   :  integer := 64;
+        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
         INFO_BITS   :  integer :=  1
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS-1 downto 0);
+        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_DATA      :  out std_logic_vector(DATA_BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS-1 downto 0);
+        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -64,24 +66,26 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 architecture RTL of Merge_Sorter_Drop_None is
-    constant  WORD_DATA_LO_POS  :  integer := 0;
-    constant  WORD_DATA_HI_POS  :  integer := WORD_DATA_LO_POS + DATA_BITS - 1;
-    constant  WORD_INFO_LO_POS  :  integer := WORD_DATA_HI_POS + 1;
-    constant  WORD_INFO_HI_POS  :  integer := WORD_INFO_LO_POS + INFO_BITS - 1;
-    constant  WORD_LO_POS       :  integer := WORD_DATA_LO_POS;
-    constant  WORD_HI_POS       :  integer := WORD_INFO_HI_POS;
-    constant  WORD_BITS         :  integer := WORD_HI_POS - WORD_LO_POS + 1;
+    constant  DATA_WORD_LO_POS  :  integer := 0;
+    constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;
+    constant  DATA_INFO_LO_POS  :  integer := DATA_WORD_HI_POS + 1;
+    constant  DATA_INFO_HI_POS  :  integer := DATA_INFO_LO_POS + INFO_BITS - 1;
+    constant  DATA_LO_POS       :  integer := DATA_WORD_LO_POS;
+    constant  DATA_HI_POS       :  integer := DATA_INFO_HI_POS;
+    constant  DATA_BITS         :  integer := DATA_HI_POS - DATA_LO_POS + 1;
     signal    i_strb            :  std_logic_vector(0 downto 0);
-    signal    i_word            :  std_logic_vector(WORD_BITS-1 downto 0);
-    signal    o_word            :  std_logic_vector(WORD_BITS-1 downto 0);
+    signal    i_data            :  std_logic_vector(DATA_BITS-1 downto 0);
+    signal    o_data            :  std_logic_vector(DATA_BITS-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     Q: REDUCER                               -- 
         generic map (                        -- 
-            WORD_BITS       => WORD_BITS,    --
+            WORD_BITS       => DATA_BITS,    --
             STRB_BITS       => 1,            -- 
             I_WIDTH         => 1,            -- 
             O_WIDTH         => 1,            -- 
@@ -98,12 +102,12 @@ begin
             CLK             => CLK         , -- In  :
             RST             => RST         , -- In  :
             CLR             => CLR         , -- In  :
-            I_DATA          => i_word      , -- In  :
+            I_DATA          => i_data      , -- In  :
             I_STRB          => i_strb      , -- In  :
             I_DONE          => I_LAST      , -- In  :
             I_VAL           => I_VALID     , -- In  :
             I_RDY           => I_READY     , -- Out :
-            O_DATA          => o_word      , -- Out :
+            O_DATA          => o_data      , -- Out :
             O_DONE          => O_LAST      , -- Out :
             O_VAL           => O_VALID     , -- Out :
             O_RDY           => O_READY       -- In  :
@@ -111,11 +115,9 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    i_strb <= "1" when (I_INFO(0) = '0') else "0";
-    i_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS) <= I_DATA;
-    i_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS) <= I_INFO;
-    O_DATA <= o_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS);
-    O_INFO <= o_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS);
+    i_strb <= "1" when (I_WORD(WORD_PARAM.ATRB_NONE_POS) = '0') else "0";
+    i_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS) <= I_WORD;
+    i_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS) <= I_INFO;
+    O_WORD <= o_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS);
+    O_INFO <= o_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS);
 end RTL;
-
-        

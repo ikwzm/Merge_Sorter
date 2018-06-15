@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_single_way_tree_testbench.vhd
 --!     @brief   Merge Sorter Single Way Tree Test Bench :
---!     @version 0.0.9
---!     @date    2018/6/12
+--!     @version 0.1.0
+--!     @date    2018/6/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -52,6 +52,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -68,10 +69,15 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
     constant   QUEUE_SIZE   :  integer :=  2;
-    constant   DATA_BITS    :  integer := 32;
-    constant   COMP_HIGH    :  integer := 31;
-    constant   COMP_LOW     :  integer :=  0;
+    constant   WORD_PARAM   :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(32);
+    constant   DATA_BITS    :  integer := WORD_PARAM.DATA_BITS;
+    constant   ATRB_BITS    :  integer := WORD_PARAM.ATRB_BITS;
     constant   INFO_BITS    :  integer :=  4;
+    constant   USER_BITS    :  integer :=  ATRB_BITS + INFO_BITS;
+    constant   USER_ATRB_LO :  integer :=  0;
+    constant   USER_ATRB_HI :  integer :=  USER_ATRB_LO + ATRB_BITS - 1;
+    constant   USER_INFO_LO :  integer :=  USER_ATRB_HI + 1;
+    constant   USER_INFO_HI :  integer :=  USER_INFO_LO + INFO_BITS - 1;
     constant   SYNC_WIDTH   :  integer :=  2;
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;
@@ -91,30 +97,30 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     constant   I_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => INFO_BITS,
+                                   USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
-    type       I_INFO_VECTOR is array (integer range <>) of std_logic_vector(INFO_BITS-1 downto 0);
+    type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(USER_BITS-1 downto 0);
     signal     i_data       :  I_DATA_VECTOR   (I_NUM-1 downto 0);
-    signal     i_info       :  I_INFO_VECTOR   (I_NUM-1 downto 0);
+    signal     i_user       :  I_USER_VECTOR   (I_NUM-1 downto 0);
     signal     i_last       :  std_logic_vector(I_NUM-1 downto 0);
     signal     i_valid      :  std_logic_vector(I_NUM-1 downto 0);
     signal     i_ready      :  std_logic_vector(I_NUM-1 downto 0);
-    signal     i_flat_data  :  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
-    signal     i_flat_info  :  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
+    signal     i_word       :  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
+    signal     i_info       :  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     constant   O_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => INFO_BITS,
+                                   USER  => USER_BITS,
                                    DEST  => 4,
                                    DATA  => DATA_BITS
                                );
     signal     o_data       :  std_logic_vector(DATA_BITS-1 downto 0);
-    signal     o_info       :  std_logic_vector(INFO_BITS-1 downto 0);
+    signal     o_user       :  std_logic_vector(USER_BITS-1 downto 0);
     signal     o_last       :  std_logic;
     signal     o_valid      :  std_logic;
     signal     o_ready      :  std_logic;
@@ -122,11 +128,13 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     constant   o_strb       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
     constant   o_id         :  std_logic_vector(O_WIDTH.ID  -1 downto 0) := (others => '0');
     constant   o_dest       :  std_logic_vector(O_WIDTH.DEST-1 downto 0) := (others => '0');
+    signal     o_word       :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    signal     o_info       :  std_logic_vector(INFO_BITS      -1 downto 0);
     -------------------------------------------------------------------------------
     -- GPIO(General Purpose Input/Output)
     -------------------------------------------------------------------------------
-    signal   O_GPI           : std_logic_vector(GPI_WIDTH   -1 downto 0);
-    signal   O_GPO           : std_logic_vector(GPO_WIDTH   -1 downto 0);
+    signal     O_GPI        : std_logic_vector(GPI_WIDTH   -1 downto 0);
+    signal     O_GPO        : std_logic_vector(GPO_WIDTH   -1 downto 0);
     -------------------------------------------------------------------------------
     -- 各種状態出力.
     -------------------------------------------------------------------------------
@@ -141,25 +149,23 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     component  Merge_Sorter_Single_Way_Tree
         generic (
+            WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
             I_NUM       :  integer :=  8;
-            DATA_BITS   :  integer := 64;
             INFO_BITS   :  integer :=  3;
             SORT_ORDER  :  integer :=  0;
-            COMP_HIGH   :  integer := 63;
-            COMP_LOW    :  integer := 32;
             QUEUE_SIZE  :  integer :=  2
         );
         port (
             CLK         :  in  std_logic;
             RST         :  in  std_logic;
             CLR         :  in  std_logic;
-            I_DATA      :  in  std_logic_vector(I_NUM*DATA_BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS-1 downto 0);
-            I_LAST      :  in  std_logic_vector(I_NUM          -1 downto 0);
-            I_VALID     :  in  std_logic_vector(I_NUM          -1 downto 0);
-            I_READY     :  out std_logic_vector(I_NUM          -1 downto 0);
-            O_DATA      :  out std_logic_vector(      DATA_BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(      INFO_BITS-1 downto 0);
+            I_WORD      :  in  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0);
+            I_LAST      :  in  std_logic_vector(I_NUM                -1 downto 0);
+            I_VALID     :  in  std_logic_vector(I_NUM                -1 downto 0);
+            I_READY     :  out std_logic_vector(I_NUM                -1 downto 0);
+            O_WORD      :  out std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(      INFO_BITS      -1 downto 0);
             O_LAST      :  out std_logic;
             O_VALID     :  out std_logic;
             O_READY     :  in  std_logic
@@ -206,7 +212,7 @@ begin
             TDATA           => o_data          , -- In  :
             TSTRB           => o_strb          , -- In  :
             TKEEP           => o_keep          , -- In  :
-            TUSER           => o_info          , -- In  :
+            TUSER           => o_user          , -- In  :
             TDEST           => o_dest          , -- In  :
             TID             => o_id            , -- In  :
             TLAST           => o_last          , -- In  :
@@ -217,13 +223,17 @@ begin
             GPO             => O_GPO           , -- Out :
             REPORT_STATUS   => O_REPORT        , -- Out :
             FINISH          => O_FINISH          -- Out :
-        );                                       -- 
+        );                                       --
+    o_data                                   <= o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+    o_user(USER_ATRB_HI downto USER_ATRB_LO) <= o_word(WORD_PARAM.ATRB_HI downto WORD_PARAM.ATRB_LO);
+    o_user(USER_INFO_HI downto USER_INFO_LO) <= o_info;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     I_MASTER:  for i in 0 to I_NUM-1 generate        --
-        constant  gpi  : std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
-        constant  name : string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
+        constant  gpi  :  std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
+        constant  name :  string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
+        signal    word :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
             generic map (                            -- 
@@ -243,7 +253,7 @@ begin
                 TDATA           => i_data  (i)     , -- Out :
                 TSTRB           => open            , -- Out :
                 TKEEP           => open            , -- Out :
-                TUSER           => i_info  (i)     , -- Out :
+                TUSER           => i_user  (i)     , -- Out :
                 TDEST           => open            , -- Out :
                 TID             => open            , -- Out :
                 TLAST           => i_last  (i)     , -- Out :
@@ -254,33 +264,33 @@ begin
                 GPO             => open            , -- Out :
                 REPORT_STATUS   => I_REPORT(i)     , -- Out :
                 FINISH          => I_FINISH(i)       -- Out :
-            );                                       -- 
-        i_flat_data((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= i_data(i);
-        i_flat_info((i+1)*INFO_BITS-1 downto i*INFO_BITS) <= i_info(i);
+            );                                       --
+        word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO)       <= i_data(i);
+        word(WORD_PARAM.ATRB_HI downto WORD_PARAM.ATRB_LO)       <= i_user(i)(USER_ATRB_HI downto USER_ATRB_LO);
+        i_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
+        i_info((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= i_user(i)(USER_INFO_HI downto USER_INFO_LO);
     end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Merge_Sorter_Single_Way_Tree        -- 
+    DUT: Merge_Sorter_Single_Way_Tree    -- 
         generic map (                    -- 
+            WORD_PARAM  => WORD_PARAM  , -- 
             SORT_ORDER  => SORT_ORDER  , -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
             I_NUM       => I_NUM       , -- 
-            DATA_BITS   => DATA_BITS   , --
-            COMP_HIGH   => COMP_HIGH   , -- 
-            COMP_LOW    => COMP_LOW    , -- 
             INFO_BITS   => INFO_BITS     -- 
         )                                -- 
         port map (                       -- 
             CLK         => CLOCK       , -- In  :
             RST         => RESET       , -- In  :
             CLR         => CLEAR       , -- In  :
-            I_DATA      => i_flat_data , -- In  :
-            I_INFO      => i_flat_info , -- In  :
+            I_WORD      => i_word      , -- In  :
+            I_INFO      => i_info      , -- In  :
             I_LAST      => i_last      , -- In  :
             I_VALID     => i_valid     , -- In  :
             I_READY     => i_ready     , -- Out :
-            O_DATA      => o_data      , -- Out :
+            O_WORD      => o_word      , -- Out :
             O_INFO      => o_info      , -- Out :
             O_LAST      => o_last      , -- Out :
             O_VALID     => o_valid     , -- Out :

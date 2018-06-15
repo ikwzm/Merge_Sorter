@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_queue.vhd
 --!     @brief   Merge Sorter Queue Module :
---!     @version 0.0.9
---!     @date    2018/6/12
+--!     @version 0.1.0
+--!     @date    2018/6/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,23 +36,25 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 entity  Merge_Sorter_Queue is
     generic (
-        QUEUE_SIZE  :  integer :=  2;
-        DATA_BITS   :  integer := 64;
-        INFO_BITS   :  integer :=  1
+        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        INFO_BITS   :  integer :=  1;
+        QUEUE_SIZE  :  integer :=  2
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS-1 downto 0);
+        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0);
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_DATA      :  out std_logic_vector(DATA_BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS-1 downto 0);
+        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -65,42 +67,44 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library PipeWork;
 use     PipeWork.Components.QUEUE_REGISTER;
+library Merge_Sorter;
+use     Merge_Sorter.Merge_Sorter_Core;
 architecture RTL of Merge_Sorter_Queue is
-    constant  WORD_DATA_LO_POS  :  integer := 0;
-    constant  WORD_DATA_HI_POS  :  integer := WORD_DATA_LO_POS + DATA_BITS - 1;
-    constant  WORD_INFO_LO_POS  :  integer := WORD_DATA_HI_POS + 1;
-    constant  WORD_INFO_HI_POS  :  integer := WORD_INFO_LO_POS + INFO_BITS - 1;
-    constant  WORD_LAST_POS     :  integer := WORD_INFO_HI_POS + 1;
-    constant  WORD_LO_POS       :  integer := WORD_DATA_LO_POS;
-    constant  WORD_HI_POS       :  integer := WORD_LAST_POS;
-    constant  WORD_BITS         :  integer := WORD_HI_POS - WORD_LO_POS + 1;
-    signal    i_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
-    signal    q_word            :  std_logic_vector(WORD_HI_POS downto WORD_LO_POS);
+    constant  DATA_WORD_LO_POS  :  integer := 0;
+    constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;
+    constant  DATA_INFO_LO_POS  :  integer := DATA_WORD_HI_POS + 1;
+    constant  DATA_INFO_HI_POS  :  integer := DATA_INFO_LO_POS + INFO_BITS       - 1;
+    constant  DATA_LAST_POS     :  integer := DATA_INFO_HI_POS + 1;
+    constant  DATA_LO_POS       :  integer := DATA_WORD_LO_POS;
+    constant  DATA_HI_POS       :  integer := DATA_LAST_POS;
+    constant  DATA_BITS         :  integer := DATA_HI_POS - DATA_LO_POS + 1;
+    signal    i_data            :  std_logic_vector(DATA_HI_POS downto DATA_LO_POS);
+    signal    q_data            :  std_logic_vector(DATA_HI_POS downto DATA_LO_POS);
     signal    q_valid           :  std_logic_vector(QUEUE_SIZE  downto           0);
 begin
     Q: QUEUE_REGISTER                    -- 
         generic map (                    -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            DATA_BITS   => WORD_BITS     --
+            DATA_BITS   => DATA_BITS     --
         )                                -- 
         port map (                       -- 
             CLK         => CLK         , -- In  :
             RST         => RST         , -- In  :
             CLR         => CLR         , -- In  :
-            I_DATA      => i_word      , -- In  :
+            I_DATA      => i_data      , -- In  :
             I_VAL       => I_VALID     , -- In  :
             I_RDY       => I_READY     , -- Out :
             O_DATA      => open        , -- Out :
             O_VAL       => open        , -- Out :
-            Q_DATA      => q_word      , -- Out :
+            Q_DATA      => q_data      , -- Out :
             Q_VAL       => q_valid     , -- Out :
             Q_RDY       => O_READY       -- In  :
         );
-    i_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS) <= I_DATA;
-    i_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS) <= I_INFO;
-    i_word(WORD_LAST_POS                           ) <= I_LAST;
-    O_DATA <= q_word(WORD_DATA_HI_POS downto WORD_DATA_LO_POS);
-    O_INFO <= q_word(WORD_INFO_HI_POS downto WORD_INFO_LO_POS);
-    O_LAST <= q_word(WORD_LAST_POS);
+    i_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS) <= I_WORD;
+    i_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS) <= I_INFO;
+    i_data(DATA_LAST_POS                           ) <= I_LAST;
+    O_WORD <= q_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS);
+    O_INFO <= q_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS);
+    O_LAST <= q_data(DATA_LAST_POS);
     O_VALID<= q_valid(0);
 end RTL;
