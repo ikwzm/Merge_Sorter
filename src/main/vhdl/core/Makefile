@@ -1,4 +1,4 @@
-ENTITY_FILES = merge_sorter_core.vhd               \
+ENTITY_FILES = merge_sorter_core_main.vhd          \
                merge_sorter_core_fifo.vhd          \
                merge_sorter_core_stream_intake.vhd \
                ${ENDLIST}

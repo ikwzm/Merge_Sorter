@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_core.vhd
---!     @brief   Merge Sorter Core Module :
+--!     @file    merge_sorter_core_main.vhd
+--!     @brief   Merge Sorter Core Main Module :
 --!     @version 0.0.9
 --!     @date    2018/6/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core is
+entity  Merge_Sorter_Core_Main is
     generic (
         IN_NUM          :  integer :=    8;
         STM_ENABLE      :  boolean := TRUE;
@@ -87,14 +87,14 @@ entity  Merge_Sorter_Core is
         MRG_OUT_VALID   :  out std_logic;
         MRG_OUT_READY   :  in  std_logic
     );
-end Merge_Sorter_Core;
+end Merge_Sorter_Core_Main;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
-architecture RTL of Merge_Sorter_Core is
+architecture RTL of Merge_Sorter_Core_Main is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

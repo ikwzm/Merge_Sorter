@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core_components.vhd                                --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.0.9                                                           --
---!     @date    2018/06/12                                                      --
+--!     @date    2018/06/15                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -42,9 +42,9 @@ use     ieee.std_logic_1164.all;
 -----------------------------------------------------------------------------------
 package Merge_Sorter_Core_Components is
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Core                                                     --
+--! @brief Merge_Sorter_Core_Main                                                --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Core
+component Merge_Sorter_Core_Main
     generic (
         IN_NUM          :  integer :=    8;
         STM_ENABLE      :  boolean := TRUE;
