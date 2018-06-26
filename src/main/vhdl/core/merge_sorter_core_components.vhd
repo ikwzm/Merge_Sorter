@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core_components.vhd                                --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.1.0                                                           --
---!     @date    2018/06/15                                                      --
+--!     @date    2018/06/25                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -48,13 +48,13 @@ package Merge_Sorter_Core_Components is
 -----------------------------------------------------------------------------------
 component Merge_Sorter_Core_Main
     generic (
-        IN_NUM          :  integer :=    8;
-        STM_ENABLE      :  boolean := TRUE;
-        STM_IN_NUM      :  integer :=    1;
-        STM_FEEDBACK    :  integer :=    1;
-        MRG_ENABLE      :  boolean := TRUE;
+        MRG_IN_ENABLE   :  boolean := TRUE;
+        MRG_IN_NUM      :  integer :=    8;
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
+        STM_IN_ENABLE   :  boolean := TRUE;
+        STM_IN_NUM      :  integer :=    1;
+        STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
         COMP_HIGH       :  integer :=   63;
@@ -81,13 +81,13 @@ component Merge_Sorter_Core_Main
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_IN_NUM*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
         MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
         MRG_OUT_LAST    :  out std_logic;
         MRG_OUT_VALID   :  out std_logic;
@@ -101,8 +101,8 @@ component Merge_Sorter_Core_Fifo
     generic (
         I_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
         O_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8,5);
-        FBK_ENABLE      :  boolean := TRUE;
-        MRG_ENABLE      :  boolean := TRUE;
+        FBK_IN_ENABLE   :  boolean := TRUE;
+        MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
         FIFO_SIZE       :  integer :=   64;
         LEVEL_SIZE      :  integer :=   32;

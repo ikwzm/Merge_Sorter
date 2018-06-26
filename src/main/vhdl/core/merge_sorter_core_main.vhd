@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core_main.vhd
 --!     @brief   Merge Sorter Core Main Module :
 --!     @version 0.1.0
---!     @date    2018/6/15
+--!     @date    2018/6/25
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -40,13 +40,13 @@ library Merge_Sorter;
 use     Merge_Sorter.Merge_Sorter_Core;
 entity  Merge_Sorter_Core_Main is
     generic (
-        IN_NUM          :  integer :=    8;
-        STM_ENABLE      :  boolean := TRUE;
-        STM_IN_NUM      :  integer :=    1;
-        STM_FEEDBACK    :  integer :=    1;
-        MRG_ENABLE      :  boolean := TRUE;
+        MRG_IN_ENABLE   :  boolean := TRUE;
+        MRG_IN_NUM      :  integer :=    8;
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
+        STM_IN_ENABLE   :  boolean := TRUE;
+        STM_IN_NUM      :  integer :=    1;
+        STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
         COMP_HIGH       :  integer :=   63;
@@ -73,13 +73,13 @@ entity  Merge_Sorter_Core_Main is
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(    IN_NUM*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(    IN_NUM          -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(    IN_NUM          -1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_IN_NUM*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
         MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
         MRG_OUT_LAST    :  out std_logic;
         MRG_OUT_VALID   :  out std_logic;
@@ -163,18 +163,18 @@ architecture RTL of Merge_Sorter_Core_Main is
     function  CALC_FIFO_SIZE return integer is
         variable fifo_size : integer;
     begin
-        if (STM_ENABLE = TRUE) then
+        if (STM_IN_ENABLE = TRUE) then
             if    (STM_FEEDBACK = 0) then
                 fifo_size := 0;
             elsif (STM_FEEDBACK = 1) then
-                fifo_size := IN_NUM;
+                fifo_size := MRG_IN_NUM;
             else
-                fifo_size := 2*(IN_NUM**STM_FEEDBACK);
+                fifo_size := 2*(MRG_IN_NUM**STM_FEEDBACK);
             end if;
         else
             fifo_size := 0;
         end if;
-        if (MRG_ENABLE = TRUE and fifo_size < MRG_FIFO_SIZE) then
+        if (MRG_IN_ENABLE = TRUE and fifo_size < MRG_FIFO_SIZE) then
             fifo_size := MRG_FIFO_SIZE;
         end if;
         return fifo_size;
@@ -204,16 +204,16 @@ architecture RTL of Merge_Sorter_Core_Main is
     --
     -------------------------------------------------------------------------------
     constant  FIFO_SIZE             :  integer := CALC_FIFO_SIZE;
-    constant  MAX_FBK_OUT_SIZE      :  integer := CALC_MAX_FBK_OUT_SIZE(STM_FEEDBACK,IN_NUM);
-    constant  SIZE_BITS             :  integer := NUM_TO_BITS(max(MAX_FBK_OUT_SIZE, max(IN_NUM**STM_FEEDBACK,IN_NUM)));
-    constant  IN_NUM_BITS           :  integer := NUM_TO_BITS(IN_NUM-1);
+    constant  MAX_FBK_OUT_SIZE      :  integer := CALC_MAX_FBK_OUT_SIZE(STM_FEEDBACK,MRG_IN_NUM);
+    constant  SIZE_BITS             :  integer := NUM_TO_BITS(max(MAX_FBK_OUT_SIZE, max(MRG_IN_NUM**STM_FEEDBACK,MRG_IN_NUM)));
+    constant  MRG_IN_NUM_BITS       :  integer := NUM_TO_BITS(MRG_IN_NUM-1);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     constant  INFO_EBLK_POS         :  integer := 0;
     constant  INFO_FBK_POS          :  integer := 1;
     constant  INFO_FBK_NUM_LO       :  integer := 2;
-    constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + IN_NUM_BITS - 1;
+    constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + MRG_IN_NUM_BITS - 1;
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
     constant  FWD_WORD_PARAM        :  Merge_Sorter_Core.Word_Field_Type
                                     := Merge_Sorter_Core.New_Word_Field_Type(DATA_BITS, COMP_LOW, COMP_HIGH, INFO_BITS);
@@ -222,25 +222,25 @@ architecture RTL of Merge_Sorter_Core_Main is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    stream_intake_word    :  std_logic_vector(IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    stream_intake_last    :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    stream_intake_valid   :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    stream_intake_ready   :  std_logic_vector(IN_NUM                    -1 downto 0);
+    signal    stream_intake_word    :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
+    signal    stream_intake_last    :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    stream_intake_valid   :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    stream_intake_ready   :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
     signal    stream_intake_start   :  std_logic;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    fifo_intake_word      :  std_logic_vector(IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    fifo_intake_last      :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    fifo_intake_valid     :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    fifo_intake_ready     :  std_logic_vector(IN_NUM                    -1 downto 0);
+    signal    fifo_intake_word      :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
+    signal    fifo_intake_last      :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    fifo_intake_valid     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    fifo_intake_ready     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    sort_intake_word      :  std_logic_vector(IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    sort_intake_last      :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    sort_intake_valid     :  std_logic_vector(IN_NUM                    -1 downto 0);
-    signal    sort_intake_ready     :  std_logic_vector(IN_NUM                    -1 downto 0);
+    signal    sort_intake_word      :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
+    signal    sort_intake_last      :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    sort_intake_valid     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    sort_intake_ready     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -252,10 +252,10 @@ architecture RTL of Merge_Sorter_Core_Main is
     --
     -------------------------------------------------------------------------------
     signal    fifo_stream_req       :  std_logic;
-    signal    fifo_stream_ack       :  std_logic_vector(IN_NUM-1 downto 0);
-    signal    fifo_stream_done      :  std_logic_vector(IN_NUM-1 downto 0);
+    signal    fifo_stream_ack       :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal    fifo_stream_done      :  std_logic_vector(MRG_IN_NUM-1 downto 0);
     signal    fifo_merge_req        :  std_logic;
-    signal    fifo_merge_ack        :  std_logic_vector(IN_NUM-1 downto 0);
+    signal    fifo_merge_ack        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -264,8 +264,8 @@ architecture RTL of Merge_Sorter_Core_Main is
     signal    feedback_out_last     :  std_logic;
     signal    feedback_word         :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
     signal    feedback_last         :  std_logic;
-    signal    feedback_valid        :  std_logic_vector(IN_NUM             -1 downto 0);
-    signal    feedback_ready        :  std_logic_vector(IN_NUM             -1 downto 0);
+    signal    feedback_valid        :  std_logic_vector(MRG_IN_NUM         -1 downto 0);
+    signal    feedback_ready        :  std_logic_vector(MRG_IN_NUM         -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -299,7 +299,7 @@ architecture RTL of Merge_Sorter_Core_Main is
                                         MERGE_RES_STATE
                                        );
     signal    curr_state           :  STATE_TYPE;
-    constant  ACK_ALL_1            :  std_logic_vector(IN_NUM-1 downto 0) := (others => '1');
+    constant  ACK_ALL_1            :  std_logic_vector(MRG_IN_NUM-1 downto 0) := (others => '1');
 begin
     -------------------------------------------------------------------------------
     --
@@ -313,21 +313,21 @@ begin
             else
                 case curr_state is
                     when IDLE_STATE         =>
-                        if    (STM_ENABLE = TRUE and STM_REQ_VALID = '1') then
+                        if    (STM_IN_ENABLE = TRUE and STM_REQ_VALID = '1') then
                             curr_state <= STREAM_INIT_STATE;
-                        elsif (MRG_ENABLE = TRUE and MRG_REQ_VALID = '1') then
+                        elsif (MRG_IN_ENABLE = TRUE and MRG_REQ_VALID = '1') then
                             curr_state <= MERGE_INIT_STATE;
                         else
                             curr_state <= IDLE_STATE;
                         end if;
                     when STREAM_INIT_STATE  =>
-                        if (STM_ENABLE = FALSE) then
+                        if (STM_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= STREAM_RUN_STATE;
                         end if;
                     when STREAM_RUN_STATE   =>
-                        if    (STM_ENABLE = FALSE) then
+                        if    (STM_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (STM_FEEDBACK = 0) then
                             if    (feedback_out_start = '1' and feedback_out_last = '1') then
@@ -347,13 +347,13 @@ begin
                             end if;
                         end if;
                     when STREAM_NEXT_STATE  =>
-                        if    (STM_ENABLE = FALSE) then
+                        if    (STM_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= STREAM_RUN_STATE;
                         end if;
                     when STREAM_EXIT_STATE  =>
-                        if    (STM_ENABLE = FALSE) then
+                        if    (STM_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (stream_out_done = '1') then
                             curr_state <= STREAM_RES_STATE;
@@ -361,7 +361,7 @@ begin
                             curr_state <= STREAM_EXIT_STATE;
                         end if;
                     when STREAM_RES_STATE   =>
-                        if    (STM_ENABLE = FALSE) then
+                        if    (STM_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (STM_RES_READY = '1') then
                             curr_state <= IDLE_STATE;
@@ -369,13 +369,13 @@ begin
                             curr_state <= STREAM_RES_STATE;
                         end if;
                     when MERGE_INIT_STATE   =>
-                        if (MRG_ENABLE = FALSE) then
+                        if (MRG_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         else
                             curr_state <= MERGE_RUN_STATE;
                         end if;
                     when MERGE_RUN_STATE    =>
-                        if    (MRG_ENABLE = FALSE) then
+                        if    (MRG_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (fifo_merge_ack = ACK_ALL_1) then
                             curr_state <= MERGE_EXIT_STATE;
@@ -383,7 +383,7 @@ begin
                             curr_state <= MERGE_RUN_STATE;
                         end if;
                     when MERGE_EXIT_STATE   =>
-                        if    (MRG_ENABLE = FALSE) then
+                        if    (MRG_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (merge_out_done = '1') then
                             curr_state <= MERGE_RES_STATE;
@@ -391,7 +391,7 @@ begin
                             curr_state <= MERGE_EXIT_STATE;
                         end if;
                     when MERGE_RES_STATE   =>
-                        if    (MRG_ENABLE = FALSE) then
+                        if    (MRG_IN_ENABLE = FALSE) then
                             curr_state <= IDLE_STATE;
                         elsif (MRG_RES_READY = '1') then
                             curr_state <= IDLE_STATE;
@@ -431,14 +431,14 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    STM_INTAKE: if (STM_ENABLE = TRUE) generate          -- 
+    STM_INTAKE: if (STM_IN_ENABLE = TRUE) generate          -- 
         QUEUE: Merge_Sorter_Core_Stream_Intake           -- 
             generic map (                                --
                 WORD_PARAM      => FWD_WORD_PARAM      , -- 
-                O_NUM           => IN_NUM              , -- 
+                O_NUM           => MRG_IN_NUM          , -- 
                 I_NUM           => STM_IN_NUM          , -- 
                 FEEDBACK        => STM_FEEDBACK        , -- 
-                O_NUM_BITS      => IN_NUM_BITS         , -- 
+                O_NUM_BITS      => MRG_IN_NUM_BITS     , -- 
                 SIZE_BITS       => SIZE_BITS           , -- 
                 INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
@@ -469,7 +469,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    STM_INTAKE_OFF: if (STM_ENABLE = FALSE) generate
+    STM_INTAKE_OFF: if (STM_IN_ENABLE = FALSE) generate
         stream_intake_word  <= (others => '0');
         stream_intake_last  <= (others => '0');
         stream_intake_valid <= (others => '0');
@@ -481,7 +481,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FIFO: for i in 0 to IN_NUM-1 generate
+    FIFO: for i in 0 to MRG_IN_NUM-1 generate
         signal   mrg_in_word    :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
     begin
         mrg_in_word(FBK_WORD_PARAM.DATA_HI downto FBK_WORD_PARAM.DATA_LO) <= MRG_IN_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
@@ -492,8 +492,8 @@ begin
             generic map (                                -- 
                 I_WORD_PARAM    => FBK_WORD_PARAM      , --
                 O_WORD_PARAM    => FWD_WORD_PARAM          , --
-                FBK_ENABLE      => (STM_ENABLE = TRUE and STM_FEEDBACK > 0), -- 
-                MRG_ENABLE      => MRG_ENABLE          , -- 
+                FBK_IN_ENABLE   => (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0), -- 
+                MRG_IN_ENABLE   => MRG_IN_ENABLE       , -- 
                 SIZE_BITS       => SIZE_BITS           , -- 
                 FIFO_SIZE       => FIFO_SIZE           , -- 
                 LEVEL_SIZE      => MRG_LEVEL_SIZE      , -- 
@@ -549,7 +549,7 @@ begin
         TREE: Merge_Sorter_Single_Way_Tree               -- 
             generic map (                                --
                 WORD_PARAM      => FWD_WORD_PARAM      , -- 
-                I_NUM           => IN_NUM              , -- 
+                I_NUM           => MRG_IN_NUM          , -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 
                 INFO_BITS       => 1                     -- 
@@ -571,12 +571,12 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FEEDBACK_ON: if (STM_ENABLE = TRUE and STM_FEEDBACK > 0) generate
+    FEEDBACK_ON: if (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0) generate
         signal    queue_i_word          :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
-        signal    queue_i_mask          :  std_logic_vector(IN_NUM-1 downto 0);
+        signal    queue_i_mask          :  std_logic_vector(MRG_IN_NUM-1 downto 0);
         signal    queue_i_valid         :  std_logic;
         signal    queue_i_ready         :  std_logic;
-        signal    queue_o_mask          :  std_logic_vector(IN_NUM-1 downto 0);
+        signal    queue_o_mask          :  std_logic_vector(MRG_IN_NUM-1 downto 0);
         signal    queue_o_valid         :  std_logic;
         signal    queue_o_ready         :  std_logic;
     begin
@@ -584,7 +584,7 @@ begin
         --
         ---------------------------------------------------------------------------
         process (sort_outlet_word)
-            variable num : unsigned(IN_NUM_BITS-1 downto 0);
+            variable num : unsigned(MRG_IN_NUM_BITS-1 downto 0);
         begin
             num := to_01(unsigned(sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto FWD_WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO)), '0');
             for i in queue_i_mask'range loop
@@ -608,7 +608,7 @@ begin
             generic map (                                --
                 WORD_PARAM      => FBK_WORD_PARAM      , -- 
                 QUEUE_SIZE      => 2                   , -- 
-                INFO_BITS       => IN_NUM                -- 
+                INFO_BITS       => MRG_IN_NUM            -- 
             )                                            -- 
             port map (                                   -- 
                 CLK             => CLK                 , -- In  :
@@ -634,7 +634,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FEEDBACK_OFF: if (STM_ENABLE = FALSE or STM_FEEDBACK = 0) generate
+    FEEDBACK_OFF: if (STM_IN_ENABLE = FALSE or STM_FEEDBACK = 0) generate
         outlet_i_valid    <= sort_outlet_valid;
         sort_outlet_ready <= outlet_i_ready;
         feedback_word     <= (others => '0');
@@ -687,7 +687,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        STM_ON: if (STM_ENABLE = TRUE) generate
+        STM_ON: if (STM_IN_ENABLE = TRUE) generate
             signal   stream_o_done :  std_logic;
             signal   stream_q_done :  std_logic;
         begin 
@@ -714,7 +714,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        STM_OFF: if (STM_ENABLE = FALSE) generate
+        STM_OFF: if (STM_IN_ENABLE = FALSE) generate
             STM_OUT_DATA    <= (others => '0');
             STM_OUT_LAST    <= '0';
             STM_OUT_VALID   <= '0';
@@ -725,7 +725,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        MRG_ON: if (MRG_ENABLE = TRUE) generate
+        MRG_ON: if (MRG_IN_ENABLE = TRUE) generate
             signal   merge_o_done :  std_logic;
             signal   merge_q_done :  std_logic;
         begin
@@ -752,7 +752,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        MRG_OFF: if (MRG_ENABLE = FALSE) generate
+        MRG_OFF: if (MRG_IN_ENABLE = FALSE) generate
             MRG_OUT_DATA    <= (others => '0');
             MRG_OUT_LAST    <= '0';
             MRG_OUT_VALID   <= '0';

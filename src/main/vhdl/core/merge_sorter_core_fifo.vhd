@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core_fifo.vhd
 --!     @brief   Merge Sorter Core Fifo Module :
 --!     @version 0.1.0
---!     @date    2018/6/15
+--!     @date    2018/6/25
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -42,8 +42,8 @@ entity  Merge_Sorter_Core_Fifo is
     generic (
         I_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
         O_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8,5);
-        FBK_ENABLE      :  boolean := TRUE;
-        MRG_ENABLE      :  boolean := TRUE;
+        FBK_IN_ENABLE   :  boolean := TRUE;
+        MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
         FIFO_SIZE       :  integer :=   64;
         LEVEL_SIZE      :  integer :=   32;
@@ -177,10 +177,10 @@ begin
                 else
                     case curr_state is
                         when IDLE_STATE =>
-                            if    (FBK_ENABLE = TRUE and FBK_REQ = '1') then
+                            if    (FBK_IN_ENABLE = TRUE and FBK_REQ = '1') then
                                 curr_state         <= FBK_RUN_STATE;
                                 fifo_outlet_enable <= '0';
-                            elsif (MRG_ENABLE = TRUE and MRG_REQ = '1') then
+                            elsif (MRG_IN_ENABLE = TRUE and MRG_REQ = '1') then
                                 curr_state         <= MRG_RUN_STATE;
                                 fifo_outlet_enable <= '1';
                             else
@@ -239,7 +239,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        FBK_CTRL: if (FBK_ENABLE = TRUE) generate
+        FBK_CTRL: if (FBK_IN_ENABLE = TRUE) generate
             signal    intake_enable  :  boolean;
             signal    outlet_counter :  std_logic_vector(SIZE_BITS-1 downto 0);
             signal    outlet_next    :  boolean;
@@ -340,7 +340,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        FBK_NONE: if (FBK_ENABLE = FALSE) generate
+        FBK_NONE: if (FBK_IN_ENABLE = FALSE) generate
             fbk_state_done    <= TRUE;
             fbk_outlet_enable <= FALSE;
             fbk_outlet_eblk   <= '0';
@@ -357,7 +357,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        MRG_CTRL: if (MRG_ENABLE = TRUE) generate
+        MRG_CTRL: if (MRG_IN_ENABLE = TRUE) generate
             signal    fifo_flush    :  boolean;
         begin
             -----------------------------------------------------------------------
@@ -418,7 +418,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        MRG_NONE: if (MRG_ENABLE = FALSE) generate
+        MRG_NONE: if (MRG_IN_ENABLE = FALSE) generate
             mrg_state_done    <= TRUE;
             mrg_outlet_enable <= FALSE;
             mrg_outlet_eblk   <= '0';
