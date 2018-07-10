@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_merge_reader.vhd
---!     @brief   Merge Sorter merge_reader Module :
+--!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.1.0
---!     @date    2018/6/25
+--!     @date    2018/7/10
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,11 +37,11 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Merge_Sorter_Interface;
 entity  Merge_Sorter_Merge_Reader is
     generic (
         IN_NUM          :  integer :=  8;
-        REG_PARAM       :  Merge_Sorter_Core.Pump_Regs_Field_Type := Merge_Sorter_Core.Default_Pump_Regs_Param;
+        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         MRG_DATA_BITS   :  integer := 64;
@@ -138,7 +138,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Merge_Sorter_Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.QUEUE_ARBITER;
@@ -294,7 +294,7 @@ begin
                 SHIFT       => arb_shift     -- In  :
             );                               --
         arb_request <= i_req_valid and i_flow_ready;
-        arb_shift   <= '1' when ((ACK_VALID and curr_req) /= ARB_NULL) else '0';
+        arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.1.0
---!     @date    2018/6/25
+--!     @date    2018/7/10
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Merge_Sorter_Interface;
 entity  Merge_Sorter_ArgSort_Reader is
     generic (
-        REG_PARAM       :  Merge_Sorter_Core.Pump_Regs_Field_Type := Merge_Sorter_Core.Default_Pump_Regs_Param;
+        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
@@ -140,7 +140,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Merge_Sorter_Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
@@ -194,7 +194,7 @@ architecture RTL of Merge_Sorter_ArgSort_Reader is
     signal    comp_strb             :  std_logic_vector(STM_NUM*STM_COMP_BITS/8-1 downto 0);
     signal    comp_last             :  std_logic;
     signal    comp_valid            :  std_logic;
-    signal    comp_last             :  std_logic;
+    signal    comp_ready            :  std_logic;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
