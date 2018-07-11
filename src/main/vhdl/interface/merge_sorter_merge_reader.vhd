@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.1.0
---!     @date    2018/7/10
+--!     @date    2018/7/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -131,9 +131,18 @@ entity  Merge_Sorter_Merge_Reader is
         I_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
         I_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
         I_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_IRQ           :  out std_logic_vector(IN_NUM               -1 downto 0)
+    -------------------------------------------------------------------------------
+    -- Outlet Status Output.
+    -------------------------------------------------------------------------------
+        O_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0)
     );
 end Merge_Sorter_Merge_Reader;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
@@ -394,8 +403,8 @@ begin
         signal    o_end_of_blk      :  std_logic;
         signal    o_size_zero       :  std_logic;
         signal    o_reset           :  std_logic;
-        signal    o_open            :  std_logic;
-        signal    o_done            :  std_logic;
+        signal    o_open_channel    :  std_logic;
+        signal    o_done_channel    :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, END_NONE_STATE);
         signal    curr_state        :  STATE_TYPE;
     begin
@@ -574,10 +583,10 @@ begin
             -----------------------------------------------------------------------
             -- Outlet Status.
             -----------------------------------------------------------------------
-                O_OPEN              => o_open                  , --  Out :
-                O_RUNNING           => open                    , --  Out :
-                O_DONE              => o_done                  , --  Out :
-                O_ERROR             => open                    , --  Out :
+                O_OPEN              => o_open_channel          , --  Out :
+                O_RUNNING           => O_RUNNING     (channel) , --  Out :
+                O_DONE              => o_done_channel          , --  Out :
+                O_ERROR             => O_ERROR       (channel) , --  Out :
             -----------------------------------------------------------------------
             -- Outlet Open/Close Infomation Interface
             -----------------------------------------------------------------------
@@ -651,15 +660,15 @@ begin
                                 curr_state <= MRG_NONE_STATE;
                             end if;
                         when END_NONE_STATE =>
-                            if (o_open = '0') or
-                               (o_open = '1' and o_done = '1') then
+                            if (o_open_channel = '0') or
+                               (o_open_channel = '1' and o_done_channel = '1') then
                                 curr_state <= IDLE_STATE;
                             else
                                 curr_state <= END_NONE_STATE;
                             end if;
                         when MRG_READ_STATE =>
-                            if (o_open = '0') or
-                               (o_open = '1' and o_done = '1') then
+                            if (o_open_channel = '0') or
+                               (o_open_channel = '1' and o_done_channel = '1') then
                                 curr_state <= IDLE_STATE;
                             else
                                 curr_state <= MRG_READ_STATE;
@@ -670,6 +679,11 @@ begin
                 end if;
             end if;
         end process;
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
+        O_OPEN(channel) <= o_open_channel;
+        O_DONE(channel) <= o_done_channel;
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------

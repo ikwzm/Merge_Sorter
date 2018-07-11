@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_interface_components.vhd                           --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.1.0                                                           --
---!     @date    2018/07/10                                                      --
+--!     @date    2018/07/11                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -139,7 +139,13 @@ component Merge_Sorter_Merge_Reader
         I_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
         I_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
         I_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_IRQ           :  out std_logic_vector(IN_NUM               -1 downto 0)
+    -------------------------------------------------------------------------------
+    -- Outlet Status Output.
+    -------------------------------------------------------------------------------
+        O_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
+        O_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0)
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -229,13 +235,19 @@ component Merge_Sorter_Merge_Writer
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
     -------------------------------------------------------------------------------
+    -- Outlet Status Output.
+    -------------------------------------------------------------------------------
+        O_OPEN          :  out std_logic;
+        O_RUNNING       :  out std_logic;
+        O_DONE          :  out std_logic;
+        O_ERROR         :  out std_logic;
+    -------------------------------------------------------------------------------
     -- Intake Status Output.
     -------------------------------------------------------------------------------
         I_OPEN          :  out std_logic;
         I_RUNNING       :  out std_logic;
         I_DONE          :  out std_logic;
-        I_ERROR         :  out std_logic;
-        I_IRQ           :  out std_logic
+        I_ERROR         :  out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -322,7 +334,7 @@ component Merge_Sorter_ArgSort_Reader
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
     -------------------------------------------------------------------------------
-    -- Merge Outlet Signals.
+    -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
         STM_STRB        :  out std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
@@ -336,7 +348,13 @@ component Merge_Sorter_ArgSort_Reader
         I_RUNNING       :  out std_logic;
         I_DONE          :  out std_logic;
         I_ERROR         :  out std_logic;
-        I_IRQ           :  out std_logic
+    -------------------------------------------------------------------------------
+    -- Outlet Status Output.
+    -------------------------------------------------------------------------------
+        O_OPEN          :  out std_logic;
+        O_RUNNING       :  out std_logic;
+        O_DONE          :  out std_logic;
+        O_ERROR         :  out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -436,7 +454,13 @@ component Merge_Sorter_ArgSort_Writer
         O_RUNNING       :  out std_logic;
         O_DONE          :  out std_logic;
         O_ERROR         :  out std_logic;
-        O_IRQ           :  out std_logic
+    -------------------------------------------------------------------------------
+    -- Intake Status Output.
+    -------------------------------------------------------------------------------
+        I_OPEN          :  out std_logic;
+        I_RUNNING       :  out std_logic;
+        I_DONE          :  out std_logic;
+        I_ERROR         :  out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -444,7 +468,7 @@ end component;
 -----------------------------------------------------------------------------------
 component Merge_Sorter_Interface_Controller
     generic (
-        MRG_IN_NUM          :  integer :=    8;
+        MRG_RD_NUM          :  integer :=    8;
         STM_FEEDBACK        :  integer :=    1;
         STM_RD_DATA_BITS    :  integer :=   32;
         STM_WR_DATA_BITS    :  integer :=   32;
@@ -458,9 +482,15 @@ component Merge_Sorter_Interface_Controller
         STM_WR_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param
     );
     port (
+    -------------------------------------------------------------------------------
+    -- Clock/Reset Signals.
+    -------------------------------------------------------------------------------
         CLK                 :  in  std_logic;
         RST                 :  in  std_logic;
         CLR                 :  in  std_logic;
+    -------------------------------------------------------------------------------
+    -- Register Interface
+    -------------------------------------------------------------------------------
         REG_RD_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
         REG_RD_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
         REG_RD_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
@@ -475,7 +505,7 @@ component Merge_Sorter_Interface_Controller
         REG_T1_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
         REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
         REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_Q          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
+        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS-1 downto 0);
         REG_RD_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
         REG_RD_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
         REG_RD_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
@@ -494,39 +524,53 @@ component Merge_Sorter_Interface_Controller
         REG_RESET_L         :  in  std_logic;
         REG_RESET_D         :  in  std_logic;
         REG_RESET_Q         :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Merge Sorter Core Control Interface
+    -------------------------------------------------------------------------------
         STM_REQ_VALID       :  out std_logic;
         STM_REQ_READY       :  in  std_logic;
         STM_RES_VALID       :  in  std_logic;
         STM_RES_READY       :  out std_logic;
+        MRG_REQ_VALID       :  out std_logic;
+        MRG_REQ_READY       :  in  std_logic;
+        MRG_RES_VALID       :  in  std_logic;
+        MRG_RES_READY       :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Stream Reader Control Register Interface
+    -------------------------------------------------------------------------------
         STM_RD_REG_L        :  out std_logic_vector(           STM_RD_REG_PARAM.BITS-1 downto 0);
         STM_RD_REG_D        :  out std_logic_vector(           STM_RD_REG_PARAM.BITS-1 downto 0);
         STM_RD_REG_Q        :  in  std_logic_vector(           STM_RD_REG_PARAM.BITS-1 downto 0);
         STM_RD_BUSY         :  in  std_logic;
         STM_RD_DONE         :  in  std_logic;
         STM_RD_ERROR        :  in  std_logic;
+    -------------------------------------------------------------------------------
+    -- Stream Writer Control Register Interface
+    -------------------------------------------------------------------------------
         STM_WR_REG_L        :  out std_logic_vector(           STM_WR_REG_PARAM.BITS-1 downto 0);
         STM_WR_REG_D        :  out std_logic_vector(           STM_WR_REG_PARAM.BITS-1 downto 0);
         STM_WR_REG_Q        :  in  std_logic_vector(           STM_WR_REG_PARAM.BITS-1 downto 0);
         STM_WR_BUSY         :  in  std_logic;
         STM_WR_DONE         :  in  std_logic;
         STM_WR_ERROR        :  in  std_logic;
-        MRG_REQ_VALID       :  out std_logic;
-        MRG_REQ_READY       :  in  std_logic;
-        MRG_RES_VALID       :  in  std_logic;
-        MRG_RES_READY       :  out std_logic;
-        MRG_RD_REG_L        :  out std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_D        :  out std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_Q        :  in  std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_BUSY         :  in  std_logic_vector(MRG_IN_NUM                      -1 downto 0);
-        MRG_RD_DONE         :  in  std_logic_vector(MRG_IN_NUM                      -1 downto 0);
-        MRG_RD_ERROR        :  in  std_logic_vector(MRG_IN_NUM                      -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- Merge Reader Control Register Interface
+    -------------------------------------------------------------------------------
+        MRG_RD_REG_L        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_D        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_Q        :  in  std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_BUSY         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
+        MRG_RD_DONE         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
+        MRG_RD_ERROR        :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- Merge Writer Control Register Interface
+    -------------------------------------------------------------------------------
         MRG_WR_REG_L        :  out std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_REG_D        :  out std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_REG_Q        :  in  std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_BUSY         :  in  std_logic;
         MRG_WR_DONE         :  in  std_logic;
-        MRG_WR_ERROR        :  in  std_logic;
-        IRQ                 :  out std_logic
+        MRG_WR_ERROR        :  in  std_logic
     );
 end component;
 end Merge_Sorter_Interface_Components;

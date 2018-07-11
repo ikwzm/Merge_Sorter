@@ -132,9 +132,18 @@ entity  Merge_Sorter_ArgSort_Writer is
         O_RUNNING       :  out std_logic;
         O_DONE          :  out std_logic;
         O_ERROR         :  out std_logic;
-        O_IRQ           :  out std_logic
+    -------------------------------------------------------------------------------
+    -- Intake Status Output.
+    -------------------------------------------------------------------------------
+        I_OPEN          :  out std_logic;
+        I_RUNNING       :  out std_logic;
+        I_DONE          :  out std_logic;
+        I_ERROR         :  out std_logic
     );
 end Merge_Sorter_ArgSort_Writer;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
@@ -376,10 +385,10 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
-            I_OPEN              => open                                , --  Out :
-            I_RUNNING           => open                                , --  Out :
-            I_DONE              => open                                , --  Out :
-            I_ERROR             => open                                , --  Out :
+            I_OPEN              => I_OPEN                              , --  Out :
+            I_RUNNING           => I_RUNNING                           , --  Out :
+            I_DONE              => I_DONE                              , --  Out :
+            I_ERROR             => I_ERROR                             , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Open/Close Infomation Interface
         ---------------------------------------------------------------------------

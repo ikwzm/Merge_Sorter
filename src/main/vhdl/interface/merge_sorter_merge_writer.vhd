@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
 --!     @version 0.1.0
---!     @date    2018/7/10
+--!     @date    2018/7/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -122,15 +122,24 @@ entity  Merge_Sorter_Merge_Writer is
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
     -------------------------------------------------------------------------------
-    -- Intake Status Output.
+    -- Outlet Status Output.
     -------------------------------------------------------------------------------
         O_OPEN          :  out std_logic;
         O_RUNNING       :  out std_logic;
         O_DONE          :  out std_logic;
         O_ERROR         :  out std_logic;
-        O_IRQ           :  out std_logic
+    -------------------------------------------------------------------------------
+    -- Intake Status Output.
+    -------------------------------------------------------------------------------
+        I_OPEN          :  out std_logic;
+        I_RUNNING       :  out std_logic;
+        I_DONE          :  out std_logic;
+        I_ERROR         :  out std_logic
     );
 end Merge_Sorter_Merge_Writer;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
@@ -359,10 +368,10 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
-            I_OPEN              => open                                , --  Out :
-            I_RUNNING           => open                                , --  Out :
-            I_DONE              => open                                , --  Out :
-            I_ERROR             => open                                , --  Out :
+            I_OPEN              => I_OPEN                              , --  Out :
+            I_RUNNING           => I_RUNNING                           , --  Out :
+            I_DONE              => I_DONE                              , --  Out :
+            I_ERROR             => I_ERROR                             , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Open/Close Infomation Interface
         ---------------------------------------------------------------------------

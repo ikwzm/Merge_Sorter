@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.1.0
---!     @date    2018/7/10
+--!     @date    2018/7/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -119,7 +119,7 @@ entity  Merge_Sorter_ArgSort_Reader is
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
     -------------------------------------------------------------------------------
-    -- Merge Outlet Signals.
+    -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
         STM_STRB        :  out std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
@@ -133,9 +133,18 @@ entity  Merge_Sorter_ArgSort_Reader is
         I_RUNNING       :  out std_logic;
         I_DONE          :  out std_logic;
         I_ERROR         :  out std_logic;
-        I_IRQ           :  out std_logic
+    -------------------------------------------------------------------------------
+    -- Outlet Status Output.
+    -------------------------------------------------------------------------------
+        O_OPEN          :  out std_logic;
+        O_RUNNING       :  out std_logic;
+        O_DONE          :  out std_logic;
+        O_ERROR         :  out std_logic
     );
 end Merge_Sorter_ArgSort_Reader;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
@@ -376,10 +385,10 @@ begin
         ---------------------------------------------------------------------------
         -- Outlet Status.
         ---------------------------------------------------------------------------
-            O_OPEN              => open                    , --  Out :
-            O_RUNNING           => open                    , --  Out :
-            O_DONE              => open                    , --  Out :
-            O_ERROR             => open                    , --  Out :
+            O_OPEN              => O_OPEN                  , --  Out :
+            O_RUNNING           => O_RUNNING               , --  Out :
+            O_DONE              => O_DONE                  , --  Out :
+            O_ERROR             => O_ERROR                 , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Open/Close Infomation Interface
         ---------------------------------------------------------------------------
