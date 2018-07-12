@@ -47,10 +47,11 @@ entity  Core_Intake_Fifo is
         SIZE_BITS       :  integer :=    6;
         FIFO_SIZE       :  integer :=   64;
         LEVEL_SIZE      :  integer :=   32;
+        INFO_BITS       :  integer :=    8;
         INFO_EBLK_POS   :  integer :=    0;
         INFO_FBK_POS    :  integer :=    1;
         INFO_FBK_NUM_LO :  integer :=    2;
-        INFO_FBK_NUM_HI :  integer :=    6
+        INFO_FBK_NUM_HI :  integer :=    7
     );
     port (
         CLK             :  in  std_logic;
@@ -75,6 +76,7 @@ entity  Core_Intake_Fifo is
         MRG_IN_READY    :  out std_logic;
         MRG_IN_LEVEL    :  out std_logic;
         OUTLET_WORD     :  out std_logic_vector(O_WORD_PARAM.BITS-1 downto 0);
+        OUTLET_INFO     :  out std_logic_vector(INFO_BITS        -1 downto 0);
         OUTLET_LAST     :  out std_logic;
         OUTLET_VALID    :  out std_logic;
         OUTLET_READY    :  in  std_logic
@@ -118,6 +120,7 @@ begin
         MRG_IN_READY <= '0';
         MRG_IN_LEVEL <= '0';
         OUTLET_WORD  <= (others => '0');
+        OUTLET_INFO  <= (others => '0');
         OUTLET_LAST  <= '0';
         OUTLET_VALID <= '0';
     end generate;
@@ -433,22 +436,26 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (fifo_outlet_enable, fifo_outlet_word, fbk_outlet_eblk, fbk_outlet_next, fbk_outlet_num, mrg_outlet_eblk)
-            constant O_WORD_INFO_EBLK_POS   : integer := O_WORD_PARAM.INFO_LO+INFO_EBLK_POS;
-            constant O_WORD_INFO_FBK_POS    : integer := O_WORD_PARAM.INFO_LO+INFO_FBK_POS;
-            constant O_WORD_INFO_FBK_NUM_LO : integer := O_WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO;
-            constant O_WORD_INFO_FBK_NUM_HI : integer := O_WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI;
-        begin
+        process (fifo_outlet_enable, fifo_outlet_word) begin
             if (fifo_outlet_enable = '1') then
-                OUTLET_WORD(O_WORD_PARAM.DATA_HI   downto O_WORD_PARAM.DATA_LO  ) <= fifo_outlet_word(FIFO_WORD_DATA_HI downto FIFO_WORD_DATA_LO);
-                OUTLET_WORD(O_WORD_PARAM.ATRB_NONE_POS                          ) <= fifo_outlet_word(FIFO_WORD_ATRB_NONE_POS);
-                OUTLET_WORD(O_WORD_PARAM.ATRB_PRIORITY_POS                      ) <= fifo_outlet_word(FIFO_WORD_ATRB_PRIO_POS);
-                OUTLET_WORD(O_WORD_PARAM.ATRB_POSTPEND_POS                      ) <= fifo_outlet_word(FIFO_WORD_ATRB_POST_POS);
-                OUTLET_WORD(O_WORD_INFO_EBLK_POS                                ) <= fbk_outlet_eblk or mrg_outlet_eblk;
-                OUTLET_WORD(O_WORD_INFO_FBK_POS                                 ) <= fbk_outlet_next;
-                OUTLET_WORD(O_WORD_INFO_FBK_NUM_HI downto O_WORD_INFO_FBK_NUM_LO) <= fbk_outlet_num;
+                OUTLET_WORD(O_WORD_PARAM.DATA_HI downto O_WORD_PARAM.DATA_LO) <= fifo_outlet_word(FIFO_WORD_DATA_HI downto FIFO_WORD_DATA_LO);
+                OUTLET_WORD(O_WORD_PARAM.ATRB_NONE_POS                      ) <= fifo_outlet_word(FIFO_WORD_ATRB_NONE_POS);
+                OUTLET_WORD(O_WORD_PARAM.ATRB_PRIORITY_POS                  ) <= fifo_outlet_word(FIFO_WORD_ATRB_PRIO_POS);
+                OUTLET_WORD(O_WORD_PARAM.ATRB_POSTPEND_POS                  ) <= fifo_outlet_word(FIFO_WORD_ATRB_POST_POS);
             else
                 OUTLET_WORD <= (others => '0');
+            end if;
+        end process;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        process (fifo_outlet_enable, fbk_outlet_eblk, fbk_outlet_next, fbk_outlet_num, mrg_outlet_eblk) begin
+            if (fifo_outlet_enable = '1') then
+                OUTLET_INFO(INFO_EBLK_POS                         ) <= fbk_outlet_eblk or mrg_outlet_eblk;
+                OUTLET_INFO(INFO_FBK_POS                          ) <= fbk_outlet_next;
+                OUTLET_INFO(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) <= fbk_outlet_num;
+            else
+                OUTLET_INFO <= (others => '0');
             end if;
         end process;
         ---------------------------------------------------------------------------

@@ -46,10 +46,11 @@ entity  Core_Stream_Intake is
         FEEDBACK        :  integer :=  1;
         O_NUM_BITS      :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
+        INFO_BITS       :  integer :=  8;
         INFO_EBLK_POS   :  integer :=  0;
         INFO_FBK_POS    :  integer :=  1;
         INFO_FBK_NUM_LO :  integer :=  2;
-        INFO_FBK_NUM_HI :  integer :=  5
+        INFO_FBK_NUM_HI :  integer :=  7
     );
     port (
         CLK             :  in  std_logic;
@@ -67,6 +68,7 @@ entity  Core_Stream_Intake is
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
         O_WORD          :  out std_logic_vector(O_NUM*WORD_PARAM.BITS     -1 downto 0);
+        O_INFO          :  out std_logic_vector(O_NUM*INFO_BITS           -1 downto 0);
         O_LAST          :  out std_logic_vector(O_NUM                     -1 downto 0);
         O_VALID         :  out std_logic_vector(O_NUM                     -1 downto 0);
         O_READY         :  in  std_logic_vector(O_NUM                     -1 downto 0)
@@ -194,6 +196,7 @@ begin
     -------------------------------------------------------------------------------
     process (curr_state, intake_data, intake_number, queue_valid, intake_first, intake_last)
         variable word      :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        variable info      :  std_logic_vector(INFO_BITS      -1 downto 0);
         constant null_data :  std_logic_vector(DATA_BITS      -1 downto 0) := (others => '0');
     begin
         if (curr_state = INTAKE_STATE) then
@@ -210,18 +213,19 @@ begin
                 end if;
                 if  (FEEDBACK     =  0  and intake_last = '1') or
                     (intake_first = '1' and intake_last = '1') then
-                    word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '1';
+                    info(INFO_EBLK_POS) := '1';
                 else
-                    word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '0';
+                    info(INFO_EBLK_POS) := '0';
                 end if;
                 if  (FEEDBACK     =  0                       ) or
                     (intake_first = '1' and intake_last = '1') then
-                    word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '0';
+                    info(INFO_FBK_POS ) := '0';
                 else
-                    word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '1';
+                    info(INFO_FBK_POS ) := '1';
                 end if;
-                word(WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO) := intake_number;
+                info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
                 O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
+                O_INFO((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= info;
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
             for i in 0 to O_NUM-1 loop
@@ -229,13 +233,15 @@ begin
                 word(WORD_PARAM.ATRB_NONE_POS        ) := '1';
                 word(WORD_PARAM.ATRB_PRIORITY_POS    ) := '0';
                 word(WORD_PARAM.ATRB_POSTPEND_POS    ) := '1';
-                word(WORD_PARAM.INFO_LO+INFO_EBLK_POS) := '0';
-                word(WORD_PARAM.INFO_LO+INFO_FBK_POS ) := '1';
-                word(WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO) := intake_number;
+                info(INFO_EBLK_POS) := '0';
+                info(INFO_FBK_POS ) := '1';
+                info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
                 O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
+                O_INFO((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= info;
             end loop;
         else
             O_WORD <= (others => '0');
+            O_INFO <= (others => '0');
         end if;
     end process;
     -------------------------------------------------------------------------------

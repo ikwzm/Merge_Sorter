@@ -49,7 +49,8 @@ entity  Merge_Sorter_Core is
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
         COMP_HIGH       :  integer :=   63;
-        COMP_LOW        :  integer :=    0
+        COMP_LOW        :  integer :=    0;
+        COMP_SIGN       :  boolean := FALSE
     );
     port (
         CLK             :  in  std_logic;
@@ -214,36 +215,39 @@ architecture RTL of Merge_Sorter_Core is
     constant  INFO_FBK_NUM_LO       :  integer := 2;
     constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + MRG_IN_NUM_BITS - 1;
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
-    constant  FWD_WORD_PARAM        :  Word.Param_Type
-                                    := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, INFO_BITS, FALSE);
-    constant  FBK_WORD_PARAM        :  Word.Param_Type
-                                    := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH,            FALSE);
+    constant  WORD_PARAM            :  Word.Param_Type
+                                    := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
+    constant  WORD_BITS             :  integer := WORD_PARAM.BITS;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    stream_intake_word    :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    stream_intake_last    :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    stream_intake_valid   :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    stream_intake_ready   :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    stream_intake_word    :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
+    signal    stream_intake_info    :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
+    signal    stream_intake_last    :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    stream_intake_valid   :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    stream_intake_ready   :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
     signal    stream_intake_start   :  std_logic;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    fifo_intake_word      :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    fifo_intake_last      :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    fifo_intake_valid     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    fifo_intake_ready     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    fifo_intake_word      :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
+    signal    fifo_intake_info      :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
+    signal    fifo_intake_last      :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    fifo_intake_valid     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    fifo_intake_ready     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    sort_intake_word      :  std_logic_vector(MRG_IN_NUM*FWD_WORD_PARAM.BITS-1 downto 0);
-    signal    sort_intake_last      :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    sort_intake_valid     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
-    signal    sort_intake_ready     :  std_logic_vector(MRG_IN_NUM                    -1 downto 0);
+    signal    sort_intake_word      :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
+    signal    sort_intake_info      :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
+    signal    sort_intake_last      :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    sort_intake_valid     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    sort_intake_ready     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    sort_outlet_word      :  std_logic_vector(FWD_WORD_PARAM.BITS-1 downto 0);
+    signal    sort_outlet_word      :  std_logic_vector(WORD_BITS -1 downto 0);
+    signal    sort_outlet_info      :  std_logic_vector(INFO_BITS -1 downto 0);
     signal    sort_outlet_last      :  std_logic;
     signal    sort_outlet_valid     :  std_logic;
     signal    sort_outlet_ready     :  std_logic;
@@ -259,16 +263,16 @@ architecture RTL of Merge_Sorter_Core is
     --
     -------------------------------------------------------------------------------
     signal    feedback_out_start    :  std_logic;
-    signal    feedback_out_size     :  std_logic_vector(SIZE_BITS          -1 downto 0);
+    signal    feedback_out_size     :  std_logic_vector(SIZE_BITS -1 downto 0);
     signal    feedback_out_last     :  std_logic;
-    signal    feedback_word         :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
+    signal    feedback_word         :  std_logic_vector(WORD_BITS -1 downto 0);
     signal    feedback_last         :  std_logic;
-    signal    feedback_valid        :  std_logic_vector(MRG_IN_NUM         -1 downto 0);
-    signal    feedback_ready        :  std_logic_vector(MRG_IN_NUM         -1 downto 0);
+    signal    feedback_valid        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal    feedback_ready        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    outlet_i_word         :  std_logic_vector(FWD_WORD_PARAM.BITS-1 downto 0);
+    signal    outlet_i_word         :  std_logic_vector(WORD_BITS -1 downto 0);
     signal    outlet_i_eblk         :  std_logic;
     signal    outlet_i_last         :  std_logic;
     signal    outlet_i_valid        :  std_logic;
@@ -433,12 +437,13 @@ begin
     STM_INTAKE: if (STM_IN_ENABLE = TRUE) generate       -- 
         QUEUE: Core_Stream_Intake                        -- 
             generic map (                                --
-                WORD_PARAM      => FWD_WORD_PARAM      , -- 
+                WORD_PARAM      => WORD_PARAM          , -- 
                 O_NUM           => MRG_IN_NUM          , -- 
                 I_NUM           => STM_IN_NUM          , -- 
                 FEEDBACK        => STM_FEEDBACK        , -- 
                 O_NUM_BITS      => MRG_IN_NUM_BITS     , -- 
-                SIZE_BITS       => SIZE_BITS           , -- 
+                SIZE_BITS       => SIZE_BITS           , --
+                INFO_BITS       => INFO_BITS           , --
                 INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
                 INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
@@ -460,6 +465,7 @@ begin
                 I_VALID         => STM_IN_VALID        , -- In  :
                 I_READY         => STM_IN_READY        , -- Out :
                 O_WORD          => stream_intake_word  , -- Out :
+                O_INFO          => stream_intake_info  , -- Out :
                 O_LAST          => stream_intake_last  , -- Out :
                 O_VALID         => stream_intake_valid , -- Out :
                 O_READY         => stream_intake_ready   -- In  :
@@ -470,6 +476,7 @@ begin
     -------------------------------------------------------------------------------
     STM_INTAKE_OFF: if (STM_IN_ENABLE = FALSE) generate
         stream_intake_word  <= (others => '0');
+        stream_intake_info  <= (others => '0');
         stream_intake_last  <= (others => '0');
         stream_intake_valid <= (others => '0');
         feedback_out_start  <= '0';
@@ -481,21 +488,22 @@ begin
     --
     -------------------------------------------------------------------------------
     FIFO: for i in 0 to MRG_IN_NUM-1 generate
-        signal   mrg_in_word    :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
+        signal   mrg_in_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
     begin
-        mrg_in_word(FBK_WORD_PARAM.DATA_HI downto FBK_WORD_PARAM.DATA_LO) <= MRG_IN_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
-        mrg_in_word(FBK_WORD_PARAM.ATRB_NONE_POS    ) <= MRG_IN_NONE(i);
-        mrg_in_word(FBK_WORD_PARAM.ATRB_PRIORITY_POS) <= '0';
-        mrg_in_word(FBK_WORD_PARAM.ATRB_POSTPEND_POS) <= MRG_IN_NONE(i);
+        mrg_in_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) <= MRG_IN_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
+        mrg_in_word(WORD_PARAM.ATRB_NONE_POS    ) <= MRG_IN_NONE(i);
+        mrg_in_word(WORD_PARAM.ATRB_PRIORITY_POS) <= '0';
+        mrg_in_word(WORD_PARAM.ATRB_POSTPEND_POS) <= MRG_IN_NONE(i);
         U: Core_Intake_Fifo                              -- 
             generic map (                                -- 
-                I_WORD_PARAM    => FBK_WORD_PARAM      , --
-                O_WORD_PARAM    => FWD_WORD_PARAM      , --
+                I_WORD_PARAM    => WORD_PARAM      , --
+                O_WORD_PARAM    => WORD_PARAM      , --
                 FBK_IN_ENABLE   => (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0), -- 
                 MRG_IN_ENABLE   => MRG_IN_ENABLE       , -- 
                 SIZE_BITS       => SIZE_BITS           , -- 
                 FIFO_SIZE       => FIFO_SIZE           , -- 
-                LEVEL_SIZE      => MRG_LEVEL_SIZE      , -- 
+                LEVEL_SIZE      => MRG_LEVEL_SIZE      , --
+                INFO_BITS       => INFO_BITS           , --
                 INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
                 INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
@@ -523,7 +531,8 @@ begin
                 MRG_IN_VALID    => MRG_IN_VALID     (i), -- In  :
                 MRG_IN_READY    => MRG_IN_READY     (i), -- Out :
                 MRG_IN_LEVEL    => MRG_IN_LEVEL     (i), -- Out :
-                OUTLET_WORD     => fifo_intake_word ((i+1)*FWD_WORD_PARAM.BITS-1 downto i*FWD_WORD_PARAM.BITS), -- Out :
+                OUTLET_WORD     => fifo_intake_word ((i+1)*WORD_BITS-1 downto i*WORD_BITS), -- Out :
+                OUTLET_INFO     => fifo_intake_info ((i+1)*INFO_BITS-1 downto i*INFO_BITS), -- Out :
                 OUTLET_LAST     => fifo_intake_last (i), -- Out :
                 OUTLET_VALID    => fifo_intake_valid(i), -- Out :
                 OUTLET_READY    => fifo_intake_ready(i)  -- In  :
@@ -535,6 +544,7 @@ begin
     INTAKE_WORD_SELECT: block
     begin
         sort_intake_word    <= stream_intake_word  or fifo_intake_word;
+        sort_intake_info    <= stream_intake_info  or fifo_intake_info;
         sort_intake_last    <= stream_intake_last  or fifo_intake_last;
         sort_intake_valid   <= stream_intake_valid or fifo_intake_valid;
         stream_intake_ready <= sort_intake_ready;
@@ -547,21 +557,23 @@ begin
     begin                                                -- 
         TREE: Single_Way_Tree                            -- 
             generic map (                                --
-                WORD_PARAM      => FWD_WORD_PARAM      , -- 
+                WORD_PARAM      => WORD_PARAM          , -- 
                 I_NUM           => MRG_IN_NUM          , -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 
-                INFO_BITS       => 1                     -- 
+                INFO_BITS       => INFO_BITS             -- 
             )                                            -- 
             port map (                                   -- 
                 CLK             => CLK                 , -- In  :
                 RST             => RST                 , -- In  :
                 CLR             => CLR                 , -- In  :
                 I_WORD          => sort_intake_word    , -- In  :
+                I_INFO          => sort_intake_info    , -- In  :
                 I_LAST          => sort_intake_last    , -- In  :
                 I_VALID         => sort_intake_valid   , -- In  :
                 I_READY         => sort_intake_ready   , -- Out :
                 O_WORD          => sort_outlet_word    , -- Out :
+                O_INFO          => sort_outlet_info    , -- Out :
                 O_LAST          => sort_outlet_last    , -- Out :
                 O_VALID         => sort_outlet_valid   , -- Out :
                 O_READY         => sort_outlet_ready     -- In  :
@@ -571,7 +583,6 @@ begin
     --
     -------------------------------------------------------------------------------
     FEEDBACK_ON: if (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0) generate
-        signal    queue_i_word          :  std_logic_vector(FBK_WORD_PARAM.BITS-1 downto 0);
         signal    queue_i_mask          :  std_logic_vector(MRG_IN_NUM-1 downto 0);
         signal    queue_i_valid         :  std_logic;
         signal    queue_i_ready         :  std_logic;
@@ -582,10 +593,10 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (sort_outlet_word)
+        process (sort_outlet_info)
             variable num : unsigned(MRG_IN_NUM_BITS-1 downto 0);
         begin
-            num := to_01(unsigned(sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_NUM_HI downto FWD_WORD_PARAM.INFO_LO+INFO_FBK_NUM_LO)), '0');
+            num := to_01(unsigned(sort_outlet_info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO)), '0');
             for i in queue_i_mask'range loop
                 if (i = num) then
                     queue_i_mask(i) <= '1';
@@ -594,18 +605,16 @@ begin
                 end if;
             end loop;
         end process;
-        sort_outlet_ready <= '1' when (sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_POS) = '0' and outlet_i_ready    = '1') or
-                                      (sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_POS) = '1' and queue_i_ready     = '1') else '0';
-        outlet_i_valid    <= '1' when (sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_POS) = '0' and sort_outlet_valid = '1') else '0';
-        queue_i_valid     <= '1' when (sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_FBK_POS) = '1' and sort_outlet_valid = '1') else '0';
-        queue_i_word(FBK_WORD_PARAM.DATA_HI downto FBK_WORD_PARAM.DATA_LO) <= sort_outlet_word(FWD_WORD_PARAM.DATA_HI downto FWD_WORD_PARAM.DATA_LO);
-        queue_i_word(FBK_WORD_PARAM.ATRB_HI downto FBK_WORD_PARAM.ATRB_LO) <= sort_outlet_word(FWD_WORD_PARAM.ATRB_HI downto FWD_WORD_PARAM.ATRB_LO);
+        sort_outlet_ready <= '1' when (sort_outlet_info(INFO_FBK_POS) = '0' and outlet_i_ready    = '1') or
+                                      (sort_outlet_info(INFO_FBK_POS) = '1' and queue_i_ready     = '1') else '0';
+        outlet_i_valid    <= '1' when (sort_outlet_info(INFO_FBK_POS) = '0' and sort_outlet_valid = '1') else '0';
+        queue_i_valid     <= '1' when (sort_outlet_info(INFO_FBK_POS) = '1' and sort_outlet_valid = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         QUEUE: Word_Queue                                -- 
             generic map (                                --
-                WORD_PARAM      => FBK_WORD_PARAM      , -- 
+                WORD_PARAM      => WORD_PARAM          , -- 
                 QUEUE_SIZE      => 2                   , -- 
                 INFO_BITS       => MRG_IN_NUM            -- 
             )                                            -- 
@@ -613,7 +622,7 @@ begin
                 CLK             => CLK                 , -- In  :
                 RST             => RST                 , -- In  :
                 CLR             => CLR                 , -- In  :
-                I_WORD          => queue_i_word        , -- In  :
+                I_WORD          => sort_outlet_word    , -- In  :
                 I_INFO          => queue_i_mask        , -- In  :
                 I_LAST          => sort_outlet_last    , -- In  :
                 I_VALID         => queue_i_valid       , -- In  :
@@ -644,7 +653,7 @@ begin
     --
     -------------------------------------------------------------------------------
     OUTLET: block
-        signal    outlet_o_word  :  std_logic_vector(FWD_WORD_PARAM.BITS-1 downto 0);
+        signal    outlet_o_word  :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         signal    outlet_o_last  :  std_logic;
         signal    outlet_o_valid :  std_logic;
         signal    outlet_o_ready :  std_logic;
@@ -657,14 +666,14 @@ begin
         --
         ---------------------------------------------------------------------------
         outlet_i_word <= sort_outlet_word;
-        outlet_i_eblk <= sort_outlet_word(FWD_WORD_PARAM.INFO_LO+INFO_EBLK_POS);
+        outlet_i_eblk <= sort_outlet_info(INFO_EBLK_POS);
         outlet_i_last <= '1' when (sort_outlet_last = '1' and outlet_i_eblk = '1') else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         QUEUE: Drop_None                                     -- 
             generic map (                                    -- 
-                WORD_PARAM      => FWD_WORD_PARAM          , -- 
+                WORD_PARAM      => WORD_PARAM              , -- 
                 INFO_BITS       => 1                         -- 
             )                                                -- 
             port map (                                       -- 
@@ -690,7 +699,7 @@ begin
             signal   stream_o_done :  std_logic;
             signal   stream_q_done :  std_logic;
         begin 
-            STM_OUT_DATA    <= outlet_o_word(FWD_WORD_PARAM.DATA_HI downto FWD_WORD_PARAM.DATA_LO);
+            STM_OUT_DATA    <= outlet_o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
             STM_OUT_LAST    <= outlet_o_last;
             STM_OUT_VALID   <= stream_q_valid;
             stream_q_valid  <= '1' when (stream_out_req = '1' and outlet_o_valid = '1') else '0';
@@ -728,7 +737,7 @@ begin
             signal   merge_o_done :  std_logic;
             signal   merge_q_done :  std_logic;
         begin
-            MRG_OUT_DATA    <= outlet_o_word(FWD_WORD_PARAM.DATA_HI downto FWD_WORD_PARAM.DATA_LO);
+            MRG_OUT_DATA    <= outlet_o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
             MRG_OUT_LAST    <= outlet_o_last;
             MRG_OUT_VALID   <= merge_q_valid;
             merge_q_valid   <= '1' when (merge_out_req = '1' and outlet_o_valid = '1') else '0';

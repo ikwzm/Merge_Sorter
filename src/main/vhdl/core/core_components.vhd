@@ -58,7 +58,8 @@ component Merge_Sorter_Core
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
         COMP_HIGH       :  integer :=   63;
-        COMP_LOW        :  integer :=    0
+        COMP_LOW        :  integer :=    0;
+        COMP_SIGN       :  boolean := FALSE
     );
     port (
         CLK             :  in  std_logic;
@@ -106,10 +107,11 @@ component Core_Intake_Fifo
         SIZE_BITS       :  integer :=    6;
         FIFO_SIZE       :  integer :=   64;
         LEVEL_SIZE      :  integer :=   32;
+        INFO_BITS       :  integer :=    8;
         INFO_EBLK_POS   :  integer :=    0;
         INFO_FBK_POS    :  integer :=    1;
         INFO_FBK_NUM_LO :  integer :=    2;
-        INFO_FBK_NUM_HI :  integer :=    6
+        INFO_FBK_NUM_HI :  integer :=    7
     );
     port (
         CLK             :  in  std_logic;
@@ -134,6 +136,7 @@ component Core_Intake_Fifo
         MRG_IN_READY    :  out std_logic;
         MRG_IN_LEVEL    :  out std_logic;
         OUTLET_WORD     :  out std_logic_vector(O_WORD_PARAM.BITS-1 downto 0);
+        OUTLET_INFO     :  out std_logic_vector(INFO_BITS        -1 downto 0);
         OUTLET_LAST     :  out std_logic;
         OUTLET_VALID    :  out std_logic;
         OUTLET_READY    :  in  std_logic
@@ -150,10 +153,11 @@ component Core_Stream_Intake
         FEEDBACK        :  integer :=  1;
         O_NUM_BITS      :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
+        INFO_BITS       :  integer :=  8;
         INFO_EBLK_POS   :  integer :=  0;
         INFO_FBK_POS    :  integer :=  1;
         INFO_FBK_NUM_LO :  integer :=  2;
-        INFO_FBK_NUM_HI :  integer :=  5
+        INFO_FBK_NUM_HI :  integer :=  7
     );
     port (
         CLK             :  in  std_logic;
@@ -171,6 +175,7 @@ component Core_Stream_Intake
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
         O_WORD          :  out std_logic_vector(O_NUM*WORD_PARAM.BITS     -1 downto 0);
+        O_INFO          :  out std_logic_vector(O_NUM*INFO_BITS           -1 downto 0);
         O_LAST          :  out std_logic_vector(O_NUM                     -1 downto 0);
         O_VALID         :  out std_logic_vector(O_NUM                     -1 downto 0);
         O_READY         :  in  std_logic_vector(O_NUM                     -1 downto 0)
