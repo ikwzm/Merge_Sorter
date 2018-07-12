@@ -1,6 +1,6 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_1(file, i_num, sort_order, count)
+def test_1(file, i_num, sort_order, sign, count)
 
   def sort_proc(a,b, sort_order)
     if a.nil? then
@@ -44,7 +44,7 @@ def test_1(file, i_num, sort_order, count)
     end
   end
 
-  title    = sprintf("Merge_Sorter_Tree(I_NUM=%d,SORT_ORDER=%d) TEST 1", i_num, sort_order)
+  title    = sprintf("Merge_Sorter_Tree(I_NUM=%d,SORT_ORDER=%d,SIGN=%d) TEST 1", i_num, sort_order, (sign)?1:0)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = (0..i_num-1).to_a.map{ |i|
@@ -52,6 +52,8 @@ def test_1(file, i_num, sort_order, count)
                ScenarioWriter::IntakeStream.new(name, file)
              }
   outlet   = ScenarioWriter::OutletStream.new("O" , file)
+  n_min    = (sign)? -512 : 0;
+  n_max    = (sign)?  512 : 1024;
 
   merchal.sync
   merchal.init
@@ -65,9 +67,9 @@ def test_1(file, i_num, sort_order, count)
       intake_data = intake.map{ |channel|
         size = random.rand(0..6)
         vec  = (size == 0)? [{PostPend: 1, None: 1}] : 
-               (size == 5)? Array.new(4){|x| random.rand(0..1024)}.push({PostPend: 1, None: 1}) :
-               (size == 6)? Array.new(4){|x| random.rand(0..1024)}.push({PostPend: 1, None: 1}).push({Priority: 1, None: 1}) :
-                            Array.new(size){|x| random.rand(0..1024)}
+               (size == 5)? Array.new(4){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}) :
+               (size == 6)? Array.new(4){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}).push({Priority: 1, None: 1}) :
+                            Array.new(size){|x| random.rand(n_min..n_max)}
         vec.sort{|a,b| sort_proc(a,b,sort_order)}
       }
       outlet_data = intake_data.flatten.sort{|a,b| sort_proc(a,b,sort_order)}

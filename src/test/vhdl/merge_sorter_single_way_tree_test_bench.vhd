@@ -42,6 +42,7 @@ entity  Merge_Sorter_Single_Way_Tree_Test_Bench is
         SCENARIO_FILE   :  STRING  := "test.snr";
         I_NUM           :  integer :=  4;
         SORT_ORDER      :  integer :=  0;
+        SIGN            :  boolean := FALSE;
         FINISH_ABORT    :  boolean := FALSE
     );
 end     Merge_Sorter_Single_Way_Tree_Test_Bench;
@@ -69,7 +70,7 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
     constant   QUEUE_SIZE   :  integer :=  2;
-    constant   WORD_PARAM   :  Word.Param_Type := Word.New_Param(32, FALSE);
+    constant   WORD_PARAM   :  Word.Param_Type := Word.New_Param(32, SIGN);
     constant   DATA_BITS    :  integer := WORD_PARAM.DATA_BITS;
     constant   ATRB_BITS    :  integer := WORD_PARAM.ATRB_BITS;
     constant   INFO_BITS    :  integer :=  4;
@@ -312,14 +313,14 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0 is
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S0 is
     generic (
-        NAME            :  STRING  := "TEST_X04_O0";
-        SCENARIO_FILE   :  STRING  := "test_x04_o0.snr";
+        NAME            :  STRING  := "TEST_X04_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x04_o0_s0.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0;
-architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0 is
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S0;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S0 is
 begin
     TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
         generic map (
@@ -327,6 +328,7 @@ begin
             SCENARIO_FILE   => SCENARIO_FILE,
             I_NUM           => 4,
             SORT_ORDER      => 0,
+            SIGN            => FALSE,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
@@ -335,14 +337,38 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1 is
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S1 is
     generic (
-        NAME            :  STRING  := "TEST_X02_O1";
-        SCENARIO_FILE   :  STRING  := "test_x02_o1.snr";
+        NAME            :  STRING  := "TEST_X04_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x04_o0_s1.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1;
-architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1 is
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S1;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S1 is
+begin
+    TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            I_NUM           => 4,
+            SORT_ORDER      => 0,
+            SIGN            => TRUE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S0 is
+    generic (
+        NAME            :  STRING  := "TEST_X02_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x02_o1_s0.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S0;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S0 is
 begin
     TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
         generic map (
@@ -350,6 +376,31 @@ begin
             SCENARIO_FILE   => SCENARIO_FILE,
             I_NUM           => 2,
             SORT_ORDER      => 1,
+            SIGN            => FALSE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S1 is
+    generic (
+        NAME            :  STRING  := "TEST_X02_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x02_o1_s1.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S1;
+architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S1 is
+begin
+    TEST: entity WORK.Merge_Sorter_Single_Way_Tree_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            I_NUM           => 2,
+            SORT_ORDER      => 1,
+            SIGN            => TRUE,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;

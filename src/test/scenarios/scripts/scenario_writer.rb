@@ -54,6 +54,7 @@ module ScenarioWriter
           _data = data
         end
         _user |= DONE_BIT if done == true
+        _data += 2**32    if _data < 0
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
@@ -85,6 +86,7 @@ module ScenarioWriter
           _data = data
         end
         _user |= DONE_BIT if done == true
+        _data += 2**32    if _data < 0
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end

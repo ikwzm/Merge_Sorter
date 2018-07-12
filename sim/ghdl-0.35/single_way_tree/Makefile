@@ -15,27 +15,39 @@ REMOVE     = -rm
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
-test   : test_x04_o0 test_x02_o1
+test   : test_x04_o0_s0 test_x04_o0_s1 test_x02_o1_s0 test_x02_o1_s1
 
 clean  :
 	$(REMOVE) *.o *.snr sources.mk
 
-test_x02_o1 : test_x02_o1.snr merge_sorter_single_way_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1
+test_x02_o1_s0 : test_x02_o1_s0.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S0
 
+test_x02_o1_s1 : test_x02_o1_s1.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X02_O1_S1
 
-test_x04_o0 : test_x04_o0.snr merge_sorter_single_way_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0
+test_x04_o0_s0 : test_x04_o0_s0.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S0
 
+test_x04_o0_s1 : test_x04_o0_s1.snr merge_sorter_single_way_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0_S1
 
 dut    : single_way_tree.o
 
-test_x02_o1.snr : $(SCENARIO_PATH)/test_x02_o1.snr
+test_x02_o1_s0.snr : $(SCENARIO_PATH)/test_x02_o1_s0.snr
 	$(COPY) $< $@
 
-test_x04_o0.snr : $(SCENARIO_PATH)/test_x04_o0.snr
+test_x02_o1_s1.snr : $(SCENARIO_PATH)/test_x02_o1_s1.snr
+	$(COPY) $< $@
+
+test_x04_o0_s0.snr : $(SCENARIO_PATH)/test_x04_o0_s0.snr
+	$(COPY) $< $@
+
+test_x04_o0_s1.snr : $(SCENARIO_PATH)/test_x04_o0_s1.snr
 	$(COPY) $< $@
 
 sources.mk   : sources.yml
