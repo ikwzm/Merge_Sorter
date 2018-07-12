@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 entity  Single_Way_Tree is
     generic (
-        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         I_NUM       :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
@@ -68,7 +68,7 @@ end Single_Way_Tree;
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Queue;
 architecture RTL of Single_Way_Tree is
     -------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ architecture RTL of Single_Way_Tree is
     -------------------------------------------------------------------------------
     component Single_Way_Cell
         generic (
-            WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
             INFO_BITS       :  integer :=  1;
             SORT_ORDER      :  integer :=  0
         );
@@ -106,7 +106,7 @@ architecture RTL of Single_Way_Tree is
     -------------------------------------------------------------------------------
     component Single_Way_Tree
         generic (
-            WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
             I_NUM           :  integer :=  8;
             INFO_BITS       :  integer :=  3;
             SORT_ORDER      :  integer :=  0;

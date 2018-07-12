@@ -52,7 +52,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -69,7 +69,7 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
     constant   QUEUE_SIZE   :  integer :=  2;
-    constant   WORD_PARAM   :  Core.Word_Field_Type := Core.New_Word_Field_Type(32);
+    constant   WORD_PARAM   :  Word.Param_Type := Word.New_Param(32, FALSE);
     constant   DATA_BITS    :  integer := WORD_PARAM.DATA_BITS;
     constant   ATRB_BITS    :  integer := WORD_PARAM.ATRB_BITS;
     constant   INFO_BITS    :  integer :=  4;
@@ -144,33 +144,6 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     signal     O_FINISH     : std_logic;
     signal     I_REPORT     : REPORT_STATUS_VECTOR(I_NUM-1 downto 0);
     signal     I_FINISH     : std_logic_vector    (I_NUM-1 downto 0);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component  Single_Way_Tree
-        generic (
-            WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
-            I_NUM       :  integer :=  8;
-            INFO_BITS   :  integer :=  3;
-            SORT_ORDER  :  integer :=  0;
-            QUEUE_SIZE  :  integer :=  2
-        );
-        port (
-            CLK         :  in  std_logic;
-            RST         :  in  std_logic;
-            CLR         :  in  std_logic;
-            I_WORD      :  in  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0);
-            I_LAST      :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_VALID     :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_READY     :  out std_logic_vector(I_NUM                -1 downto 0);
-            O_WORD      :  out std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(      INFO_BITS      -1 downto 0);
-            O_LAST      :  out std_logic;
-            O_VALID     :  out std_logic;
-            O_READY     :  in  std_logic
-        );
-    end component;
 begin
     -------------------------------------------------------------------------------
     -- 
@@ -273,29 +246,29 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Single_Way_Tree                 -- 
-        generic map (                    -- 
-            WORD_PARAM  => WORD_PARAM  , -- 
-            SORT_ORDER  => SORT_ORDER  , -- 
-            QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            I_NUM       => I_NUM       , -- 
-            INFO_BITS   => INFO_BITS     -- 
-        )                                -- 
-        port map (                       -- 
-            CLK         => CLOCK       , -- In  :
-            RST         => RESET       , -- In  :
-            CLR         => CLEAR       , -- In  :
-            I_WORD      => i_word      , -- In  :
-            I_INFO      => i_info      , -- In  :
-            I_LAST      => i_last      , -- In  :
-            I_VALID     => i_valid     , -- In  :
-            I_READY     => i_ready     , -- Out :
-            O_WORD      => o_word      , -- Out :
-            O_INFO      => o_info      , -- Out :
-            O_LAST      => o_last      , -- Out :
-            O_VALID     => o_valid     , -- Out :
-            O_READY     => o_ready       -- In  :
-        );                               -- 
+    DUT: entity Merge_Sorter.Single_Way_Tree         -- 
+        generic map (                                -- 
+            WORD_PARAM  => WORD_PARAM              , -- 
+            SORT_ORDER  => SORT_ORDER              , -- 
+            QUEUE_SIZE  => QUEUE_SIZE              , -- 
+            I_NUM       => I_NUM                   , -- 
+            INFO_BITS   => INFO_BITS                 -- 
+        )                                            -- 
+        port map (                                   -- 
+            CLK         => CLOCK                   , -- In  :
+            RST         => RESET                   , -- In  :
+            CLR         => CLEAR                   , -- In  :
+            I_WORD      => i_word                  , -- In  :
+            I_INFO      => i_info                  , -- In  :
+            I_LAST      => i_last                  , -- In  :
+            I_VALID     => i_valid                 , -- In  :
+            I_READY     => i_ready                 , -- Out :
+            O_WORD      => o_word                  , -- Out :
+            O_INFO      => o_info                  , -- Out :
+            O_LAST      => o_last                  , -- Out :
+            O_VALID     => o_valid                 , -- Out :
+            O_READY     => o_ready                   -- In  :
+        );                                           -- 
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------

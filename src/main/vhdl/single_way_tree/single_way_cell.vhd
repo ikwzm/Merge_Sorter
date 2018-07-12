@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 entity  Single_Way_Cell is
     generic (
-        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1;
         SORT_ORDER  :  integer :=  0
     );
@@ -71,7 +71,7 @@ end Single_Way_Cell;
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Compare;
 architecture RTL of Single_Way_Cell is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
@@ -84,18 +84,6 @@ architecture RTL of Single_Way_Cell is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    a_data            :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
-    signal    a_priority        :  std_logic;
-    signal    a_postpend        :  std_logic;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    signal    b_data            :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
-    signal    b_priority        :  std_logic;
-    signal    b_postpend        :  std_logic;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
     signal    comp_valid        :  std_logic;
     signal    comp_ready        :  std_logic;
     signal    comp_sel_a        :  std_logic;
@@ -104,40 +92,22 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    a_data     <= A_WORD(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
-    a_priority <= A_WORD(WORD_PARAM.ATRB_PRIORITY_POS);
-    a_postpend <= A_WORD(WORD_PARAM.ATRB_POSTPEND_POS);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    b_data     <= B_WORD(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
-    b_priority <= B_WORD(WORD_PARAM.ATRB_PRIORITY_POS);
-    b_postpend <= B_WORD(WORD_PARAM.ATRB_POSTPEND_POS);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    COMP: Word_Compare                                    --
-        generic map(                                      -- 
-            SORT_ORDER  => SORT_ORDER                   , -- 
-            DATA_BITS   => WORD_PARAM.DATA_BITS         , -- 
-            COMP_HIGH   => WORD_PARAM.DATA_COMPARE_HI   , -- 
-            COMP_LOW    => WORD_PARAM.DATA_COMPARE_LO     -- 
-        )                                                 -- 
-        port map (                                        --
-            CLK         => CLK                          , -- In  :
-            RST         => RST                          , -- In  :
-            CLR         => CLR                          , -- In  :
-            A_DATA      => a_data                       , -- In  :
-            A_PRIORITY  => a_priority                   , -- In  :
-            A_POSTPOND  => a_postpend                   , -- In  :
-            B_DATA      => b_data                       , -- In  :
-            B_PRIORITY  => b_priority                   , -- In  :
-            B_POSTPOND  => b_postpend                   , -- In  :
-            VALID       => comp_valid                   , -- In  :
-            READY       => comp_ready                   , -- Out :
-            SEL_A       => comp_sel_a                   , -- Out :
-            SEL_B       => comp_sel_b                     -- Out :
-        );
+    COMP: Word_Compare                        --
+        generic map(                          --
+            WORD_PARAM  => WORD_PARAM       , -- 
+            SORT_ORDER  => SORT_ORDER         -- 
+        )                                     -- 
+        port map (                            --
+            CLK         => CLK              , -- In  :
+            RST         => RST              , -- In  :
+            CLR         => CLR              , -- In  :
+            A_WORD      => A_WORD           , -- In  :
+            B_WORD      => B_WORD           , -- In  :
+            VALID       => comp_valid       , -- In  :
+            READY       => comp_ready       , -- Out :
+            SEL_A       => comp_sel_a       , -- Out :
+            SEL_B       => comp_sel_b         -- Out :
+        );                                    -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

@@ -38,7 +38,7 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 -----------------------------------------------------------------------------------
 --! @brief Merge Sorter Core Component Library Description Package               --
 -----------------------------------------------------------------------------------
@@ -99,8 +99,8 @@ end component;
 -----------------------------------------------------------------------------------
 component Core_Intake_Fifo
     generic (
-        I_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
-        O_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8,5);
+        I_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 0, SIGN => FALSE);
+        O_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 5, SIGN => FALSE);
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
@@ -144,7 +144,7 @@ end component;
 -----------------------------------------------------------------------------------
 component Core_Stream_Intake
     generic (
-        WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
         O_NUM           :  integer :=  8;
         I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
@@ -181,21 +181,15 @@ end component;
 -----------------------------------------------------------------------------------
 component Word_Compare
     generic (
-        SORT_ORDER  :  integer :=  0;
-        DATA_BITS   :  integer := 64;
-        COMP_HIGH   :  integer := 63;
-        COMP_LOW    :  integer := 32
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        SORT_ORDER  :  integer :=  0
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        A_PRIORITY  :  in  std_logic;
-        A_POSTPOND  :  in  std_logic;
-        B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        B_PRIORITY  :  in  std_logic;
-        B_POSTPOND  :  in  std_logic;
+        A_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        B_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         VALID       :  in  std_logic;
         READY       :  out std_logic;
         SEL_A       :  out std_logic;
@@ -207,7 +201,7 @@ end component;
 -----------------------------------------------------------------------------------
 component Word_Queue
     generic (
-        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1;
         QUEUE_SIZE  :  integer :=  2
     );
@@ -232,7 +226,7 @@ end component;
 -----------------------------------------------------------------------------------
 component Drop_None
     generic (
-        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1
     );
     port (

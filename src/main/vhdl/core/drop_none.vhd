@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 entity  Drop_None is
     generic (
-        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1
     );
     port (
@@ -66,8 +66,6 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
-library Merge_Sorter;
-use     Merge_Sorter.Core;
 architecture RTL of Drop_None is
     constant  DATA_WORD_LO_POS  :  integer := 0;
     constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;

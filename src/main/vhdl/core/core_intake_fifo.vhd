@@ -37,11 +37,11 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 entity  Core_Intake_Fifo is
     generic (
-        I_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
-        O_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8,5);
+        I_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 0, SIGN => FALSE);
+        O_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 5, SIGN => FALSE);
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;

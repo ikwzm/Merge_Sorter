@@ -36,23 +36,19 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
 entity  Word_Compare is
     generic (
-        SORT_ORDER  :  integer :=  0;
-        DATA_BITS   :  integer := 64;
-        COMP_HIGH   :  integer := 63;
-        COMP_LOW    :  integer := 32
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        SORT_ORDER  :  integer :=  0
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        A_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        A_PRIORITY  :  in  std_logic;
-        A_POSTPOND  :  in  std_logic;
-        B_DATA      :  in  std_logic_vector(DATA_BITS-1 downto 0);
-        B_PRIORITY  :  in  std_logic;
-        B_POSTPOND  :  in  std_logic;
+        A_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        B_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         VALID       :  in  std_logic;
         READY       :  out std_logic;
         SEL_A       :  out std_logic;
@@ -66,25 +62,47 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 architecture RTL of Word_Compare is
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function compare_unsigned(A_WORD, B_WORD: std_logic_vector) return boolean is
+        variable a_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
+        variable b_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
+    begin
+        a_comp := unsigned(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        b_comp := unsigned(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        return (a_comp > b_comp);
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function compare_signed(A_WORD, B_WORD: std_logic_vector) return boolean is
+        variable a_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
+        variable b_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
+    begin
+        a_comp :=   signed(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        b_comp :=   signed(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        return (a_comp > b_comp);
+    end function;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    process(VALID, A_PRIORITY, A_POSTPOND, A_DATA, B_PRIORITY, B_POSTPOND, B_DATA) 
-        variable comp_a  :  unsigned(COMP_HIGH-COMP_LOW downto 0);
-        variable comp_b  :  unsigned(COMP_HIGH-COMP_LOW downto 0);
+    process(VALID, A_WORD, B_WORD) 
         variable a_gt_b  :  boolean;
     begin
         if (VALID = '1') then
-            comp_a := unsigned(A_DATA(COMP_HIGH downto COMP_LOW));
-            comp_b := unsigned(B_DATA(COMP_HIGH downto COMP_LOW));
-            a_gt_b := (comp_a > comp_b);
-            if    (A_PRIORITY  = '1') or
-                  (B_POSTPOND  = '1') then
+            if (WORD_PARAM.DATA_COMPARE_SIGN) then
+                a_gt_b := compare_signed  (A_WORD, B_WORD);
+            else
+                a_gt_b := compare_unsigned(A_WORD, B_WORD);
+            end if;
+            if    (A_WORD(WORD_PARAM.ATRB_PRIORITY_POS) = '1') or
+                  (B_WORD(WORD_PARAM.ATRB_POSTPEND_POS) = '1') then
                 SEL_A <= '1';
                 SEL_B <= '0';
-            elsif (B_PRIORITY  = '1') or
-                  (A_POSTPOND  = '1') then
+            elsif (B_WORD(WORD_PARAM.ATRB_PRIORITY_POS) = '1') or
+                  (A_WORD(WORD_PARAM.ATRB_POSTPEND_POS) = '1') then
                 SEL_A <= '0';
                 SEL_B <= '1';
             elsif (SORT_ORDER  = 0 and a_gt_b = TRUE ) or

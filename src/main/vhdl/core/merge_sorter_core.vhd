@@ -92,7 +92,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Queue;
 use     Merge_Sorter.Core_Components.Drop_None;
 use     Merge_Sorter.Core_Components.Core_Intake_Fifo;
@@ -103,7 +103,7 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     component Single_Way_Tree
         generic (
-            WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
             I_NUM           :  integer :=  8;
             INFO_BITS       :  integer :=  1;
             SORT_ORDER      :  integer :=  0;
@@ -214,10 +214,10 @@ architecture RTL of Merge_Sorter_Core is
     constant  INFO_FBK_NUM_LO       :  integer := 2;
     constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + MRG_IN_NUM_BITS - 1;
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
-    constant  FWD_WORD_PARAM        :  Core.Word_Field_Type
-                                    := Core.New_Word_Field_Type(DATA_BITS, COMP_LOW, COMP_HIGH, INFO_BITS);
-    constant  FBK_WORD_PARAM        :  Core.Word_Field_Type
-                                    := Core.New_Word_Field_Type(DATA_BITS, COMP_LOW, COMP_HIGH);
+    constant  FWD_WORD_PARAM        :  Word.Param_Type
+                                    := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, INFO_BITS, FALSE);
+    constant  FBK_WORD_PARAM        :  Word.Param_Type
+                                    := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH,            FALSE);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

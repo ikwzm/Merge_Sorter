@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Core;
+use     Merge_Sorter.Word;
 entity  Core_Stream_Intake is
     generic (
-        WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
         O_NUM           :  integer :=  8;
         I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
@@ -80,8 +80,6 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
-library Merge_Sorter;
-use     Merge_Sorter.Core;
 architecture RTL of Core_Stream_Intake is
     constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
     signal    queue_valid       :  std_logic_vector(O_NUM          -1 downto 0);
