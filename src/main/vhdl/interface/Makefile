@@ -1,8 +1,8 @@
-ENTITY_FILES = merge_sorter_merge_reader.vhd         \
-               merge_sorter_merge_writer.vhd         \
-               merge_sorter_argsort_reader.vhd       \
-               merge_sorter_argsort_writer.vhd       \
-               merge_sorter_interface_controller.vhd \
+ENTITY_FILES = merge_reader.vhd         \
+               merge_writer.vhd         \
+               argsort_reader.vhd       \
+               argsort_writer.vhd       \
+               interface_controller.vhd \
                ${ENDLIST}
 
 merge_sorter_interface_components.vhd : ${ENTITY_FILES}
@@ -11,9 +11,9 @@ merge_sorter_interface_components.vhd : ${ENTITY_FILES}
             --version 0.1.0 \
             --author  'Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>' \
             --library Merge_Sorter \
-            --package Merge_Sorter_Interface_Components \
-            --output  merge_sorter_interface_components.vhd \
+            --package Interface_Components \
+            --output  interface_components.vhd \
             ${ENTITY_FILES}
 
 clean:
-	-rm merge_sorter_interface_components.vhd
+	-rm interface_components.vhd

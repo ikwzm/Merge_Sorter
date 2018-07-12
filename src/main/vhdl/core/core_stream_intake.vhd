@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_core_stream_intake.vhd
+--!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.1.0
---!     @date    2018/6/15
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-entity  Merge_Sorter_Core_Stream_Intake is
+use     Merge_Sorter.Core;
+entity  Core_Stream_Intake is
     generic (
-        WORD_PARAM      :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         O_NUM           :  integer :=  8;
         I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
@@ -71,7 +71,7 @@ entity  Merge_Sorter_Core_Stream_Intake is
         O_VALID         :  out std_logic_vector(O_NUM                     -1 downto 0);
         O_READY         :  in  std_logic_vector(O_NUM                     -1 downto 0)
     );
-end Merge_Sorter_Core_Stream_Intake;
+end Core_Stream_Intake;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -81,8 +81,8 @@ use     ieee.numeric_std.all;
 library PipeWork;
 use     PipeWork.Components.REDUCER;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-architecture RTL of Merge_Sorter_Core_Stream_Intake is
+use     Merge_Sorter.Core;
+architecture RTL of Core_Stream_Intake is
     constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
     signal    queue_valid       :  std_logic_vector(O_NUM          -1 downto 0);
     signal    intake_data       :  std_logic_vector(O_NUM*DATA_BITS-1 downto 0);

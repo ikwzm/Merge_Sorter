@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_queue.vhd
---!     @brief   Merge Sorter Queue Module :
---!     @version 0.1.0
---!     @date    2018/6/15
+--!     @file    word_queue.vhd
+--!     @brief   Merge Sorter Word Queue Module :
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-entity  Merge_Sorter_Queue is
+use     Merge_Sorter.Core;
+entity  Word_Queue is
     generic (
-        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         INFO_BITS   :  integer :=  1;
         QUEUE_SIZE  :  integer :=  2
     );
@@ -59,7 +59,7 @@ entity  Merge_Sorter_Queue is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Queue;
+end Word_Queue;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -68,8 +68,8 @@ use     ieee.std_logic_1164.all;
 library PipeWork;
 use     PipeWork.Components.QUEUE_REGISTER;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-architecture RTL of Merge_Sorter_Queue is
+use     Merge_Sorter.Core.all;
+architecture RTL of Word_Queue is
     constant  DATA_WORD_LO_POS  :  integer := 0;
     constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;
     constant  DATA_INFO_LO_POS  :  integer := DATA_WORD_HI_POS + 1;

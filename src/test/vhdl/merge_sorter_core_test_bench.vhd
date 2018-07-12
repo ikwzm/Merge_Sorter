@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_core_main_test_bench.vhd
---!     @brief   Merge Sorter Core main Test Bench :
---!     @version 0.1.0
---!     @date    2018/6/25
+--!     @file    merge_sorter_core_test_bench.vhd
+--!     @brief   Merge Sorter Core Test Bench :
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench is
+entity  Merge_Sorter_Core_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
@@ -49,7 +49,7 @@ entity  Merge_Sorter_Core_Main_Test_Bench is
         SORT_ORDER      :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench;
+end     Merge_Sorter_Core_Test_Bench;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Core_Main;
+use     Merge_Sorter.Core_Components.Merge_Sorter_Core;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -67,7 +67,7 @@ use     DUMMY_PLUG.UTIL.HEX_TO_STRING;
 use     DUMMY_PLUG.CORE.MARCHAL;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_TYPE;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_VECTOR;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench is
+architecture Model of Merge_Sorter_Core_Test_Bench is
     -------------------------------------------------------------------------------
     -- 各種定数
     -------------------------------------------------------------------------------
@@ -356,7 +356,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Merge_Sorter_Core_Main                  -- 
+    DUT: Merge_Sorter_Core                       -- 
         generic map (                            -- 
             SORT_ORDER      => SORT_ORDER      , -- 
             MRG_IN_ENABLE   => MRG_IN_ENABLE   , --
@@ -454,16 +454,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench_X04_M1_S1_F2 is
+entity  Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_M1_S1_F2";
         SCENARIO_FILE   :  STRING  := "test_x04_m1_s1_f2.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench_X04_M1_S1_F2;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench_X04_M1_S1_F2 is
+end     Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2 is
 begin
-    TEST: entity  WORK.Merge_Sorter_Core_Main_Test_Bench
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
@@ -482,16 +482,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench_X04_M1_S0_F0 is
+entity  Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_M1_S0_F0";
         SCENARIO_FILE   :  STRING  := "test_x04_m1_s0_f0.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench_X04_M1_S0_F0;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench_X04_M1_S0_F0 is
+end     Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0 is
 begin
-    TEST: entity  WORK.Merge_Sorter_Core_Main_Test_Bench
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
@@ -510,16 +510,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F0 is
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F0";
         SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f0.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F0;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F0 is
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0 is
 begin
-    TEST: entity  WORK.Merge_Sorter_Core_Main_Test_Bench
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
@@ -538,16 +538,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F1 is
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F1";
         SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f1.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F1;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F1 is
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1 is
 begin
-    TEST: entity  WORK.Merge_Sorter_Core_Main_Test_Bench
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
@@ -566,16 +566,16 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F2 is
+entity  Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_M0_S1_F2";
         SCENARIO_FILE   :  STRING  := "test_x04_m0_s1_f2.snr";
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F2;
-architecture Model of Merge_Sorter_Core_Main_Test_Bench_X04_M0_S1_F2 is
+end     Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2 is
 begin
-    TEST: entity  WORK.Merge_Sorter_Core_Main_Test_Bench
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
         generic map (
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,

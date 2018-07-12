@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_argsort_reader.vhd
+--!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
---!     @version 0.1.0
---!     @date    2018/7/11
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
-entity  Merge_Sorter_ArgSort_Reader is
+use     Merge_Sorter.Interface;
+entity  ArgSort_Reader is
     generic (
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
@@ -141,7 +141,7 @@ entity  Merge_Sorter_ArgSort_Reader is
         O_DONE          :  out std_logic;
         O_ERROR         :  out std_logic
     );
-end Merge_Sorter_ArgSort_Reader;
+end ArgSort_Reader;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -149,11 +149,11 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
+use     Merge_Sorter.Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
-architecture RTL of Merge_Sorter_ArgSort_Reader is
+architecture RTL of ArgSort_Reader is
     ------------------------------------------------------------------------------
     -- 入力側のフロー制御用定数.
     ------------------------------------------------------------------------------

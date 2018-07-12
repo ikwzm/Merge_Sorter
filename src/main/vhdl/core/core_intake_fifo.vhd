@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_core_fifo.vhd
---!     @brief   Merge Sorter Core Fifo Module :
---!     @version 0.1.0
---!     @date    2018/6/25
+--!     @file    core_intake_fifo.vhd
+--!     @brief   Merge Sorter Core Intake Fifo Module :
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,11 +37,11 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-entity  Merge_Sorter_Core_Fifo is
+use     Merge_Sorter.Core;
+entity  Core_Intake_Fifo is
     generic (
-        I_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
-        O_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8,5);
+        I_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        O_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8,5);
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
@@ -79,14 +79,14 @@ entity  Merge_Sorter_Core_Fifo is
         OUTLET_VALID    :  out std_logic;
         OUTLET_READY    :  in  std_logic
     );
-end Merge_Sorter_Core_Fifo;
+end Core_Intake_Fifo;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
-architecture RTL of Merge_Sorter_Core_Fifo is
+architecture RTL of Core_Intake_Fifo is
     constant  FIFO_WORD_DATA_LO         :  integer := O_WORD_PARAM.DATA_LO;
     constant  FIFO_WORD_DATA_HI         :  integer := O_WORD_PARAM.DATA_HI;
     constant  FIFO_WORD_ATRB_LO         :  integer := O_WORD_PARAM.ATRB_LO;

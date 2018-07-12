@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_single_way_cell.vhd
+--!     @file    single_way_cell.vhd
 --!     @brief   Merge Sorter Single Way Cell Module :
---!     @version 0.1.0
---!     @date    2018/6/15
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-entity  Merge_Sorter_Single_Way_Cell is
+use     Merge_Sorter.Core;
+entity  Single_Way_Cell is
     generic (
-        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         INFO_BITS   :  integer :=  1;
         SORT_ORDER  :  integer :=  0
     );
@@ -64,16 +64,16 @@ entity  Merge_Sorter_Single_Way_Cell is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Single_Way_Cell;
+end Single_Way_Cell;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Compare;
-architecture RTL of Merge_Sorter_Single_Way_Cell is
+use     Merge_Sorter.Core;
+use     Merge_Sorter.Core_Components.Word_Compare;
+architecture RTL of Single_Way_Cell is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE
@@ -116,7 +116,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    COMP: Merge_Sorter_Compare                            --
+    COMP: Word_Compare                                    --
         generic map(                                      -- 
             SORT_ORDER  => SORT_ORDER                   , -- 
             DATA_BITS   => WORD_PARAM.DATA_BITS         , -- 

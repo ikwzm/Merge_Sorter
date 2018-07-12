@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_single_way_tree_testbench.vhd
+--!     @file    merge_sorter_single_way_tree_test_bench.vhd
 --!     @brief   Merge Sorter Single Way Tree Test Bench :
---!     @version 0.1.0
---!     @date    2018/6/15
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -52,7 +52,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Core;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
@@ -69,7 +69,7 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
     constant   QUEUE_SIZE   :  integer :=  2;
-    constant   WORD_PARAM   :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(32);
+    constant   WORD_PARAM   :  Core.Word_Field_Type := Core.New_Word_Field_Type(32);
     constant   DATA_BITS    :  integer := WORD_PARAM.DATA_BITS;
     constant   ATRB_BITS    :  integer := WORD_PARAM.ATRB_BITS;
     constant   INFO_BITS    :  integer :=  4;
@@ -147,9 +147,9 @@ architecture Model of Merge_Sorter_Single_Way_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component  Merge_Sorter_Single_Way_Tree
+    component  Single_Way_Tree
         generic (
-            WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+            WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
             I_NUM       :  integer :=  8;
             INFO_BITS   :  integer :=  3;
             SORT_ORDER  :  integer :=  0;
@@ -273,7 +273,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: Merge_Sorter_Single_Way_Tree    -- 
+    DUT: Single_Way_Tree                 -- 
         generic map (                    -- 
             WORD_PARAM  => WORD_PARAM  , -- 
             SORT_ORDER  => SORT_ORDER  , -- 

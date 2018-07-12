@@ -30,7 +30,7 @@ test_x04_o0 : test_x04_o0.snr merge_sorter_single_way_tree_test_bench.o dut
 	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0
 
 
-dut    : merge_sorter_single_way_tree.o
+dut    : single_way_tree.o
 
 test_x02_o1.snr : $(SCENARIO_PATH)/test_x02_o1.snr
 	$(COPY) $< $@

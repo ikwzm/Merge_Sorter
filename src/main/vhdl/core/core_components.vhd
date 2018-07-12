@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_core_components.vhd                                --
+--!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.1.0                                                           --
---!     @date    2018/07/10                                                      --
+--!     @date    2018/07/12                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -38,15 +38,15 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
+use     Merge_Sorter.Core;
 -----------------------------------------------------------------------------------
 --! @brief Merge Sorter Core Component Library Description Package               --
 -----------------------------------------------------------------------------------
-package Merge_Sorter_Core_Components is
+package Core_Components is
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Core_Main                                                --
+--! @brief Merge_Sorter_Core                                                     --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Core_Main
+component Merge_Sorter_Core
     generic (
         MRG_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_NUM      :  integer :=    8;
@@ -95,12 +95,12 @@ component Merge_Sorter_Core_Main
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Core_Fifo                                                --
+--! @brief Core_Intake_Fifo                                                      --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Core_Fifo
+component Core_Intake_Fifo
     generic (
-        I_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
-        O_WORD_PARAM    :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8,5);
+        I_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
+        O_WORD_PARAM    :  Core.Word_Field_Type := Core.New_Word_Field_Type(8,5);
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
@@ -140,11 +140,11 @@ component Merge_Sorter_Core_Fifo
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Core_Stream_Intake                                       --
+--! @brief Core_Stream_Intake                                                    --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Core_Stream_Intake
+component Core_Stream_Intake
     generic (
-        WORD_PARAM      :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         O_NUM           :  integer :=  8;
         I_NUM           :  integer :=  1;
         FEEDBACK        :  integer :=  1;
@@ -177,9 +177,9 @@ component Merge_Sorter_Core_Stream_Intake
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Compare                                                  --
+--! @brief Word_Compare                                                          --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Compare
+component Word_Compare
     generic (
         SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;
@@ -203,11 +203,11 @@ component Merge_Sorter_Compare
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Queue                                                    --
+--! @brief Word_Queue                                                            --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Queue
+component Word_Queue
     generic (
-        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         INFO_BITS   :  integer :=  1;
         QUEUE_SIZE  :  integer :=  2
     );
@@ -228,11 +228,11 @@ component Merge_Sorter_Queue
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Drop_None                                                --
+--! @brief Drop_None                                                             --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Drop_None
+component Drop_None
     generic (
-        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         INFO_BITS   :  integer :=  1
     );
     port (
@@ -251,4 +251,4 @@ component Merge_Sorter_Drop_None
         O_READY     :  in  std_logic
     );
 end component;
-end Merge_Sorter_Core_Components;
+end Core_Components;

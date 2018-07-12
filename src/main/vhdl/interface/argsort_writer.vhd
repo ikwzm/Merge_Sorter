@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_merge_writer.vhd
---!     @brief   Merge Sorter Merge Writer Module :
---!     @version 0.1.0
---!     @date    2018/7/11
+--!     @file    argsort_writer.vhd
+--!     @brief   Merge Sorter ArgSort Writer Module :
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,17 +37,21 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
-entity  Merge_Sorter_Merge_Writer is
+use     Merge_Sorter.Interface;
+entity  ArgSort_Writer is
     generic (
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12;
-        MRG_NUM         :  integer :=  1;
-        MRG_DATA_BITS   :  integer := 64
+        STM_NUM         :  integer :=  1;
+        STM_DATA_BITS   :  integer := 64;
+        STM_INDEX_LO    :  integer :=  0;
+        STM_INDEX_HI    :  integer := 31;
+        STM_COMP_LO     :  integer := 32;
+        STM_COMP_HI     :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -114,13 +118,13 @@ entity  Merge_Sorter_Merge_Writer is
         BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Merge Intake Signals.
+    -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS/8-1 downto 0);
-        MRG_LAST        :  in  std_logic;
-        MRG_VALID       :  in  std_logic;
-        MRG_READY       :  out std_logic;
+        STM_DATA        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_LAST        :  in  std_logic;
+        STM_VALID       :  in  std_logic;
+        STM_READY       :  out std_logic;
     -------------------------------------------------------------------------------
     -- Outlet Status Output.
     -------------------------------------------------------------------------------
@@ -136,7 +140,7 @@ entity  Merge_Sorter_Merge_Writer is
         I_DONE          :  out std_logic;
         I_ERROR         :  out std_logic
     );
-end Merge_Sorter_Merge_Writer;
+end ArgSort_Writer;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -144,11 +148,11 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
+use     Merge_Sorter.Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_OUTLET_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
-architecture RTL of Merge_Sorter_Merge_Writer is
+architecture RTL of ArgSort_Writer is
     ------------------------------------------------------------------------------
     -- 出力側のフロー制御用定数.
     ------------------------------------------------------------------------------
@@ -172,6 +176,11 @@ architecture RTL of Merge_Sorter_Merge_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    constant  STM_COMP_BITS         :  integer := STM_COMP_HI  - STM_COMP_LO  + 1;
+    constant  STM_INDEX_BITS        :  integer := STM_INDEX_HI - STM_INDEX_LO + 1;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
     ------------------------------------------------------------------------------
     -- 
@@ -187,6 +196,14 @@ architecture RTL of Merge_Sorter_Merge_Writer is
     signal    buf_wptr              :  std_logic_vector(BUF_DEPTH      -1 downto 0);
     signal    buf_wdata             :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
     signal    buf_we                :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    signal    index_data            :  std_logic_vector(STM_NUM*STM_INDEX_BITS  -1 downto 0);
+    signal    index_strb            :  std_logic_vector(STM_NUM*STM_INDEX_BITS/8-1 downto 0);
+    signal    index_last            :  std_logic;
+    signal    index_valid           :  std_logic;
+    signal    index_ready           :  std_logic;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -218,7 +235,7 @@ begin
             O_FIXED_FLOW_OPEN   => 0                       , --
             O_FIXED_POOL_OPEN   => 1                       , --
             I_CLK_RATE          => 1                       , --
-            I_DATA_BITS         => MRG_NUM*MRG_DATA_BITS   , --
+            I_DATA_BITS         => STM_NUM*STM_INDEX_BITS  , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             O2I_OPEN_INFO_BITS  => 1                       , --
@@ -360,11 +377,11 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Stream Interface.
         ---------------------------------------------------------------------------
-            I_DATA              => MRG_DATA                            , --  In  :
-            I_STRB              => MRG_STRB                            , --  In  :
-            I_LAST              => MRG_LAST                            , --  In  :
-            I_VALID             => MRG_VALID                           , --  In  :
-            I_READY             => MRG_READY                           , --  Out :
+            I_DATA              => index_data                          , --  In  :
+            I_STRB              => index_strb                          , --  In  :
+            I_LAST              => index_last                          , --  In  :
+            I_VALID             => index_valid                         , --  In  :
+            I_READY             => index_ready                         , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
@@ -415,4 +432,22 @@ begin
             RDATA       => BUF_DATA              -- Out :
         );
     buf_we <= buf_ben when (buf_wen = '1') else (others => '0');
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    STM_IN: for i in 0 to STM_NUM-1 generate
+        constant  INDEX_STRB_BITS  :  integer := STM_INDEX_BITS/8;
+        constant  INDEX_STRB_ALL_1 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '1');
+        constant  INDEX_STRB_ALL_0 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '0');
+        signal    i_strb           :  std_logic_vector(INDEX_STRB_BITS-1 downto 0);
+        signal    i_data           :  std_logic_vector(STM_INDEX_BITS -1 downto 0);
+    begin
+        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(STM_DATA_BITS/8)) = '1') else INDEX_STRB_ALL_0;
+        i_data  <= STM_DATA((i+1)*STM_DATA_BITS-1 downto i*STM_DATA_BITS);
+        index_data((i+1)*STM_INDEX_BITS -1 downto i*STM_INDEX_BITS ) <= i_data(STM_INDEX_HI downto STM_INDEX_LO);
+        index_strb((i+1)*INDEX_STRB_BITS-1 downto i*INDEX_STRB_BITS) <= i_strb;
+    end generate;
+    index_last  <= STM_LAST;
+    index_valid <= STM_VALID;
+    STM_READY   <= index_ready;
 end RTL;

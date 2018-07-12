@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_compare.vhd
---!     @brief   Merge Sorter Compare Module :
---!     @version 0.0.9
---!     @date    2018/6/12
+--!     @file    word_compare.vhd
+--!     @brief   Merge Sorter Word Compare Module :
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Compare is
+entity  Word_Compare is
     generic (
         SORT_ORDER  :  integer :=  0;
         DATA_BITS   :  integer := 64;
@@ -58,14 +58,14 @@ entity  Merge_Sorter_Compare is
         SEL_A       :  out std_logic;
         SEL_B       :  out std_logic
     );
-end Merge_Sorter_Compare;
+end Word_Compare;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
-architecture RTL of Merge_Sorter_Compare is
+architecture RTL of Word_Compare is
 begin
     -------------------------------------------------------------------------------
     --

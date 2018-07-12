@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_interface_components.vhd                           --
+--!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.1.0                                                           --
---!     @date    2018/07/11                                                      --
+--!     @date    2018/07/12                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -38,15 +38,15 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
+use     Merge_Sorter.Interface;
 -----------------------------------------------------------------------------------
 --! @brief Merge Sorter Interface Component Library Description Package          --
 -----------------------------------------------------------------------------------
-package Merge_Sorter_Interface_Components is
+package Interface_Components is
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Merge_Reader                                             --
+--! @brief Merge_Reader                                                          --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Merge_Reader
+component Merge_Reader
     generic (
         IN_NUM          :  integer :=  8;
         REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
@@ -149,11 +149,11 @@ component Merge_Sorter_Merge_Reader
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Merge_Writer                                             --
+--! @brief Merge_Writer                                                          --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Merge_Writer
+component Merge_Writer
     generic (
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
@@ -251,11 +251,11 @@ component Merge_Sorter_Merge_Writer
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_ArgSort_Reader                                           --
+--! @brief ArgSort_Reader                                                        --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_ArgSort_Reader
+component ArgSort_Reader
     generic (
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
@@ -358,11 +358,11 @@ component Merge_Sorter_ArgSort_Reader
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_ArgSort_Writer                                           --
+--! @brief ArgSort_Writer                                                        --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_ArgSort_Writer
+component ArgSort_Writer
     generic (
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
@@ -464,9 +464,9 @@ component Merge_Sorter_ArgSort_Writer
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Merge_Sorter_Interface_Controller                                     --
+--! @brief Interface_Controller                                                  --
 -----------------------------------------------------------------------------------
-component Merge_Sorter_Interface_Controller
+component Interface_Controller
     generic (
         MRG_RD_NUM          :  integer :=    8;
         STM_FEEDBACK        :  integer :=    1;
@@ -476,10 +476,10 @@ component Merge_Sorter_Interface_Controller
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32;
-        MRG_RD_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        MRG_WR_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        STM_RD_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        STM_WR_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param
+        MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -573,4 +573,4 @@ component Merge_Sorter_Interface_Controller
         MRG_WR_ERROR        :  in  std_logic
     );
 end component;
-end Merge_Sorter_Interface_Components;
+end Interface_Components;

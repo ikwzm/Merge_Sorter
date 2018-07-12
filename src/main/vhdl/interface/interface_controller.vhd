@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_interface_controller.vhd
+--!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.1.0
---!     @date    2018/7/10
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,8 +37,8 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
-entity  Merge_Sorter_Interface_Controller is
+use     Merge_Sorter.Interface;
+entity  Interface_Controller is
     generic (
         MRG_RD_NUM          :  integer :=    8;
         STM_FEEDBACK        :  integer :=    1;
@@ -48,10 +48,10 @@ entity  Merge_Sorter_Interface_Controller is
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32;
-        MRG_RD_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        MRG_WR_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        STM_RD_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
-        STM_WR_REG_PARAM    :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param
+        MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -144,7 +144,7 @@ entity  Merge_Sorter_Interface_Controller is
         MRG_WR_DONE         :  in  std_logic;
         MRG_WR_ERROR        :  in  std_logic
     );
-end Merge_Sorter_Interface_Controller;
+end Interface_Controller;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -152,8 +152,8 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Interface;
-architecture RTL of Merge_Sorter_Interface_Controller is
+use     Merge_Sorter.Interface;
+architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

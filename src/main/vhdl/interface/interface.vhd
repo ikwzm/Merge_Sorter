@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_interface.vhd
+--!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
---!     @version 0.1.0
+--!     @version 0.2.0
 --!     @date    2018/7/10
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-package Merge_Sorter_Interface is
+package Interface is
 
     -------------------------------------------------------------------------------
     -- Interface Register Field Type
@@ -100,12 +100,14 @@ package Merge_Sorter_Interface is
     -------------------------------------------------------------------------------
     constant  Default_Regs_Param : Regs_Field_Type := New_Regs_Field_Type;
     
-end Merge_Sorter_Interface;
-
+end Interface;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
-package body Merge_Sorter_Interface is
+package body Interface is
     -------------------------------------------------------------------------------
     --           31            24              16               8               0
     --           +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -221,4 +223,4 @@ package body Merge_Sorter_Interface is
         return regs_field;
     end New_Regs_Field_Type;
 
-end Merge_Sorter_Interface;
+end Interface;

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_single_way_tree.vhd
+--!     @file    single_way_tree.vhd
 --!     @brief   Merge Sorter Single Way Tree Module :
---!     @version 0.1.0
---!     @date    2018/6/15
+--!     @version 0.2.0
+--!     @date    2018/7/12
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -37,10 +37,10 @@
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-entity  Merge_Sorter_Single_Way_Tree is
+use     Merge_Sorter.Core;
+entity  Single_Way_Tree is
     generic (
-        WORD_PARAM  :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+        WORD_PARAM  :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
         I_NUM       :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
@@ -61,22 +61,22 @@ entity  Merge_Sorter_Single_Way_Tree is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Merge_Sorter_Single_Way_Tree;
+end Single_Way_Tree;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
-use     Merge_Sorter.Merge_Sorter_Core;
-use     Merge_Sorter.Merge_Sorter_Core_Components.Merge_Sorter_Queue;
-architecture RTL of Merge_Sorter_Single_Way_Tree is
+use     Merge_Sorter.Core;
+use     Merge_Sorter.Core_Components.Word_Queue;
+architecture RTL of Single_Way_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Single_Way_Cell
+    component Single_Way_Cell
         generic (
-            WORD_PARAM      :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+            WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
             INFO_BITS       :  integer :=  1;
             SORT_ORDER      :  integer :=  0
         );
@@ -104,9 +104,9 @@ architecture RTL of Merge_Sorter_Single_Way_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Merge_Sorter_Single_Way_Tree
+    component Single_Way_Tree
         generic (
-            WORD_PARAM      :  Merge_Sorter_Core.Word_Field_Type := Merge_Sorter_Core.New_Word_Field_Type(8);
+            WORD_PARAM      :  Core.Word_Field_Type := Core.New_Word_Field_Type(8);
             I_NUM           :  integer :=  8;
             INFO_BITS       :  integer :=  3;
             SORT_ORDER      :  integer :=  0;
@@ -185,7 +185,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        A: Merge_Sorter_Single_Way_Tree                             -- 
+        A: Single_Way_Tree                                          -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 I_NUM       => A_I_NUM                            , --
@@ -211,7 +211,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        B: Merge_Sorter_Single_Way_Tree                             -- 
+        B: Single_Way_Tree                                          -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 I_NUM       => B_I_NUM                            , --
@@ -237,58 +237,58 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        CELL: Merge_Sorter_Single_Way_Cell   -- 
-           generic map(                      -- 
-                WORD_PARAM  => WORD_PARAM  , --
-                SORT_ORDER  => SORT_ORDER  , -- 
-                INFO_BITS   => INFO_BITS     -- 
-            )                                -- 
-            port map (                       -- 
-                CLK         => CLK         , -- In  :
-                RST         => RST         , -- In  :
-                CLR         => CLR         , -- In  :
-                A_WORD      => a_word      , -- In  :
-                A_INFO      => a_info      , -- In  :
-                A_LAST      => a_last      , -- In  :
-                A_VALID     => a_valid     , -- In  :
-                A_READY     => a_ready     , -- Out :
-                B_WORD      => b_word      , -- In  :
-                B_INFO      => b_info      , -- In  :
-                B_LAST      => b_last      , -- In  :
-                B_VALID     => b_valid     , -- In  :
-                B_READY     => b_ready     , -- Out :
-                O_WORD      => q_word      , -- Out :
-                O_INFO      => q_info      , -- Out :
-                O_LAST      => q_last      , -- Out :
-                O_VALID     => q_valid     , -- Out :
-                O_READY     => q_ready       -- In  :
-            );                               -- 
-    end generate;
+        CELL: Single_Way_Cell                                       -- 
+           generic map(                                             -- 
+                WORD_PARAM  => WORD_PARAM                         , --
+                SORT_ORDER  => SORT_ORDER                         , -- 
+                INFO_BITS   => INFO_BITS                            -- 
+            )                                                       -- 
+            port map (                                              -- 
+                CLK         => CLK                                , -- In  :
+                RST         => RST                                , -- In  :
+                CLR         => CLR                                , -- In  :
+                A_WORD      => a_word                             , -- In  :
+                A_INFO      => a_info                             , -- In  :
+                A_LAST      => a_last                             , -- In  :
+                A_VALID     => a_valid                            , -- In  :
+                A_READY     => a_ready                            , -- Out :
+                B_WORD      => b_word                             , -- In  :
+                B_INFO      => b_info                             , -- In  :
+                B_LAST      => b_last                             , -- In  :
+                B_VALID     => b_valid                            , -- In  :
+                B_READY     => b_ready                            , -- Out :
+                O_WORD      => q_word                             , -- Out :
+                O_INFO      => q_info                             , -- Out :
+                O_LAST      => q_last                             , -- Out :
+                O_VALID     => q_valid                            , -- Out :
+                O_READY     => q_ready                              -- In  :
+            );                                                      -- 
+    end generate;                                                   -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    OUTLET: block                            -- 
-    begin                                    -- 
-        QUEUE: Merge_Sorter_Queue            -- 
-            generic map (                    -- 
-                WORD_PARAM  => WORD_PARAM  , -- 
-                INFO_BITS   => INFO_BITS   , -- 
-                QUEUE_SIZE  => QUEUE_SIZE    -- 
-            )                                -- 
-            port map (                       -- 
-                CLK         => CLK         , -- In  :
-                RST         => RST         , -- In  :
-                CLR         => CLR         , -- In  :
-                I_WORD      => q_word      , -- In  :
-                I_INFO      => q_info      , -- In  :
-                I_LAST      => q_last      , -- In  :
-                I_VALID     => q_valid     , -- In  :
-                I_READY     => q_ready     , -- Out :
-                O_WORD      => O_WORD      , -- Out :
-                O_INFO      => O_INFO      , -- Out :
-                O_LAST      => O_LAST      , -- Out :
-                O_VALID     => O_VALID     , -- Out :
-                O_READY     => O_READY       -- In  :
-           );                                --
-    end block;
+    OUTLET: block                                                   -- 
+    begin                                                           -- 
+        QUEUE: Word_Queue                                           -- 
+            generic map (                                           -- 
+                WORD_PARAM  => WORD_PARAM                         , -- 
+                INFO_BITS   => INFO_BITS                          , -- 
+                QUEUE_SIZE  => QUEUE_SIZE                           -- 
+            )                                                       -- 
+            port map (                                              -- 
+                CLK         => CLK                                , -- In  :
+                RST         => RST                                , -- In  :
+                CLR         => CLR                                , -- In  :
+                I_WORD      => q_word                             , -- In  :
+                I_INFO      => q_info                             , -- In  :
+                I_LAST      => q_last                             , -- In  :
+                I_VALID     => q_valid                            , -- In  :
+                I_READY     => q_ready                            , -- Out :
+                O_WORD      => O_WORD                             , -- Out :
+                O_INFO      => O_INFO                             , -- Out :
+                O_LAST      => O_LAST                             , -- Out :
+                O_VALID     => O_VALID                            , -- Out :
+                O_READY     => O_READY                              -- In  :
+           );                                                       --
+    end block;                                                      -- 
 end RTL;
