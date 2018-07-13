@@ -496,8 +496,7 @@ begin
         mrg_in_word(WORD_PARAM.ATRB_POSTPEND_POS) <= MRG_IN_NONE(i);
         U: Core_Intake_Fifo                              -- 
             generic map (                                -- 
-                I_WORD_PARAM    => WORD_PARAM      , --
-                O_WORD_PARAM    => WORD_PARAM      , --
+                WORD_PARAM      => WORD_PARAM          , --
                 FBK_IN_ENABLE   => (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0), -- 
                 MRG_IN_ENABLE   => MRG_IN_ENABLE       , -- 
                 SIZE_BITS       => SIZE_BITS           , -- 

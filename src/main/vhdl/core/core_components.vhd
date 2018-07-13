@@ -2,7 +2,7 @@
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.1.0                                                           --
---!     @date    2018/07/12                                                      --
+--!     @date    2018/07/14                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -100,8 +100,7 @@ end component;
 -----------------------------------------------------------------------------------
 component Core_Intake_Fifo
     generic (
-        I_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 0, SIGN => FALSE);
-        O_WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS => 8, INFO_BITS => 5, SIGN => FALSE);
+        WORD_PARAM      :  Word.Param_Type := Word.New_Param(DATA_BITS => 8);
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
@@ -121,22 +120,22 @@ component Core_Intake_Fifo
         FBK_ACK         :  out std_logic;
         FBK_DONE        :  out std_logic;
         FBK_OUT_START   :  in  std_logic := '0';
-        FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS        -1 downto 0);
+        FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS      -1 downto 0);
         FBK_OUT_LAST    :  in  std_logic := '0';
-        FBK_IN_WORD     :  in  std_logic_vector(I_WORD_PARAM.BITS-1 downto 0);
+        FBK_IN_WORD     :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         FBK_IN_LAST     :  in  std_logic;
         FBK_IN_VALID    :  in  std_logic := '0';
         FBK_IN_READY    :  out std_logic;
         MRG_REQ         :  in  std_logic := '0';
         MRG_ACK         :  out std_logic;
-        MRG_IN_WORD     :  in  std_logic_vector(I_WORD_PARAM.BITS-1 downto 0);
+        MRG_IN_WORD     :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         MRG_IN_EBLK     :  in  std_logic;
         MRG_IN_LAST     :  in  std_logic;
         MRG_IN_VALID    :  in  std_logic := '0';
         MRG_IN_READY    :  out std_logic;
         MRG_IN_LEVEL    :  out std_logic;
-        OUTLET_WORD     :  out std_logic_vector(O_WORD_PARAM.BITS-1 downto 0);
-        OUTLET_INFO     :  out std_logic_vector(INFO_BITS        -1 downto 0);
+        OUTLET_WORD     :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        OUTLET_INFO     :  out std_logic_vector(INFO_BITS      -1 downto 0);
         OUTLET_LAST     :  out std_logic;
         OUTLET_VALID    :  out std_logic;
         OUTLET_READY    :  in  std_logic
