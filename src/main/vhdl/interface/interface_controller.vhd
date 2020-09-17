@@ -2,7 +2,7 @@
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
 --!     @version 0.2.0
---!     @date    2018/7/12
+--!     @date    2018/7/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -115,7 +115,6 @@ entity  Interface_Controller is
         STM_RD_REG_Q        :  in  std_logic_vector(           STM_RD_REG_PARAM.BITS-1 downto 0);
         STM_RD_BUSY         :  in  std_logic;
         STM_RD_DONE         :  in  std_logic;
-        STM_RD_ERROR        :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Stream Writer Control Register Interface
     -------------------------------------------------------------------------------
@@ -124,7 +123,6 @@ entity  Interface_Controller is
         STM_WR_REG_Q        :  in  std_logic_vector(           STM_WR_REG_PARAM.BITS-1 downto 0);
         STM_WR_BUSY         :  in  std_logic;
         STM_WR_DONE         :  in  std_logic;
-        STM_WR_ERROR        :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Merge Reader Control Register Interface
     -------------------------------------------------------------------------------
@@ -133,7 +131,6 @@ entity  Interface_Controller is
         MRG_RD_REG_Q        :  in  std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
         MRG_RD_BUSY         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
         MRG_RD_DONE         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
-        MRG_RD_ERROR        :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Writer Control Register Interface
     -------------------------------------------------------------------------------
@@ -141,8 +138,7 @@ entity  Interface_Controller is
         MRG_WR_REG_D        :  out std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_REG_Q        :  in  std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_BUSY         :  in  std_logic;
-        MRG_WR_DONE         :  in  std_logic;
-        MRG_WR_ERROR        :  in  std_logic
+        MRG_WR_DONE         :  in  std_logic
     );
 end Interface_Controller;
 -----------------------------------------------------------------------------------

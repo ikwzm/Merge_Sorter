@@ -2,7 +2,7 @@
 --!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.2.0
---!     @date    2018/7/12
+--!     @date    2018/7/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -127,19 +127,10 @@ entity  ArgSort_Reader is
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
-    -- Intake Status Output.
+    -- Status Output.
     -------------------------------------------------------------------------------
-        I_OPEN          :  out std_logic;
-        I_RUNNING       :  out std_logic;
-        I_DONE          :  out std_logic;
-        I_ERROR         :  out std_logic;
-    -------------------------------------------------------------------------------
-    -- Outlet Status Output.
-    -------------------------------------------------------------------------------
-        O_OPEN          :  out std_logic;
-        O_RUNNING       :  out std_logic;
-        O_DONE          :  out std_logic;
-        O_ERROR         :  out std_logic
+        BUSY            :  out std_logic;
+        DONE            :  out std_logic
     );
 end ArgSort_Reader;
 -----------------------------------------------------------------------------------
@@ -210,6 +201,11 @@ architecture RTL of ArgSort_Reader is
     signal    o_reset               :  std_logic;
     signal    o_open_valid          :  std_logic;
     signal    o_close_valid         :  std_logic;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    signal    i_open                :  std_logic;
+    signal    i_close_valid         :  std_logic;
 begin 
     -------------------------------------------------------------------------------
     --
@@ -304,112 +300,163 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Configuration Signals.
         ---------------------------------------------------------------------------
-            I_ADDR_FIX          => '0'                     , --  In  :
-            I_BUF_READY_LEVEL   => I_BUF_READY_LEVEL       , --  In  :
-            I_FLOW_READY_LEVEL  => I_FLOW_READY_LEVEL      , --  In  :
+            I_ADDR_FIX          => '0'                                 , --  In  :
+            I_BUF_READY_LEVEL   => I_BUF_READY_LEVEL                   , --  In  :
+            I_FLOW_READY_LEVEL  => I_FLOW_READY_LEVEL                  , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Transaction Command Request Signals.
         ---------------------------------------------------------------------------
-            I_REQ_VALID         => REQ_VALID               , --  Out :
-            I_REQ_ADDR          => REQ_ADDR                , --  Out :
-            I_REQ_SIZE          => REQ_SIZE                , --  Out :
-            I_REQ_BUF_PTR       => REQ_BUF_PTR             , --  Out :
-            I_REQ_FIRST         => REQ_FIRST               , --  Out :
-            I_REQ_LAST          => REQ_LAST                , --  Out :
-            I_REQ_READY         => REQ_READY               , --  In  :
+            I_REQ_VALID         => REQ_VALID                           , --  Out :
+            I_REQ_ADDR          => REQ_ADDR                            , --  Out :
+            I_REQ_SIZE          => REQ_SIZE                            , --  Out :
+            I_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
+            I_REQ_FIRST         => REQ_FIRST                           , --  Out :
+            I_REQ_LAST          => REQ_LAST                            , --  Out :
+            I_REQ_READY         => REQ_READY                           , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Transaction Command Acknowledge Signals.
         ---------------------------------------------------------------------------
-            I_ACK_VALID         => ACK_VALID               , --  In  :
-            I_ACK_SIZE          => ACK_SIZE                , --  In  :
-            I_ACK_ERROR         => ACK_ERROR               , --  In  :
-            I_ACK_NEXT          => ACK_NEXT                , --  In  :
-            I_ACK_LAST          => ACK_LAST                , --  In  :
-            I_ACK_STOP          => ACK_STOP                , --  In  :
-            I_ACK_NONE          => ACK_NONE                , --  In  :
+            I_ACK_VALID         => ACK_VALID                           , --  In  :
+            I_ACK_SIZE          => ACK_SIZE                            , --  In  :
+            I_ACK_ERROR         => ACK_ERROR                           , --  In  :
+            I_ACK_NEXT          => ACK_NEXT                            , --  In  :
+            I_ACK_LAST          => ACK_LAST                            , --  In  :
+            I_ACK_STOP          => ACK_STOP                            , --  In  :
+            I_ACK_NONE          => ACK_NONE                            , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Transfer Status Signals.
         ---------------------------------------------------------------------------
-            I_XFER_BUSY         => XFER_BUSY               , --  In  :
-            I_XFER_DONE         => XFER_DONE               , --  In  :
-            I_XFER_ERROR        => XFER_ERROR              , --  In  :
+            I_XFER_BUSY         => XFER_BUSY                           , --  In  :
+            I_XFER_DONE         => XFER_DONE                           , --  In  :
+            I_XFER_ERROR        => XFER_ERROR                          , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Flow Control Signals.
         ---------------------------------------------------------------------------
-            I_FLOW_READY        => FLOW_READY              , --  Out :
-            I_FLOW_PAUSE        => FLOW_PAUSE              , --  Out :
-            I_FLOW_STOP         => FLOW_STOP               , --  Out :
-            I_FLOW_LAST         => FLOW_LAST               , --  Out :
-            I_FLOW_SIZE         => FLOW_SIZE               , --  Out :
-            I_PUSH_FIN_VALID    => PUSH_FIN_VALID          , --  In  :
-            I_PUSH_FIN_LAST     => PUSH_FIN_LAST           , --  In  :
-            I_PUSH_FIN_ERROR    => PUSH_FIN_ERROR          , --  In  :
-            I_PUSH_FIN_SIZE     => PUSH_FIN_SIZE           , --  In  :
-            I_PUSH_BUF_RESET    => PUSH_BUF_RESET          , --  In  :
-            I_PUSH_BUF_VALID    => PUSH_BUF_VALID          , --  In  :
-            I_PUSH_BUF_LAST     => PUSH_BUF_LAST           , --  In  :
-            I_PUSH_BUF_ERROR    => PUSH_BUF_ERROR          , --  In  :
-            I_PUSH_BUF_SIZE     => PUSH_BUF_SIZE           , --  In  :
-            I_PUSH_BUF_READY    => PUSH_BUF_READY          , --  Out :
+            I_FLOW_READY        => FLOW_READY                          , --  Out :
+            I_FLOW_PAUSE        => FLOW_PAUSE                          , --  Out :
+            I_FLOW_STOP         => FLOW_STOP                           , --  Out :
+            I_FLOW_LAST         => FLOW_LAST                           , --  Out :
+            I_FLOW_SIZE         => FLOW_SIZE                           , --  Out :
+            I_PUSH_FIN_VALID    => PUSH_FIN_VALID                      , --  In  :
+            I_PUSH_FIN_LAST     => PUSH_FIN_LAST                       , --  In  :
+            I_PUSH_FIN_ERROR    => PUSH_FIN_ERROR                      , --  In  :
+            I_PUSH_FIN_SIZE     => PUSH_FIN_SIZE                       , --  In  :
+            I_PUSH_BUF_RESET    => PUSH_BUF_RESET                      , --  In  :
+            I_PUSH_BUF_VALID    => PUSH_BUF_VALID                      , --  In  :
+            I_PUSH_BUF_LAST     => PUSH_BUF_LAST                       , --  In  :
+            I_PUSH_BUF_ERROR    => PUSH_BUF_ERROR                      , --  In  :
+            I_PUSH_BUF_SIZE     => PUSH_BUF_SIZE                       , --  In  :
+            I_PUSH_BUF_READY    => PUSH_BUF_READY                      , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
-            I_OPEN              => I_OPEN                  , --  Out :
-            I_RUNNING           => I_RUNNING               , --  Out :
-            I_DONE              => I_DONE                  , --  Out :
-            I_ERROR             => I_ERROR                 , --  Out :
+            I_OPEN              => i_open                              , --  Out :
+            I_TRAN_BUSY         => open                                , --  Out :
+            I_TRAN_DONE         => open                                , --  Out :
+            I_TRAN_ERROR        => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Open/Close Infomation Interface
         ---------------------------------------------------------------------------
-            I_I2O_OPEN_INFO     => "0"                     , --  In  :
-            I_I2O_CLOSE_INFO    => "0"                     , --  In  :
-            I_O2I_OPEN_INFO     => open                    , --  Out :
-            I_O2I_OPEN_VALID    => open                    , --  Out :
-            I_O2I_CLOSE_INFO    => open                    , --  Out :
-            I_O2I_CLOSE_VALID   => open                    , --  Out :
-            I_O2I_STOP_VALID    => open                    , --  Out :
+            I_I2O_OPEN_INFO     => "0"                                 , --  In  :
+            I_I2O_CLOSE_INFO    => "0"                                 , --  In  :
+            I_O2I_OPEN_INFO     => open                                , --  Out :
+            I_O2I_OPEN_VALID    => open                                , --  Out :
+            I_O2I_CLOSE_INFO    => open                                , --  Out :
+            I_O2I_CLOSE_VALID   => i_close_valid                       , --  Out :
+            I_O2I_STOP          => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Clock and Clock Enable.
         ---------------------------------------------------------------------------
-            O_CLK               => CLK                     , --  In  :
-            O_CLR               => CLR                     , --  In  :
-            O_CKE               => '1'                     , --  In  :
+            O_CLK               => CLK                                 , --  In  :
+            O_CLR               => CLR                                 , --  In  :
+            O_CKE               => '1'                                 , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Stream Interface.
         ---------------------------------------------------------------------------
-            O_DATA              => comp_data               , --  Out :
-            O_STRB              => comp_strb               , --  Out :
-            O_LAST              => comp_last               , --  Out :
-            O_VALID             => comp_valid              , --  Out :
-            O_READY             => comp_ready              , --  In  :
+            O_DATA              => comp_data                           , --  Out :
+            O_STRB              => comp_strb                           , --  Out :
+            O_LAST              => comp_last                           , --  Out :
+            O_VALID             => comp_valid                          , --  Out :
+            O_READY             => comp_ready                          , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Status.
         ---------------------------------------------------------------------------
-            O_OPEN              => O_OPEN                  , --  Out :
-            O_RUNNING           => O_RUNNING               , --  Out :
-            O_DONE              => O_DONE                  , --  Out :
-            O_ERROR             => O_ERROR                 , --  Out :
+            O_OPEN              => open                                , --  Out :
+            O_DONE              => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Open/Close Infomation Interface
         ---------------------------------------------------------------------------
-            O_O2I_STOP_VALID    => '0'                     , --  In  :
-            O_O2I_OPEN_INFO     => "0"                     , --  In  :
-            O_O2I_OPEN_VALID    => o_open_valid            , --  In  :
-            O_O2I_CLOSE_INFO    => "0"                     , --  In  :
-            O_O2I_CLOSE_VALID   => o_close_valid           , --  In  :
-            O_I2O_RESET         => o_reset                 , --  Out :
-            O_I2O_STOP_VALID    => open                    , --  Out :
-            O_I2O_OPEN_INFO     => open                    , --  Out :
-            O_I2O_OPEN_VALID    => o_open_valid            , --  Out :
-            O_I2O_CLOSE_INFO    => open                    , --  Out :
-            O_I2O_CLOSE_VALID   => o_close_valid           , --  Out :
+            O_O2I_STOP          => '0'                                 , --  In  :
+            O_O2I_OPEN_INFO     => "0"                                 , --  In  :
+            O_O2I_OPEN_VALID    => o_open_valid                        , --  In  :
+            O_O2I_CLOSE_INFO    => "0"                                 , --  In  :
+            O_O2I_CLOSE_VALID   => o_close_valid                       , --  In  :
+            O_I2O_RESET         => o_reset                             , --  Out :
+            O_I2O_STOP          => open                                , --  Out :
+            O_I2O_ERROR         => open                                , --  Out :
+            O_I2O_OPEN_INFO     => open                                , --  Out :
+            O_I2O_OPEN_VALID    => o_open_valid                        , --  Out :
+            O_I2O_CLOSE_INFO    => open                                , --  Out :
+            O_I2O_CLOSE_VALID   => o_close_valid                       , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Buffer Read Interface.
         ---------------------------------------------------------------------------
-            BUF_REN             => buf_ren                 , --  Out :
-            BUF_PTR             => buf_rptr                , --  Out :
-            BUF_DATA            => buf_rdata                 --  In  :
-        );                                                   --
+            BUF_REN             => buf_ren                             , --  Out :
+            BUF_PTR             => buf_rptr                            , --  Out :
+            BUF_DATA            => buf_rdata                             --  In  :
+        );                                                               --
+    REQ_MODE <= reg_rbit(REG_PARAM.MODE_HI downto REG_PARAM.MODE_LO);    -- 
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    STATUS: block
+        type    I_STATE_TYPE  is (I_IDLE, I_RUN, I_TAR);
+        signal  i_state       :  I_STATE_TYPE;
+    begin
+        process (CLK, RST) begin
+            if (RST = '1') then
+                    i_state <= I_IDLE;
+            elsif (CLK'event and CLK = '1') then
+                if    (CLR = '1' or reg_rbit(REG_PARAM.CTRL_RESET_POS) = '1') then
+                    i_state <= I_IDLE;
+                else
+                    case i_state is
+                        when I_IDLE =>
+                            if    (i_open = '1' and i_close_valid = '1') then
+                                i_state <= I_TAR;
+                            elsif (i_open = '1' and i_close_valid = '0') then
+                                i_state <= I_RUN;
+                            else
+                                i_state <= I_IDLE;
+                            end if;
+                        when I_RUN =>
+                            if    (i_open = '1' and i_close_valid = '1') then
+                                i_state <= I_TAR;
+                            elsif (i_open = '1' and i_close_valid = '0') then
+                                i_state <= I_RUN;
+                            elsif (i_open = '0' and i_close_valid = '1') then
+                                i_state <= I_IDLE;
+                            else
+                                i_state <= I_RUN;
+                            end if;
+                        when I_TAR =>
+                            if (i_open = '0') then
+                                i_state <= I_IDLE;
+                            else
+                                i_state <= I_TAR;
+                            end if;
+                        when others => 
+                                i_state <= I_IDLE;
+                    end case;
+                end if;
+            end if;
+        end process;
+        BUSY  <= '1' when ((i_state = I_IDLE and i_open = '1') or
+                           (i_state = I_RUN                  ) or
+                           (i_state = I_TAR                  )) else '0';
+        DONE  <= '1' when ((i_state = I_RUN  and i_open = '0' and i_close_valid = '1') or
+                           (i_state = I_TAR  and i_open = '0')) else '0';
+    end block;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------

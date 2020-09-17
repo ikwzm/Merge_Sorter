@@ -2,7 +2,7 @@
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.2.0
---!     @date    2018/7/12
+--!     @date    2018/7/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -125,19 +125,10 @@ entity  Merge_Reader is
         MRG_READY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
         MRG_LEVEL       :  in  std_logic_vector(IN_NUM               -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Intake Status Output.
+    -- Status Output.
     -------------------------------------------------------------------------------
-        I_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0);
-    -------------------------------------------------------------------------------
-    -- Outlet Status Output.
-    -------------------------------------------------------------------------------
-        O_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0)
+        BUSY            :  out std_logic_vector(IN_NUM               -1 downto 0);
+        DONE            :  out std_logic_vector(IN_NUM               -1 downto 0)
     );
 end Merge_Reader;
 -----------------------------------------------------------------------------------
@@ -266,10 +257,7 @@ architecture RTL of Merge_Reader is
     signal    i_req_valid           :  std_logic_vector  (IN_NUM-1 downto 0);
     signal    i_req_ready           :  std_logic_vector  (IN_NUM-1 downto 0);
     signal    i_flow_ready          :  std_logic_vector  (IN_NUM-1 downto 0);
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    
+    signal    i_flow_stop           :  std_logic_vector  (IN_NUM-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
@@ -302,7 +290,7 @@ begin
                 REQUEST_O   => arb_valid  ,  -- Out :
                 SHIFT       => arb_shift     -- In  :
             );                               --
-        arb_request <= i_req_valid and i_flow_ready;
+        arb_request <= i_req_valid and (i_flow_ready or i_flow_stop);
         arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
         --
@@ -318,6 +306,7 @@ begin
                     REQ_MODE    <= (others => '0');
                     REQ_FIRST   <= '0';
                     REQ_LAST    <= '0';
+                    FLOW_STOP   <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     curr_state  <= IDLE_STATE;
@@ -329,6 +318,7 @@ begin
                     REQ_MODE    <= (others => '0');
                     REQ_FIRST   <= '0';
                     REQ_LAST    <= '0';
+                    FLOW_STOP   <= '0';
                 else
                     case curr_state is
                         when IDLE_STATE =>
@@ -349,30 +339,36 @@ begin
                             REQ_MODE    <= SELECT_REQ_MODE(   curr_sel, i_req_mode   );
                             REQ_FIRST   <= SELECT_REQ_FLAG(   curr_sel, i_req_first  );
                             REQ_LAST    <= SELECT_REQ_FLAG(   curr_sel, i_req_last   );
+                            FLOW_STOP   <= SELECT_REQ_FLAG(   curr_sel, i_flow_stop  );
                         when REQ_STATE =>
                             if    (REQ_READY = '0') then
                                 curr_state <= REQ_STATE;
-                            elsif ((ACK_VALID and curr_val) /= ARB_NULL) then
+                            elsif (arb_shift = '1') then
                                 curr_state <= IDLE_STATE;
                                 curr_val   <= (others => '0');
+                                FLOW_STOP  <= (others => '0');
                             else
                                 curr_state <= ACK_STATE;
                             end if;
                         when ACK_STATE =>
-                            if ((ACK_VALID and curr_val) /= ARB_NULL) then
+                            if (arb_shift = '1') then
                                 curr_state <= IDLE_STATE;
                                 curr_val   <= (others => '0');
+                                FLOW_STOP  <= (others => '0');
                             else
-                                curr_state <= REQ_STATE;
+                                curr_state <= ACK_STATE;
                             end if;
+                        when others => 
+                                curr_state <= IDLE_STATE;
+                                curr_val   <= (others => '0');
+                                FLOW_STOP  <= (others => '0');
                     end case;
                 end if;
             end if;
         end process;
         REQ_VALID   <= curr_val;
-        FLOW_READY  <= '1' when (curr_state = REQ_STATE or curr_state = ACK_STATE) else '0';
-        FLOW_PAUSE  <= '0' when (curr_state = REQ_STATE or curr_state = ACK_STATE) else '1';
-        FLOW_STOP   <= '0';
+        FLOW_READY  <= '1';
+        FLOW_PAUSE  <= '0';
         FLOW_LAST   <= '0';
         FLOW_SIZE   <= std_logic_vector(to_unsigned(2**MAX_XFER_SIZE, FLOW_SIZE'length));
         i_req_ready <= (others => '1');
@@ -396,6 +392,7 @@ begin
         signal    mrg_in_valid      :  std_logic;
         signal    mrg_in_ready      :  std_logic;
         signal    mrg_in_eblk       :  std_logic;
+        signal    i_open            :  std_logic;
         signal    i_end_of_blk      :  std_logic;
         signal    i_size_zero       :  std_logic;
         signal    o_open_valid      :  std_logic;
@@ -403,8 +400,10 @@ begin
         signal    o_end_of_blk      :  std_logic;
         signal    o_size_zero       :  std_logic;
         signal    o_reset           :  std_logic;
-        signal    o_open_channel    :  std_logic;
-        signal    o_done_channel    :  std_logic;
+        signal    o_stop            :  std_logic;
+        signal    o_error           :  std_logic;
+        signal    o_open            :  std_logic;
+        signal    o_done            :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, END_NONE_STATE);
         signal    curr_state        :  STATE_TYPE;
     begin
@@ -535,7 +534,7 @@ begin
             -----------------------------------------------------------------------
                 I_FLOW_READY        => i_flow_ready  (channel) , --  Out :
                 I_FLOW_PAUSE        => open                    , --  Out :
-                I_FLOW_STOP         => open                    , --  Out :
+                I_FLOW_STOP         => i_flow_stop   (channel) , --  Out :
                 I_FLOW_LAST         => open                    , --  Out :
                 I_FLOW_SIZE         => open                    , --  Out :
                 I_PUSH_FIN_VALID    => PUSH_FIN_VALID(channel) , --  In  :
@@ -551,10 +550,10 @@ begin
             -----------------------------------------------------------------------
             -- Intake Status.
             -----------------------------------------------------------------------
-                I_OPEN              => I_OPEN        (channel) , --  Out :
-                I_RUNNING           => I_RUNNING     (channel) , --  Out :
-                I_DONE              => I_DONE        (channel) , --  Out :
-                I_ERROR             => I_ERROR       (channel) , --  Out :
+                I_OPEN              => i_open                  , --  Out :
+                I_TRAN_BUSY         => open                    , --  Out :
+                I_TRAN_DONE         => open                    , --  Out :
+                I_TRAN_ERROR        => open                    , --  Out :
             -----------------------------------------------------------------------
             -- Intake Open/Close Infomation Interface
             -----------------------------------------------------------------------
@@ -565,7 +564,7 @@ begin
                 I_O2I_OPEN_VALID    => open                    , --  Out :
                 I_O2I_CLOSE_INFO    => open                    , --  Out :
                 I_O2I_CLOSE_VALID   => open                    , --  Out :
-                I_O2I_STOP_VALID    => open                    , --  Out :
+                I_O2I_STOP          => open                    , --  Out :
             -----------------------------------------------------------------------
             -- Outlet Clock and Clock Enable.
             -----------------------------------------------------------------------
@@ -583,20 +582,19 @@ begin
             -----------------------------------------------------------------------
             -- Outlet Status.
             -----------------------------------------------------------------------
-                O_OPEN              => o_open_channel          , --  Out :
-                O_RUNNING           => O_RUNNING     (channel) , --  Out :
-                O_DONE              => o_done_channel          , --  Out :
-                O_ERROR             => O_ERROR       (channel) , --  Out :
+                O_OPEN              => o_open                  , --  Out :
+                O_DONE              => o_done                  , --  Out :
             -----------------------------------------------------------------------
             -- Outlet Open/Close Infomation Interface
             -----------------------------------------------------------------------
-                O_O2I_STOP_VALID    => '0'                     , --  In  :
+                O_O2I_STOP          => '0'                     , --  In  :
                 O_O2I_OPEN_INFO     => "0"                     , --  In  :
                 O_O2I_OPEN_VALID    => o_open_valid            , --  In  :
                 O_O2I_CLOSE_INFO    => "0"                     , --  In  :
                 O_O2I_CLOSE_VALID   => o_close_valid           , --  In  :
                 O_I2O_RESET         => o_reset                 , --  Out :
-                O_I2O_STOP_VALID    => open                    , --  Out :
+                O_I2O_ERROR         => o_error                 , --  Out :
+                O_I2O_STOP          => o_stop                  , --  Out :
                 O_I2O_OPEN_INFO(0)  => o_size_zero             , --  Out :
                 O_I2O_OPEN_INFO(1)  => o_end_of_blk            , --  Out :
                 O_I2O_OPEN_VALID    => o_open_valid            , --  Out :
@@ -660,15 +658,15 @@ begin
                                 curr_state <= MRG_NONE_STATE;
                             end if;
                         when END_NONE_STATE =>
-                            if (o_open_channel = '0') or
-                               (o_open_channel = '1' and o_done_channel = '1') then
+                            if (o_open = '0') or
+                               (o_open = '1' and o_done = '1') then
                                 curr_state <= IDLE_STATE;
                             else
                                 curr_state <= END_NONE_STATE;
                             end if;
                         when MRG_READ_STATE =>
-                            if (o_open_channel = '0') or
-                               (o_open_channel = '1' and o_done_channel = '1') then
+                            if (o_open = '0') or
+                               (o_open = '1' and o_done = '1') then
                                 curr_state <= IDLE_STATE;
                             else
                                 curr_state <= MRG_READ_STATE;
@@ -679,11 +677,14 @@ begin
                 end if;
             end if;
         end process;
-        ---------------------------------------------------------------------------
-        -- 
-        ---------------------------------------------------------------------------
-        O_OPEN(channel) <= o_open_channel;
-        O_DONE(channel) <= o_done_channel;
+        BUSY(channel) <= '1' when ((curr_state = IDLE_STATE     and i_open = '1') or
+                                   (curr_state = MRG_NONE_STATE                 ) or
+                                   (curr_state = END_NONE_STATE                 ) or
+                                   (curr_state = MRG_NONE_STATE                 )) else '0';
+        DONE(channel) <= '1' when ((curr_state = END_NONE_STATE and o_open = '0') or
+                                   (curr_state = END_NONE_STATE and o_open = '1' and o_done = '1') or
+                                   (curr_state = MRG_READ_STATE and o_open = '0') or
+                                   (curr_state = MRG_READ_STATE and o_open = '1' and o_done = '1')) else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------

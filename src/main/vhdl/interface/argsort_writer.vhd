@@ -2,7 +2,7 @@
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
 --!     @version 0.2.0
---!     @date    2018/7/12
+--!     @date    2018/7/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -126,19 +126,10 @@ entity  ArgSort_Writer is
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
     -------------------------------------------------------------------------------
-    -- Outlet Status Output.
+    -- Status Output.
     -------------------------------------------------------------------------------
-        O_OPEN          :  out std_logic;
-        O_RUNNING       :  out std_logic;
-        O_DONE          :  out std_logic;
-        O_ERROR         :  out std_logic;
-    -------------------------------------------------------------------------------
-    -- Intake Status Output.
-    -------------------------------------------------------------------------------
-        I_OPEN          :  out std_logic;
-        I_RUNNING       :  out std_logic;
-        I_DONE          :  out std_logic;
-        I_ERROR         :  out std_logic
+        BUSY            :  out std_logic;
+        DONE            :  out std_logic
     );
 end ArgSort_Writer;
 -----------------------------------------------------------------------------------
@@ -207,7 +198,15 @@ architecture RTL of ArgSort_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    signal    o_open                :  std_logic;
+    signal    o_open_valid          :  std_logic;
+    signal    o_close_valid         :  std_logic;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
     signal    i_reset               :  std_logic;
+    signal    i_stop                :  std_logic;
+    signal    i_error               :  std_logic;
     signal    i_open_valid          :  std_logic;
     signal    i_close_valid         :  std_logic;
 begin
@@ -354,20 +353,20 @@ begin
         ---------------------------------------------------------------------------
         -- Outlet Status.
         ---------------------------------------------------------------------------
-            O_OPEN              => O_OPEN                              , --  Out :
-            O_RUNNING           => O_RUNNING                           , --  Out :
-            O_DONE              => O_DONE                              , --  Out :
-            O_ERROR             => O_ERROR                             , --  Out :
+            O_OPEN              => o_open                              , --  Out :
+            O_TRAN_BUSY         => open                                , --  Out :
+            O_TRAN_DONE         => open                                , --  Out :
+            O_TRAN_ERROR        => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Open/Close Infomation Interface
         ---------------------------------------------------------------------------
             O_O2I_OPEN_INFO     => "0"                                 , --  In  :
             O_O2I_CLOSE_INFO    => "0"                                 , --  In  :
             O_I2O_OPEN_INFO     => open                                , --  Out :
-            O_I2O_OPEN_VALID    => open                                , --  Out :
+            O_I2O_OPEN_VALID    => o_open_valid                        , --  Out :
             O_I2O_CLOSE_INFO    => open                                , --  Out :
-            O_I2O_CLOSE_VALID   => open                                , --  Out :
-            O_I2O_STOP_VALID    => open                                , --  Out :
+            O_I2O_CLOSE_VALID   => o_close_valid                       , --  Out :
+            O_I2O_STOP          => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Clock and Clock Enable.
         ---------------------------------------------------------------------------
@@ -385,20 +384,19 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
-            I_OPEN              => I_OPEN                              , --  Out :
-            I_RUNNING           => I_RUNNING                           , --  Out :
-            I_DONE              => I_DONE                              , --  Out :
-            I_ERROR             => I_ERROR                             , --  Out :
+            I_OPEN              => open                                , --  Out :
+            I_DONE              => open                                , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Open/Close Infomation Interface
         ---------------------------------------------------------------------------
-            I_I2O_STOP_VALID    => '0'                                 , --  In  :
+            I_I2O_STOP          => '0'                                 , --  In  :
             I_I2O_OPEN_INFO     => "0"                                 , --  In  :
             I_I2O_OPEN_VALID    => i_open_valid                        , --  In  :
             I_I2O_CLOSE_INFO    => "0"                                 , --  In  :
             I_I2O_CLOSE_VALID   => i_close_valid                       , --  In  :
             I_O2I_RESET         => i_reset                             , --  Out :
-            I_O2I_STOP_VALID    => open                                , --  Out :
+            I_O2I_STOP          => i_stop                              , --  Out :
+            I_O2I_ERROR         => i_error                             , --  Out :
             I_O2I_OPEN_INFO     => open                                , --  Out :
             I_O2I_OPEN_VALID    => i_open_valid                        , --  Out :
             I_O2I_CLOSE_INFO    => open                                , --  Out :
@@ -411,6 +409,58 @@ begin
             BUF_PTR             => buf_wptr                            , --  Out :
             BUF_DATA            => buf_wdata                             --  Out :
         );                                                               --
+    REQ_MODE <= reg_rbit(REG_PARAM.MODE_HI downto REG_PARAM.MODE_LO);    -- 
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    STATUS: block
+        type    O_STATE_TYPE  is (O_IDLE, O_RUN, O_TAR);
+        signal  o_state       :  O_STATE_TYPE;
+    begin
+        process (CLK, RST) begin
+            if (RST = '1') then
+                    o_state <= O_IDLE;
+            elsif (CLK'event and CLK = '1') then
+                if    (CLR = '1' or reg_rbit(REG_PARAM.CTRL_RESET_POS) = '1') then
+                    o_state <= O_IDLE;
+                else
+                    case o_state is
+                        when O_IDLE =>
+                            if    (o_open = '1' and o_close_valid = '1') then
+                                o_state <= O_TAR;
+                            elsif (o_open = '1' and o_close_valid = '0') then
+                                o_state <= O_RUN;
+                            else
+                                o_state <= O_IDLE;
+                            end if;
+                        when O_RUN =>
+                            if    (o_open = '1' and o_close_valid = '1') then
+                                o_state <= O_TAR;
+                            elsif (o_open = '1' and o_close_valid = '0') then
+                                o_state <= O_RUN;
+                            elsif (o_open = '0' and o_close_valid = '1') then
+                                o_state <= O_IDLE;
+                            else
+                                o_state <= O_RUN;
+                            end if;
+                        when O_TAR =>
+                            if (o_open = '0') then
+                                o_state <= O_IDLE;
+                            else
+                                o_state <= O_TAR;
+                            end if;
+                        when others => 
+                                o_state <= O_IDLE;
+                    end case;
+                end if;
+            end if;
+        end process;
+        BUSY  <= '1' when ((o_state = O_IDLE and o_open = '1') or
+                           (o_state = O_RUN                  ) or
+                           (o_state = O_TAR                  )) else '0';
+        DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
+                           (o_state = O_TAR  and o_open = '0')) else '0';
+    end block;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
