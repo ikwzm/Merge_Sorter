@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_test_bench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @version 0.3.0
+--!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -41,10 +41,10 @@ entity  Merge_Sorter_Core_Test_Bench is
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
         MRG_IN_ENABLE   :  boolean := TRUE;
-        MRG_IN_NUM      :  integer := 4;
+        MRG_WAYS        :  integer := 4;
         MRG_FIFO_SIZE   :  integer := 64;
         STM_IN_ENABLE   :  boolean := TRUE;
-        STM_IN_NUM      :  integer := 1;
+        STM_WAYS        :  integer := 1;
         STM_FEEDBACK    :  integer := 2;
         SORT_ORDER      :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
@@ -103,15 +103,15 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
                                );
     type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
     type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(USER_BITS-1 downto 0);
-    signal     mrg_i_data   :  I_DATA_VECTOR   (MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_user   :  I_USER_VECTOR   (MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_last   :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_valid  :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_ready  :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_word   :  std_logic_vector(MRG_IN_NUM*DATA_BITS-1 downto 0);
-    signal     mrg_i_none   :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_eblk   :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal     mrg_i_level  :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal     mrg_i_data   :  I_DATA_VECTOR   (MRG_WAYS-1 downto 0);
+    signal     mrg_i_user   :  I_USER_VECTOR   (MRG_WAYS-1 downto 0);
+    signal     mrg_i_last   :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal     mrg_i_valid  :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal     mrg_i_ready  :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal     mrg_i_word   :  std_logic_vector(MRG_WAYS*DATA_BITS-1 downto 0);
+    signal     mrg_i_none   :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal     mrg_i_eblk   :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal     mrg_i_level  :  std_logic_vector(MRG_WAYS-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -119,10 +119,10 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
                                    ID    => 4,
                                    USER  => USER_BITS,
                                    DEST  => 4,
-                                   DATA  => STM_IN_NUM*DATA_BITS
+                                   DATA  => STM_WAYS*DATA_BITS
                                );
     signal     stm_i_data   :  std_logic_vector(STM_I_WIDTH.DATA  -1 downto 0);
-    signal     stm_i_ena    :  std_logic_vector(STM_IN_NUM        -1 downto 0);
+    signal     stm_i_ena    :  std_logic_vector(STM_WAYS          -1 downto 0);
     signal     stm_i_last   :  std_logic;
     signal     stm_i_valid  :  std_logic;
     signal     stm_i_ready  :  std_logic;
@@ -184,8 +184,8 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
     signal     STM_I_FINISH :  std_logic;
     signal     MRG_O_REPORT :  REPORT_STATUS_TYPE;
     signal     MRG_O_FINISH :  std_logic;
-    signal     MRG_I_REPORT :  REPORT_STATUS_VECTOR(MRG_IN_NUM-1 downto 0);
-    signal     MRG_I_FINISH :  std_logic_vector    (MRG_IN_NUM-1 downto 0);
+    signal     MRG_I_REPORT :  REPORT_STATUS_VECTOR(MRG_WAYS-1 downto 0);
+    signal     MRG_I_FINISH :  std_logic_vector    (MRG_WAYS-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     -- 
@@ -313,7 +313,7 @@ begin
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    I_MASTER:  for i in 0 to MRG_IN_NUM-1 generate        --
+    I_MASTER:  for i in 0 to MRG_WAYS-1 generate        --
         signal    gpi  : std_logic_vector(GPI_WIDTH-1 downto 0);
         constant  name : string(1 to 7) := string'("MRG_I") & HEX_TO_STRING(i,8);
     begin                                            -- 
@@ -360,11 +360,11 @@ begin
         generic map (                            -- 
             SORT_ORDER      => SORT_ORDER      , -- 
             MRG_IN_ENABLE   => MRG_IN_ENABLE   , --
-            MRG_IN_NUM      => MRG_IN_NUM      , --
+            MRG_WAYS        => MRG_WAYS        , --
             MRG_FIFO_SIZE   => MRG_FIFO_SIZE   , --
             MRG_LEVEL_SIZE  => MRG_FIFO_SIZE/2 , --
             STM_IN_ENABLE   => STM_IN_ENABLE   , --
-            STM_IN_NUM      => STM_IN_NUM      , -- 
+            STM_WAYS        => STM_WAYS        , -- 
             STM_FEEDBACK    => STM_FEEDBACK    , -- 
             DATA_BITS       => DATA_BITS       , --
             COMP_HIGH       => COMP_HIGH       , -- 
@@ -468,10 +468,10 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             MRG_IN_ENABLE   => TRUE,
-            MRG_IN_NUM      => 4,
+            MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_IN_NUM      => 1,
+            STM_WAYS        => 1,
             STM_FEEDBACK    => 2,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -496,10 +496,10 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             MRG_IN_ENABLE   => TRUE,
-            MRG_IN_NUM      => 4,
+            MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => FALSE,
-            STM_IN_NUM      => 1,
+            STM_WAYS        => 1,
             STM_FEEDBACK    => 0,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -524,10 +524,10 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             MRG_IN_ENABLE   => FALSE,
-            MRG_IN_NUM      => 4,
+            MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_IN_NUM      => 1,
+            STM_WAYS        => 1,
             STM_FEEDBACK    => 0,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -552,10 +552,10 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             MRG_IN_ENABLE   => FALSE,
-            MRG_IN_NUM      => 4,
+            MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_IN_NUM      => 1,
+            STM_WAYS        => 1,
             STM_FEEDBACK    => 1,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -580,10 +580,10 @@ begin
             NAME            => NAME,
             SCENARIO_FILE   => SCENARIO_FILE,
             MRG_IN_ENABLE   => FALSE,
-            MRG_IN_NUM      => 4,
+            MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_IN_NUM      => 1,
+            STM_WAYS        => 1,
             STM_FEEDBACK    => 2,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT

@@ -1,6 +1,6 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_1(file, i_num, sort_order, sign, count)
+def test_1(file, ways, sort_order, sign, count)
 
   def sort_proc(a,b, sort_order)
     if a.nil? then
@@ -44,10 +44,10 @@ def test_1(file, i_num, sort_order, sign, count)
     end
   end
 
-  title    = sprintf("Merge_Sorter_Tree(I_NUM=%d,SORT_ORDER=%d,SIGN=%d) TEST 1", i_num, sort_order, (sign)?1:0)
+  title    = sprintf("Merge_Sorter_Tree(WAYS=%d,SORT_ORDER=%d,SIGN=%d) TEST 1", ways, sort_order, (sign)?1:0)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
-  intake   = (0..i_num-1).to_a.map{ |i|
+  intake   = (0..ways-1).to_a.map{ |i|
                name = sprintf("I%02X", i)
                ScenarioWriter::IntakeStream.new(name, file)
              }

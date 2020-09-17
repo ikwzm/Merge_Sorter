@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @version 0.3.0
+--!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,11 +40,11 @@ library Merge_Sorter;
 entity  Merge_Sorter_Core is
     generic (
         MRG_IN_ENABLE   :  boolean := TRUE;
-        MRG_IN_NUM      :  integer :=    8;
+        MRG_WAYS        :  integer :=    8;
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
-        STM_IN_NUM      :  integer :=    1;
+        STM_WAYS        :  integer :=    1;
         STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
@@ -60,8 +60,8 @@ entity  Merge_Sorter_Core is
         STM_REQ_READY   :  out std_logic;
         STM_RES_VALID   :  out std_logic;
         STM_RES_READY   :  in  std_logic;
-        STM_IN_DATA     :  in  std_logic_vector(STM_IN_NUM*DATA_BITS-1 downto 0);
-        STM_IN_STRB     :  in  std_logic_vector(STM_IN_NUM          -1 downto 0);
+        STM_IN_DATA     :  in  std_logic_vector(STM_WAYS*DATA_BITS-1 downto 0);
+        STM_IN_STRB     :  in  std_logic_vector(STM_WAYS          -1 downto 0);
         STM_IN_LAST     :  in  std_logic;
         STM_IN_VALID    :  in  std_logic;
         STM_IN_READY    :  out std_logic;
@@ -73,14 +73,14 @@ entity  Merge_Sorter_Core is
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(MRG_IN_NUM*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(MRG_IN_NUM          -1 downto 0);
-        MRG_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS          -1 downto 0);
+        MRG_OUT_DATA    :  out std_logic_vector(         DATA_BITS-1 downto 0);
         MRG_OUT_LAST    :  out std_logic;
         MRG_OUT_VALID   :  out std_logic;
         MRG_OUT_READY   :  in  std_logic
@@ -102,10 +102,10 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Single_Way_Tree
+    component Single_Word_Tree
         generic (
             WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-            I_NUM           :  integer :=  8;
+            WAYS            :  integer :=  8;
             INFO_BITS       :  integer :=  1;
             SORT_ORDER      :  integer :=  0;
             QUEUE_SIZE      :  integer :=  2
@@ -114,13 +114,13 @@ architecture RTL of Merge_Sorter_Core is
             CLK             :  in  std_logic;
             RST             :  in  std_logic;
             CLR             :  in  std_logic;
-            I_WORD          :  in  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0) := (others => '0');
-            I_LAST          :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_VALID         :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_READY         :  out std_logic_vector(I_NUM                -1 downto 0);
-            O_WORD          :  out std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(      INFO_BITS      -1 downto 0);
+            I_WORD          :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
+            I_INFO          :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
+            I_LAST          :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_VALID         :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_READY         :  out std_logic_vector(WAYS                -1 downto 0);
+            O_WORD          :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
+            O_INFO          :  out std_logic_vector(     INFO_BITS      -1 downto 0);
             O_LAST          :  out std_logic;
             O_VALID         :  out std_logic;
             O_READY         :  in  std_logic
@@ -167,9 +167,9 @@ architecture RTL of Merge_Sorter_Core is
             if    (STM_FEEDBACK = 0) then
                 fifo_size := 0;
             elsif (STM_FEEDBACK = 1) then
-                fifo_size := MRG_IN_NUM;
+                fifo_size := MRG_WAYS;
             else
-                fifo_size := 2*(MRG_IN_NUM**STM_FEEDBACK);
+                fifo_size := 2*(MRG_WAYS**STM_FEEDBACK);
             end if;
         else
             fifo_size := 0;
@@ -204,16 +204,16 @@ architecture RTL of Merge_Sorter_Core is
     --
     -------------------------------------------------------------------------------
     constant  FIFO_SIZE             :  integer := CALC_FIFO_SIZE;
-    constant  MAX_FBK_OUT_SIZE      :  integer := CALC_MAX_FBK_OUT_SIZE(STM_FEEDBACK,MRG_IN_NUM);
-    constant  SIZE_BITS             :  integer := NUM_TO_BITS(max(MAX_FBK_OUT_SIZE, max(MRG_IN_NUM**STM_FEEDBACK,MRG_IN_NUM)));
-    constant  MRG_IN_NUM_BITS       :  integer := NUM_TO_BITS(MRG_IN_NUM-1);
+    constant  MAX_FBK_OUT_SIZE      :  integer := CALC_MAX_FBK_OUT_SIZE(STM_FEEDBACK,MRG_WAYS);
+    constant  SIZE_BITS             :  integer := NUM_TO_BITS(max(MAX_FBK_OUT_SIZE, max(MRG_WAYS**STM_FEEDBACK,MRG_WAYS)));
+    constant  MRG_WAYS_BITS         :  integer := NUM_TO_BITS(MRG_WAYS-1);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     constant  INFO_EBLK_POS         :  integer := 0;
     constant  INFO_FBK_POS          :  integer := 1;
     constant  INFO_FBK_NUM_LO       :  integer := 2;
-    constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + MRG_IN_NUM_BITS - 1;
+    constant  INFO_FBK_NUM_HI       :  integer := INFO_FBK_NUM_LO + MRG_WAYS_BITS - 1;
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
     constant  WORD_PARAM            :  Word.Param_Type
                                     := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -221,33 +221,33 @@ architecture RTL of Merge_Sorter_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    stream_intake_word    :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
-    signal    stream_intake_info    :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
-    signal    stream_intake_last    :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    stream_intake_valid   :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    stream_intake_ready   :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    stream_intake_word    :  std_logic_vector(MRG_WAYS*WORD_BITS-1 downto 0);
+    signal    stream_intake_info    :  std_logic_vector(MRG_WAYS*INFO_BITS-1 downto 0);
+    signal    stream_intake_last    :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    stream_intake_valid   :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    stream_intake_ready   :  std_logic_vector(MRG_WAYS          -1 downto 0);
     signal    stream_intake_start   :  std_logic;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    fifo_intake_word      :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
-    signal    fifo_intake_info      :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
-    signal    fifo_intake_last      :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    fifo_intake_valid     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    fifo_intake_ready     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    fifo_intake_word      :  std_logic_vector(MRG_WAYS*WORD_BITS-1 downto 0);
+    signal    fifo_intake_info      :  std_logic_vector(MRG_WAYS*INFO_BITS-1 downto 0);
+    signal    fifo_intake_last      :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    fifo_intake_valid     :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    fifo_intake_ready     :  std_logic_vector(MRG_WAYS          -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    sort_intake_word      :  std_logic_vector(MRG_IN_NUM*WORD_BITS-1 downto 0);
-    signal    sort_intake_info      :  std_logic_vector(MRG_IN_NUM*INFO_BITS-1 downto 0);
-    signal    sort_intake_last      :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    sort_intake_valid     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
-    signal    sort_intake_ready     :  std_logic_vector(MRG_IN_NUM          -1 downto 0);
+    signal    sort_intake_word      :  std_logic_vector(MRG_WAYS*WORD_BITS-1 downto 0);
+    signal    sort_intake_info      :  std_logic_vector(MRG_WAYS*INFO_BITS-1 downto 0);
+    signal    sort_intake_last      :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    sort_intake_valid     :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    sort_intake_ready     :  std_logic_vector(MRG_WAYS          -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    sort_outlet_word      :  std_logic_vector(WORD_BITS -1 downto 0);
-    signal    sort_outlet_info      :  std_logic_vector(INFO_BITS -1 downto 0);
+    signal    sort_outlet_word      :  std_logic_vector(WORD_BITS-1 downto 0);
+    signal    sort_outlet_info      :  std_logic_vector(INFO_BITS-1 downto 0);
     signal    sort_outlet_last      :  std_logic;
     signal    sort_outlet_valid     :  std_logic;
     signal    sort_outlet_ready     :  std_logic;
@@ -255,24 +255,24 @@ architecture RTL of Merge_Sorter_Core is
     --
     -------------------------------------------------------------------------------
     signal    fifo_stream_req       :  std_logic;
-    signal    fifo_stream_ack       :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal    fifo_stream_done      :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal    fifo_stream_ack       :  std_logic_vector(MRG_WAYS -1 downto 0);
+    signal    fifo_stream_done      :  std_logic_vector(MRG_WAYS -1 downto 0);
     signal    fifo_merge_req        :  std_logic;
-    signal    fifo_merge_ack        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal    fifo_merge_ack        :  std_logic_vector(MRG_WAYS -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     signal    feedback_out_start    :  std_logic;
-    signal    feedback_out_size     :  std_logic_vector(SIZE_BITS -1 downto 0);
+    signal    feedback_out_size     :  std_logic_vector(SIZE_BITS-1 downto 0);
     signal    feedback_out_last     :  std_logic;
-    signal    feedback_word         :  std_logic_vector(WORD_BITS -1 downto 0);
+    signal    feedback_word         :  std_logic_vector(WORD_BITS-1 downto 0);
     signal    feedback_last         :  std_logic;
-    signal    feedback_valid        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
-    signal    feedback_ready        :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+    signal    feedback_valid        :  std_logic_vector(MRG_WAYS -1 downto 0);
+    signal    feedback_ready        :  std_logic_vector(MRG_WAYS -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    outlet_i_word         :  std_logic_vector(WORD_BITS -1 downto 0);
+    signal    outlet_i_word         :  std_logic_vector(WORD_BITS-1 downto 0);
     signal    outlet_i_eblk         :  std_logic;
     signal    outlet_i_last         :  std_logic;
     signal    outlet_i_valid        :  std_logic;
@@ -302,7 +302,7 @@ architecture RTL of Merge_Sorter_Core is
                                         MERGE_RES_STATE
                                        );
     signal    curr_state           :  STATE_TYPE;
-    constant  ACK_ALL_1            :  std_logic_vector(MRG_IN_NUM-1 downto 0) := (others => '1');
+    constant  ACK_ALL_1            :  std_logic_vector(MRG_WAYS-1 downto 0) := (others => '1');
 begin
     -------------------------------------------------------------------------------
     --
@@ -438,10 +438,10 @@ begin
         QUEUE: Core_Stream_Intake                        -- 
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
-                O_NUM           => MRG_IN_NUM          , -- 
-                I_NUM           => STM_IN_NUM          , -- 
+                MRG_WAYS        => MRG_WAYS            , -- 
+                STM_WAYS        => STM_WAYS            , -- 
                 FEEDBACK        => STM_FEEDBACK        , -- 
-                O_NUM_BITS      => MRG_IN_NUM_BITS     , -- 
+                MRG_WAYS_BITS   => MRG_WAYS_BITS       , -- 
                 SIZE_BITS       => SIZE_BITS           , --
                 INFO_BITS       => INFO_BITS           , --
                 INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
@@ -487,7 +487,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FIFO: for i in 0 to MRG_IN_NUM-1 generate
+    FIFO: for i in 0 to MRG_WAYS-1 generate
         signal   mrg_in_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
     begin
         mrg_in_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) <= MRG_IN_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
@@ -554,10 +554,10 @@ begin
     -------------------------------------------------------------------------------
     SORT: block                                          -- 
     begin                                                -- 
-        TREE: Single_Way_Tree                            -- 
+        TREE: Single_Word_Tree                           -- 
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
-                I_NUM           => MRG_IN_NUM          , -- 
+                WAYS            => MRG_WAYS            , -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 
                 INFO_BITS       => INFO_BITS             -- 
@@ -582,10 +582,10 @@ begin
     --
     -------------------------------------------------------------------------------
     FEEDBACK_ON: if (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0) generate
-        signal    queue_i_mask          :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+        signal    queue_i_mask          :  std_logic_vector(MRG_WAYS-1 downto 0);
         signal    queue_i_valid         :  std_logic;
         signal    queue_i_ready         :  std_logic;
-        signal    queue_o_mask          :  std_logic_vector(MRG_IN_NUM-1 downto 0);
+        signal    queue_o_mask          :  std_logic_vector(MRG_WAYS-1 downto 0);
         signal    queue_o_valid         :  std_logic;
         signal    queue_o_ready         :  std_logic;
     begin
@@ -593,7 +593,7 @@ begin
         --
         ---------------------------------------------------------------------------
         process (sort_outlet_info)
-            variable num : unsigned(MRG_IN_NUM_BITS-1 downto 0);
+            variable num : unsigned(MRG_WAYS_BITS-1 downto 0);
         begin
             num := to_01(unsigned(sort_outlet_info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO)), '0');
             for i in queue_i_mask'range loop
@@ -615,7 +615,7 @@ begin
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
                 QUEUE_SIZE      => 2                   , -- 
-                INFO_BITS       => MRG_IN_NUM            -- 
+                INFO_BITS       => MRG_WAYS              -- 
             )                                            -- 
             port map (                                   -- 
                 CLK             => CLK                 , -- In  :

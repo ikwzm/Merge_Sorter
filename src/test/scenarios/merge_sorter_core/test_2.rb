@@ -1,12 +1,12 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_2(file, i_num, mrg_enable, stm_enable, stm_feedback, count=100)
+def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, count=100)
 
-  title    = sprintf("Merge_Sorter_Corte(I_NUM=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", i_num, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
+  title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   other    = ScenarioWriter::OutletStream.new("STM_O", file)
-  intake   = (0..i_num-1).to_a.map{ |i|
+  intake   = (0..mrg_ways-1).to_a.map{ |i|
                name = sprintf("MRG_I%02X", i)
                ScenarioWriter::IntakeStream.new(name, file)
              }
