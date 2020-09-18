@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_single_word_tree_test_bench.vhd
 --!     @brief   Merge Sorter Single Word Tree Test Bench :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -247,7 +247,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    DUT: entity Merge_Sorter.Single_Word_Tree        -- 
+    DUT: entity Merge_Sorter.Merge_Sorter_Tree       -- 
         generic map (                                -- 
             WORD_PARAM  => WORD_PARAM              , -- 
             SORT_ORDER  => SORT_ORDER              , -- 

@@ -80,7 +80,7 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 # Set 'sources_1' fileset properties
 #
 set obj [get_filesets sources_1]
-set_property "top" "Single_Word_Tree"  $obj
+set_property "top" "Merge_Sorter_Tree"  $obj
 #
 # Set 'sim_1' fileset properties
 #

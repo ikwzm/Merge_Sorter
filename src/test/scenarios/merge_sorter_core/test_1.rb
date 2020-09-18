@@ -6,15 +6,13 @@ def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = ScenarioWriter::IntakeStream.new("STM_I", file)
-  outlet   = ScenarioWriter::OutletStream.new("STM_O", file)
-  other    = ScenarioWriter::OutletStream.new("MRG_O", file)
+  outlet   = ScenarioWriter::OutletStream.new("OUT"  , file)
   blk_size = mrg_ways**(stm_feedback+1)
   
   merchal.sync
   merchal.init
   intake.init
   outlet.init
-  other.init
   merchal.say "#{title} Start."
 
   if stm_enable == true then
@@ -28,10 +26,10 @@ def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback)
   
       merchal.sync
       merchal.say "#{title}.#{index+1} SIZE=#{size} Start."
-      outlet.send_request
+      outlet.send_stm_request
       intake.transfer(intake_data, true)
       outlet.transfer(outlet_data, true)
-      outlet.wait_response
+      outlet.wait_stm_response
     end
   end 
 

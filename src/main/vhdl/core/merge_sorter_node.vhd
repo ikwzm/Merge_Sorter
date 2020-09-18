@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    single_word_node.vhd
---!     @brief   Merge Sorter Single Word Node Module :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @file    merge_sorter_node.vhd
+--!     @brief   Merge Sorter Node Module :
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -38,7 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Single_Word_Node is
+entity  Merge_Sorter_Node is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1;
@@ -64,7 +64,7 @@ entity  Single_Word_Node is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Single_Word_Node;
+end Merge_Sorter_Node;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Compare;
-architecture RTL of Single_Word_Node is
+architecture RTL of Merge_Sorter_Node is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE

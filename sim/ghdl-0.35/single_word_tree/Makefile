@@ -36,7 +36,7 @@ test_x04_o0_s1 : test_x04_o0_s1.snr merge_sorter_single_word_tree_test_bench.o d
 	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1
 	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1
 
-dut    : single_word_tree.o
+dut    : merge_sorter_tree.o
 
 test_x02_o1_s0.snr : $(SCENARIO_PATH)/test_x02_o1_s0.snr
 	$(COPY) $< $@

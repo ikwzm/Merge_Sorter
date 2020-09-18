@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
---!     @file    single_word_tree.vhd
+--!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Single Word Tree Module :
---!     @version 0.3.0
+--!     @version 0.5.0
 --!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Single_Word_Tree is
+entity  Merge_Sorter_Tree is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         WAYS        :  integer :=  8;
@@ -61,7 +61,7 @@ entity  Single_Word_Tree is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Single_Word_Tree;
+end Merge_Sorter_Tree;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -70,62 +70,33 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Queue;
-architecture RTL of Single_Word_Tree is
+use     Merge_Sorter.Core_Components.Merge_Sorter_Node;
+architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Single_Word_Node
+    component  Merge_Sorter_Tree 
         generic (
-            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-            INFO_BITS       :  integer :=  1;
-            SORT_ORDER      :  integer :=  0
+            WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+            WAYS        :  integer :=  8;
+            INFO_BITS   :  integer :=  3;
+            SORT_ORDER  :  integer :=  0;
+            QUEUE_SIZE  :  integer :=  2
         );
         port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            A_WORD          :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            A_INFO          :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
-            A_LAST          :  in  std_logic;
-            A_VALID         :  in  std_logic;
-            A_READY         :  out std_logic;
-            B_WORD          :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            B_INFO          :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
-            B_LAST          :  in  std_logic;
-            B_VALID         :  in  std_logic;
-            B_READY         :  out std_logic;
-            O_WORD          :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(INFO_BITS      -1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
-        );
-    end component;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Single_Word_Tree
-        generic (
-            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-            WAYS            :  integer :=  8;
-            INFO_BITS       :  integer :=  3;
-            SORT_ORDER      :  integer :=  0;
-            QUEUE_SIZE      :  integer :=  2
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            I_WORD          :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
-            I_LAST          :  in  std_logic_vector(WAYS                -1 downto 0);
-            I_VALID         :  in  std_logic_vector(WAYS                -1 downto 0);
-            I_READY         :  out std_logic_vector(WAYS                -1 downto 0);
-            O_WORD          :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(     INFO_BITS      -1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
+            CLK         :  in  std_logic;
+            RST         :  in  std_logic;
+            CLR         :  in  std_logic;
+            I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
+            I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
+            O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
+            O_LAST      :  out std_logic;
+            O_VALID     :  out std_logic;
+            O_READY     :  in  std_logic
         );
     end component;
     -------------------------------------------------------------------------------
@@ -185,7 +156,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        A: Single_Word_Tree                                         -- 
+        A: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 WAYS        => A_WAYS                             , --
@@ -211,7 +182,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        B: Single_Word_Tree                                         -- 
+        B: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 WAYS        => B_WAYS                             , --
@@ -237,7 +208,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        NODE: Single_Word_Node                                      -- 
+        NODE: Merge_Sorter_Node                                     -- 
            generic map(                                             -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
