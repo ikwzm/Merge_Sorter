@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.3.0
+--!     @version 0.3.1
 --!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ entity  Core_Stream_Intake is
     generic (
         WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
         MRG_WAYS        :  integer :=  8;
-        STM_WAYS        :  integer :=  1;
+        STM_WORDS       :  integer :=  1;
         FEEDBACK        :  integer :=  1;
         MRG_WAYS_BITS   :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
@@ -60,18 +60,18 @@ entity  Core_Stream_Intake is
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                    -1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                     -1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(STM_WAYS*WORD_PARAM.DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(STM_WAYS                     -1 downto 0);
+        I_DATA          :  in  std_logic_vector(STM_WORDS*WORD_PARAM.DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(STM_WORDS                     -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_WORD          :  out std_logic_vector(MRG_WAYS*WORD_PARAM.BITS     -1 downto 0);
-        O_INFO          :  out std_logic_vector(MRG_WAYS*INFO_BITS           -1 downto 0);
-        O_LAST          :  out std_logic_vector(MRG_WAYS                     -1 downto 0);
-        O_VALID         :  out std_logic_vector(MRG_WAYS                     -1 downto 0);
-        O_READY         :  in  std_logic_vector(MRG_WAYS                     -1 downto 0)
+        O_WORD          :  out std_logic_vector(MRG_WAYS *WORD_PARAM.BITS     -1 downto 0);
+        O_INFO          :  out std_logic_vector(MRG_WAYS *INFO_BITS           -1 downto 0);
+        O_LAST          :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
+        O_VALID         :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
+        O_READY         :  in  std_logic_vector(MRG_WAYS                      -1 downto 0)
     );
 end Core_Stream_Intake;
 -----------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ begin
         generic map (                                -- 
             WORD_BITS       => DATA_BITS           , --
             STRB_BITS       => 1                   , -- 
-            I_WIDTH         => STM_WAYS            , -- 
+            I_WIDTH         => STM_WORDS           , -- 
             O_WIDTH         => MRG_WAYS            , -- 
             QUEUE_SIZE      => 0                   , --
             VALID_MIN       => queue_valid'low     , -- 

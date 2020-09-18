@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core_test_bench.vhd
 --!     @brief   Merge Sorter Core Test Bench :
---!     @version 0.3.0
+--!     @version 0.3.1
 --!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ entity  Merge_Sorter_Core_Test_Bench is
         MRG_WAYS        :  integer := 4;
         MRG_FIFO_SIZE   :  integer := 64;
         STM_IN_ENABLE   :  boolean := TRUE;
-        STM_WAYS        :  integer := 1;
+        STM_WORDS       :  integer := 1;
         STM_FEEDBACK    :  integer := 2;
         SORT_ORDER      :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
@@ -119,10 +119,10 @@ architecture Model of Merge_Sorter_Core_Test_Bench is
                                    ID    => 4,
                                    USER  => USER_BITS,
                                    DEST  => 4,
-                                   DATA  => STM_WAYS*DATA_BITS
+                                   DATA  => STM_WORDS*DATA_BITS
                                );
     signal     stm_i_data   :  std_logic_vector(STM_I_WIDTH.DATA  -1 downto 0);
-    signal     stm_i_ena    :  std_logic_vector(STM_WAYS          -1 downto 0);
+    signal     stm_i_ena    :  std_logic_vector(STM_WORDS         -1 downto 0);
     signal     stm_i_last   :  std_logic;
     signal     stm_i_valid  :  std_logic;
     signal     stm_i_ready  :  std_logic;
@@ -364,7 +364,7 @@ begin
             MRG_FIFO_SIZE   => MRG_FIFO_SIZE   , --
             MRG_LEVEL_SIZE  => MRG_FIFO_SIZE/2 , --
             STM_IN_ENABLE   => STM_IN_ENABLE   , --
-            STM_WAYS        => STM_WAYS        , -- 
+            STM_WORDS       => STM_WORDS       , -- 
             STM_FEEDBACK    => STM_FEEDBACK    , -- 
             DATA_BITS       => DATA_BITS       , --
             COMP_HIGH       => COMP_HIGH       , -- 
@@ -471,7 +471,7 @@ begin
             MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_WAYS        => 1,
+            STM_WORDS       => 1,
             STM_FEEDBACK    => 2,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -499,7 +499,7 @@ begin
             MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => FALSE,
-            STM_WAYS        => 1,
+            STM_WORDS       => 1,
             STM_FEEDBACK    => 0,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -527,7 +527,7 @@ begin
             MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_WAYS        => 1,
+            STM_WORDS       => 1,
             STM_FEEDBACK    => 0,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -555,7 +555,7 @@ begin
             MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_WAYS        => 1,
+            STM_WORDS       => 1,
             STM_FEEDBACK    => 1,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT
@@ -583,7 +583,7 @@ begin
             MRG_WAYS        => 4,
             MRG_FIFO_SIZE   => 64,
             STM_IN_ENABLE   => TRUE,
-            STM_WAYS        => 1,
+            STM_WORDS       => 1,
             STM_FEEDBACK    => 2,
             SORT_ORDER      => 0,
             FINISH_ABORT    => FINISH_ABORT

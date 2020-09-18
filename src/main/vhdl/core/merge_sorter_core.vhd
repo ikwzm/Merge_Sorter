@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.3.0
+--!     @version 0.3.1
 --!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ entity  Merge_Sorter_Core is
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
-        STM_WAYS        :  integer :=    1;
+        STM_WORDS       :  integer :=    1;
         STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
         DATA_BITS       :  integer :=   64;
@@ -60,12 +60,12 @@ entity  Merge_Sorter_Core is
         STM_REQ_READY   :  out std_logic;
         STM_RES_VALID   :  out std_logic;
         STM_RES_READY   :  in  std_logic;
-        STM_IN_DATA     :  in  std_logic_vector(STM_WAYS*DATA_BITS-1 downto 0);
-        STM_IN_STRB     :  in  std_logic_vector(STM_WAYS          -1 downto 0);
+        STM_IN_DATA     :  in  std_logic_vector(STM_WORDS*DATA_BITS-1 downto 0);
+        STM_IN_STRB     :  in  std_logic_vector(STM_WORDS          -1 downto 0);
         STM_IN_LAST     :  in  std_logic;
         STM_IN_VALID    :  in  std_logic;
         STM_IN_READY    :  out std_logic;
-        STM_OUT_DATA    :  out std_logic_vector(           DATA_BITS-1 downto 0);
+        STM_OUT_DATA    :  out std_logic_vector(          DATA_BITS-1 downto 0);
         STM_OUT_LAST    :  out std_logic;
         STM_OUT_VALID   :  out std_logic;
         STM_OUT_READY   :  in  std_logic;
@@ -73,14 +73,14 @@ entity  Merge_Sorter_Core is
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS*DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS          -1 downto 0);
-        MRG_OUT_DATA    :  out std_logic_vector(         DATA_BITS-1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS* DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
+        MRG_OUT_DATA    :  out std_logic_vector(          DATA_BITS-1 downto 0);
         MRG_OUT_LAST    :  out std_logic;
         MRG_OUT_VALID   :  out std_logic;
         MRG_OUT_READY   :  in  std_logic
@@ -439,7 +439,7 @@ begin
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
                 MRG_WAYS        => MRG_WAYS            , -- 
-                STM_WAYS        => STM_WAYS            , -- 
+                STM_WORDS       => STM_WORDS           , -- 
                 FEEDBACK        => STM_FEEDBACK        , -- 
                 MRG_WAYS_BITS   => MRG_WAYS_BITS       , -- 
                 SIZE_BITS       => SIZE_BITS           , --
