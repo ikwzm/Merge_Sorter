@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Merge_AXI_Writer is
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -48,9 +50,7 @@ entity  Merge_AXI_Writer is
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_NUM         :  integer :=  1;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -62,14 +62,14 @@ entity  Merge_AXI_Writer is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
+        REG_L           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
+        REG_D           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
+        REG_Q           :  out std_logic_vector(REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_AWID        :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_AWADDR      :  out std_logic_vector(AXI_ADDR_WIDTH  -1 downto 0);
+        AXI_AWID        :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_AWADDR      :  out std_logic_vector(AXI_ADDR_WIDTH   -1 downto 0);
         AXI_AWLEN       :  out std_logic_vector(7 downto 0);
         AXI_AWSIZE      :  out std_logic_vector(2 downto 0);
         AXI_AWBURST     :  out std_logic_vector(1 downto 0);
@@ -78,32 +78,32 @@ entity  Merge_AXI_Writer is
         AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        AXI_AWUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        AXI_AWUSER      :  out std_logic_vector(AXI_AUSER_WIDTH  -1 downto 0);
         AXI_AWVALID     :  out std_logic;
         AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
     -- AXI Master Write Data Channel Signals.
     ------------------------------------------------------------------------------
-        AXI_WID         :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_WDATA       :  out std_logic_vector(AXI_DATA_WIDTH  -1 downto 0);
-        AXI_WSTRB       :  out std_logic_vector(AXI_DATA_WIDTH/8-1 downto 0);
-        AXI_WUSER       :  out std_logic_vector(AXI_WUSER_WIDTH -1 downto 0);
+        AXI_WID         :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_WDATA       :  out std_logic_vector(AXI_DATA_WIDTH   -1 downto 0);
+        AXI_WSTRB       :  out std_logic_vector(AXI_DATA_WIDTH/8 -1 downto 0);
+        AXI_WUSER       :  out std_logic_vector(AXI_WUSER_WIDTH  -1 downto 0);
         AXI_WLAST       :  out std_logic;
         AXI_WVALID      :  out std_logic;
         AXI_WREADY      :  in  std_logic;
     ------------------------------------------------------------------------------
     -- AXI Write Response Channel Signals.
     ------------------------------------------------------------------------------
-        AXI_BID         :  in  std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
+        AXI_BID         :  in  std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
         AXI_BRESP       :  in  std_logic_vector(1 downto 0);
-        AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH -1 downto 0);
+        AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH  -1 downto 0);
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS/8-1 downto 0);
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -124,6 +124,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 use     Merge_Sorter.Interface_Components.Merge_Writer;
 library PIPEWORK;
+use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
 architecture RTL of Merge_AXI_Writer is
     ------------------------------------------------------------------------------
@@ -185,14 +186,13 @@ architecture RTL of Merge_AXI_Writer is
     signal    pull_buf_error    :  std_logic;
     signal    pull_buf_last     :  std_logic;
     signal    pull_buf_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    buf_ren           :  std_logic;
     signal    buf_rdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
     signal    buf_rptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    AXI_IF: AXI4_MASTER_WRITER_INTERFACE                 -- 
+    AXI_IF: AXI4_MASTER_WRITE_INTERFACE                  -- 
         generic map (                                    -- 
             AXI4_ADDR_WIDTH     => AXI_ADDR_WIDTH      , -- 
             AXI4_DATA_WIDTH     => AXI_DATA_WIDTH      , -- 
@@ -318,7 +318,7 @@ begin
         ---------------------------------------------------------------------------
         -- Read Buffer Interface Signals.
         ---------------------------------------------------------------------------
-            BUF_REN             => buf_ren             , -- Out :
+            BUF_REN             => open                , -- Out :
             BUF_DATA            => buf_rdata           , -- In  :
             BUF_PTR             => buf_rptr              -- Out :
         );
@@ -353,14 +353,14 @@ begin
     -------------------------------------------------------------------------------
     WRITER:  Merge_Writer                                -- 
         generic map (                                    -- 
+            WORDS               => WORDS               , --   
+            WORD_BITS           => WORD_BITS           , --   
             REG_PARAM           => REG_PARAM           , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
-            MRG_NUM             => MRG_NUM             , --   
-            MRG_DATA_BITS       => MRG_DATA_BITS         --   
+            MAX_XFER_SIZE       => MAX_XFER_SIZE         --   
         )                                                -- 
         port map (                                       -- 
         -------------------------------------------------------------------------------
@@ -405,7 +405,7 @@ begin
         -------------------------------------------------------------------------------
         -- Intake Flow Control Signals.
         -------------------------------------------------------------------------------
-            FLOW_READY          => flow_ready          , --  Out :
+            FLOW_READY          => open                , --  Out :
             FLOW_PAUSE          => flow_pause          , --  Out :
             FLOW_STOP           => flow_stop           , --  Out :
             FLOW_LAST           => flow_last           , --  Out :
@@ -423,7 +423,6 @@ begin
         -------------------------------------------------------------------------------
         -- Buffer Interface Signals.
         -------------------------------------------------------------------------------
-            BUF_REN             => buf_ren             , --  In  :
             BUF_DATA            => buf_rdata           , --  Out :
             BUF_PTR             => buf_rptr            , --  In  :
         -------------------------------------------------------------------------------

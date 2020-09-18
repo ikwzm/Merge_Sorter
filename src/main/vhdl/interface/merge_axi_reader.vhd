@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
---!     @version 0.2.0
---!     @date    2018/7/14
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,15 +40,15 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Merge_AXI_Reader is
     generic (
-        IN_NUM          :  integer :=  8;
+        WAYS            :  integer :=  8;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -60,14 +60,14 @@ entity  Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
+        REG_L           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_D           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_Q           :  out std_logic_vector(REG_PARAM.BITS -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH  -1 downto 0);
+        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
+        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH -1 downto 0);
         AXI_ARLEN       :  out std_logic_vector(7 downto 0);
         AXI_ARSIZE      :  out std_logic_vector(2 downto 0);
         AXI_ARBURST     :  out std_logic_vector(1 downto 0);
@@ -76,14 +76,14 @@ entity  Merge_AXI_Reader is
         AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH-1 downto 0);
         AXI_ARVALID     :  out std_logic;
         AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH  -1 downto 0);
+        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
+        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH -1 downto 0);
         AXI_RRESP       :  in  std_logic_vector(1 downto 0);
         AXI_RLAST       :  in  std_logic;
         AXI_RVALID      :  in  std_logic;
@@ -91,27 +91,18 @@ entity  Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(IN_NUM*MRG_DATA_BITS -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS -1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS           -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS           -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Intake Status Output.
+    -- Status Output.
     -------------------------------------------------------------------------------
-        I_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0);
-    -------------------------------------------------------------------------------
-    -- Outlet Status Output.
-    -------------------------------------------------------------------------------
-        O_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS           -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS           -1 downto 0)
     );
 end Merge_AXI_Reader;
 -----------------------------------------------------------------------------------
@@ -124,6 +115,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 use     Merge_Sorter.Interface_Components.Merge_Reader;
 library PIPEWORK;
+use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_READ_INTERFACE;
 architecture RTL of Merge_AXI_Reader is
     ------------------------------------------------------------------------------
@@ -155,12 +147,13 @@ architecture RTL of Merge_AXI_Reader is
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
     signal    req_last          :  std_logic;
-    signal    req_valid         :  std_logic_vector(IN_NUM         -1 downto 0);
+    constant  REQ_VALID_ALL0    :  std_logic_vector(WAYS           -1 downto 0) := (others => '0');
+    signal    req_valid         :  std_logic_vector(WAYS           -1 downto 0);
     signal    req_ready         :  std_logic;
-    signal    xfer_busy         :  std_logic_vector(IN_NUM         -1 downto 0);
-    signal    xfer_done         :  std_logic_vector(IN_NUM         -1 downto 0);
-    signal    xfer_error        :  std_logic_vector(IN_NUM         -1 downto 0);
-    signal    ack_valid         :  std_logic_vector(IN_NUM         -1 downto 0);
+    signal    xfer_busy         :  std_logic_vector(WAYS           -1 downto 0);
+    signal    xfer_done         :  std_logic_vector(WAYS           -1 downto 0);
+    signal    xfer_error        :  std_logic_vector(WAYS           -1 downto 0);
+    signal    ack_valid         :  std_logic_vector(WAYS           -1 downto 0);
     signal    ack_error         :  std_logic;
     signal    ack_next          :  std_logic;
     signal    ack_last          :  std_logic;
@@ -171,20 +164,20 @@ architecture RTL of Merge_AXI_Reader is
     signal    flow_stop         :  std_logic;
     signal    flow_last         :  std_logic;
     signal    flow_size         :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    push_fin_valid    :  std_logic_vector(IN_NUM         -1 downto 0);
+    signal    push_fin_valid    :  std_logic_vector(WAYS           -1 downto 0);
     signal    push_fin_error    :  std_logic;
     signal    push_fin_last     :  std_logic;
     signal    push_fin_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    push_buf_valid    :  std_logic_vector(IN_NUM         -1 downto 0);
-    signal    push_buf_ready    :  std_logic_vector(IN_NUM         -1 downto 0);
-    signal    push_buf_reset    :  std_logic_vector(IN_NUM         -1 downto 0);
+    signal    push_buf_valid    :  std_logic_vector(WAYS           -1 downto 0);
+    signal    push_buf_ready    :  std_logic_vector(WAYS           -1 downto 0);
+    signal    push_buf_reset    :  std_logic_vector(WAYS           -1 downto 0);
     signal    push_buf_error    :  std_logic;
     signal    push_buf_last     :  std_logic;
     signal    push_buf_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
     signal    buf_wdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
     signal    buf_ben           :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
     signal    buf_wptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
-    signal    buf_wen           :  std_logic_vector(IN_NUM         -1 downto 0);
+    signal    buf_wen           :  std_logic_vector(WAYS           -1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
@@ -194,7 +187,7 @@ begin
             AXI4_ADDR_WIDTH     => AXI_ADDR_WIDTH      , -- 
             AXI4_DATA_WIDTH     => AXI_DATA_WIDTH      , -- 
             AXI4_ID_WIDTH       => AXI_ID_WIDTH        , -- 
-            VAL_BITS            => IN_NUM              , -- 
+            VAL_BITS            => WAYS                , -- 
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , -- 
             REQ_SIZE_VALID      => 1                   , -- 
             FLOW_VALID          => 1                   , -- 
@@ -329,7 +322,7 @@ begin
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     AXI_ARUSER <= (others => '0');
-                elsif (req_valid = '1' and req_ready = '1') then
+                elsif (req_valid /= REQ_VALID_ALL0 and req_ready = '1') then
                     AXI_ARUSER <= std_logic_vector(resize(unsigned(req_mode(REQ_MODE_AUSER_HI downto REQ_MODE_AUSER_LO)), AXI_AUSER_WIDTH));
                 end if;
             end if;
@@ -343,14 +336,14 @@ begin
     -------------------------------------------------------------------------------
     READER:  Merge_Reader                                -- 
         generic map (                                    --
-            IN_NUM              => IN_NUM              , -- 
+            WAYS                => WAYS                , -- 
+            WORD_BITS           => WORD_BITS           , --   
             REG_PARAM           => REG_PARAM           , --
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
-            MRG_DATA_BITS       => MRG_DATA_BITS         --   
+            MAX_XFER_SIZE       => MAX_XFER_SIZE         --   
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -395,7 +388,7 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Flow Control Signals.
         ---------------------------------------------------------------------------
-            FLOW_READY          => flow_ready          , --  Out :
+            FLOW_READY          => open                , --  Out :
             FLOW_PAUSE          => flow_pause          , --  Out :
             FLOW_STOP           => flow_stop           , --  Out :
             FLOW_LAST           => flow_last           , --  Out :
@@ -428,19 +421,10 @@ begin
             MRG_READY           => MRG_READY           , --  In  :
             MRG_LEVEL           => MRG_LEVEL           , --  In  :
         ---------------------------------------------------------------------------
-        -- Intake Status Output.
+        -- Status Output.
         ---------------------------------------------------------------------------
-            I_OPEN              => I_OPEN              , --  Out :
-            I_RUNNING           => I_RUNNING           , --  Out :
-            I_DONE              => I_DONE              , --  Out :
-            I_ERROR             => I_ERROR             , --  Out :
-        ---------------------------------------------------------------------------
-        -- Outlet Status Output.
-        ---------------------------------------------------------------------------
-            O_OPEN              => O_OPEN              , --  Out :
-            O_RUNNING           => O_RUNNING           , --  Out :
-            O_DONE              => O_DONE              , --  Out :
-            O_ERROR             => O_ERROR               --  Out :
+            BUSY                => BUSY                , --  Out :
+            DONE                => DONE                  --  Out :
         );
 end RTL;
 

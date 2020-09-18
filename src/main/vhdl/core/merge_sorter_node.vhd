@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
---!     @file    single_way_cell.vhd
---!     @brief   Merge Sorter Single Way Cell Module :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @file    merge_sorter_node.vhd
+--!     @brief   Merge Sorter Node Module :
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Single_Way_Cell is
+entity  Merge_Sorter_Node is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         INFO_BITS   :  integer :=  1;
@@ -64,7 +64,7 @@ entity  Single_Way_Cell is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Single_Way_Cell;
+end Merge_Sorter_Node;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Compare;
-architecture RTL of Single_Way_Cell is
+architecture RTL of Merge_Sorter_Node is
     type      STATE_TYPE        is (IDLE_STATE , COMP_STATE   ,
                                     A_SEL_STATE, A_FLUSH_STATE, 
                                     B_SEL_STATE, B_FLUSH_STATE

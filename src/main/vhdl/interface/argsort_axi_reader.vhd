@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_reader.vhd
 --!     @brief   Merge Sorter ArgSort AXI Reader Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  ArgSort_AXI_Reader is
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -47,12 +49,10 @@ entity  ArgSort_AXI_Reader is
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -95,8 +95,8 @@ entity  ArgSort_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  out std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -117,6 +117,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 use     Merge_Sorter.Interface_Components.ArgSort_Reader;
 library PIPEWORK;
+use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_READ_INTERFACE;
 architecture RTL of ArgSort_AXI_Reader is
     ------------------------------------------------------------------------------
@@ -336,18 +337,18 @@ begin
     -------------------------------------------------------------------------------
     READER:  ArgSort_Reader                              -- 
         generic map (                                    -- 
+            WORDS               => WORDS               , --   
+            WORD_BITS           => WORD_BITS           , --   
             REG_PARAM           => REG_PARAM           , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
             MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
-            STM_NUM             => STM_NUM             , --   
-            STM_DATA_BITS       => STM_DATA_BITS       , --   
-            STM_INDEX_LO        => STM_INDEX_LO        , --   
-            STM_INDEX_HI        => STM_INDEX_HI        , --   
-            STM_COMP_LO         => STM_COMP_LO         , --   
-            STM_COMP_HI         => STM_COMP_HI           --   
+            WORD_INDEX_LO       => WORD_INDEX_LO       , --   
+            WORD_INDEX_HI       => WORD_INDEX_HI       , --   
+            WORD_COMP_LO        => WORD_COMP_LO        , --   
+            WORD_COMP_HI        => WORD_COMP_HI          --   
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -392,7 +393,7 @@ begin
         ---------------------------------------------------------------------------
         -- Intake Flow Control Signals.
         ---------------------------------------------------------------------------
-            FLOW_READY          => flow_ready          , --  Out :
+            FLOW_READY          => open                , --  Out :
             FLOW_PAUSE          => flow_pause          , --  Out :
             FLOW_STOP           => flow_stop           , --  Out :
             FLOW_LAST           => flow_last           , --  Out :

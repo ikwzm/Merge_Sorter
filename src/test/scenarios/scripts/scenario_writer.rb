@@ -58,6 +58,7 @@ module ScenarioWriter
         @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
       end
     end
+
   end
 
   class OutletStream < Writer
@@ -91,7 +92,7 @@ module ScenarioWriter
       end
     end
 
-    def send_request(timeout=nil)
+    def send_stm_request(timeout=nil)
       my_name
       if not timeout.nil? then
         _timeout = ", TIMEOUT: #{timeout}"
@@ -101,7 +102,7 @@ module ScenarioWriter
       @file.puts "  - OUT    : {GPO(0): 0}"
     end
 
-    def wait_response(timeout=nil)
+    def wait_stm_response(timeout=nil)
       my_name
       if not timeout.nil? then
         _timeout = ", TIMEOUT: #{timeout}"
@@ -109,6 +110,26 @@ module ScenarioWriter
       @file.puts "  - OUT    : {GPO(1): 1}"
       @file.puts "  - WAIT   : {GPI(1): 1#{_timeout}}"
       @file.puts "  - OUT    : {GPO(1): 0}"
+    end
+
+    def send_mrg_request(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(2): 1}"
+      @file.puts "  - WAIT   : {GPI(2): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(2): 0}"
+    end
+
+    def wait_mrg_response(timeout=nil)
+      my_name
+      if not timeout.nil? then
+        _timeout = ", TIMEOUT: #{timeout}"
+      end
+      @file.puts "  - OUT    : {GPO(3): 1}"
+      @file.puts "  - WAIT   : {GPI(3): 1#{_timeout}}"
+      @file.puts "  - OUT    : {GPO(3): 0}"
     end
 
   end

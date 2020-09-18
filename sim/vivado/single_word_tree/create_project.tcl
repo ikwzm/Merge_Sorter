@@ -3,8 +3,10 @@
 #
 
 set project_directory       [file dirname [info script]]
-set project_name            "single_way_tree"
+set project_name            "single_word_tree"
 set device_parts            "xc7z020clg400-1"
+set test_bench              "Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1"
+set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_o0_s1.snr" ]
 #
 # Create project
 #
@@ -78,11 +80,22 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 # Set 'sources_1' fileset properties
 #
 set obj [get_filesets sources_1]
-set_property "top" "Merge_Sorter_Single_Way_Tree"  $obj
+set_property "top" "Merge_Sorter_Tree"  $obj
 #
 # Set 'sim_1' fileset properties
 #
+set current_vivado_version [version -short]
+if       { [string first "2019.2" $current_vivado_version ] == 0 } {
+    set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
+} elseif { [string first "2018.3" $current_vivado_version ] == 0 } {
+    set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
+} elseif { [string first "2017"   $current_vivado_version ] == 0 } {
+    set scenario_full_path [file join ".." ".." ".." ".." $scenario_file ]
+} else {
+   puts ""
+   puts "ERROR: This model can not run in Vivado <$current_vivado_version>"
+   return 1
+}
 set obj [get_filesets sim_1]
-set_property "top" "Merge_Sorter_Single_Way_Tree_Test_Bench_X04_O0"  $obj
-set_property "generic" "SCENARIO_FILE=../../../../../../src/test/scenarios/single_way_tree/test_x04_o0.snr" $obj
-
+set_property "top"     $test_bench $obj
+set_property "generic" "SCENARIO_FILE=$scenario_full_path FINISH_ABORT=true" $obj

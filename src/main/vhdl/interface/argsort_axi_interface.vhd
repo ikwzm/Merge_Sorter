@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 0.2.0
---!     @date    2018/7/14
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -39,9 +39,18 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 entity  ArgSort_AXI_Interface is
     generic (
+        WAYS                :  integer :=    8;
+        WORDS               :  integer :=    1;
+        WORD_BITS           :  integer :=   64;
+        WORD_INDEX_LO       :  integer :=    0;
+        WORD_INDEX_HI       :  integer :=   31;
+        WORD_COMP_LO        :  integer :=   32;
+        WORD_COMP_HI        :  integer :=   63;
         MRG_AXI_ID          :  integer :=    1;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
         MRG_AXI_AUSER_WIDTH :  integer :=    4;
+        MRG_AXI_WUSER_WIDTH :  integer :=    4;
+        MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
         MRG_MAX_XFER_SIZE   :  integer :=   12;
@@ -53,18 +62,7 @@ entity  ArgSort_AXI_Interface is
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
         STM_AXI_DATA_WIDTH  :  integer :=   64;
         STM_MAX_XFER_SIZE   :  integer :=   12;
-        MRG_IN_NUM          :  integer :=    8;
-        MRG_WR_NUM          :  integer :=    8;
-        MRG_DATA_BITS       :  integer :=   64;
         STM_FEEDBACK        :  integer :=    1;
-        STM_RD_NUM          :  integer :=    1;
-        STM_RD_DATA_BITS    :  integer :=   64;
-        STM_WR_NUM          :  integer :=    1;
-        STM_WR_DATA_BITS    :  integer :=   64;
-        STM_INDEX_LO        :  integer :=    0;
-        STM_INDEX_HI        :  integer :=   31;
-        STM_COMP_LO         :  integer :=   32;
-        STM_COMP_HI         :  integer :=   63
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32
@@ -174,19 +172,11 @@ entity  ArgSort_AXI_Interface is
     -------------------------------------------------------------------------------
     -- Stream Reader Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_RD_DATA         :  out std_logic_vector(STM_RD_NUM*STM_RD_DATA_BITS  -1 downto 0);
-        STM_RD_STRB         :  out std_logic_vector(STM_RD_NUM*STM_RD_DATA_BITS/8-1 downto 0);
+        STM_RD_DATA         :  out std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
+        STM_RD_STRB         :  out std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
         STM_RD_LAST         :  out std_logic;
         STM_RD_VALID        :  out std_logic;
         STM_RD_READY        :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Stream Writer Intake Signals.
-    -------------------------------------------------------------------------------
-        STM_WR_DATA         :  in  std_logic_vector(STM_WR_NUM*STM_WR_DATA_BITS  -1 downto 0);
-        STM_WR_STRB         :  in  std_logic_vector(STM_WR_NUM*STM_WR_DATA_BITS/8-1 downto 0);
-        STM_WR_LAST         :  in  std_logic;
-        STM_WR_VALID        :  in  std_logic;
-        STM_WR_READY        :  out std_logic;
     -------------------------------------------------------------------------------
     -- Merge AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -200,7 +190,7 @@ entity  ArgSort_AXI_Interface is
         MRG_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
         MRG_AXI_ARVALID     :  out std_logic;
         MRG_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
@@ -249,21 +239,21 @@ entity  ArgSort_AXI_Interface is
     -------------------------------------------------------------------------------
     -- Merge Reader Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_RD_DATA         :  out std_logic_vector(MRG_IN_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_RD_NONE         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_EBLK         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_LAST         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_VALID        :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_READY        :  in  std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_LEVEL        :  in  std_logic_vector(MRG_IN_NUM                -1 downto 0);
+        MRG_RD_DATA         :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
+        MRG_RD_NONE         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_RD_EBLK         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_RD_LAST         :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_VALID        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_READY        :  in  std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_LEVEL        :  in  std_logic_vector(WAYS                -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Merge Writer Intake Signals.
+    -- Merge Result Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_WR_DATA         :  in  std_logic_vector(MRG_WR_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_WR_STRB         :  in  std_logic_vector(MRG_WR_NUM*MRG_DATA_BITS/8-1 downto 0);
-        MRG_WR_LAST         :  in  std_logic;
-        MRG_WR_VALID        :  in  std_logic;
-        MRG_WR_READY        :  out std_logic;
+        MERGED_DATA         :  in  std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
+        MERGED_STRB         :  in  std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        MERGED_LAST         :  in  std_logic;
+        MERGED_VALID        :  in  std_logic;
+        MERGED_READY        :  out std_logic;
     -------------------------------------------------------------------------------
     -- Merge Sorter Core Control Interface Signals.
     -------------------------------------------------------------------------------
@@ -313,15 +303,17 @@ architecture RTL of Argsort_AXI_Interface is
     signal    stm_wr_reg_rbit   :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
     signal    stm_wr_busy       :  std_logic;
     signal    stm_wr_done       :  std_logic;
+    signal    stm_wr_valid      :  std_logic;
+    signal    stm_wr_ready      :  std_logic;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     constant  MRG_RD_REG_PARAM  :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-    signal    mrg_rd_reg_load   :  std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-    signal    mrg_rd_reg_wbit   :  std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-    signal    mrg_rd_reg_rbit   :  std_logic_vector(MRG_IN_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-    signal    mrg_rd_busy       :  std_logic_vector(MRG_IN_NUM                      -1 downto 0);
-    signal    mrg_rd_done       :  std_logic_vector(MRG_IN_NUM                      -1 downto 0);
+    signal    mrg_rd_reg_load   :  std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+    signal    mrg_rd_reg_wbit   :  std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+    signal    mrg_rd_reg_rbit   :  std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+    signal    mrg_rd_busy       :  std_logic_vector(WAYS                      -1 downto 0);
+    signal    mrg_rd_done       :  std_logic_vector(WAYS                      -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -331,12 +323,16 @@ architecture RTL of Argsort_AXI_Interface is
     signal    mrg_wr_reg_rbit   :  std_logic_vector(MRG_WR_REG_PARAM.BITS-1 downto 0);
     signal    mrg_wr_busy       :  std_logic;
     signal    mrg_wr_done       :  std_logic;
+    signal    mrg_wr_valid      :  std_logic;
+    signal    mrg_wr_ready      :  std_logic;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     STM_RD: Argsort_AXI_Reader                       -- 
         generic map (                                -- 
+            WORDS           => WORDS               , --
+            WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => STM_RD_REG_PARAM    , --
             AXI_ID          => STM_AXI_ID          , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
@@ -344,12 +340,10 @@ begin
             AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
             MAX_XFER_SIZE   => STM_MAX_XFER_SIZE   , --
-            STM_NUM         => STM_RD_NUM          , --
-            STM_DATA_BITS   => STM_RD_DATA_BITS    , --
-            STM_INDEX_LO    => STM_INDEX_LO        , --
-            STM_INDEX_HI    => STM_INDEX_HI        , --
-            STM_COMP_LO     => STM_COMP_LO         , --
-            STM_COMP_HI     => STM_COMP_HI           --
+            WORD_INDEX_LO   => WORD_INDEX_LO       , --
+            WORD_INDEX_HI   => WORD_INDEX_HI       , --
+            WORD_COMP_LO    => WORD_COMP_LO        , --
+            WORD_COMP_HI    => WORD_COMP_HI          --
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -408,6 +402,8 @@ begin
     -------------------------------------------------------------------------------
     STM_WR:  ArgSort_AXI_Writer                      -- 
         generic map (                                -- 
+            WORDS           => WORDS               , --
+            WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => STM_WR_REG_PARAM    , --
             AXI_ID          => STM_AXI_ID          , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
@@ -417,12 +413,10 @@ begin
             AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
             MAX_XFER_SIZE   => STM_MAX_XFER_SIZE   , --
-            STM_NUM         => STM_WR_NUM          , --
-            STM_DATA_BITS   => STM_WR_DATA_BITS    , --
-            STM_INDEX_LO    => STM_INDEX_LO        , --
-            STM_INDEX_HI    => STM_INDEX_HI        , --
-            STM_COMP_LO     => STM_COMP_LO         , --
-            STM_COMP_HI     => STM_COMP_HI           --
+            WORD_INDEX_LO   => WORD_INDEX_LO       , --
+            WORD_INDEX_HI   => WORD_INDEX_HI       , --
+            WORD_COMP_LO    => WORD_COMP_LO        , --
+            WORD_COMP_HI    => WORD_COMP_HI          --
         )                                            --
         port map (                                   --
         ---------------------------------------------------------------------------
@@ -474,11 +468,11 @@ begin
         --------------------------------------------------------------------------
         -- Merge Outlet Signals.
         --------------------------------------------------------------------------
-            STM_DATA        => STM_WR_DATA         , -- In  :
-            STM_STRB        => STM_WR_STRB         , -- In  :
-            STM_LAST        => STM_WR_LAST         , -- In  :
-            STM_VALID       => STM_WR_VALID        , -- In  :
-            STM_READY       => STM_WR_READY        , -- Out :
+            STM_DATA        => MERGED_DATA         , -- In  :
+            STM_STRB        => MERGED_STRB         , -- In  :
+            STM_LAST        => MERGED_LAST         , -- In  :
+            STM_VALID       => stm_wr_valid        , -- In  :
+            STM_READY       => stm_wr_ready        , -- Out :
         --------------------------------------------------------------------------
         -- Status Output.
         --------------------------------------------------------------------------
@@ -490,15 +484,15 @@ begin
     -------------------------------------------------------------------------------
     MRG_RD: Merge_AXI_Reader                         -- 
         generic map (                                -- 
-            IN_NUM          => MRG_IN_NUM          , --
+            WAYS            => WAYS                , --
+            WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => MRG_RD_REG_PARAM    , --
             AXI_ID          => MRG_AXI_ID          , --
             AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH => MRG_AXI_AUSER_WIDTH , --
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
-            MAX_XFER_SIZE   => MRG_MAX_XFER_SIZE   , --
-            MRG_DATA_BITS   => MRG_DATA_BITS         --
+            MAX_XFER_SIZE   => MRG_MAX_XFER_SIZE     --
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -559,6 +553,8 @@ begin
     -------------------------------------------------------------------------------
     MRG_WR: Merge_AXI_Writer                         -- 
         generic map (                                -- 
+            WORDS           => WORDS               , --
+            WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => MRG_WR_REG_PARAM    , --
             AXI_ID          => MRG_AXI_ID          , --
             AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --
@@ -567,9 +563,7 @@ begin
             AXI_BUSER_WIDTH => MRG_AXI_BUSER_WIDTH , --
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
-            MAX_XFER_SIZE   => MRG_MAX_XFER_SIZE   , --
-            MRG_NUM         => MRG_WR_NUM          , --
-            MRG_DATA_BITS   => MRG_DATA_BITS       , --
+            MAX_XFER_SIZE   => MRG_MAX_XFER_SIZE     --
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -621,27 +615,34 @@ begin
         ---------------------------------------------------------------------------
         -- Merge Intake Signals.
         ---------------------------------------------------------------------------
-            MRG_DATA        => MRG_WR_DATA         , -- In  :
-            MRG_STRB        => MRG_WR_STRB         , -- In  :
-            MRG_LAST        => MRG_WR_LAST         , -- In  :
-            MRG_VALID       => MRG_WR_VALID        , -- In  :
-            MRG_READY       => MRG_WR_READY        , -- Out :
+            MRG_DATA        => MERGED_DATA         , -- In  :
+            MRG_STRB        => MERGED_STRB         , -- In  :
+            MRG_LAST        => MERGED_LAST         , -- In  :
+            MRG_VALID       => mrg_wr_valid        , -- In  :
+            MRG_READY       => mrg_wr_ready        , -- Out :
         ---------------------------------------------------------------------------
         -- Status Output.
         ---------------------------------------------------------------------------
-            BUSY            => mrd_wr_busy         , -- Out :
+            BUSY            => mrg_wr_busy         , -- Out :
             DONE            => mrg_wr_done           -- Out :
         );
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    stm_wr_valid <= '1' when (stm_wr_busy = '1' and MERGED_VALID = '1') else '0';
+    mrg_wr_valid <= '1' when (mrg_wr_busy = '1' and MERGED_VALID = '1') else '0';
+    MERGED_READY <= '1' when (stm_wr_busy = '1' and stm_wr_ready = '1') or
+                             (mrg_wr_busy = '1' and mrg_wr_ready = '1') else '0';
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     CTRL: Interface_Controller                       -- 
         generic map (                                -- 
-            MRG_RD_NUM      => MRG_RD_NUM          , --
+            WAYS            => WAYS                , --
+            WORD_BITS       => WORD_BITS           , --
             STM_FEEDBACK    => STM_FEEDBACK        , --
-            STM_RD_DATA_BITS=> STM_RD_DATA_BITS    , --
-            STM_WR_DATA_BITS=> STM_WR_DATA_BITS    , --
-            MRG_RW_DATA_BITS=> MRG_DATA_BITS       , --
+            STM_RD_DATA_BITS=> WORD_BITS           , --
+            STM_WR_DATA_BITS=> WORD_BITS           , --
             REG_ADDR_BITS   => REG_ADDR_BITS       , --
             REG_SIZE_BITS   => REG_SIZE_BITS       , --
             REG_MODE_BITS   => REG_MODE_BITS       , --

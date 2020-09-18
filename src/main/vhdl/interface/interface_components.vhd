@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 0.1.0                                                           --
---!     @date    2018/07/18                                                      --
+--!     @version 0.5.0                                                           --
+--!     @date    2020/09/18                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 --                                                                               --
---      Copyright (C) 2018 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
+--      Copyright (C) 2020 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
 --      All rights reserved.                                                     --
 --                                                                               --
 --      Redistribution and use in source and binary forms, with or without       --
@@ -48,11 +48,11 @@ package Interface_Components is
 -----------------------------------------------------------------------------------
 component Merge_Reader
     generic (
-        IN_NUM          :  integer :=  8;
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        WAYS            :  integer :=  8;
+        WORD_BITS       :  integer := 64;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
-        MRG_DATA_BITS   :  integer := 64;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12
@@ -67,25 +67,25 @@ component Merge_Reader
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
-        REG_D           :  in  std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
-        REG_Q           :  out std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- Transaction Command Request Signals.
     -------------------------------------------------------------------------------
-        REQ_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS        -1 downto 0);
-        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS        -1 downto 0);
-        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH            -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS  -1 downto 0);
+        REQ_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
+        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
+        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
+        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
     -------------------------------------------------------------------------------
-        ACK_VALID       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH               downto 0);
+        ACK_VALID       :  in  std_logic_vector(WAYS               -1 downto 0);
+        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH             downto 0);
         ACK_ERROR       :  in  std_logic := '0';
         ACK_NEXT        :  in  std_logic;
         ACK_LAST        :  in  std_logic;
@@ -94,9 +94,9 @@ component Merge_Reader
     -------------------------------------------------------------------------------
     -- Transfer Status Signals.
     -------------------------------------------------------------------------------
-        XFER_BUSY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        XFER_DONE       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        XFER_ERROR      :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
+        XFER_BUSY       :  in  std_logic_vector(WAYS               -1 downto 0);
+        XFER_DONE       :  in  std_logic_vector(WAYS               -1 downto 0);
+        XFER_ERROR      :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Intake Flow Control Signals.
     -------------------------------------------------------------------------------
@@ -104,39 +104,39 @@ component Merge_Reader
         FLOW_PAUSE      :  out std_logic;
         FLOW_STOP       :  out std_logic;
         FLOW_LAST       :  out std_logic;
-        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_FIN_VALID  :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_FIN_VALID  :  in  std_logic_vector(WAYS               -1 downto 0);
         PUSH_FIN_LAST   :  in  std_logic;
         PUSH_FIN_ERROR  :  in  std_logic := '0';
-        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_BUF_RESET  :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
-        PUSH_BUF_VALID  :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
+        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_BUF_RESET  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
+        PUSH_BUF_VALID  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
         PUSH_BUF_LAST   :  in  std_logic;
         PUSH_BUF_ERROR  :  in  std_logic := '0';
-        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_BUF_READY  :  out std_logic_vector(IN_NUM               -1 downto 0);
+        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_BUF_READY  :  out std_logic_vector(WAYS               -1 downto 0);
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_WEN         :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8      -1 downto 0);
-        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS        -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH               downto 0);
+        BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
+        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
+        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(IN_NUM*MRG_DATA_BITS -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS     -1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS               -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS               -1 downto 0);
     -------------------------------------------------------------------------------
     -- Status Output.
     -------------------------------------------------------------------------------
-        BUSY            :  out std_logic_vector(IN_NUM               -1 downto 0);
-        DONE            :  out std_logic_vector(IN_NUM               -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS               -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS               -1 downto 0)
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -144,14 +144,14 @@ end component;
 -----------------------------------------------------------------------------------
 component Merge_Writer
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_NUM         :  integer :=  1;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -214,14 +214,13 @@ component Merge_Writer
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_REN         :  in  std_logic_vector;
         BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS/8-1 downto 0);
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -237,18 +236,18 @@ end component;
 -----------------------------------------------------------------------------------
 component ArgSort_Reader
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -318,8 +317,8 @@ component ArgSort_Reader
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  out std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -335,18 +334,18 @@ end component;
 -----------------------------------------------------------------------------------
 component ArgSort_Writer
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -409,14 +408,13 @@ component ArgSort_Writer
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_REN         :  in  std_logic_vector;
         BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -432,15 +430,15 @@ end component;
 -----------------------------------------------------------------------------------
 component Merge_AXI_Reader
     generic (
-        IN_NUM          :  integer :=  8;
+        WAYS            :  integer :=  8;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -452,14 +450,14 @@ component Merge_AXI_Reader
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
+        REG_L           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_D           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_Q           :  out std_logic_vector(REG_PARAM.BITS -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH  -1 downto 0);
+        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
+        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH -1 downto 0);
         AXI_ARLEN       :  out std_logic_vector(7 downto 0);
         AXI_ARSIZE      :  out std_logic_vector(2 downto 0);
         AXI_ARBURST     :  out std_logic_vector(1 downto 0);
@@ -468,14 +466,14 @@ component Merge_AXI_Reader
         AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH-1 downto 0);
         AXI_ARVALID     :  out std_logic;
         AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH  -1 downto 0);
+        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
+        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH -1 downto 0);
         AXI_RRESP       :  in  std_logic_vector(1 downto 0);
         AXI_RLAST       :  in  std_logic;
         AXI_RVALID      :  in  std_logic;
@@ -483,27 +481,18 @@ component Merge_AXI_Reader
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(IN_NUM*MRG_DATA_BITS -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS -1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS           -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS           -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS           -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Intake Status Output.
+    -- Status Output.
     -------------------------------------------------------------------------------
-        I_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        I_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0);
-    -------------------------------------------------------------------------------
-    -- Outlet Status Output.
-    -------------------------------------------------------------------------------
-        O_OPEN          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_RUNNING       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_DONE          :  out std_logic_vector(IN_NUM               -1 downto 0);
-        O_ERROR         :  out std_logic_vector(IN_NUM               -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS           -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS           -1 downto 0)
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -511,6 +500,8 @@ end component;
 -----------------------------------------------------------------------------------
 component Merge_AXI_Writer
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -519,9 +510,7 @@ component Merge_AXI_Writer
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_NUM         :  integer :=  1;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -533,14 +522,14 @@ component Merge_AXI_Writer
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
+        REG_L           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
+        REG_D           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
+        REG_Q           :  out std_logic_vector(REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_AWID        :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_AWADDR      :  out std_logic_vector(AXI_ADDR_WIDTH  -1 downto 0);
+        AXI_AWID        :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_AWADDR      :  out std_logic_vector(AXI_ADDR_WIDTH   -1 downto 0);
         AXI_AWLEN       :  out std_logic_vector(7 downto 0);
         AXI_AWSIZE      :  out std_logic_vector(2 downto 0);
         AXI_AWBURST     :  out std_logic_vector(1 downto 0);
@@ -549,32 +538,32 @@ component Merge_AXI_Writer
         AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        AXI_AWUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        AXI_AWUSER      :  out std_logic_vector(AXI_AUSER_WIDTH  -1 downto 0);
         AXI_AWVALID     :  out std_logic;
         AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
     -- AXI Master Write Data Channel Signals.
     ------------------------------------------------------------------------------
-        AXI_WID         :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_WDATA       :  out std_logic_vector(AXI_DATA_WIDTH  -1 downto 0);
-        AXI_WSTRB       :  out std_logic_vector(AXI_DATA_WIDTH/8-1 downto 0);
-        AXI_WUSER       :  out std_logic_vector(AXI_WUSER_WIDTH -1 downto 0);
+        AXI_WID         :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_WDATA       :  out std_logic_vector(AXI_DATA_WIDTH   -1 downto 0);
+        AXI_WSTRB       :  out std_logic_vector(AXI_DATA_WIDTH/8 -1 downto 0);
+        AXI_WUSER       :  out std_logic_vector(AXI_WUSER_WIDTH  -1 downto 0);
         AXI_WLAST       :  out std_logic;
         AXI_WVALID      :  out std_logic;
         AXI_WREADY      :  in  std_logic;
     ------------------------------------------------------------------------------
     -- AXI Write Response Channel Signals.
     ------------------------------------------------------------------------------
-        AXI_BID         :  in  std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
+        AXI_BID         :  in  std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
         AXI_BRESP       :  in  std_logic_vector(1 downto 0);
-        AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH -1 downto 0);
+        AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH  -1 downto 0);
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS/8-1 downto 0);
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -590,6 +579,8 @@ end component;
 -----------------------------------------------------------------------------------
 component ArgSort_AXI_Reader
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -597,12 +588,10 @@ component ArgSort_AXI_Reader
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -645,8 +634,8 @@ component ArgSort_AXI_Reader
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  out std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -662,6 +651,8 @@ end component;
 -----------------------------------------------------------------------------------
 component ArgSort_AXI_Writer
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -671,12 +662,10 @@ component ArgSort_AXI_Writer
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -728,8 +717,8 @@ component ArgSort_AXI_Writer
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -745,11 +734,11 @@ end component;
 -----------------------------------------------------------------------------------
 component Interface_Controller
     generic (
-        MRG_RD_NUM          :  integer :=    8;
+        WAYS                :  integer :=    8;
+        WORD_BITS           :  integer :=   64;
         STM_FEEDBACK        :  integer :=    1;
         STM_RD_DATA_BITS    :  integer :=   32;
         STM_WR_DATA_BITS    :  integer :=   32;
-        MRG_RW_DATA_BITS    :  integer :=   64;
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32;
@@ -831,11 +820,11 @@ component Interface_Controller
     -------------------------------------------------------------------------------
     -- Merge Reader Control Register Interface
     -------------------------------------------------------------------------------
-        MRG_RD_REG_L        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_D        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_Q        :  in  std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_BUSY         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
-        MRG_RD_DONE         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
+        MRG_RD_REG_L        :  out std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_D        :  out std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_Q        :  in  std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_BUSY         :  in  std_logic_vector(WAYS                      -1 downto 0);
+        MRG_RD_DONE         :  in  std_logic_vector(WAYS                      -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Writer Control Register Interface
     -------------------------------------------------------------------------------
@@ -851,9 +840,18 @@ end component;
 -----------------------------------------------------------------------------------
 component ArgSort_AXI_Interface
     generic (
+        WAYS                :  integer :=    8;
+        WORDS               :  integer :=    1;
+        WORD_BITS           :  integer :=   64;
+        WORD_INDEX_LO       :  integer :=    0;
+        WORD_INDEX_HI       :  integer :=   31;
+        WORD_COMP_LO        :  integer :=   32;
+        WORD_COMP_HI        :  integer :=   63;
         MRG_AXI_ID          :  integer :=    1;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
         MRG_AXI_AUSER_WIDTH :  integer :=    4;
+        MRG_AXI_WUSER_WIDTH :  integer :=    4;
+        MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
         MRG_MAX_XFER_SIZE   :  integer :=   12;
@@ -865,18 +863,7 @@ component ArgSort_AXI_Interface
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
         STM_AXI_DATA_WIDTH  :  integer :=   64;
         STM_MAX_XFER_SIZE   :  integer :=   12;
-        MRG_IN_NUM          :  integer :=    8;
-        MRG_WR_NUM          :  integer :=    8;
-        MRG_DATA_BITS       :  integer :=   64;
         STM_FEEDBACK        :  integer :=    1;
-        STM_RD_NUM          :  integer :=    1;
-        STM_RD_DATA_BITS    :  integer :=   64;
-        STM_WR_NUM          :  integer :=    1;
-        STM_WR_DATA_BITS    :  integer :=   64;
-        STM_INDEX_LO        :  integer :=    0;
-        STM_INDEX_HI        :  integer :=   31;
-        STM_COMP_LO         :  integer :=   32;
-        STM_COMP_HI         :  integer :=   63
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32
@@ -986,19 +973,11 @@ component ArgSort_AXI_Interface
     -------------------------------------------------------------------------------
     -- Stream Reader Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_RD_DATA        :  out std_logic_vector(STM_RD_NUM*STM_RD_DATA_BITS  -1 downto 0);
-        STM_RD_STRB        :  out std_logic_vector(STM_RD_NUM*STM_RD_DATA_BITS/8-1 downto 0);
-        STM_RD_LAST        :  out std_logic;
-        STM_RD_VALID       :  out std_logic;
-        STM_RD_READY       :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Stream Writer Intake Signals.
-    -------------------------------------------------------------------------------
-        STM_WR_DATA         :  in  std_logic_vector(STM_WR_NUM*STM_WR_DATA_BITS  -1 downto 0);
-        STM_WR_STRB         :  in  std_logic_vector(STM_WR_NUM*STM_WR_DATA_BITS/8-1 downto 0);
-        STM_WR_LAST         :  in  std_logic;
-        STM_WR_VALID        :  in  std_logic;
-        STM_WR_READY        :  out std_logic;
+        STM_RD_DATA         :  out std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
+        STM_RD_STRB         :  out std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        STM_RD_LAST         :  out std_logic;
+        STM_RD_VALID        :  out std_logic;
+        STM_RD_READY        :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Merge AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -1012,7 +991,7 @@ component ArgSort_AXI_Interface
         MRG_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
         MRG_AXI_ARVALID     :  out std_logic;
         MRG_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
@@ -1061,21 +1040,21 @@ component ArgSort_AXI_Interface
     -------------------------------------------------------------------------------
     -- Merge Reader Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_RD_DATA         :  out std_logic_vector(MRG_IN_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_RD_NONE         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_EBLK         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_LAST         :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_VALID        :  out std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_READY        :  in  std_logic_vector(MRG_IN_NUM                -1 downto 0);
-        MRG_RD_LEVEL        :  in  std_logic_vector(MRG_IN_NUM                -1 downto 0);
+        MRG_RD_DATA         :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
+        MRG_RD_NONE         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_RD_EBLK         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_RD_LAST         :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_VALID        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_READY        :  in  std_logic_vector(WAYS                -1 downto 0);
+        MRG_RD_LEVEL        :  in  std_logic_vector(WAYS                -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Merge Writer Intake Signals.
+    -- Merge Result Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_WR_DATA         :  in  std_logic_vector(MRG_WR_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_WR_STRB         :  in  std_logic_vector(MRG_WR_NUM*MRG_DATA_BITS/8-1 downto 0);
-        MRG_WR_LAST         :  in  std_logic;
-        MRG_WR_VALID        :  in  std_logic;
-        MRG_WR_READY        :  out std_logic;
+        MERGED_DATA         :  in  std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
+        MERGED_STRB         :  in  std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        MERGED_LAST         :  in  std_logic;
+        MERGED_VALID        :  in  std_logic;
+        MERGED_READY        :  out std_logic;
     -------------------------------------------------------------------------------
     -- Merge Sorter Core Control Interface Signals.
     -------------------------------------------------------------------------------

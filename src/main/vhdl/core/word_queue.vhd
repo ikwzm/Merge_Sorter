@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    word_queue.vhd
 --!     @brief   Merge Sorter Word Queue Module :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @version 0.3.0
+--!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without

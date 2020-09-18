@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,11 +40,11 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Interface_Controller is
     generic (
-        MRG_RD_NUM          :  integer :=    8;
+        WAYS                :  integer :=    8;
+        WORD_BITS           :  integer :=   64;
         STM_FEEDBACK        :  integer :=    1;
         STM_RD_DATA_BITS    :  integer :=   32;
         STM_WR_DATA_BITS    :  integer :=   32;
-        MRG_RW_DATA_BITS    :  integer :=   64;
         REG_ADDR_BITS       :  integer :=   64;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   32;
@@ -126,11 +126,11 @@ entity  Interface_Controller is
     -------------------------------------------------------------------------------
     -- Merge Reader Control Register Interface
     -------------------------------------------------------------------------------
-        MRG_RD_REG_L        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_D        :  out std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_REG_Q        :  in  std_logic_vector(MRG_RD_NUM*MRG_RD_REG_PARAM.BITS-1 downto 0);
-        MRG_RD_BUSY         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
-        MRG_RD_DONE         :  in  std_logic_vector(MRG_RD_NUM                      -1 downto 0);
+        MRG_RD_REG_L        :  out std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_D        :  out std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_REG_Q        :  in  std_logic_vector(WAYS*MRG_RD_REG_PARAM.BITS-1 downto 0);
+        MRG_RD_BUSY         :  in  std_logic_vector(WAYS                      -1 downto 0);
+        MRG_RD_DONE         :  in  std_logic_vector(WAYS                      -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Writer Control Register Interface
     -------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     constant STM_RD_DATA_BYTES   :  integer := STM_RD_DATA_BITS/8;
     constant STM_WR_DATA_BYTES   :  integer := STM_WR_DATA_BITS/8;
-    constant MRG_RW_DATA_BYTES   :  integer := MRG_RW_DATA_BITS/8;
+    constant WORD_BYTES          :  integer := WORD_BITS/8;
     constant SIZE_BITS           :  integer := REG_SIZE_BITS+1;
     -------------------------------------------------------------------------------
     --
@@ -194,8 +194,8 @@ architecture RTL of Interface_Controller is
     signal   mrg_reader_xsize    :  unsigned(SIZE_BITS-1 downto 0);
     signal   mrg_reader_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
     signal   mrg_reader_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal   mrg_reader_busy     :  std_logic_vector(MRG_RD_NUM-1 downto 0);
-    constant MRG_READER_ALL_IDLE :  std_logic_vector(MRG_RD_NUM-1 downto 0) := (others => '0');
+    signal   mrg_reader_busy     :  std_logic_vector(WAYS-1 downto 0);
+    constant MRG_READER_ALL_IDLE :  std_logic_vector(WAYS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -374,7 +374,7 @@ begin
                             mrg_writer_addr <= tmp_0_base_addr;
                             mrg_writer_mode <= tmp_0_xfer_mode;
                             sort_total_size <= resize(unsigned(reg_size), SIZE_BITS);
-                            sort_block_size <= to_unsigned(MRG_RD_NUM**(STM_FEEDBACK+1), SIZE_BITS);
+                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), SIZE_BITS);
                         when STM_RD_CHK_STATE =>
                             next_state  := STM_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -401,7 +401,7 @@ begin
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
                             mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * MRG_RD_NUM;
+                            sort_block_size  <= sort_block_size * WAYS;
                         when MRG_RD_CHK_STATE =>
                             next_state := MRG_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -432,7 +432,7 @@ begin
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
                             mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * MRG_RD_NUM;
+                            sort_block_size  <= sort_block_size * WAYS;
                         when DONE_STATE =>
                             next_state := IDLE_STATE;
                     end case;
@@ -678,7 +678,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    MRG_RD_CTRL: for channel in 0 to MRG_RD_NUM-1 generate
+    MRG_RD_CTRL: for channel in 0 to WAYS-1 generate
         type     STATE_TYPE     is (IDLE_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
         signal   curr_state     :  STATE_TYPE;
         signal   base           :  unsigned(SIZE_BITS-1 downto 0);
@@ -751,13 +751,13 @@ begin
                             end if;
                             if (remain_zero = TRUE) or
                                (remain_size <= mrg_reader_xsize) then
-                                read_bytes <= remain_size      * MRG_RW_DATA_BYTES;
+                                read_bytes <= remain_size      * WORD_BYTES;
                                 read_last  <= TRUE;
                             else
-                                read_bytes <= mrg_reader_xsize * MRG_RW_DATA_BYTES;
+                                read_bytes <= mrg_reader_xsize * WORD_BYTES;
                                 read_last  <= FALSE;
                             end if;
-                            read_addr <= resize(unsigned(mrg_reader_addr), read_addr'length) + offset * MRG_RW_DATA_BYTES;
+                            read_addr <= resize(unsigned(mrg_reader_addr), read_addr'length) + offset * WORD_BYTES;
                         when REQ_STATE =>
                             if    (read_last = TRUE) then
                                 curr_state <= RUN_STATE;
@@ -992,7 +992,7 @@ begin
                                 curr_state <= IDLE_STATE;
                             end if;
                             write_addr  <= resize(unsigned(mrg_writer_addr), write_addr'length);
-                            write_bytes <= sort_total_size * MRG_RW_DATA_BYTES;
+                            write_bytes <= sort_total_size * WORD_BYTES;
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>

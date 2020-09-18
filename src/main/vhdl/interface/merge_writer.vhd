@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,14 +40,14 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Merge_Writer is
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
-        MAX_XFER_SIZE   :  integer := 12;
-        MRG_NUM         :  integer :=  1;
-        MRG_DATA_BITS   :  integer := 64
+        MAX_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -110,14 +110,13 @@ entity  Merge_Writer is
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_REN         :  in  std_logic_vector;
         BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(MRG_NUM*MRG_DATA_BITS/8-1 downto 0);
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -217,7 +216,7 @@ begin
             O_FIXED_FLOW_OPEN   => 0                       , --
             O_FIXED_POOL_OPEN   => 1                       , --
             I_CLK_RATE          => 1                       , --
-            I_DATA_BITS         => MRG_NUM*MRG_DATA_BITS   , --
+            I_DATA_BITS         => WORDS*WORD_BITS         , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             O2I_OPEN_INFO_BITS  => 1                       , --

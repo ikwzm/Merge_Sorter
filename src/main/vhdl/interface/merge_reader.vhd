@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,11 +40,11 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Merge_Reader is
     generic (
-        IN_NUM          :  integer :=  8;
-        REG_PARAM       :  Merge_Sorter_Interface.Regs_Field_Type := Merge_Sorter_Interface.Default_Regs_Param;
+        WAYS            :  integer :=  8;
+        WORD_BITS       :  integer := 64;
+        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
-        MRG_DATA_BITS   :  integer := 64;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12
@@ -59,25 +59,25 @@ entity  Merge_Reader is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
-        REG_D           :  in  std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
-        REG_Q           :  out std_logic_vector(IN_NUM*REG_PARAM.BITS-1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- Transaction Command Request Signals.
     -------------------------------------------------------------------------------
-        REQ_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS        -1 downto 0);
-        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS        -1 downto 0);
-        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH            -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS  -1 downto 0);
+        REQ_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
+        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
+        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
+        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
     -------------------------------------------------------------------------------
-        ACK_VALID       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH               downto 0);
+        ACK_VALID       :  in  std_logic_vector(WAYS               -1 downto 0);
+        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH             downto 0);
         ACK_ERROR       :  in  std_logic := '0';
         ACK_NEXT        :  in  std_logic;
         ACK_LAST        :  in  std_logic;
@@ -86,9 +86,9 @@ entity  Merge_Reader is
     -------------------------------------------------------------------------------
     -- Transfer Status Signals.
     -------------------------------------------------------------------------------
-        XFER_BUSY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        XFER_DONE       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        XFER_ERROR      :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
+        XFER_BUSY       :  in  std_logic_vector(WAYS               -1 downto 0);
+        XFER_DONE       :  in  std_logic_vector(WAYS               -1 downto 0);
+        XFER_ERROR      :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Intake Flow Control Signals.
     -------------------------------------------------------------------------------
@@ -96,39 +96,39 @@ entity  Merge_Reader is
         FLOW_PAUSE      :  out std_logic;
         FLOW_STOP       :  out std_logic;
         FLOW_LAST       :  out std_logic;
-        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_FIN_VALID  :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_FIN_VALID  :  in  std_logic_vector(WAYS               -1 downto 0);
         PUSH_FIN_LAST   :  in  std_logic;
         PUSH_FIN_ERROR  :  in  std_logic := '0';
-        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_BUF_RESET  :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
-        PUSH_BUF_VALID  :  in  std_logic_vector(IN_NUM               -1 downto 0) := (others => '0');
+        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_BUF_RESET  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
+        PUSH_BUF_VALID  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
         PUSH_BUF_LAST   :  in  std_logic;
         PUSH_BUF_ERROR  :  in  std_logic := '0';
-        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH               downto 0);
-        PUSH_BUF_READY  :  out std_logic_vector(IN_NUM               -1 downto 0);
+        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        PUSH_BUF_READY  :  out std_logic_vector(WAYS               -1 downto 0);
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_WEN         :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8      -1 downto 0);
-        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS        -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH               downto 0);
+        BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
+        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
+        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(IN_NUM*MRG_DATA_BITS -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(IN_NUM               -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(IN_NUM               -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS     -1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS               -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS               -1 downto 0);
     -------------------------------------------------------------------------------
     -- Status Output.
     -------------------------------------------------------------------------------
-        BUSY            :  out std_logic_vector(IN_NUM               -1 downto 0);
-        DONE            :  out std_logic_vector(IN_NUM               -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS               -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS               -1 downto 0)
     );
 end Merge_Reader;
 -----------------------------------------------------------------------------------
@@ -193,85 +193,85 @@ architecture RTL of Merge_Reader is
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_ADDR(SEL: std_logic_vector; VEC: REQ_ADDR_VECTOR) return std_logic_vector is
-        variable req_addr  :  std_logic_vector(REQ_ADDR_BITS-1 downto 0);
+        variable v_req_addr  :  std_logic_vector(REQ_ADDR_BITS-1 downto 0);
     begin
-        req_addr := (others => '0');
+        v_req_addr := (others => '0');
         for i in VEC'range loop
             if (SEL(i) = '1') then
-                req_addr := req_addr or VEC(i);
+                v_req_addr := v_req_addr or VEC(i);
             end if;
         end loop;
-        return req_addr;
+        return v_req_addr;
     end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_SIZE(SEL: std_logic_vector; VEC: REQ_SIZE_VECTOR) return std_logic_vector is
-        variable req_size  :  std_logic_vector(REQ_SIZE_BITS-1 downto 0);
+        variable v_req_size  :  std_logic_vector(REQ_SIZE_BITS-1 downto 0);
     begin
-        req_size := (others => '0');
+        v_req_size := (others => '0');
         for i in VEC'range loop
             if (SEL(i) = '1') then
-                req_size := req_size or VEC(i);
+                v_req_size := v_req_size or VEC(i);
             end if;
         end loop;
-        return req_size;
+        return v_req_size;
     end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_MODE(SEL: std_logic_vector; VEC: REQ_MODE_VECTOR) return std_logic_vector is
-        variable req_mode  :  std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
+        variable v_req_mode  :  std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
     begin
-        req_mode := (others => '0');
+        v_req_mode := (others => '0');
         for i in VEC'range loop
             if (SEL(i) = '1') then
-                req_mode := req_mode or VEC(i);
+                v_req_mode := v_req_mode or VEC(i);
             end if;
         end loop;
-        return req_mode;
+        return v_req_mode;
     end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_BUF_PTR(SEL: std_logic_vector; VEC: REQ_BUF_PTR_VECTOR) return std_logic_vector is
-        variable req_buf_ptr :  std_logic_vector(BUF_DEPTH downto 0);
+        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH downto 0);
     begin
-        req_buf_ptr := (others => '0');
+        v_req_buf_ptr := (others => '0');
         for i in VEC'range loop
             if (SEL(i) = '1') then
-                req_buf_ptr := req_buf_ptr or VEC(i);
+                v_req_buf_ptr := v_req_buf_ptr or VEC(i);
             end if;
         end loop;
-        return req_buf_ptr;
+        return v_req_buf_ptr;
     end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    signal    i_req_addr            :  REQ_ADDR_VECTOR   (IN_NUM-1 downto 0);
-    signal    i_req_size            :  REQ_SIZE_VECTOR   (IN_NUM-1 downto 0);
-    signal    i_req_mode            :  REQ_MODE_VECTOR(   IN_NUM-1 downto 0);
-    signal    i_req_buf_ptr         :  REQ_BUF_PTR_VECTOR(IN_NUM-1 downto 0);
-    signal    i_req_first           :  std_logic_vector  (IN_NUM-1 downto 0);
-    signal    i_req_last            :  std_logic_vector  (IN_NUM-1 downto 0);
-    signal    i_req_valid           :  std_logic_vector  (IN_NUM-1 downto 0);
-    signal    i_req_ready           :  std_logic_vector  (IN_NUM-1 downto 0);
-    signal    i_flow_ready          :  std_logic_vector  (IN_NUM-1 downto 0);
-    signal    i_flow_stop           :  std_logic_vector  (IN_NUM-1 downto 0);
+    signal    i_req_addr            :  REQ_ADDR_VECTOR   (WAYS-1 downto 0);
+    signal    i_req_size            :  REQ_SIZE_VECTOR   (WAYS-1 downto 0);
+    signal    i_req_mode            :  REQ_MODE_VECTOR(   WAYS-1 downto 0);
+    signal    i_req_buf_ptr         :  REQ_BUF_PTR_VECTOR(WAYS-1 downto 0);
+    signal    i_req_first           :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_last            :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_valid           :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_ready           :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_flow_ready          :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_flow_stop           :  std_logic_vector  (WAYS-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     REQ: block
-        constant  ARB_NULL          :  std_logic_vector  (IN_NUM-1 downto 0) := (others => '0');
-        signal    arb_request       :  std_logic_vector  (IN_NUM-1 downto 0);
-        signal    arb_grant         :  std_logic_vector  (IN_NUM-1 downto 0);
+        constant  ARB_NULL          :  std_logic_vector  (WAYS-1 downto 0) := (others => '0');
+        signal    arb_request       :  std_logic_vector  (WAYS-1 downto 0);
+        signal    arb_grant         :  std_logic_vector  (WAYS-1 downto 0);
         signal    arb_valid         :  std_logic;
         signal    arb_shift         :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, SEL_STATE, REQ_STATE, ACK_STATE);
         signal    curr_state        :  STATE_TYPE;
-        signal    curr_sel          :  std_logic_vector  (IN_NUM-1 downto 0);
-        signal    curr_val          :  std_logic_vector  (IN_NUM-1 downto 0);
+        signal    curr_sel          :  std_logic_vector  (WAYS-1 downto 0);
+        signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
     begin
         ---------------------------------------------------------------------------
         --
@@ -279,7 +279,7 @@ begin
         ARB: QUEUE_ARBITER                   -- 
             generic map (                    -- 
                 MIN_NUM     => 0          ,  -- 
-                MAX_NUM     => IN_NUM-1      -- 
+                MAX_NUM     => WAYS-1      -- 
             )                                -- 
             port map (                       -- 
                 CLK         => CLK        ,  -- In  :
@@ -346,7 +346,7 @@ begin
                             elsif (arb_shift = '1') then
                                 curr_state <= IDLE_STATE;
                                 curr_val   <= (others => '0');
-                                FLOW_STOP  <= (others => '0');
+                                FLOW_STOP  <= '0';
                             else
                                 curr_state <= ACK_STATE;
                             end if;
@@ -354,14 +354,14 @@ begin
                             if (arb_shift = '1') then
                                 curr_state <= IDLE_STATE;
                                 curr_val   <= (others => '0');
-                                FLOW_STOP  <= (others => '0');
+                                FLOW_STOP  <= '0';
                             else
                                 curr_state <= ACK_STATE;
                             end if;
                         when others => 
                                 curr_state <= IDLE_STATE;
                                 curr_val   <= (others => '0');
-                                FLOW_STOP  <= (others => '0');
+                                FLOW_STOP  <= '0';
                     end case;
                 end if;
             end if;
@@ -376,7 +376,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    CH: for channel in 0 to IN_NUM-1 generate
+    CH: for channel in 0 to WAYS-1 generate
         ---------------------------------------------------------------------------
         -- レジスタアクセス用の信号群.
         ---------------------------------------------------------------------------
@@ -387,7 +387,7 @@ begin
         signal    buf_rptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
         signal    buf_rdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
         signal    buf_we            :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
-        signal    mrg_in_data       :  std_logic_vector(MRG_DATA_BITS  -1 downto 0);
+        signal    mrg_in_data       :  std_logic_vector(WORD_BITS      -1 downto 0);
         signal    mrg_in_last       :  std_logic;
         signal    mrg_in_valid      :  std_logic;
         signal    mrg_in_ready      :  std_logic;
@@ -431,7 +431,7 @@ begin
                 I_FIXED_FLOW_OPEN   => 0                       , --
                 I_FIXED_POOL_OPEN   => 1                       , --
                 O_CLK_RATE          => 1                       , --
-                O_DATA_BITS         => MRG_DATA_BITS           , --
+                O_DATA_BITS         => WORD_BITS               , --
                 BUF_DEPTH           => BUF_DEPTH               , --
                 BUF_DATA_BITS       => BUF_DATA_BITS           , --
                 I2O_OPEN_INFO_BITS  => 2                       , --
@@ -688,7 +688,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        MRG_DATA((channel+1)*MRG_DATA_BITS-1 downto channel*MRG_DATA_BITS) <= mrg_in_data;
+        MRG_DATA((channel+1)*WORD_BITS-1 downto channel*WORD_BITS) <= mrg_in_data;
         MRG_VALID(channel) <= '1' when (curr_state = MRG_NONE_STATE) or
                                        (curr_state = MRG_READ_STATE and mrg_in_valid = '1') else '0';
         MRG_LAST (channel) <= '1' when (curr_state = MRG_NONE_STATE) or

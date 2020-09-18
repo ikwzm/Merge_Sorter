@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @version 0.3.1
+--!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -41,10 +41,10 @@ use     Merge_Sorter.Word;
 entity  Core_Stream_Intake is
     generic (
         WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-        O_NUM           :  integer :=  8;
-        I_NUM           :  integer :=  1;
+        MRG_WAYS        :  integer :=  8;
+        STM_WORDS       :  integer :=  1;
         FEEDBACK        :  integer :=  1;
-        O_NUM_BITS      :  integer :=  3;
+        MRG_WAYS_BITS   :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
         INFO_BITS       :  integer :=  8;
         INFO_EBLK_POS   :  integer :=  0;
@@ -60,18 +60,18 @@ entity  Core_Stream_Intake is
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                 -1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                     -1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(I_NUM*WORD_PARAM.DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(I_NUM                     -1 downto 0);
+        I_DATA          :  in  std_logic_vector(STM_WORDS*WORD_PARAM.DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(STM_WORDS                     -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_WORD          :  out std_logic_vector(O_NUM*WORD_PARAM.BITS     -1 downto 0);
-        O_INFO          :  out std_logic_vector(O_NUM*INFO_BITS           -1 downto 0);
-        O_LAST          :  out std_logic_vector(O_NUM                     -1 downto 0);
-        O_VALID         :  out std_logic_vector(O_NUM                     -1 downto 0);
-        O_READY         :  in  std_logic_vector(O_NUM                     -1 downto 0)
+        O_WORD          :  out std_logic_vector(MRG_WAYS *WORD_PARAM.BITS     -1 downto 0);
+        O_INFO          :  out std_logic_vector(MRG_WAYS *INFO_BITS           -1 downto 0);
+        O_LAST          :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
+        O_VALID         :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
+        O_READY         :  in  std_logic_vector(MRG_WAYS                      -1 downto 0)
     );
 end Core_Stream_Intake;
 -----------------------------------------------------------------------------------
@@ -84,12 +84,12 @@ library PipeWork;
 use     PipeWork.Components.REDUCER;
 architecture RTL of Core_Stream_Intake is
     constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
-    signal    queue_valid       :  std_logic_vector(O_NUM          -1 downto 0);
-    signal    intake_data       :  std_logic_vector(O_NUM*DATA_BITS-1 downto 0);
+    signal    queue_valid       :  std_logic_vector(MRG_WAYS          -1 downto 0);
+    signal    intake_data       :  std_logic_vector(MRG_WAYS*DATA_BITS-1 downto 0);
     signal    intake_last       :  std_logic;
     signal    intake_valid      :  std_logic;
     signal    intake_ready      :  std_logic;
-    signal    intake_number     :  std_logic_vector(O_NUM_BITS     -1 downto 0);
+    signal    intake_number     :  std_logic_vector(MRG_WAYS_BITS     -1 downto 0);
     signal    intake_done       :  boolean;
     signal    outlet_valid      :  std_logic;
     signal    state_done        :  boolean;
@@ -165,14 +165,14 @@ begin
         generic map (                                -- 
             WORD_BITS       => DATA_BITS           , --
             STRB_BITS       => 1                   , -- 
-            I_WIDTH         => I_NUM               , -- 
-            O_WIDTH         => O_NUM               , -- 
+            I_WIDTH         => STM_WORDS           , -- 
+            O_WIDTH         => MRG_WAYS            , -- 
             QUEUE_SIZE      => 0                   , --
             VALID_MIN       => queue_valid'low     , -- 
             VALID_MAX       => queue_valid'high    , -- 
-            O_VAL_SIZE      => O_NUM               , -- 
-            O_SHIFT_MIN     => O_NUM               , -- 
-            O_SHIFT_MAX     => O_NUM               , -- 
+            O_VAL_SIZE      => MRG_WAYS            , -- 
+            O_SHIFT_MIN     => MRG_WAYS            , -- 
+            O_SHIFT_MAX     => MRG_WAYS            , -- 
             I_JUSTIFIED     => 1                   , -- 
             FLUSH_ENABLE    => 0                     -- 
         )                                            -- 
@@ -200,7 +200,7 @@ begin
         constant null_data :  std_logic_vector(DATA_BITS      -1 downto 0) := (others => '0');
     begin
         if (curr_state = INTAKE_STATE) then
-            for i in 0 to O_NUM-1 loop
+            for i in 0 to MRG_WAYS-1 loop
                 word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := intake_data((i+1)*DATA_BITS-1 downto i*DATA_BITS);
                 if (queue_valid(i) = '0') then
                     word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
@@ -228,7 +228,7 @@ begin
                 O_INFO((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= info;
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
-            for i in 0 to O_NUM-1 loop
+            for i in 0 to MRG_WAYS-1 loop
                 word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := null_data;
                 word(WORD_PARAM.ATRB_NONE_POS        ) := '1';
                 word(WORD_PARAM.ATRB_PRIORITY_POS    ) := '0';
@@ -295,7 +295,7 @@ begin
     --
     -------------------------------------------------------------------------------
     COUNT: if (FEEDBACK > 0) generate
-        subtype   COUNTER_TYPE    is unsigned(O_NUM_BITS-1 downto 0);
+        subtype   COUNTER_TYPE    is unsigned(MRG_WAYS_BITS-1 downto 0);
         type      COUNTER_VECTOR  is array (integer range <>) of COUNTER_TYPE;
         signal    counter         :  COUNTER_VECTOR  (1 to FEEDBACK);
         signal    count_up        :  std_logic_vector(1 to FEEDBACK);
@@ -375,7 +375,7 @@ begin
                         else
                             next_zero(i) := '0';
                         end if;
-                        if (next_counter = O_NUM-1) then
+                        if (next_counter = MRG_WAYS-1) then
                             next_last(i) := '1';
                         else
                             next_last(i) := '0';
@@ -456,7 +456,7 @@ begin
                 elsif (curr_state = FLUSH_STATE or curr_state = INTAKE_STATE) then
                     if (delimiter = '1' and outlet_valid = '1') then
                         feedback_size <= resize((feedback_size + feedback_add), SIZE_BITS);
-                        feedback_add  <= resize((feedback_add  * O_NUM       ), SIZE_BITS);
+                        feedback_add  <= resize((feedback_add  * MRG_WAYS    ), SIZE_BITS);
                     end if;
                 else
                     feedback_size <= (others => '0');

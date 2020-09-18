@@ -8,4 +8,4 @@
     PathList :
       - "../../../src/main/vhdl/"
       - "../../../src/test/vhdl/"
-    Top      :  ["Merge_Sorter_Single_Way_Tree_Test_Bench"]
+    Top      :  ["Merge_Sorter_Single_Word_Tree_Test_Bench"]

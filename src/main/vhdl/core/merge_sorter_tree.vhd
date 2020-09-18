@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
---!     @file    single_way_tree.vhd
---!     @brief   Merge Sorter Single Way Tree Module :
---!     @version 0.2.0
---!     @date    2018/7/12
+--!     @file    merge_sorter_tree.vhd
+--!     @brief   Merge Sorter Single Word Tree Module :
+--!     @version 0.5.0
+--!     @date    2020/9/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -38,10 +38,10 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Single_Way_Tree is
+entity  Merge_Sorter_Tree is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
-        I_NUM       :  integer :=  8;
+        WAYS        :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
         QUEUE_SIZE  :  integer :=  2
@@ -50,18 +50,18 @@ entity  Single_Way_Tree is
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0) := (others => '0');
-        I_LAST      :  in  std_logic_vector(I_NUM                -1 downto 0);
-        I_VALID     :  in  std_logic_vector(I_NUM                -1 downto 0);
-        I_READY     :  out std_logic_vector(I_NUM                -1 downto 0);
-        O_WORD      :  out std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(      INFO_BITS      -1 downto 0);
+        I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
+        I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
+        I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
+        O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Single_Way_Tree;
+end Merge_Sorter_Tree;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -70,62 +70,33 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Queue;
-architecture RTL of Single_Way_Tree is
+use     Merge_Sorter.Core_Components.Merge_Sorter_Node;
+architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    component Single_Way_Cell
+    component  Merge_Sorter_Tree 
         generic (
-            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-            INFO_BITS       :  integer :=  1;
-            SORT_ORDER      :  integer :=  0
+            WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+            WAYS        :  integer :=  8;
+            INFO_BITS   :  integer :=  3;
+            SORT_ORDER  :  integer :=  0;
+            QUEUE_SIZE  :  integer :=  2
         );
         port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            A_WORD          :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            A_INFO          :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
-            A_LAST          :  in  std_logic;
-            A_VALID         :  in  std_logic;
-            A_READY         :  out std_logic;
-            B_WORD          :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            B_INFO          :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
-            B_LAST          :  in  std_logic;
-            B_VALID         :  in  std_logic;
-            B_READY         :  out std_logic;
-            O_WORD          :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(INFO_BITS      -1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
-        );
-    end component;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component Single_Way_Tree
-        generic (
-            WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
-            I_NUM           :  integer :=  8;
-            INFO_BITS       :  integer :=  3;
-            SORT_ORDER      :  integer :=  0;
-            QUEUE_SIZE      :  integer :=  2
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            I_WORD          :  in  std_logic_vector(I_NUM*WORD_PARAM.BITS-1 downto 0);
-            I_INFO          :  in  std_logic_vector(I_NUM*INFO_BITS      -1 downto 0) := (others => '0');
-            I_LAST          :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_VALID         :  in  std_logic_vector(I_NUM                -1 downto 0);
-            I_READY         :  out std_logic_vector(I_NUM                -1 downto 0);
-            O_WORD          :  out std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
-            O_INFO          :  out std_logic_vector(      INFO_BITS      -1 downto 0);
-            O_LAST          :  out std_logic;
-            O_VALID         :  out std_logic;
-            O_READY         :  in  std_logic
+            CLK         :  in  std_logic;
+            RST         :  in  std_logic;
+            CLR         :  in  std_logic;
+            I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
+            I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
+            I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
+            O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
+            O_LAST      :  out std_logic;
+            O_VALID     :  out std_logic;
+            O_READY     :  in  std_logic
         );
     end component;
     -------------------------------------------------------------------------------
@@ -140,7 +111,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    NONE: if (I_NUM = 1) generate
+    NONE: if (WAYS = 1) generate
         q_word     <= I_WORD;
         q_info     <= I_INFO;
         q_last     <= I_LAST (0);
@@ -150,17 +121,17 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    TREE: if (I_NUM > 1) generate
+    TREE: if (WAYS > 1) generate
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  A_I_NUM   :  integer := I_NUM / 2;
+        constant  A_WAYS    :  integer := WAYS / 2;
         constant  A_FLAG_LO :  integer := 0;
-        constant  A_FLAG_HI :  integer := A_I_NUM - 1;
+        constant  A_FLAG_HI :  integer := A_WAYS - 1;
         constant  A_WORD_LO :  integer := 0;
-        constant  A_WORD_HI :  integer := A_I_NUM*WORD_PARAM.BITS - 1;
+        constant  A_WORD_HI :  integer := A_WAYS*WORD_PARAM.BITS - 1;
         constant  A_INFO_LO :  integer := 0;
-        constant  A_INFO_HI :  integer := A_I_NUM*INFO_BITS       - 1;
+        constant  A_INFO_HI :  integer := A_WAYS*INFO_BITS       - 1;
         signal    a_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         signal    a_info    :  std_logic_vector(INFO_BITS      -1 downto 0);
         signal    a_last    :  std_logic;
@@ -169,13 +140,13 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  B_I_NUM   :  integer := I_NUM - A_I_NUM;
+        constant  B_WAYS    :  integer := WAYS - A_WAYS;
         constant  B_FLAG_LO :  integer := A_FLAG_HI + 1;
-        constant  B_FLAG_HI :  integer := I_NUM     - 1;
+        constant  B_FLAG_HI :  integer := WAYS     - 1;
         constant  B_WORD_LO :  integer := A_WORD_HI + 1;
-        constant  B_WORD_HI :  integer := I_NUM*WORD_PARAM.BITS - 1;
+        constant  B_WORD_HI :  integer := WAYS*WORD_PARAM.BITS - 1;
         constant  B_INFO_LO :  integer := A_INFO_HI + 1;
-        constant  B_INFO_HI :  integer := I_NUM*INFO_BITS       - 1;
+        constant  B_INFO_HI :  integer := WAYS*INFO_BITS       - 1;
         signal    b_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
         signal    b_info    :  std_logic_vector(INFO_BITS      -1 downto 0);
         signal    b_last    :  std_logic;
@@ -185,10 +156,10 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        A: Single_Way_Tree                                          -- 
+        A: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
-                I_NUM       => A_I_NUM                            , --
+                WAYS        => A_WAYS                             , --
                 INFO_BITS   => INFO_BITS                          , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
                 QUEUE_SIZE  => QUEUE_SIZE                           --
@@ -211,10 +182,10 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        B: Single_Way_Tree                                          -- 
+        B: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
-                I_NUM       => B_I_NUM                            , --
+                WAYS        => B_WAYS                             , --
                 INFO_BITS   => INFO_BITS                          , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
                 QUEUE_SIZE  => QUEUE_SIZE                           --
@@ -237,7 +208,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        CELL: Single_Way_Cell                                       -- 
+        NODE: Merge_Sorter_Node                                     -- 
            generic map(                                             -- 
                 WORD_PARAM  => WORD_PARAM                         , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
