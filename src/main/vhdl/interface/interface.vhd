@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
---!     @version 0.2.0
---!     @date    2018/7/10
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -204,7 +204,7 @@ package body Interface is
         -- Control[6]  = 1:転送を一時中断する.       0:転送を再開する.
         -- Control[5]  = 1:転送を中止する.           0:意味無し.
         -- Control[4]  = 1:転送を開始する.           0:意味無し.
-        -- Control[3]  = 予約.
+        -- Control[3]  = 1:最後のブロックであることを指定する.
         -- Control[2]  = 1:転送終了時にStatus[0]がセットされる.
         -- Control[1]  = 1:連続したトランザクションの開始を指定する.
         -- Control[0]  = 1:連続したトランザクションの終了を指定する.

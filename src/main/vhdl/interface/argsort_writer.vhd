@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,18 +40,18 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  ArgSort_Writer is
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -114,14 +114,13 @@ entity  ArgSort_Writer is
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_REN         :  in  std_logic_vector;
         BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
         BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -167,8 +166,8 @@ architecture RTL of ArgSort_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  STM_COMP_BITS         :  integer := STM_COMP_HI  - STM_COMP_LO  + 1;
-    constant  STM_INDEX_BITS        :  integer := STM_INDEX_HI - STM_INDEX_LO + 1;
+    constant  WORD_COMP_BITS        :  integer := WORD_COMP_HI  - WORD_COMP_LO  + 1;
+    constant  WORD_INDEX_BITS       :  integer := WORD_INDEX_HI - WORD_INDEX_LO + 1;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -190,8 +189,8 @@ architecture RTL of ArgSort_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    signal    index_data            :  std_logic_vector(STM_NUM*STM_INDEX_BITS  -1 downto 0);
-    signal    index_strb            :  std_logic_vector(STM_NUM*STM_INDEX_BITS/8-1 downto 0);
+    signal    index_data            :  std_logic_vector(WORDS*WORD_INDEX_BITS  -1 downto 0);
+    signal    index_strb            :  std_logic_vector(WORDS*WORD_INDEX_BITS/8-1 downto 0);
     signal    index_last            :  std_logic;
     signal    index_valid           :  std_logic;
     signal    index_ready           :  std_logic;
@@ -234,7 +233,7 @@ begin
             O_FIXED_FLOW_OPEN   => 0                       , --
             O_FIXED_POOL_OPEN   => 1                       , --
             I_CLK_RATE          => 1                       , --
-            I_DATA_BITS         => STM_NUM*STM_INDEX_BITS  , --
+            I_DATA_BITS         => WORDS*WORD_INDEX_BITS   , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             O2I_OPEN_INFO_BITS  => 1                       , --
@@ -485,16 +484,16 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    STM_IN: for i in 0 to STM_NUM-1 generate
-        constant  INDEX_STRB_BITS  :  integer := STM_INDEX_BITS/8;
+    STM_IN: for i in 0 to WORDS-1 generate
+        constant  INDEX_STRB_BITS  :  integer := WORD_INDEX_BITS/8;
         constant  INDEX_STRB_ALL_1 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '1');
         constant  INDEX_STRB_ALL_0 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '0');
         signal    i_strb           :  std_logic_vector(INDEX_STRB_BITS-1 downto 0);
-        signal    i_data           :  std_logic_vector(STM_INDEX_BITS -1 downto 0);
+        signal    i_data           :  std_logic_vector(WORD_INDEX_BITS-1 downto 0);
     begin
-        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(STM_DATA_BITS/8)) = '1') else INDEX_STRB_ALL_0;
-        i_data  <= STM_DATA((i+1)*STM_DATA_BITS-1 downto i*STM_DATA_BITS);
-        index_data((i+1)*STM_INDEX_BITS -1 downto i*STM_INDEX_BITS ) <= i_data(STM_INDEX_HI downto STM_INDEX_LO);
+        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(WORD_BITS/8)) = '1') else INDEX_STRB_ALL_0;
+        i_data  <= STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+        index_data((i+1)*WORD_INDEX_BITS-1 downto i*WORD_INDEX_BITS) <= i_data(WORD_INDEX_HI downto WORD_INDEX_LO);
         index_strb((i+1)*INDEX_STRB_BITS-1 downto i*INDEX_STRB_BITS) <= i_strb;
     end generate;
     index_last  <= STM_LAST;

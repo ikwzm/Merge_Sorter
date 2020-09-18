@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_writer.vhd
 --!     @brief   Merge Sorter ArgSort AXI Writer Module :
---!     @version 0.2.0
---!     @date    2018/7/18
+--!     @version 0.5.0
+--!     @date    2020/9/18
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018 Ichiro Kawazome
+--      Copyright (C) 2018-2020 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  ArgSort_AXI_Writer is
     generic (
+        WORDS           :  integer :=  1;
+        WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -49,12 +51,10 @@ entity  ArgSort_AXI_Writer is
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
         MAX_XFER_SIZE   :  integer := 12;
-        STM_NUM         :  integer :=  1;
-        STM_DATA_BITS   :  integer := 64;
-        STM_INDEX_LO    :  integer :=  0;
-        STM_INDEX_HI    :  integer := 31;
-        STM_COMP_LO     :  integer := 32;
-        STM_COMP_HI     :  integer := 63
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63
     );
     port (
     -------------------------------------------------------------------------------
@@ -106,8 +106,8 @@ entity  ArgSort_AXI_Writer is
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        STM_DATA        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(STM_NUM*STM_DATA_BITS/8-1 downto 0);
+        STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -128,6 +128,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 use     Merge_Sorter.Interface_Components.ArgSort_Writer;
 library PIPEWORK;
+use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
 architecture RTL of ArgSort_AXI_Writer is
     ------------------------------------------------------------------------------
@@ -189,14 +190,13 @@ architecture RTL of ArgSort_AXI_Writer is
     signal    pull_buf_error    :  std_logic;
     signal    pull_buf_last     :  std_logic;
     signal    pull_buf_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    buf_ren           :  std_logic;
     signal    buf_rdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
     signal    buf_rptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    AXI_IF: AXI4_MASTER_WRITER_INTERFACE                 -- 
+    AXI_IF: AXI4_MASTER_WRITE_INTERFACE                  -- 
         generic map (                                    -- 
             AXI4_ADDR_WIDTH     => AXI_ADDR_WIDTH      , -- 
             AXI4_DATA_WIDTH     => AXI_DATA_WIDTH      , -- 
@@ -322,7 +322,7 @@ begin
         ---------------------------------------------------------------------------
         -- Read Buffer Interface Signals.
         ---------------------------------------------------------------------------
-            BUF_REN             => buf_ren             , -- Out :
+            BUF_REN             => open                , -- Out :
             BUF_DATA            => buf_rdata           , -- In  :
             BUF_PTR             => buf_rptr              -- Out :
         );
@@ -357,18 +357,18 @@ begin
     -------------------------------------------------------------------------------
     WRITER:  ArgSort_Writer                              -- 
         generic map (                                    -- 
+            WORDS               => WORDS               , --   
+            WORD_BITS           => WORD_BITS           , --   
             REG_PARAM           => REG_PARAM           , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
             MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
-            STM_NUM             => STM_NUM             , --   
-            STM_DATA_BITS       => STM_DATA_BITS       , --   
-            STM_INDEX_LO        => STM_INDEX_LO        , --   
-            STM_INDEX_HI        => STM_INDEX_HI        , --   
-            STM_COMP_LO         => STM_COMP_LO         , --   
-            STM_COMP_HI         => STM_COMP_HI           --   
+            WORD_INDEX_LO       => WORD_INDEX_LO       , --   
+            WORD_INDEX_HI       => WORD_INDEX_HI       , --   
+            WORD_COMP_LO        => WORD_COMP_LO        , --   
+            WORD_COMP_HI        => WORD_COMP_HI          --   
         )                                                -- 
         port map (                                       -- 
         -------------------------------------------------------------------------------
@@ -413,7 +413,7 @@ begin
         -------------------------------------------------------------------------------
         -- Intake Flow Control Signals.
         -------------------------------------------------------------------------------
-            FLOW_READY          => flow_ready          , --  Out :
+            FLOW_READY          => open                , --  Out :
             FLOW_PAUSE          => flow_pause          , --  Out :
             FLOW_STOP           => flow_stop           , --  Out :
             FLOW_LAST           => flow_last           , --  Out :
@@ -431,7 +431,6 @@ begin
         -------------------------------------------------------------------------------
         -- Buffer Interface Signals.
         -------------------------------------------------------------------------------
-            BUF_REN             => buf_ren             , --  In  :
             BUF_DATA            => buf_rdata           , --  Out :
             BUF_PTR             => buf_rptr            , --  In  :
         -------------------------------------------------------------------------------
