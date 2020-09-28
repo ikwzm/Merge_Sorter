@@ -36,7 +36,6 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-library Merge_Sorter;
 entity  ArgSort_AXI_Interface is
     generic (
         WAYS                :  integer :=    8;
