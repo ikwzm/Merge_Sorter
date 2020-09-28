@@ -315,7 +315,7 @@ begin
     -- 
     -------------------------------------------------------------------------------
     DUT:  ArgSort_AXI                                    -- 
-        generic (
+        generic map (
             MRG_WAYS            => MRG_WAYS            ,
             MRG_WORDS           => 1                   ,
             WORD_BITS           => WORD_BITS           , 
@@ -324,10 +324,10 @@ begin
             SORT_ORDER          => 0                   ,
             MRG_FIFO_SIZE       => 0                   ,
             STM_FEEDBACK        => STM_FEEDBACK        ,
-            CSR_AXI_ADDR_WIDTH  => CSR_WIDTH.ADDR      ,
-            CSR_AXI_DATA_WIDTH  => CSR_WIDTH.DATA      ,
-            STM_AXI_ADDR_WIDTH  => AXI_ADDR_WIDTH      ,
-            STM_AXI_DATA_WIDTH  => AXI_DATA_WIDTH      ,
+            CSR_AXI_ADDR_WIDTH  => CSR_WIDTH.ARADDR    ,
+            CSR_AXI_DATA_WIDTH  => CSR_WIDTH.RDATA     ,
+            STM_AXI_ADDR_WIDTH  => STM_AXI_WIDTH.ARADDR,
+            STM_AXI_DATA_WIDTH  => STM_AXI_WIDTH.RDATA ,
             STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
             STM_AXI_USER_WIDTH  => STM_AXI_WIDTH.ARUSER, -- 
             STM_AXI_ID          => STM_AXI_ID          , -- 
@@ -336,8 +336,8 @@ begin
             STM_AXI_AUSER       => STM_AXI_AUSER       , -- 
             STM_AXI_REQ_QUEUE   => AXI_REQ_QUEUE       , -- 
             STM_AXI_XFER_SIZE   => AXI_XFER_SIZE       , -- 
-            MRG_AXI_ADDR_WIDTH  => AXI_ADDR_WIDTH      , -- 
-            MRG_AXI_DATA_WIDTH  => AXI_DATA_WIDTH      , -- 
+            MRG_AXI_ADDR_WIDTH  => MRG_AXI_WIDTH.ARADDR, -- 
+            MRG_AXI_DATA_WIDTH  => MRG_AXI_WIDTH.RDATA , -- 
             MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
             MRG_AXI_USER_WIDTH  => MRG_AXI_WIDTH.ARUSER, -- 
             MRG_AXI_ID          => MRG_AXI_ID          , -- 
@@ -353,6 +353,38 @@ begin
         ---------------------------------------------------------------------------
             ACLK                => ACLK                , -- In  :
             ARESETn             => ARESETn             , -- In  :
+        ---------------------------------------------------------------------------
+        -- Control Status Register I/F AXI4 Read Address Channel Signals.
+        ---------------------------------------------------------------------------
+            CSR_AXI_ARADDR      => csr_araddr          , -- in  :
+            CSR_AXI_ARVALID     => csr_arvalid         , -- in  :
+            CSR_AXI_ARREADY     => csr_arready         , -- out :
+        ------------------------------------------------------------------------------
+        -- Control Status Register I/F AXI4 Read Data Channel Signals.
+        ------------------------------------------------------------------------------
+            CSR_AXI_RDATA       => csr_rdata           , -- out :
+            CSR_AXI_RRESP       => csr_rresp           , -- out :
+            CSR_AXI_RVALID      => csr_rvalid          , -- out :
+            CSR_AXI_RREADY      => csr_rready          , -- in  :
+        ------------------------------------------------------------------------------
+        -- Control Status Register I/F AXI4 Write Address Channel Signals.
+        ------------------------------------------------------------------------------
+            CSR_AXI_AWADDR      => csr_awaddr          , -- in  :
+            CSR_AXI_AWVALID     => csr_awvalid         , -- in  :
+            CSR_AXI_AWREADY     => csr_awready         , -- out :
+        ------------------------------------------------------------------------------
+        -- Control Status Register I/F AXI4 Write Data Channel Signals.
+        ------------------------------------------------------------------------------
+            CSR_AXI_WDATA       => csr_wdata           , -- in  :
+            CSR_AXI_WSTRB       => csr_wstrb           , -- in  :
+            CSR_AXI_WVALID      => csr_wvalid          , -- in  :
+            CSR_AXI_WREADY      => csr_wready          , -- out :
+        ------------------------------------------------------------------------------
+        -- Control Status Register I/F AXI4 Write Response Channel Signals.
+        ------------------------------------------------------------------------------
+            CSR_AXI_BRESP       => csr_bresp           , -- out :
+            CSR_AXI_BVALID      => csr_bvalid          , -- out :
+            CSR_AXI_BREADY      => csr_bready          , -- in  :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -400,7 +432,6 @@ begin
             STM_AXI_WID         => stm_axi_wid         , -- Out :
             STM_AXI_WDATA       => stm_axi_wdata       , -- Out :
             STM_AXI_WSTRB       => stm_axi_wstrb       , -- Out :
-            STM_AXI_WUSER       => stm_axi_wuser       , -- Out :
             STM_AXI_WLAST       => stm_axi_wlast       , -- Out :
             STM_AXI_WVALID      => stm_axi_wvalid      , -- Out :
             STM_AXI_WREADY      => stm_axi_wready      , -- In  :
@@ -409,7 +440,6 @@ begin
         ---------------------------------------------------------------------------
             STM_AXI_BID         => stm_axi_bid         , -- In  :
             STM_AXI_BRESP       => stm_axi_bresp       , -- In  :
-            STM_AXI_BUSER       => stm_axi_buser       , -- In  :
             STM_AXI_BVALID      => stm_axi_bvalid      , -- In  :
             STM_AXI_BREADY      => stm_axi_bready      , -- Out :
         ---------------------------------------------------------------------------
@@ -459,7 +489,6 @@ begin
             MRG_AXI_WID         => mrg_axi_wid         , -- Out :
             MRG_AXI_WDATA       => mrg_axi_wdata       , -- Out :
             MRG_AXI_WSTRB       => mrg_axi_wstrb       , -- Out :
-            MRG_AXI_WUSER       => mrg_axi_wuser       , -- Out :
             MRG_AXI_WLAST       => mrg_axi_wlast       , -- Out :
             MRG_AXI_WVALID      => mrg_axi_wvalid      , -- Out :
             MRG_AXI_WREADY      => mrg_axi_wready      , -- In  :
@@ -468,13 +497,12 @@ begin
         ---------------------------------------------------------------------------
             MRG_AXI_BID         => mrg_axi_bid         , -- In  :
             MRG_AXI_BRESP       => mrg_axi_bresp       , -- In  :
-            MRG_AXI_BUSER       => mrg_axi_buser       , -- In  :
             MRG_AXI_BVALID      => mrg_axi_bvalid      , -- In  :
             MRG_AXI_BREADY      => mrg_axi_bready      , -- Out :
         ---------------------------------------------------------------------------
         -- 
         ---------------------------------------------------------------------------
-            IRQ                 => interrupt             -- Out :
+            interrupt           => interrupt             -- Out :
         );
     -------------------------------------------------------------------------------
     -- 
@@ -813,11 +841,9 @@ begin
     process
         variable L   : LINE;
         constant T   : STRING(1 to 7) := "  ***  ";
-        variable mrg_rd_repo_s :  REPORT_STATUS_TYPE;
     begin
         wait until (N_FINISH'event and N_FINISH = '1');
         wait for DELAY;
-        mrg_rd_repo_s := MARGE_REPORT_STATUS(MRG_RD_REPORT);
         WRITE(L,T);                                                         WRITELINE(OUTPUT,L);
         WRITE(L,T & "ERROR REPORT " & NAME);                                WRITELINE(OUTPUT,L);
         WRITE(L,T);                                                         WRITELINE(OUTPUT,L);
