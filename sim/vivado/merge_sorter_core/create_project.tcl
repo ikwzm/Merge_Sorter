@@ -84,18 +84,6 @@ set_property "top" "Merge_Sorter_Core"  $obj
 #
 # Set 'sim_1' fileset properties
 #
-set current_vivado_version [version -short]
-if       { [string first "2019.2" $current_vivado_version ] == 0 } {
-    set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
-} elseif { [string first "2018.3" $current_vivado_version ] == 0 } {
-    set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
-} elseif { [string first "2017"   $current_vivado_version ] == 0 } {
-    set scenario_full_path [file join ".." ".." ".." ".." $scenario_file ]
-} else {
-   puts ""
-   puts "ERROR: This model can not run in Vivado <$current_vivado_version>"
-   return 1
-}
 set obj [get_filesets sim_1]
 set_property "top"     $test_bench $obj
-set_property "generic" "SCENARIO_FILE=$scenario_full_path FINISH_ABORT=true" $obj
+set_property "generic" "SCENARIO_FILE=$scenario_file FINISH_ABORT=true" $obj
