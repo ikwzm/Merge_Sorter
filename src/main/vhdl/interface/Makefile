@@ -8,7 +8,6 @@ ENTITY_FILES = merge_reader.vhd          \
                argsort_axi_reader.vhd    \
                argsort_axi_writer.vhd    \
                interface_controller.vhd  \
-               argsort_axi_interface.vhd \
                ${ENDLIST}
 
 merge_sorter_interface_components.vhd : ${ENTITY_FILES}
