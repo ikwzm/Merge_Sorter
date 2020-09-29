@@ -2,7 +2,7 @@
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.5.0                                                           --
---!     @date    2020/09/28                                                      --
+--!     @date    2020/09/29                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ component ArgSort_Reader
         BUF_WEN         :  in  std_logic;
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------

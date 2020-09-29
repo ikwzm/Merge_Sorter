@@ -117,7 +117,7 @@ entity  ArgSort_Reader is
         BUF_WEN         :  in  std_logic;
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
