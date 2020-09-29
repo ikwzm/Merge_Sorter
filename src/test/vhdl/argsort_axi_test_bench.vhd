@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
 --!     @version 0.5.0
---!     @date    2020/9/28
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -62,9 +62,7 @@ use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_AXI;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_MASTER_PLAYER;
-use     DUMMY_PLUG.AXI4_MODELS.AXI4_SLAVE_PLAYER;
-use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_MASTER_PLAYER;
-use     DUMMY_PLUG.AXI4_MODELS.AXI4_STREAM_SLAVE_PLAYER;
+use     DUMMY_PLUG.AXI4_MODELS.AXI4_MEMORY_PLAYER;
 use     DUMMY_PLUG.SYNC.all;
 use     DUMMY_PLUG.UTIL.HEX_TO_STRING;
 use     DUMMY_PLUG.CORE.MARCHAL;
@@ -154,6 +152,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
+    constant  STM_MEMORY_SIZE   :  integer := 16*1024;
     constant  STM_AXI_ID        :  integer := 1;
     constant  STM_AXI_CACHE     :  integer := 15;
     constant  STM_AXI_PROT      :  integer := 1;
@@ -220,6 +219,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
+    constant  MRG_MEMORY_SIZE   :  integer := 16*1024;
     constant  MRG_AXI_ID        :  integer := 2;
     constant  MRG_AXI_CACHE     :  integer := 15;
     constant  MRG_AXI_PROT      :  integer := 1;
@@ -627,7 +627,7 @@ begin
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    STM: AXI4_SLAVE_PLAYER                       -- 
+    STM: AXI4_MEMORY_PLAYER                      -- 
         generic map (                            -- 
             SCENARIO_FILE   => SCENARIO_FILE   , -- 
             NAME            => "STM"           , -- 
@@ -638,7 +638,8 @@ begin
             SYNC_PLUG_NUM   => 3               , -- 
             SYNC_WIDTH      => SYNC_WIDTH      , -- 
             GPI_WIDTH       => GPI_WIDTH       , -- 
-            GPO_WIDTH       => GPO_WIDTH       , -- 
+            GPO_WIDTH       => GPO_WIDTH       , --
+            MEMORY_SIZE     => STM_MEMORY_SIZE , -- 
             FINISH_ABORT    => FALSE             -- 
         )                                        -- 
         port map(                                -- 
@@ -727,7 +728,7 @@ begin
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    MRG: AXI4_SLAVE_PLAYER                       -- 
+    MRG: AXI4_MEMORY_PLAYER                      -- 
         generic map (                            -- 
             SCENARIO_FILE   => SCENARIO_FILE   , -- 
             NAME            => "MRG"           , -- 
@@ -739,6 +740,7 @@ begin
             SYNC_WIDTH      => SYNC_WIDTH      , -- 
             GPI_WIDTH       => GPI_WIDTH       , -- 
             GPO_WIDTH       => GPO_WIDTH       , -- 
+            MEMORY_SIZE     => MRG_MEMORY_SIZE , -- 
             FINISH_ABORT    => FALSE             -- 
         )                                        -- 
         port map(                                -- 
@@ -877,4 +879,70 @@ begin
         end if;
         wait;
     end process;
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X04_F0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_F0";
+        SCENARIO_FILE   :  STRING  := "test_x04_f0.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X04_F0;
+architecture Model of ArgSort_AXI_Test_Bench_X04_F0 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        MRG_WAYS        => 4             ,
+        STM_FEEDBACK    => 0             ,
+        FINISH_ABORT    => FINISH_ABORT
+    );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X04_F1 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_F1";
+        SCENARIO_FILE   :  STRING  := "test_x04_f1.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X04_F1;
+architecture Model of ArgSort_AXI_Test_Bench_X04_F1 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        MRG_WAYS        => 4             ,
+        STM_FEEDBACK    => 1             ,
+        FINISH_ABORT    => FINISH_ABORT
+    );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X04_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_f2.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X04_F2;
+architecture Model of ArgSort_AXI_Test_Bench_X04_F2 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        MRG_WAYS        => 4             ,
+        STM_FEEDBACK    => 2             ,
+        FINISH_ABORT    => FINISH_ABORT
+    );
 end Model;

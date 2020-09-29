@@ -13,17 +13,43 @@ SCENARIO_PATH        = ../../../src/test/scenarios/argsort_axi
 COPY       = cp
 REMOVE     = -rm
 GHDL       = ghdl
-GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
+GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH) -P./
 
-test   : test_w04_f2 \
+test   : test_x04_f0 \
+         test_x04_f1 \
+         test_x04_f2 \
          $(END_LIST)
 
 clean  :
 	$(REMOVE) sources.mk *.o *.cf
 
-dut    : argsort_axi.o
+dut         : argsort_axi.o
+
+test_bench  : argsort_axi_test_bench.o
+
+test_x04_f0 : test_x04_f0.snr test_bench dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F0
+	$(GHDL) -r $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F0
+
+test_x04_f1 : test_x04_f0.snr test_bench dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F1
+	$(GHDL) -r $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F1
+
+test_x04_f2 : test_x04_f0.snr test_bench dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F2
+	$(GHDL) -r $(GHDLFLAGS) --work=WORK ArgSort_AXI_Test_Bench_X04_F2
+
+test_x04_f0.snr : $(SCENARIO_PATH)/test_x04_f0.snr
+	$(COPY) $< $@
+
+test_x04_f1.snr : $(SCENARIO_PATH)/test_x04_f1.snr
+	$(COPY) $< $@
+
+test_x04_f2.snr : $(SCENARIO_PATH)/test_x04_f2.snr
+	$(COPY) $< $@
 
 sources.mk   : sources.yml
 	$(PIPEWORK_TOOL_PATH)/vhdl-archiver.rb -v --config sources.yml > sources.mk
 
 include sources.mk
+

@@ -5,7 +5,7 @@
 set project_directory       [file dirname [info script]]
 set project_name            "argsort_axi"
 set device_parts            "xc7z020clg400-1"
-set test_bench              "ArgSrort_AXI_Test_Bench"
+set test_bench              "ArgSort_AXI_Test_Bench_X04_F2"
 set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_f2.snr" ]
 #
 # Create project
@@ -79,6 +79,7 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 #
 # Set 'sources_1' fileset properties
 #
+update_compile_order -fileset sources_1
 set obj [get_filesets sources_1]
 set_property "top" "ArgSort_AXI"  $obj
 #
@@ -96,6 +97,7 @@ if       { [string first "2019.2" $current_vivado_version ] == 0 } {
    puts "ERROR: This model can not run in Vivado <$current_vivado_version>"
    return 1
 }
+update_compile_order -fileset sim_1
 set obj [get_filesets sim_1]
-set_property "top"     $test_bench $obj
+set_property "top"     $test_bench [get_filesets sim_1]
 set_property "generic" "SCENARIO_FILE=$scenario_full_path FINISH_ABORT=true" $obj
