@@ -489,7 +489,7 @@ begin
         constant  INDEX_STRB_ALL_1 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '1');
         constant  INDEX_STRB_ALL_0 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '0');
         signal    i_strb           :  std_logic_vector(INDEX_STRB_BITS-1 downto 0);
-        signal    i_data           :  std_logic_vector(WORD_INDEX_BITS-1 downto 0);
+        signal    i_data           :  std_logic_vector(WORD_BITS      -1 downto 0);
     begin
         i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(WORD_BITS/8)) = '1') else INDEX_STRB_ALL_0;
         i_data  <= STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS);
