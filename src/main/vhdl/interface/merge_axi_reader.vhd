@@ -2,7 +2,7 @@
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -60,9 +60,9 @@ entity  Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------

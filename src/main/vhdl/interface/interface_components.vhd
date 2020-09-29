@@ -450,9 +450,9 @@ component Merge_AXI_Reader
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS -1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
