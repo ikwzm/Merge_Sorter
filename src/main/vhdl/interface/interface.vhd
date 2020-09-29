@@ -2,7 +2,7 @@
 --!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -196,7 +196,7 @@ package body Interface is
         regs_field.STAT_CLOSE_POS := 8*regs_field.STAT_BASE_ADDR +  2;
         regs_field.STAT_ERROR_POS := 8*regs_field.STAT_BASE_ADDR +  1;
         regs_field.STAT_DONE_POS  := 8*regs_field.STAT_BASE_ADDR +  0;
-        regs_field.STAT_RESV_BITS := regs_field.STAT_HI - regs_field.STAT_LO + 1;
+        regs_field.STAT_RESV_BITS := regs_field.STAT_RESV_HI - regs_field.STAT_RESV_LO + 1;
         ---------------------------------------------------------------------------
         -- Control Register
         ---------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 --!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -152,7 +152,7 @@ architecture RTL of ArgSort_Reader is
                                     := std_logic_vector(to_unsigned(2**BUF_DEPTH-2**MAX_XFER_SIZE   , BUF_DEPTH+1));
     constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
                                     := std_logic_vector(to_unsigned(2**BUF_DEPTH-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
+    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
