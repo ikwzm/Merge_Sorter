@@ -146,7 +146,7 @@ architecture RTL of Merge_Writer is
                                     := std_logic_vector(to_unsigned(2**MAX_XFER_SIZE   , BUF_DEPTH+1));
     constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
                                     := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
+    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
