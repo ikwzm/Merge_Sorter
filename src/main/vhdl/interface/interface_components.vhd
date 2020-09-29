@@ -121,7 +121,7 @@ component Merge_Reader
         BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------

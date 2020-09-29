@@ -2,7 +2,7 @@
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -113,7 +113,7 @@ entity  Merge_Reader is
         BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ architecture RTL of Merge_Reader is
     type      REQ_ADDR_VECTOR       is array (integer range <>) of std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
     type      REQ_SIZE_VECTOR       is array (integer range <>) of std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
     type      REQ_MODE_VECTOR       is array (integer range <>) of std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
-    type      REQ_BUF_PTR_VECTOR    is array (integer range <>) of std_logic_vector(BUF_DEPTH             downto 0);
+    type      REQ_BUF_PTR_VECTOR    is array (integer range <>) of std_logic_vector(BUF_DEPTH          -1 downto 0);
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -235,7 +235,7 @@ architecture RTL of Merge_Reader is
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_BUF_PTR(SEL: std_logic_vector; VEC: REQ_BUF_PTR_VECTOR) return std_logic_vector is
-        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH downto 0);
+        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH-1 downto 0);
     begin
         v_req_buf_ptr := (others => '0');
         for i in VEC'range loop
