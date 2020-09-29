@@ -122,7 +122,7 @@ entity  ArgSort_Reader is
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -231,7 +231,7 @@ begin
             I_FIXED_FLOW_OPEN   => 0                       , --
             I_FIXED_POOL_OPEN   => 1                       , --
             O_CLK_RATE          => 1                       , --
-            O_DATA_BITS         => WORDS*WORD_COMP_BITS , --
+            O_DATA_BITS         => WORDS*WORD_COMP_BITS    , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             I2O_OPEN_INFO_BITS  => 1                       , --
@@ -482,10 +482,6 @@ begin
     --
     -------------------------------------------------------------------------------
     STM_OUT: for i in 0 to WORDS-1 generate
-        constant  STRB_BITS      :  integer := WORD_BITS/8;
-        constant  STRB_ALL_1     :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '1');
-        constant  STRB_ALL_0     :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '0');
-        signal    o_strb         :  std_logic_vector(STRB_BITS-1 downto 0);
         signal    o_word         :  std_logic_vector(WORD_BITS-1 downto 0);
         signal    index          :  unsigned(WORD_INDEX_BITS-1 downto 0);
     begin
@@ -506,17 +502,16 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        o_strb <= STRB_ALL_1 when (comp_strb(i*(WORD_COMP_BITS/8)) = '1') else STRB_ALL_0;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
         o_word(WORD_COMP_HI  downto WORD_COMP_LO ) <= comp_data((i+1)*WORD_COMP_BITS-1 downto i*WORD_COMP_BITS);
         o_word(WORD_INDEX_HI downto WORD_INDEX_LO) <= std_logic_vector(index);
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS) <= o_word;
-        STM_STRB((i+1)*STRB_BITS-1 downto i*STRB_BITS) <= o_strb;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        STM_STRB(i) <= comp_strb(i*(WORD_COMP_BITS/8)) when (i > 0) else '1';
     end generate;
     STM_LAST   <= comp_last;
     STM_VALID  <= comp_valid;

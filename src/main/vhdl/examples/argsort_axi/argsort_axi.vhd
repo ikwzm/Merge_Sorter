@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 0.5.0
---!     @date    2020/9/28
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -333,8 +333,8 @@ architecture RTL of ArgSort_AXI is
     signal    stm_req_ready     :  std_logic;
     signal    stm_res_valid     :  std_logic;
     signal    stm_res_ready     :  std_logic;
-    signal    stm_in_data       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS  -1 downto 0);
-    signal    stm_in_strb       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS/8-1 downto 0);
+    signal    stm_in_data       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS-1 downto 0);
+    signal    stm_in_strb       :  std_logic_vector(MRG_WORDS              -1 downto 0);
     signal    stm_in_last       :  std_logic;
     signal    stm_in_valid      :  std_logic;
     signal    stm_in_ready      :  std_logic;
@@ -355,8 +355,8 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    signal    merged_data       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS  -1 downto 0);
-    signal    merged_strb       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS/8-1 downto 0);
+    signal    merged_data       :  std_logic_vector(MRG_WORDS*MRG_WORD_BITS-1 downto 0);
+    signal    merged_strb       :  std_logic_vector(MRG_WORDS              -1 downto 0);
     signal    merged_last       :  std_logic;
     signal    merged_valid      :  std_logic;
     signal    merged_ready      :  std_logic;

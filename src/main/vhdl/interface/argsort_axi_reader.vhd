@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_reader.vhd
 --!     @brief   Merge Sorter ArgSort AXI Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -96,7 +96,7 @@ entity  ArgSort_AXI_Reader is
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS            -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;

@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -172,7 +172,7 @@ entity  ArgSort_AXI_Interface is
     -- Stream Reader Outlet Signals.
     -------------------------------------------------------------------------------
         STM_RD_DATA         :  out std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
-        STM_RD_STRB         :  out std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        STM_RD_STRB         :  out std_logic_vector(WORDS               -1 downto 0);
         STM_RD_LAST         :  out std_logic;
         STM_RD_VALID        :  out std_logic;
         STM_RD_READY        :  in  std_logic;
@@ -249,7 +249,7 @@ entity  ArgSort_AXI_Interface is
     -- Merge Result Intake Signals.
     -------------------------------------------------------------------------------
         MERGED_DATA         :  in  std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
-        MERGED_STRB         :  in  std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        MERGED_STRB         :  in  std_logic_vector(WORDS               -1 downto 0);
         MERGED_LAST         :  in  std_logic;
         MERGED_VALID        :  in  std_logic;
         MERGED_READY        :  out std_logic;

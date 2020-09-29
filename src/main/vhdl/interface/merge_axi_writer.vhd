@@ -2,7 +2,7 @@
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -103,7 +103,7 @@ entity  Merge_AXI_Writer is
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;

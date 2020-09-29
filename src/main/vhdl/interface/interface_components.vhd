@@ -220,7 +220,7 @@ component Merge_Writer
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -318,7 +318,7 @@ component ArgSort_Reader
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -414,7 +414,7 @@ component ArgSort_Writer
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -563,7 +563,7 @@ component Merge_AXI_Writer
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -635,7 +635,7 @@ component ArgSort_AXI_Reader
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS            -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -718,7 +718,7 @@ component ArgSort_AXI_Writer
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;

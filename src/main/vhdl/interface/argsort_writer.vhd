@@ -120,7 +120,7 @@ entity  ArgSort_Writer is
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -491,7 +491,7 @@ begin
         signal    i_strb           :  std_logic_vector(INDEX_STRB_BITS-1 downto 0);
         signal    i_data           :  std_logic_vector(WORD_BITS      -1 downto 0);
     begin
-        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(WORD_BITS/8)) = '1') else INDEX_STRB_ALL_0;
+        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i) = '1') else INDEX_STRB_ALL_0;
         i_data  <= STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS);
         index_data((i+1)*WORD_INDEX_BITS-1 downto i*WORD_INDEX_BITS) <= i_data(WORD_INDEX_HI downto WORD_INDEX_LO);
         index_strb((i+1)*INDEX_STRB_BITS-1 downto i*INDEX_STRB_BITS) <= i_strb;

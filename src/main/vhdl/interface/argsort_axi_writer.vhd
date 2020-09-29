@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_writer.vhd
 --!     @brief   Merge Sorter ArgSort AXI Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/9/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -107,7 +107,7 @@ entity  ArgSort_AXI_Writer is
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;

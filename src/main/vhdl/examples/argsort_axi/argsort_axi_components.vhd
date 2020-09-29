@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 0.5.0                                                           --
---!     @date    2020/09/28                                                      --
+--!     @date    2020/09/29                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -404,7 +404,7 @@ component ArgSort_AXI_Interface
     -- Stream Reader Outlet Signals.
     -------------------------------------------------------------------------------
         STM_RD_DATA         :  out std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
-        STM_RD_STRB         :  out std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        STM_RD_STRB         :  out std_logic_vector(WORDS               -1 downto 0);
         STM_RD_LAST         :  out std_logic;
         STM_RD_VALID        :  out std_logic;
         STM_RD_READY        :  in  std_logic;
@@ -481,7 +481,7 @@ component ArgSort_AXI_Interface
     -- Merge Result Intake Signals.
     -------------------------------------------------------------------------------
         MERGED_DATA         :  in  std_logic_vector(WORDS*WORD_BITS     -1 downto 0);
-        MERGED_STRB         :  in  std_logic_vector(WORDS*WORD_BITS/8   -1 downto 0);
+        MERGED_STRB         :  in  std_logic_vector(WORDS               -1 downto 0);
         MERGED_LAST         :  in  std_logic;
         MERGED_VALID        :  in  std_logic;
         MERGED_READY        :  out std_logic;
