@@ -373,8 +373,8 @@ begin
                             mrg_reader_mode <= tmp_1_xfer_mode;
                             mrg_writer_addr <= tmp_0_base_addr;
                             mrg_writer_mode <= tmp_0_xfer_mode;
-                            sort_total_size <= resize(unsigned(reg_size), SIZE_BITS);
-                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), SIZE_BITS);
+                            sort_total_size <= resize     (unsigned(reg_size)    , sort_total_size'length);
+                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), sort_block_size'length);
                         when STM_RD_CHK_STATE =>
                             next_state  := STM_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -400,8 +400,8 @@ begin
                             else
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
-                            mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * WAYS;
+                            mrg_reader_xsize <= resize(sort_block_size     , mrg_reader_xsize'length);
+                            sort_block_size  <= resize(sort_block_size*WAYS, sort_block_size 'length);
                         when MRG_RD_CHK_STATE =>
                             next_state := MRG_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -431,8 +431,8 @@ begin
                             else
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
-                            mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * WAYS;
+                            mrg_reader_xsize <= resize(sort_block_size     , mrg_reader_xsize'length);
+                            sort_block_size  <= resize(sort_block_size*WAYS, sort_block_size 'length);
                         when DONE_STATE =>
                             next_state := IDLE_STATE;
                     end case;
@@ -607,8 +607,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            read_addr  <= resize(unsigned(stm_reader_addr), read_addr'length);
-                            read_bytes <= sort_total_size * STM_RD_DATA_BYTES;
+                            read_addr  <= resize(unsigned(stm_reader_addr)        , read_addr 'length);
+                            read_bytes <= resize(sort_total_size*STM_RD_DATA_BYTES, read_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
@@ -733,7 +733,7 @@ begin
                             read_last    <= FALSE;
                         when S0_STATE =>
                             curr_state   <= S1_STATE;
-                            offset       <= base + (channel * mrg_reader_xsize);
+                            offset       <= resize(base + (channel * mrg_reader_xsize), offset'length);
                         when S1_STATE =>
                             curr_state   <= S2_STATE;
                             if (offset > sort_total_size) then
@@ -741,7 +741,7 @@ begin
                                 remain_size <= (others => '0');
                             else
                                 remain_zero <= FALSE;
-                                remain_size <= sort_total_size - offset;
+                                remain_size <= resize(sort_total_size - offset, remain_size'length);
                             end if;
                         when S2_STATE =>
                             if (reader_state = READER_IDLE) then
@@ -751,19 +751,19 @@ begin
                             end if;
                             if (remain_zero = TRUE) or
                                (remain_size <= mrg_reader_xsize) then
-                                read_bytes <= remain_size      * WORD_BYTES;
+                                read_bytes <= resize(remain_size      * WORD_BYTES, read_bytes'length);
                                 read_last  <= TRUE;
                             else
-                                read_bytes <= mrg_reader_xsize * WORD_BYTES;
+                                read_bytes <= resize(mrg_reader_xsize * WORD_BYTES, read_bytes'length);
                                 read_last  <= FALSE;
                             end if;
-                            read_addr <= resize(unsigned(mrg_reader_addr), read_addr'length) + offset * WORD_BYTES;
+                            read_addr <= resize(unsigned(mrg_reader_addr) + offset*WORD_BYTES, read_addr'length);
                         when REQ_STATE =>
                             if    (read_last = TRUE) then
                                 curr_state <= RUN_STATE;
                             else
                                 curr_state <= S0_STATE;
-                                base       <= base + sort_block_size;
+                                base       <= resize(base + sort_block_size, base'length);
                             end if;
                         when RUN_STATE =>
                             if (reader_state = READER_IDLE) then
@@ -891,8 +891,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            write_addr  <= resize(unsigned(stm_writer_addr), write_addr'length);
-                            write_bytes <= sort_total_size * STM_WR_DATA_BYTES;
+                            write_addr  <= resize(unsigned(stm_writer_addr)        , write_addr 'length);
+                            write_bytes <= resize(sort_total_size*STM_WR_DATA_BYTES, write_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
@@ -991,8 +991,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            write_addr  <= resize(unsigned(mrg_writer_addr), write_addr'length);
-                            write_bytes <= sort_total_size * WORD_BYTES;
+                            write_addr  <= resize(unsigned(mrg_writer_addr) , write_addr 'length);
+                            write_bytes <= resize(sort_total_size*WORD_BYTES, write_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
