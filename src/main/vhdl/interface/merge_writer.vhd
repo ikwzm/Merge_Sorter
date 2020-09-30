@@ -456,6 +456,7 @@ begin
                            (o_state = O_TAR                  )) else '0';
         DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
                            (o_state = O_TAR  and o_open = '0')) else '0';
+        reg_rbit(REG_PARAM.CTRL_EBLK_POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 
