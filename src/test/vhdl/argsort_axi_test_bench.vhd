@@ -120,8 +120,8 @@ architecture Model of ArgSort_AXI_Test_Bench is
     signal    csr_rlast         :  std_logic;
     signal    csr_rdata         :  std_logic_vector(CSR_WIDTH.RDATA  -1 downto 0);
     signal    csr_rresp         :  AXI4_RESP_TYPE;
-    signal    csr_ruser         :  std_logic_vector(CSR_WIDTH.RUSER  -1 downto 0);
-    signal    csr_rid           :  std_logic_vector(CSR_WIDTH.ID     -1 downto 0);
+    constant  csr_ruser         :  std_logic_vector(CSR_WIDTH.RUSER  -1 downto 0) := (others => '0');
+    constant  csr_rid           :  std_logic_vector(CSR_WIDTH.ID     -1 downto 0) := (others => '0');
     signal    csr_rready        :  std_logic;
     signal    csr_awaddr        :  std_logic_vector(CSR_WIDTH.AWADDR -1 downto 0);
     signal    csr_awlen         :  std_logic_vector(CSR_WIDTH.ALEN   -1 downto 0);
@@ -144,8 +144,8 @@ architecture Model of ArgSort_AXI_Test_Bench is
     signal    csr_wvalid        :  std_logic;
     signal    csr_wready        :  std_logic;
     signal    csr_bresp         :  AXI4_RESP_TYPE;
-    signal    csr_buser         :  std_logic_vector(CSR_WIDTH.BUSER  -1 downto 0);
-    signal    csr_bid           :  std_logic_vector(CSR_WIDTH.ID     -1 downto 0);
+    constant  csr_buser         :  std_logic_vector(CSR_WIDTH.BUSER  -1 downto 0) := (others => '0');
+    constant  csr_bid           :  std_logic_vector(CSR_WIDTH.ID     -1 downto 0) := (others => '0');
     signal    csr_bvalid        :  std_logic;
     signal    csr_bready        :  std_logic;
     signal    interrupt         :  std_logic;
