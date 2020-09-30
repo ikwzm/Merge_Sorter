@@ -737,5 +737,5 @@ begin
             MRG_WR_BUSY     => mrg_wr_busy         , -- In  :
             MRG_WR_DONE     => mrg_wr_done           -- In  :
     );
-
+    IRQ <= '0';
 end RTL;
