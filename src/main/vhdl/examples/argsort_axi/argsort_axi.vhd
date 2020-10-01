@@ -930,5 +930,6 @@ begin
             OUT_LAST            => merged_last        ,  -- Out :
             OUT_VALID           => merged_valid       ,  -- Out :
             OUT_READY           => merged_ready          -- In  :
-    );
+        );
+    merged_strb <= (others => '1');
 end RTL;
