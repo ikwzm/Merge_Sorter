@@ -152,7 +152,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant  STM_MEMORY_SIZE   :  integer := 16*1024;
+    constant  STM_MEMORY_SIZE   :  integer := 32*1024;
     constant  STM_AXI_ID        :  integer := 1;
     constant  STM_AXI_CACHE     :  integer := 15;
     constant  STM_AXI_PROT      :  integer := 1;
@@ -219,7 +219,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant  MRG_MEMORY_SIZE   :  integer := 16*1024;
+    constant  MRG_MEMORY_SIZE   :  integer := 32*1024;
     constant  MRG_AXI_ID        :  integer := 2;
     constant  MRG_AXI_CACHE     :  integer := 15;
     constant  MRG_AXI_PROT      :  integer := 1;
@@ -724,7 +724,8 @@ begin
             REPORT_STATUS   => STM_AXI_REPORT  , -- Out :
             FINISH          => STM_AXI_FINISH    -- Out :
         );
-    stm_axi_gpi <= (others => '0');
+    stm_axi_gpi(0) <= csr_gpo(0);
+    stm_axi_gpi(stm_axi_gpi'high downto 1) <= (stm_axi_gpi'high downto 1 => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -825,7 +826,8 @@ begin
             REPORT_STATUS   => MRG_AXI_REPORT  , -- Out :
             FINISH          => MRG_AXI_FINISH    -- Out :
         );
-    mrg_axi_gpi <= (others => '0');
+    mrg_axi_gpi(0) <= csr_gpo(0);
+    mrg_axi_gpi(stm_axi_gpi'high downto 1) <= (mrg_axi_gpi'high downto 1 => '0');
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
