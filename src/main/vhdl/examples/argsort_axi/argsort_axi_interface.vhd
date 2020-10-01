@@ -287,6 +287,7 @@ architecture RTL of Argsort_AXI_Interface is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    constant  STM_RD_DATA_BITS  :  integer := (WORD_COMP_HI  - WORD_COMP_LO  + 1);
     constant  STM_RD_REG_PARAM  :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
     signal    stm_rd_reg_load   :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
     signal    stm_rd_reg_wbit   :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
@@ -296,6 +297,7 @@ architecture RTL of Argsort_AXI_Interface is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    constant  STM_WR_DATA_BITS  :  integer := (WORD_INDEX_HI - WORD_INDEX_LO + 1);
     constant  STM_WR_REG_PARAM  :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
     signal    stm_wr_reg_load   :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
     signal    stm_wr_reg_wbit   :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
@@ -640,8 +642,8 @@ begin
             WAYS            => WAYS                , --
             WORD_BITS       => WORD_BITS           , --
             STM_FEEDBACK    => STM_FEEDBACK        , --
-            STM_RD_DATA_BITS=> WORD_BITS           , --
-            STM_WR_DATA_BITS=> WORD_BITS           , --
+            STM_RD_DATA_BITS=> STM_RD_DATA_BITS    , --
+            STM_WR_DATA_BITS=> STM_WR_DATA_BITS    , --
             REG_ADDR_BITS   => REG_ADDR_BITS       , --
             REG_SIZE_BITS   => REG_SIZE_BITS       , --
             REG_MODE_BITS   => REG_MODE_BITS       , --
