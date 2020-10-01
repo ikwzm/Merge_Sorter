@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 0.5.0
---!     @date    2020/9/29
+--!     @date    2020/10/1
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -254,7 +254,7 @@ entity  ArgSort_AXI is
     -------------------------------------------------------------------------------
     -- Interrupt Request
     -------------------------------------------------------------------------------
-        interrupt           : out std_logic
+        INTERRUPT           : out std_logic
     );
 end ArgSort_AXI;
 -----------------------------------------------------------------------------------
@@ -286,46 +286,145 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant  REG_ADDR_BITS     :  integer := 64;
+    constant  REG_RW_ADDR_BITS  :  integer := 64;
+    constant  REG_RW_MODE_BITS  :  integer := 32;
     constant  REG_SIZE_BITS     :  integer := 32;
-    constant  REG_MODE_BITS     :  integer := 32;
-    constant  REG_CTRL_BITS     :  integer := 32;
-    signal    reg_rd_addr_load  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_rd_addr_wbit  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_rd_addr_data  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_wr_addr_load  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_wr_addr_wbit  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_wr_addr_data  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t0_addr_load  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t0_addr_wbit  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t0_addr_data  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t1_addr_load  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t1_addr_wbit  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_t1_addr_data  :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal    reg_size_load     :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-    signal    reg_size_wbit     :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-    signal    reg_size_data     :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-    signal    reg_rd_mode_load  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_rd_mode_wbit  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_rd_mode_data  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_wr_mode_load  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_wr_mode_wbit  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_wr_mode_data  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t0_mode_load  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t0_mode_wbit  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t0_mode_data  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t1_mode_load  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t1_mode_wbit  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_t1_mode_data  :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal    reg_ctrl_load     :  std_logic_vector(REG_CTRL_BITS-1 downto 0);
-    signal    reg_ctrl_wbit     :  std_logic_vector(REG_CTRL_BITS-1 downto 0);
-    signal    reg_ctrl_data     :  std_logic_vector(REG_CTRL_BITS-1 downto 0);
+    constant  REG_MODE_BITS     :  integer := 16;
+    constant  REG_STAT_BITS     :  integer :=  8;
+    constant  REG_CTRL_BITS     :  integer :=  8;
+    -------------------------------------------------------------------------------
+    -- RD_ADDR_REGS
+    -------------------------------------------------------------------------------
+    constant  RD_ADDR_REGS_ADDR :  integer := 16#00#;
+    constant  RD_ADDR_REGS_LO   :  integer := 8*RD_ADDR_REGS_ADDR;
+    constant  RD_ADDR_REGS_HI   :  integer := 8*RD_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- WR_ADDR_REGS
+    -------------------------------------------------------------------------------
+    constant  WR_ADDR_REGS_ADDR :  integer := 16#08#;
+    constant  WR_ADDR_REGS_LO   :  integer := 8*WR_ADDR_REGS_ADDR;
+    constant  WR_ADDR_REGS_HI   :  integer := 8*WR_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- T0_ADDR_REGS
+    -------------------------------------------------------------------------------
+    constant  T0_ADDR_REGS_ADDR :  integer := 16#10#;
+    constant  T0_ADDR_REGS_LO   :  integer := 8*T0_ADDR_REGS_ADDR;
+    constant  T0_ADDR_REGS_HI   :  integer := 8*T0_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- T1_ADDR_REGS
+    -------------------------------------------------------------------------------
+    constant  T1_ADDR_REGS_ADDR :  integer := 16#18#;
+    constant  T1_ADDR_REGS_LO   :  integer := 8*T1_ADDR_REGS_ADDR;
+    constant  T1_ADDR_REGS_HI   :  integer := 8*T1_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- RD_MODE_REGS
+    -------------------------------------------------------------------------------
+    constant  RD_MODE_REGS_ADDR :  integer := 16#20#;
+    constant  RD_MODE_REGS_LO   :  integer := 8*RD_MODE_REGS_ADDR;
+    constant  RD_MODE_REGS_HI   :  integer := 8*RD_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- WR_MODE_REGS
+    -------------------------------------------------------------------------------
+    constant  WR_MODE_REGS_ADDR :  integer := 16#24#;
+    constant  WR_MODE_REGS_LO   :  integer := 8*WR_MODE_REGS_ADDR;
+    constant  WR_MODE_REGS_HI   :  integer := 8*WR_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- T0_MODE_REGS
+    -------------------------------------------------------------------------------
+    constant  T0_MODE_REGS_ADDR :  integer := 16#28#;
+    constant  T0_MODE_REGS_LO   :  integer := 8*T0_MODE_REGS_ADDR;
+    constant  T0_MODE_REGS_HI   :  integer := 8*T0_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- T1_MODE_REGS
+    -------------------------------------------------------------------------------
+    constant  T1_MODE_REGS_ADDR :  integer := 16#2C#;
+    constant  T1_MODE_REGS_LO   :  integer := 8*T1_MODE_REGS_ADDR;
+    constant  T1_MODE_REGS_HI   :  integer := 8*T1_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- SIZE_REGS
+    -------------------------------------------------------------------------------
+    constant  SIZE_REGS_ADDR    :  integer := 16#30#;
+    constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
+    constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + REG_SIZE_BITS - 1;
+    -------------------------------------------------------------------------------
+    -- MODE_REGS
+    -------------------------------------------------------------------------------
+    constant  MODE_REGS_ADDR    :  integer := 16#38#;
+    constant  MODE_REGS_LO      :  integer := 8*MODE_REGS_ADDR;
+    constant  MODE_REGS_HI      :  integer := 8*MODE_REGS_ADDR    + REG_MODE_BITS - 1;
+    constant  MODE_IRQ_EN_POS   :  integer := 0;
+    -------------------------------------------------------------------------------
+    -- STAT_REGS
+    -------------------------------------------------------------------------------
+    constant  STAT_REGS_ADDR    :  integer := 16#3A#;
+    constant  STAT_REGS_LO      :  integer := 8*STAT_REGS_ADDR;
+    constant  STAT_REGS_HI      :  integer := 8*STAT_REGS_ADDR    + REG_STAT_BITS - 1;
+    constant  STAT_DONE_POS     :  integer := 0;
+    -------------------------------------------------------------------------------
+    -- CTRL_REGS
+    -------------------------------------------------------------------------------
+    constant  CTRL_REGS_ADDR    :  integer := 16#3B#;
+    constant  CTRL_REGS_LO      :  integer := 8*CTRL_REGS_ADDR;
+    constant  CTRL_REGS_HI      :  integer := 8*CTRL_REGS_ADDR    + REG_CTRL_BITS - 1;
+    constant  CTRL_RESET_POS    :  integer := 7;
+    constant  CTRL_PAUSE_POS    :  integer := 6;  -- Unused 
+    constant  CTRL_STOP_POS     :  integer := 5;  -- Unused 
+    constant  CTRL_START_POS    :  integer := 4;
+    constant  CTRL_RESV_POS     :  integer := 3;  -- Unused 
+    constant  CTRL_DONE_POS     :  integer := 2;
+    constant  CTRL_FIRST_POS    :  integer := 1;  -- Unused 
+    constant  CTRL_LAST_POS     :  integer := 0;  -- Unused 
+    -------------------------------------------------------------------------------
+    -- reg_xxx_load/reg_xxx_wbit/reg_xxx_data
+    -------------------------------------------------------------------------------
+    signal    reg_rd_addr_load  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_rd_addr_wbit  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_rd_addr_data  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_wr_addr_load  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_wr_addr_wbit  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_wr_addr_data  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t0_addr_load  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t0_addr_wbit  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t0_addr_data  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t1_addr_load  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t1_addr_wbit  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_t1_addr_data  :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal    reg_rd_mode_load  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_rd_mode_wbit  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_rd_mode_data  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_wr_mode_load  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_wr_mode_wbit  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_wr_mode_data  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t0_mode_load  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t0_mode_wbit  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t0_mode_data  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t1_mode_load  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t1_mode_wbit  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_t1_mode_data  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal    reg_size_load     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+    signal    reg_size_wbit     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+    signal    reg_size_data     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+    signal    reg_mode_load     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
+    signal    reg_mode_wbit     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
+    signal    reg_mode_data     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
+    signal    reg_stat_load     :  std_logic_vector(REG_STAT_BITS   -1 downto 0);
+    signal    reg_stat_wbit     :  std_logic_vector(REG_STAT_BITS   -1 downto 0);
+    signal    reg_stat_data     :  std_logic_vector(REG_STAT_BITS   -1 downto 0);
+    signal    reg_ctrl_load     :  std_logic_vector(REG_CTRL_BITS   -1 downto 0);
+    signal    reg_ctrl_wbit     :  std_logic_vector(REG_CTRL_BITS   -1 downto 0);
+    signal    reg_ctrl_data     :  std_logic_vector(REG_CTRL_BITS   -1 downto 0);
     signal    reg_start_load    :  std_logic;
     signal    reg_start_wbit    :  std_logic;
     signal    reg_start_data    :  std_logic;
     signal    reg_reset_load    :  std_logic;
     signal    reg_reset_wbit    :  std_logic;
     signal    reg_reset_data    :  std_logic;
+    signal    reg_done_en_load  :  std_logic;
+    signal    reg_done_en_wbit  :  std_logic;
+    signal    reg_done_en_data  :  std_logic;
+    signal    reg_done_st_load  :  std_logic;
+    signal    reg_done_st_wbit  :  std_logic;
+    signal    reg_done_st_data  :  std_logic;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -402,68 +501,6 @@ begin
         signal    regs_ben          :  std_logic_vector(REGS_DATA_WIDTH/8-1 downto 0);
         signal    regs_wdata        :  std_logic_vector(REGS_DATA_WIDTH  -1 downto 0);
         signal    regs_rdata        :  std_logic_vector(REGS_DATA_WIDTH  -1 downto 0);
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  RD_ADDR_REGS_ADDR :  integer := 16#00#;
-        constant  RD_ADDR_REGS_LO   :  integer := 8*RD_ADDR_REGS_ADDR;
-        constant  RD_ADDR_REGS_HI   :  integer := 8*RD_ADDR_REGS_ADDR + REG_ADDR_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  WR_ADDR_REGS_ADDR :  integer := 16#08#;
-        constant  WR_ADDR_REGS_LO   :  integer := 8*WR_ADDR_REGS_ADDR;
-        constant  WR_ADDR_REGS_HI   :  integer := 8*WR_ADDR_REGS_ADDR + REG_ADDR_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  T0_ADDR_REGS_ADDR :  integer := 16#10#;
-        constant  T0_ADDR_REGS_LO   :  integer := 8*T0_ADDR_REGS_ADDR;
-        constant  T0_ADDR_REGS_HI   :  integer := 8*T0_ADDR_REGS_ADDR + REG_ADDR_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  T1_ADDR_REGS_ADDR :  integer := 16#18#;
-        constant  T1_ADDR_REGS_LO   :  integer := 8*T1_ADDR_REGS_ADDR;
-        constant  T1_ADDR_REGS_HI   :  integer := 8*T1_ADDR_REGS_ADDR + REG_ADDR_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  RD_MODE_REGS_ADDR :  integer := 16#20#;
-        constant  RD_MODE_REGS_LO   :  integer := 8*RD_MODE_REGS_ADDR;
-        constant  RD_MODE_REGS_HI   :  integer := 8*RD_MODE_REGS_ADDR + REG_MODE_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  WR_MODE_REGS_ADDR :  integer := 16#24#;
-        constant  WR_MODE_REGS_LO   :  integer := 8*WR_MODE_REGS_ADDR;
-        constant  WR_MODE_REGS_HI   :  integer := 8*WR_MODE_REGS_ADDR + REG_MODE_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  T0_MODE_REGS_ADDR :  integer := 16#28#;
-        constant  T0_MODE_REGS_LO   :  integer := 8*T0_MODE_REGS_ADDR;
-        constant  T0_MODE_REGS_HI   :  integer := 8*T0_MODE_REGS_ADDR + REG_MODE_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  T1_MODE_REGS_ADDR :  integer := 16#2C#;
-        constant  T1_MODE_REGS_LO   :  integer := 8*T1_MODE_REGS_ADDR;
-        constant  T1_MODE_REGS_HI   :  integer := 8*T1_MODE_REGS_ADDR + REG_MODE_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  SIZE_REGS_ADDR    :  integer := 16#30#;
-        constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
-        constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + REG_SIZE_BITS - 1;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        constant  CTRL_REGS_ADDR    :  integer := 16#34#;
-        constant  CTRL_REGS_LO      :  integer := 8*CTRL_REGS_ADDR;
-        constant  CTRL_REGS_HI      :  integer := 8*CTRL_REGS_ADDR    + REG_CTRL_BITS - 1;
-        constant  CTRL_RESET_POS    :  integer := 31;
-        constant  CTRL_START_POS    :  integer := 28;
     begin
         ---------------------------------------------------------------------------
         --
@@ -630,6 +667,24 @@ begin
         reg_size_wbit <= regs_wbit(SIZE_REGS_HI downto  SIZE_REGS_LO);
         regs_rbit(SIZE_REGS_HI downto  SIZE_REGS_LO) <= reg_size_data;
         ---------------------------------------------------------------------------
+        -- reg_mode
+        ---------------------------------------------------------------------------
+        reg_mode_load <= regs_load(MODE_REGS_HI downto  MODE_REGS_LO);
+        reg_mode_wbit <= regs_wbit(MODE_REGS_HI downto  MODE_REGS_LO);
+        regs_rbit(MODE_REGS_HI downto  MODE_REGS_LO) <= reg_mode_data;
+        ---------------------------------------------------------------------------
+        -- reg_stat
+        ---------------------------------------------------------------------------
+        reg_stat_load <= regs_load(STAT_REGS_HI downto  STAT_REGS_LO);
+        reg_stat_wbit <= regs_wbit(STAT_REGS_HI downto  STAT_REGS_LO);
+        regs_rbit(STAT_REGS_HI downto  STAT_REGS_LO) <= reg_stat_data;
+        reg_done_st_load <= reg_stat_load(STAT_DONE_POS);
+        reg_done_st_wbit <= reg_stat_wbit(STAT_DONE_POS);
+        process(reg_done_st_data) begin
+            reg_stat_data <= (others => '0');
+            reg_stat_data(STAT_DONE_POS) <= reg_done_st_data;
+        end process;
+        ---------------------------------------------------------------------------
         -- reg_ctrl
         ---------------------------------------------------------------------------
         reg_ctrl_load <= regs_load(CTRL_REGS_HI downto  CTRL_REGS_LO);
@@ -638,14 +693,33 @@ begin
         ---------------------------------------------------------------------------
         -- reg_start/reg_reset
         ---------------------------------------------------------------------------
-        reg_reset_load <= reg_ctrl_load(CTRL_RESET_POS);
-        reg_reset_wbit <= reg_ctrl_wbit(CTRL_RESET_POS);
-        reg_start_load <= reg_ctrl_load(CTRL_START_POS);
-        reg_start_wbit <= reg_ctrl_wbit(CTRL_START_POS);
-        process(reg_reset_data, reg_start_data) begin
+        reg_reset_load   <= reg_ctrl_load(CTRL_RESET_POS);
+        reg_reset_wbit   <= reg_ctrl_wbit(CTRL_RESET_POS);
+        reg_start_load   <= reg_ctrl_load(CTRL_START_POS);
+        reg_start_wbit   <= reg_ctrl_wbit(CTRL_START_POS);
+        reg_done_en_load <= reg_ctrl_load(CTRL_DONE_POS);
+        reg_done_en_wbit <= reg_ctrl_wbit(CTRL_DONE_POS);
+        process(reg_reset_data, reg_start_data, reg_done_en_data) begin
             reg_ctrl_data <= (others => '0');
             reg_ctrl_data(CTRL_RESET_POS) <= reg_reset_data;
             reg_ctrl_data(CTRL_START_POS) <= reg_start_data;
+            reg_ctrl_data(CTRL_DONE_POS ) <= reg_done_en_data;
+        end process;
+        ---------------------------------------------------------------------------
+        -- INTERRUPT
+        ---------------------------------------------------------------------------
+        process(ACLK, RESET) begin
+            if (RESET = '1') then
+                    INTERRUPT <= '0';
+            elsif (ACLK'event and ACLK = '1') then
+                if (CLEAR = '1') then
+                    INTERRUPT <= '0';
+                elsif (reg_done_st_data = '1' and reg_mode_data(MODE_IRQ_EN_POS) = '1') then
+                    INTERRUPT <= '1';
+                else
+                    INTERRUPT <= '0';
+                end if;
+            end if;
         end process;
     end block;
     -------------------------------------------------------------------------------
@@ -677,7 +751,8 @@ begin
             STM_AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --   
             STM_MAX_XFER_SIZE   => STM_AXI_XFER_SIZE   , --   
             STM_FEEDBACK        => STM_FEEDBACK        , --   
-            REG_ADDR_BITS       => REG_ADDR_BITS       , --   
+            REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
+            REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   
             REG_SIZE_BITS       => REG_SIZE_BITS       , --   
             REG_MODE_BITS       => REG_MODE_BITS         --   
         )                                                -- 
@@ -703,9 +778,6 @@ begin
             REG_T1_ADDR_L       => reg_t1_addr_load    , -- In  :
             REG_T1_ADDR_D       => reg_t1_addr_wbit    , -- In  :
             REG_T1_ADDR_Q       => reg_t1_addr_data    , -- Out :
-            REG_SIZE_L          => reg_size_load       , -- In  :
-            REG_SIZE_D          => reg_size_wbit       , -- In  :
-            REG_SIZE_Q          => reg_size_data       , -- Out :
             REG_RD_MODE_L       => reg_rd_mode_load    , -- In  :
             REG_RD_MODE_D       => reg_rd_mode_wbit    , -- In  :
             REG_RD_MODE_Q       => reg_rd_mode_data    , -- Out :
@@ -718,12 +790,24 @@ begin
             REG_T1_MODE_L       => reg_t1_mode_load    , -- In  :
             REG_T1_MODE_D       => reg_t1_mode_wbit    , -- In  :
             REG_T1_MODE_Q       => reg_t1_mode_data    , -- Out :
+            REG_SIZE_L          => reg_size_load       , -- In  :
+            REG_SIZE_D          => reg_size_wbit       , -- In  :
+            REG_SIZE_Q          => reg_size_data       , -- Out :
             REG_START_L         => reg_start_load      , -- In  :
             REG_START_D         => reg_start_wbit      , -- In  :
             REG_START_Q         => reg_start_data      , -- Out :
             REG_RESET_L         => reg_reset_load      , -- In  :
             REG_RESET_D         => reg_reset_wbit      , -- In  :
             REG_RESET_Q         => reg_reset_data      , -- Out :
+            REG_DONE_EN_L       => reg_done_en_load    , -- In  :
+            REG_DONE_EN_D       => reg_done_en_wbit    , -- In  :
+            REG_DONE_EN_Q       => reg_done_en_data    , -- Out :
+            REG_DONE_ST_L       => reg_done_st_load    , -- In  :
+            REG_DONE_ST_D       => reg_done_st_wbit    , -- In  :
+            REG_DONE_ST_Q       => reg_done_st_data    , -- Out :
+            REG_MODE_L          => reg_mode_load       , -- In  :
+            REG_MODE_D          => reg_mode_wbit       , -- In  :
+            REG_MODE_Q          => reg_mode_data       , -- Out :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -878,11 +962,7 @@ begin
             MERGED_STRB         => merged_strb         , -- In  :
             MERGED_LAST         => merged_last         , -- In  :
             MERGED_VALID        => merged_valid        , -- In  :
-            MERGED_READY        => merged_ready        , -- Out :
-        ---------------------------------------------------------------------------
-        -- 
-        ---------------------------------------------------------------------------
-            IRQ                 => interrupt             -- Out :
+            MERGED_READY        => merged_ready          -- Out :
     );
     -------------------------------------------------------------------------------
     -- 

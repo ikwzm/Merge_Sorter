@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 0.5.0                                                           --
---!     @date    2020/09/29                                                      --
+--!     @date    2020/10/01                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -294,9 +294,11 @@ component ArgSort_AXI_Interface
         STM_AXI_DATA_WIDTH  :  integer :=   64;
         STM_MAX_XFER_SIZE   :  integer :=   12;
         STM_FEEDBACK        :  integer :=    1;
-        REG_ADDR_BITS       :  integer :=   64;
+        REG_RW_ADDR_BITS    :  integer :=   64;
+        REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
-        REG_MODE_BITS       :  integer :=   32
+        REG_MODE_BITS       :  integer :=   16;
+        REG_STAT_BITS       :  integer :=    6
     );
     port (
     -------------------------------------------------------------------------------
@@ -308,39 +310,55 @@ component ArgSort_AXI_Interface
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_START_L         :  in  std_logic;
-        REG_START_D         :  in  std_logic;
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_START_L         :  in  std_logic := '0';
+        REG_START_D         :  in  std_logic := '0';
         REG_START_Q         :  out std_logic;
-        REG_RESET_L         :  in  std_logic;
-        REG_RESET_D         :  in  std_logic;
+        REG_RESET_L         :  in  std_logic := '0';
+        REG_RESET_D         :  in  std_logic := '0';
         REG_RESET_Q         :  out std_logic;
+        REG_DONE_EN_L       :  in  std_logic := '0';
+        REG_DONE_EN_D       :  in  std_logic := '0';
+        REG_DONE_EN_Q       :  out std_logic;
+        REG_DONE_ST_L       :  in  std_logic := '0';
+        REG_DONE_ST_D       :  in  std_logic := '0';
+        REG_DONE_ST_Q       :  out std_logic;
+        REG_ERR_ST_L        :  in  std_logic := '0';
+        REG_ERR_ST_D        :  in  std_logic := '0';
+        REG_ERR_ST_Q        :  out std_logic;
+        REG_MODE_L          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_D          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_Q          :  out std_logic_vector(REG_MODE_BITS   -1 downto 0);
+        REG_STAT_L          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
+        REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -495,11 +513,7 @@ component ArgSort_AXI_Interface
         MRG_REQ_VALID       :  out std_logic;
         MRG_REQ_READY       :  in  std_logic;
         MRG_RES_VALID       :  in  std_logic;
-        MRG_RES_READY       :  out std_logic;
-    -------------------------------------------------------------------------------
-    -- 
-    -------------------------------------------------------------------------------
-        IRQ                 :  out std_logic
+        MRG_RES_READY       :  out std_logic
     );
 end component;
 end ArgSort_AXI_Components;

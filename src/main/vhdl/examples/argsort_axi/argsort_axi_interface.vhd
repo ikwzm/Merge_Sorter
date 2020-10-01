@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
 --!     @version 0.5.0
---!     @date    2020/9/29
+--!     @date    2020/10/1
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -62,9 +62,11 @@ entity  ArgSort_AXI_Interface is
         STM_AXI_DATA_WIDTH  :  integer :=   64;
         STM_MAX_XFER_SIZE   :  integer :=   12;
         STM_FEEDBACK        :  integer :=    1;
-        REG_ADDR_BITS       :  integer :=   64;
+        REG_RW_ADDR_BITS    :  integer :=   64;
+        REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
-        REG_MODE_BITS       :  integer :=   32
+        REG_MODE_BITS       :  integer :=   16;
+        REG_STAT_BITS       :  integer :=    6
     );
     port (
     -------------------------------------------------------------------------------
@@ -76,39 +78,55 @@ entity  ArgSort_AXI_Interface is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_START_L         :  in  std_logic;
-        REG_START_D         :  in  std_logic;
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_START_L         :  in  std_logic := '0';
+        REG_START_D         :  in  std_logic := '0';
         REG_START_Q         :  out std_logic;
-        REG_RESET_L         :  in  std_logic;
-        REG_RESET_D         :  in  std_logic;
+        REG_RESET_L         :  in  std_logic := '0';
+        REG_RESET_D         :  in  std_logic := '0';
         REG_RESET_Q         :  out std_logic;
+        REG_DONE_EN_L       :  in  std_logic := '0';
+        REG_DONE_EN_D       :  in  std_logic := '0';
+        REG_DONE_EN_Q       :  out std_logic;
+        REG_DONE_ST_L       :  in  std_logic := '0';
+        REG_DONE_ST_D       :  in  std_logic := '0';
+        REG_DONE_ST_Q       :  out std_logic;
+        REG_ERR_ST_L        :  in  std_logic := '0';
+        REG_ERR_ST_D        :  in  std_logic := '0';
+        REG_ERR_ST_Q        :  out std_logic;
+        REG_MODE_L          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_D          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_Q          :  out std_logic_vector(REG_MODE_BITS   -1 downto 0);
+        REG_STAT_L          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
+        REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -263,11 +281,7 @@ entity  ArgSort_AXI_Interface is
         MRG_REQ_VALID       :  out std_logic;
         MRG_REQ_READY       :  in  std_logic;
         MRG_RES_VALID       :  in  std_logic;
-        MRG_RES_READY       :  out std_logic;
-    -------------------------------------------------------------------------------
-    -- 
-    -------------------------------------------------------------------------------
-        IRQ                 :  out std_logic
+        MRG_RES_READY       :  out std_logic
     );
 end ArgSort_AXI_Interface;
 -----------------------------------------------------------------------------------
@@ -644,9 +658,11 @@ begin
             STM_FEEDBACK    => STM_FEEDBACK        , --
             STM_RD_DATA_BITS=> STM_RD_DATA_BITS    , --
             STM_WR_DATA_BITS=> STM_WR_DATA_BITS    , --
-            REG_ADDR_BITS   => REG_ADDR_BITS       , --
+            REG_RW_ADDR_BITS=> REG_RW_ADDR_BITS    , --
+            REG_RW_MODE_BITS=> REG_RW_MODE_BITS    , --
             REG_SIZE_BITS   => REG_SIZE_BITS       , --
             REG_MODE_BITS   => REG_MODE_BITS       , --
+            REG_STAT_BITS   => REG_STAT_BITS       , --
             MRG_RD_REG_PARAM=> MRG_RD_REG_PARAM    , --
             MRG_WR_REG_PARAM=> MRG_WR_REG_PARAM    , --
             STM_RD_REG_PARAM=> STM_RD_REG_PARAM    , --
@@ -674,9 +690,6 @@ begin
             REG_T1_ADDR_L   => REG_T1_ADDR_L       , -- In  :
             REG_T1_ADDR_D   => REG_T1_ADDR_D       , -- In  :
             REG_T1_ADDR_Q   => REG_T1_ADDR_Q       , -- Out :
-            REG_SIZE_L      => REG_SIZE_L          , -- In  :
-            REG_SIZE_D      => REG_SIZE_D          , -- In  :
-            REG_SIZE_Q      => REG_SIZE_Q          , -- Out :
             REG_RD_MODE_L   => REG_RD_MODE_L       , -- In  :
             REG_RD_MODE_D   => REG_RD_MODE_D       , -- In  :
             REG_RD_MODE_Q   => REG_RD_MODE_Q       , -- Out :
@@ -689,12 +702,31 @@ begin
             REG_T1_MODE_L   => REG_T1_MODE_L       , -- In  :
             REG_T1_MODE_D   => REG_T1_MODE_D       , -- In  :
             REG_T1_MODE_Q   => REG_T1_MODE_Q       , -- Out :
+            REG_SIZE_L      => REG_SIZE_L          , -- In  :
+            REG_SIZE_D      => REG_SIZE_D          , -- In  :
+            REG_SIZE_Q      => REG_SIZE_Q          , -- Out :
             REG_START_L     => REG_START_L         , -- In  :
             REG_START_D     => REG_START_D         , -- In  :
             REG_START_Q     => REG_START_Q         , -- Out :
             REG_RESET_L     => REG_RESET_L         , -- In  :
             REG_RESET_D     => REG_RESET_D         , -- In  :
             REG_RESET_Q     => REG_RESET_Q         , -- Out :
+            REG_DONE_EN_L   => REG_DONE_EN_L       , -- In  :
+            REG_DONE_EN_D   => REG_DONE_EN_D       , -- In  :
+            REG_DONE_EN_Q   => REG_DONE_EN_Q       , -- Out :
+            REG_DONE_ST_L   => REG_DONE_ST_L       , -- In  :
+            REG_DONE_ST_D   => REG_DONE_ST_D       , -- In  :
+            REG_DONE_ST_Q   => REG_DONE_ST_Q       , -- Out :
+            REG_ERR_ST_L    => REG_ERR_ST_L        , -- In  :
+            REG_ERR_ST_D    => REG_ERR_ST_D        , -- In  :
+            REG_ERR_ST_Q    => REG_ERR_ST_Q        , -- Out :
+            REG_MODE_L      => REG_MODE_L          , -- In  :
+            REG_MODE_D      => REG_MODE_D          , -- In  :
+            REG_MODE_Q      => REG_MODE_Q          , -- Out :
+            REG_STAT_L      => REG_STAT_L          , -- In  :
+            REG_STAT_D      => REG_STAT_D          , -- In  :
+            REG_STAT_Q      => REG_STAT_Q          , -- Out :
+            REG_STAT_I      => REG_STAT_I          , -- In  :
         ---------------------------------------------------------------------------
         -- Merge Sorter Core Control Interface
         ---------------------------------------------------------------------------
@@ -739,5 +771,4 @@ begin
             MRG_WR_BUSY     => mrg_wr_busy         , -- In  :
             MRG_WR_DONE     => mrg_wr_done           -- In  :
     );
-    IRQ <= '0';
 end RTL;
