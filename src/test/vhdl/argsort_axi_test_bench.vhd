@@ -117,7 +117,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     signal    csr_arvalid       :  std_logic;
     signal    csr_arready       :  std_logic;
     signal    csr_rvalid        :  std_logic;
-    signal    csr_rlast         :  std_logic;
+    constant  csr_rlast         :  std_logic := '1';
     signal    csr_rdata         :  std_logic_vector(CSR_WIDTH.RDATA  -1 downto 0);
     signal    csr_rresp         :  AXI4_RESP_TYPE;
     constant  csr_ruser         :  std_logic_vector(CSR_WIDTH.RUSER  -1 downto 0) := (others => '0');
