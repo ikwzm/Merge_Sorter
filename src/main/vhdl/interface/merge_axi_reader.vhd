@@ -197,7 +197,7 @@ begin
             XFER_MIN_SIZE       => MAX_XFER_SIZE       , -- 
             XFER_MAX_SIZE       => MAX_XFER_SIZE       , -- 
             QUEUE_SIZE          => 4                   , --
-            RDATA_REGS          => 1                   , --
+            RDATA_REGS          => 2                   , --
             ACK_REGS            => 1                     -- 
         )                                                -- 
         port map (                                       -- 
