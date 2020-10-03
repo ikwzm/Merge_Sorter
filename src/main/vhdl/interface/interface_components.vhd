@@ -2,7 +2,7 @@
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.5.0                                                           --
---!     @date    2020/10/01                                                      --
+--!     @date    2020/10/03                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -80,6 +80,7 @@ component Merge_Reader
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -176,6 +177,7 @@ component Merge_Writer
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -272,6 +274,7 @@ component ArgSort_Reader
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -370,6 +373,7 @@ component ArgSort_Writer
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.

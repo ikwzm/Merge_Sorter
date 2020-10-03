@@ -2,7 +2,7 @@
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/29
+--!     @date    2020/10/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -156,6 +156,7 @@ architecture RTL of Merge_AXI_Writer is
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
     signal    req_last          :  std_logic;
+    signal    req_none          :  std_logic;
     signal    req_valid         :  std_logic;
     signal    req_ready         :  std_logic;
     signal    xfer_busy         :  std_logic;
@@ -385,6 +386,7 @@ begin
             REQ_MODE            => req_mode            , --  Out :
             REQ_FIRST           => req_first           , --  Out :
             REQ_LAST            => req_last            , --  Out :
+            REQ_NONE            => req_none            , --  Out :
             REQ_READY           => req_ready           , --  In  :
         -------------------------------------------------------------------------------
         -- Transaction Command Acknowledge Signals.

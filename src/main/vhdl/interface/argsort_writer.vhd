@@ -2,7 +2,7 @@
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/29
+--!     @date    2020/10/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -76,6 +76,7 @@ entity  ArgSort_Writer is
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -314,6 +315,7 @@ begin
             O_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
             O_REQ_FIRST         => REQ_FIRST                           , --  Out :
             O_REQ_LAST          => REQ_LAST                            , --  Out :
+            O_REQ_NONE          => REQ_NONE                            , --  Out :
             O_REQ_READY         => REQ_READY                           , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transaction Command Acknowledge Signals.
