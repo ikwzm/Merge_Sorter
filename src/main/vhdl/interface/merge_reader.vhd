@@ -404,6 +404,7 @@ begin
         signal    o_error           :  std_logic;
         signal    o_open            :  std_logic;
         signal    o_done            :  std_logic;
+        signal    o2i_stop          :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, END_NONE_STATE);
         signal    curr_state        :  STATE_TYPE;
     begin
@@ -587,7 +588,7 @@ begin
             -----------------------------------------------------------------------
             -- Outlet Open/Close Infomation Interface
             -----------------------------------------------------------------------
-                O_O2I_STOP          => '0'                     , --  In  :
+                O_O2I_STOP          => o2i_stop                , --  In  :
                 O_O2I_OPEN_INFO     => "0"                     , --  In  :
                 O_O2I_OPEN_VALID    => o_open_valid            , --  In  :
                 O_O2I_CLOSE_INFO    => "0"                     , --  In  :
@@ -677,6 +678,7 @@ begin
                 end if;
             end if;
         end process;
+        o2i_stop      <= '1' when ((curr_state = MRG_NONE_STATE and MRG_READY(channel) = '1')) else '0';
         BUSY(channel) <= '1' when ((curr_state = IDLE_STATE     and i_open = '1') or
                                    (curr_state = MRG_NONE_STATE                 ) or
                                    (curr_state = END_NONE_STATE                 ) or
