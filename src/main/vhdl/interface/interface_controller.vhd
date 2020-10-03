@@ -2,7 +2,7 @@
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
 --!     @version 0.5.0
---!     @date    2020/10/1
+--!     @date    2020/10/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -747,7 +747,8 @@ begin
     MRG_RD_CTRL: for channel in 0 to WAYS-1 generate
         type     STATE_TYPE     is (IDLE_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   base           :  unsigned(SIZE_BITS-1 downto 0);
+        signal   curr_base      :  unsigned(SIZE_BITS-1 downto 0);
+        signal   next_base      :  unsigned(SIZE_BITS-1 downto 0);
         signal   offset         :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_size    :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_zero    :  boolean;
@@ -765,7 +766,8 @@ begin
         process (CLK, RST) begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
-                    base        <= (others => '0');
+                    curr_base   <= (others => '0');
+                    next_base   <= (others => '0');
                     offset      <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
@@ -775,7 +777,8 @@ begin
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
-                    base        <= (others => '0');
+                    curr_base   <= (others => '0');
+                    next_base   <= (others => '0');
                     offset      <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
@@ -790,7 +793,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            base         <= (others => '0');
+                            curr_base    <= (others => '0');
+                            next_base    <= sort_block_size;
                             offset       <= (others => '0');
                             remain_zero  <= FALSE;
                             remain_size  <= (others => '0');
@@ -799,7 +803,8 @@ begin
                             read_last    <= FALSE;
                         when S0_STATE =>
                             curr_state   <= S1_STATE;
-                            offset       <= resize(base + (channel * mrg_reader_xsize), offset'length);
+                            offset       <= resize(curr_base + (channel * mrg_reader_xsize), offset'length);
+                            read_last    <= (sort_total_size <= next_base);
                         when S1_STATE =>
                             curr_state   <= S2_STATE;
                             if (offset > sort_total_size) then
@@ -818,10 +823,8 @@ begin
                             if (remain_zero = TRUE) or
                                (remain_size <= mrg_reader_xsize) then
                                 read_bytes <= resize(remain_size      * WORD_BYTES, read_bytes'length);
-                                read_last  <= TRUE;
                             else
                                 read_bytes <= resize(mrg_reader_xsize * WORD_BYTES, read_bytes'length);
-                                read_last  <= FALSE;
                             end if;
                             read_addr <= resize(unsigned(mrg_reader_addr) + offset*WORD_BYTES, read_addr'length);
                         when REQ_STATE =>
@@ -829,7 +832,8 @@ begin
                                 curr_state <= RUN_STATE;
                             else
                                 curr_state <= S0_STATE;
-                                base       <= resize(base + sort_block_size, base'length);
+                                curr_base  <= next_base;
+                                next_base  <= resize(next_base + sort_block_size, next_base'length);
                             end if;
                         when RUN_STATE =>
                             if (reader_state = READER_IDLE) then
