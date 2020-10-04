@@ -134,5 +134,91 @@ module ScenarioWriter
 
   end
     
+  class AXI_Memory < Writer
+    
+    attr_reader   :name, :size, :addr_start, :addr_last, :read, :write
+    def initialize(name, file, size, addr_start, read, write)
+      super(name,file)
+      @size       = size
+      @addr_start = addr_start
+      @addr_last  = addr_start + size - 1
+      @read       = read
+      @write      = write
+      @timeout    = 100000
+      @latency    = 1
+      @read_delay = 12
+    end
+
+    def init
+      my_name
+      index = 0
+      @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: true, WRITE: true,"
+      @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: DECERR,\n", 0, 0xFFFFFFFF
+      @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
+      @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              LATENCY: 8, TIMEOUT: 10000}}"
+      index = index + 1
+      if @read == true then
+        @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: true, WRITE: false,"
+        @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
+        @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
+        @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
+        @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
+        index = index + 1
+      end
+      if @write == true then
+        @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: false, WRITE: true,"
+        @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
+        @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
+        @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
+        @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
+        index = index + 1
+      end
+    end
+
+    def clear(size=nil, org=0, data=0)
+      if size.nil? then
+        size = @last_addr - @start_addr + 1
+      end
+      my_name
+      @file.puts "  - FILL  : #{size}"
+      @file.puts "  - ORG   : #{org}"
+      @file.puts "  - DB    : #{data}"
+    end
+
+    def run(timeout=100000)
+      my_name
+      @file.puts "  - WAIT  : {GPI(0): 1, TIMEOUT: #{timeout}}"
+      @file.puts "  - START"
+      @file.puts "  - WAIT  : {GPI(0): 0, TIMEOUT: #{timeout}}"
+      @file.puts "  - STOP"
+    end
+
+    def word_data(data)
+      remain_words = data.dup
+      while remain_words.empty? == false do
+        words = remain_words.shift(4).map{|word| sprintf("0x%08X", word & 0xFFFFFFFF)}
+        @file.puts "  - DW    : [" + words.join(", ") + "]"
+      end
+    end
+
+    def set_word_data(data, org=0)
+      data_bytes = data.length*4
+      warn "#{self.class}(#{@name}) data overflow (memory size = #{@size}, data size = #{data_bytes})" if (data_bytes > @size)
+      my_name
+      @file.puts   "  - SET"
+      @file.printf "  - ORG   : 0x%04X\n", org
+      word_data(data)
+    end
+
+    def check_word_data(data, org=0)
+      data_end = data.length*4 + org
+      warn "#{self.class}(#{@name}) data overflow (memory size = #{@size}, end of data = #{data_end})" if (data_end > @size)
+      my_name
+      @file.puts   "  - CHECK"
+      @file.printf "  - ORG   : 0x%04X\n", org
+      word_data(data)
+    end
+  end
 end
 

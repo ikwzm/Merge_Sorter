@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    word_compare.vhd
 --!     @brief   Merge Sorter Word Compare Module :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @version 0.5.0
+--!     @date    2020/10/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -65,37 +65,45 @@ architecture RTL of Word_Compare is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function compare_unsigned(A_WORD, B_WORD: std_logic_vector) return boolean is
+    function select_a_unsigned(A_WORD, B_WORD: std_logic_vector;ORDER: integer) return boolean is
         variable a_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
         variable b_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
     begin
         a_comp := unsigned(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
         b_comp := unsigned(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
-        return (a_comp > b_comp);
+        if (ORDER = 0) then
+            return (a_comp <= b_comp);
+        else
+            return (a_comp >= b_comp);
+        end if;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function compare_signed(A_WORD, B_WORD: std_logic_vector) return boolean is
+    function select_a_signed(A_WORD, B_WORD: std_logic_vector;ORDER: integer) return boolean is
         variable a_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
         variable b_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
     begin
         a_comp :=   signed(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
         b_comp :=   signed(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
-        return (a_comp > b_comp);
+        if (ORDER = 0) then
+            return (a_comp <= b_comp);
+        else
+            return (a_comp >= b_comp);
+        end if;
     end function;
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     process(VALID, A_WORD, B_WORD) 
-        variable a_gt_b  :  boolean;
+        variable select_a :  boolean;
     begin
         if (VALID = '1') then
             if (WORD_PARAM.DATA_COMPARE_SIGN) then
-                a_gt_b := compare_signed  (A_WORD, B_WORD);
+                select_a := select_a_signed  (A_WORD, B_WORD, SORT_ORDER);
             else
-                a_gt_b := compare_unsigned(A_WORD, B_WORD);
+                select_a := select_a_unsigned(A_WORD, B_WORD, SORT_ORDER);
             end if;
             if    (A_WORD(WORD_PARAM.ATRB_PRIORITY_POS) = '1') or
                   (B_WORD(WORD_PARAM.ATRB_POSTPEND_POS) = '1') then
@@ -105,8 +113,7 @@ begin
                   (A_WORD(WORD_PARAM.ATRB_POSTPEND_POS) = '1') then
                 SEL_A <= '0';
                 SEL_B <= '1';
-            elsif (SORT_ORDER  = 0 and a_gt_b = TRUE ) or
-                  (SORT_ORDER /= 0 and a_gt_b = FALSE) then
+            elsif (select_a = TRUE) then
                 SEL_A <= '1';
                 SEL_B <= '0';
             else

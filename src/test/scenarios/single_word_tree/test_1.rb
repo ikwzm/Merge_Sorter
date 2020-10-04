@@ -38,9 +38,9 @@ def test_1(file, ways, sort_order, sign, count)
     elsif b_postpend != 0 then
       -1
     elsif (sort_order == 0) then
-      b_data <=> a_data
-    else
       a_data <=> b_data
+    else
+      b_data <=> a_data
     end
   end
 

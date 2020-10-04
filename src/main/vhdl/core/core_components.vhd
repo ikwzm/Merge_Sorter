@@ -2,7 +2,7 @@
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.5.0                                                           --
---!     @date    2020/09/18                                                      --
+--!     @date    2020/10/05                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
