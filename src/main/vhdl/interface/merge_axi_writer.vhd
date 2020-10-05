@@ -2,7 +2,7 @@
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
 --!     @version 0.5.0
---!     @date    2020/10/3
+--!     @date    2020/10/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -50,7 +50,7 @@ entity  Merge_AXI_Writer is
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -127,11 +127,48 @@ library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
 architecture RTL of Merge_AXI_Writer is
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MIN(A,B: integer) return integer is
+    begin
+        if (A < B) then return A;
+        else            return B;
+        end if;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MIN(A,B,C: integer) return integer is
+    begin
+        return MIN(A,MIN(B,C));
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function CALC_BITS(SIZE:integer) return integer is
+        variable bits : integer;
+    begin
+        bits := 0;
+        while (2**bits < SIZE) loop
+            bits := bits + 1;
+        end loop;
+        return bits;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    constant  MAX_XFER_BYTES    :  integer := MIN(4096, 256*(AXI_DATA_WIDTH/8), 2**AXI_XFER_SIZE);
+    constant  MAX_XFER_SIZE     :  integer := CALC_BITS(MAX_XFER_BYTES);
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    constant  BUF_BYTES         :  integer := MAX_XFER_BYTES*2;
+    constant  BUF_DEPTH         :  integer := CALC_BITS(BUF_BYTES);
     constant  BUF_DATA_BITS     :  integer := AXI_DATA_WIDTH;
-    constant  BUF_DEPTH         :  integer := MAX_XFER_SIZE+1;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
     constant  REQ_SIZE_BITS     :  integer := REG_PARAM.SIZE_BITS;
     constant  REQ_MODE_BITS     :  integer := REG_PARAM.MODE_BITS;

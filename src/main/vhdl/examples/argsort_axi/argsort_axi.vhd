@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 0.5.0
---!     @date    2020/10/1
+--!     @date    2020/10/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -741,7 +741,7 @@ begin
             MRG_AXI_BUSER_WIDTH => 1                   , --   
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --   
             MRG_AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --   
-            MRG_MAX_XFER_SIZE   => MRG_AXI_XFER_SIZE   , --   
+            MRG_AXI_XFER_SIZE   => MRG_AXI_XFER_SIZE   , --   
             STM_AXI_ID          => STM_AXI_ID          , --   
             STM_AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --   
             STM_AXI_AUSER_WIDTH => STM_AXI_USER_WIDTH  , --   
@@ -749,7 +749,7 @@ begin
             STM_AXI_BUSER_WIDTH => 1                   , --   
             STM_AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --   
             STM_AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --   
-            STM_MAX_XFER_SIZE   => STM_AXI_XFER_SIZE   , --   
+            STM_AXI_XFER_SIZE   => STM_AXI_XFER_SIZE   , --   
             STM_FEEDBACK        => STM_FEEDBACK        , --   
             REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
             REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   

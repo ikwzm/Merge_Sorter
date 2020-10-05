@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 0.5.0                                                           --
---!     @date    2020/10/01                                                      --
+--!     @date    2020/10/05                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ component ArgSort_AXI
     -------------------------------------------------------------------------------
     -- Interrupt Request
     -------------------------------------------------------------------------------
-        interrupt           : out std_logic
+        INTERRUPT           : out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ component ArgSort_AXI_Interface
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
-        MRG_MAX_XFER_SIZE   :  integer :=   12;
+        MRG_AXI_XFER_SIZE   :  integer :=   12;
         STM_AXI_ID          :  integer :=    1;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
@@ -292,7 +292,7 @@ component ArgSort_AXI_Interface
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
         STM_AXI_DATA_WIDTH  :  integer :=   64;
-        STM_MAX_XFER_SIZE   :  integer :=   12;
+        STM_AXI_XFER_SIZE   :  integer :=   12;
         STM_FEEDBACK        :  integer :=    1;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;

@@ -2,7 +2,7 @@
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.5.0                                                           --
---!     @date    2020/10/03                                                      --
+--!     @date    2020/10/05                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -442,7 +442,7 @@ component Merge_AXI_Reader
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -514,7 +514,7 @@ component Merge_AXI_Writer
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 12
     );
     port (
     -------------------------------------------------------------------------------
@@ -591,7 +591,7 @@ component ArgSort_AXI_Reader
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
+        AXI_XFER_SIZE   :  integer := 12;
         WORD_INDEX_LO   :  integer :=  0;
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
@@ -665,7 +665,7 @@ component ArgSort_AXI_Writer
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
+        AXI_XFER_SIZE   :  integer := 12;
         WORD_INDEX_LO   :  integer :=  0;
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
