@@ -2,7 +2,7 @@
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
 --!     @version 0.5.0                                                           --
---!     @date    2020/10/05                                                      --
+--!     @date    2020/10/08                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------

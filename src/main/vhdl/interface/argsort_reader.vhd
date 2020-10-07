@@ -2,7 +2,7 @@
 --!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.5.0
---!     @date    2020/10/3
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -146,14 +146,6 @@ library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of ArgSort_Reader is
-    ------------------------------------------------------------------------------
-    -- 入力側のフロー制御用定数.
-    ------------------------------------------------------------------------------
-    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2**MAX_XFER_SIZE   , BUF_DEPTH+1));
-    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
@@ -175,6 +167,16 @@ architecture RTL of ArgSort_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    ------------------------------------------------------------------------------
+    -- 入力側のフロー制御用定数.
+    ------------------------------------------------------------------------------
+    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-MAX_XFER_BYTES     , BUF_DEPTH+1));
+    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------

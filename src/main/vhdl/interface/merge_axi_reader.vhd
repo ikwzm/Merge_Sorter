@@ -2,7 +2,7 @@
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
 --!     @version 0.5.0
---!     @date    2020/10/5
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -118,44 +118,16 @@ library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_READ_INTERFACE;
 architecture RTL of Merge_AXI_Reader is
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    function  MIN(A,B: integer) return integer is
-    begin
-        if (A < B) then return A;
-        else            return B;
-        end if;
-    end function;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    function  MIN(A,B,C: integer) return integer is
-    begin
-        return MIN(A,MIN(B,C));
-    end function;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    function CALC_BITS(SIZE:integer) return integer is
-        variable bits : integer;
-    begin
-        bits := 0;
-        while (2**bits < SIZE) loop
-            bits := bits + 1;
-        end loop;
-        return bits;
-    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  MAX_XFER_BYTES    :  integer := MIN(4096, 256*(AXI_DATA_WIDTH/8), 2**AXI_XFER_SIZE);
-    constant  MAX_XFER_SIZE     :  integer := CALC_BITS(MAX_XFER_BYTES);
+    constant  MAX_XFER_SIZE     :  integer := AXI4_MAX_XFER_SIZE(AXI_DATA_WIDTH, AXI_XFER_SIZE);
+    constant  MAX_XFER_BYTES    :  integer := 2**MAX_XFER_SIZE;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  BUF_BYTES         :  integer := MAX_XFER_BYTES*2;
-    constant  BUF_DEPTH         :  integer := CALC_BITS(BUF_BYTES);
+    constant  BUF_DEPTH         :  integer := MAX_XFER_SIZE + 1;
+    constant  BUF_BYTES         :  integer := 2**BUF_DEPTH;
     constant  BUF_DATA_BITS     :  integer := AXI_DATA_WIDTH;
     ------------------------------------------------------------------------------
     -- 

@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
 --!     @version 0.5.0
---!     @date    2020/10/5
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
