@@ -126,7 +126,7 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Interface;
-use     Merge_Sorter.Interface_Components.ArgSort_Writer;
+use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_Writer;
 library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;

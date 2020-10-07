@@ -1,6 +1,10 @@
 
-ENTITY_FILES = argsort_axi.vhd           \
-               argsort_axi_interface.vhd \
+ENTITY_FILES = argsort_axi_interface.vhd \
+               argsort_reader.vhd        \
+               argsort_writer.vhd        \
+               argsort_axi_reader.vhd    \
+               argsort_axi_writer.vhd    \
+               argsort_axi.vhd           \
                ${ENDLIST}
 
 argsort_axi_components.vhd : ${ENTITY_FILES}

@@ -4,8 +4,9 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_compare.vh
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/interface.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/argsort_reader.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/argsort_writer.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_components.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_reader.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/interface_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_reader.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_writer.vhd
@@ -13,13 +14,12 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_intake_fif
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_stream_intake.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/drop_none.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/argsort_axi_reader.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/argsort_axi_writer.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_reader.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/interface_controller.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_axi_reader.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_axi_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_core.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_interface.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/components.vhd
@@ -58,6 +58,7 @@ add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/pump/pump_flow_syncronize
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_read_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_write_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_register_interface.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_types.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_arbiter_integer_arch.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_arbiter_one_hot_arch.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/register_access_adapter.vhd
@@ -67,7 +68,6 @@ add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/sdpram_xilinx_
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/sdpram_xilinx_ultrascale_auto_select.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/pump/pump_stream_intake_controller.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/pump/pump_stream_outlet_controller.vhd
-add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_types.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/util.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_types.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/reader.vhd
