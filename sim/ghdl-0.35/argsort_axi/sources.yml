@@ -7,12 +7,6 @@
     Format   :  "#{File.basename(file_name,\".vhd\")}.o : #{file_name} #{@use_list.map{|u|File.basename(u.file_name,\".vhd\")+\".o\"}.join(\" \")}\n\tghdl -a -C $(GHDLFLAGS) --work=#{library_name} #{file_name}\n\n"
     PathList :
       - "../../../src/main/vhdl/"
-    Top      :  ["ArgSort_AXI"]
-
-- Library:
-    Name     :  work
-    Format   :  "#{File.basename(file_name,\".vhd\")}.o : #{file_name} #{@use_list.map{|u|File.basename(u.file_name,\".vhd\")+\".o\"}.join(\" \")}\n\tghdl -a -C $(GHDLFLAGS) --work=#{library_name} #{file_name}\n\n"
-    PathList :
       - "../../../src/test/vhdl/"
     Top      :  ["ArgSort_AXI_Test_Bench"]
     
