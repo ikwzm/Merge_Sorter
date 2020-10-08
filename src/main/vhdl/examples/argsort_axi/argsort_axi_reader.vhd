@@ -42,17 +42,21 @@ entity  ArgSort_AXI_Reader is
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12;
-        WORD_INDEX_LO   :  integer :=  0;
-        WORD_INDEX_HI   :  integer := 31;
-        WORD_COMP_LO    :  integer := 32;
-        WORD_COMP_HI    :  integer := 63
+        AXI_XFER_SIZE   :  integer := 10;
+        AXI_BUF_DEPTH   :  integer := 11;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_RDATA_REGS  :  integer :=  2;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------
@@ -123,14 +127,22 @@ architecture RTL of ArgSort_AXI_Reader is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  MAX_XFER_SIZE     :  integer := AXI4_MAX_XFER_SIZE(AXI_DATA_WIDTH, AXI_XFER_SIZE);
-    constant  MAX_XFER_BYTES    :  integer := 2**MAX_XFER_SIZE;
+    constant  WORD_COMP_BITS    :  integer := WORD_COMP_HI  - WORD_COMP_LO  + 1;
+    constant  WORD_INDEX_BITS   :  integer := WORD_INDEX_HI - WORD_INDEX_LO + 1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MAX(A,B:integer) return integer is
+    begin
+        if (A > B) then return A;
+        else            return B;
+        end if;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  BUF_DEPTH         :  integer := MAX_XFER_SIZE + 1;
-    constant  BUF_BYTES         :  integer := 2**BUF_DEPTH;
-    constant  BUF_DATA_BITS     :  integer := AXI_DATA_WIDTH;
+    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_COMP_BITS, AXI_DATA_WIDTH);
+    constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -205,11 +217,11 @@ begin
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
             BUF_PTR_BITS        => BUF_DEPTH           , -- 
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
-            XFER_MIN_SIZE       => MAX_XFER_SIZE       , -- 
-            XFER_MAX_SIZE       => MAX_XFER_SIZE       , -- 
-            QUEUE_SIZE          => 4                   , --
-            RDATA_REGS          => 2                   , --
-            ACK_REGS            => 1                     -- 
+            XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
+            XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
+            QUEUE_SIZE          => AXI_QUEUE_SIZE      , --
+            RDATA_REGS          => AXI_RDATA_REGS      , --
+            ACK_REGS            => AXI_ACK_REGS          -- 
         )                                                -- 
         port map (                                       -- 
         --------------------------------------------------------------------------
@@ -354,7 +366,7 @@ begin
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
+            MAX_XFER_SIZE       => AXI_XFER_SIZE       , --   
             WORD_INDEX_LO       => WORD_INDEX_LO       , --   
             WORD_INDEX_HI       => WORD_INDEX_HI       , --   
             WORD_COMP_LO        => WORD_COMP_LO        , --   

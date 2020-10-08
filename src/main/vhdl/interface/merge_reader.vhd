@@ -161,15 +161,16 @@ architecture RTL of Merge_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_DATA_BYTES        :  integer := BUF_DATA_BITS/8;
     constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
     constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
     ------------------------------------------------------------------------------
     -- 入力側のフロー制御用定数.
     ------------------------------------------------------------------------------
     constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(BUF_BYTES-MAX_XFER_BYTES     , BUF_DEPTH+1));
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-MAX_XFER_BYTES  , BUF_DEPTH+1));
     constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(BUF_BYTES-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-2*BUF_DATA_BYTES, BUF_DEPTH+1));
     constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
@@ -377,7 +378,7 @@ begin
         FLOW_READY  <= '1';
         FLOW_PAUSE  <= '0';
         FLOW_LAST   <= '0';
-        FLOW_SIZE   <= std_logic_vector(to_unsigned(2**MAX_XFER_SIZE, FLOW_SIZE'length));
+        FLOW_SIZE   <= std_logic_vector(to_unsigned(MAX_XFER_BYTES, FLOW_SIZE'length));
         i_req_ready <= (others => '1');
     end block;
     -------------------------------------------------------------------------------

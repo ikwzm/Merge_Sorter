@@ -62,7 +62,10 @@ component ArgSort_AXI_Interface
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
-        MRG_AXI_XFER_SIZE   :  integer :=   12;
+        MRG_RD_AXI_XFER_SIZE:  integer :=   11;
+        MRG_RD_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_WR_AXI_XFER_SIZE:  integer :=   11;
+        MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
         STM_AXI_ID          :  integer :=    1;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
@@ -70,7 +73,10 @@ component ArgSort_AXI_Interface
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
         STM_AXI_DATA_WIDTH  :  integer :=   64;
-        STM_AXI_XFER_SIZE   :  integer :=   12;
+        STM_RD_AXI_XFER_SIZE:  integer :=   11;
+        STM_RD_AXI_BUF_DEPTH:  integer :=   12;
+        STM_WR_AXI_XFER_SIZE:  integer :=   11;
+        STM_WR_AXI_BUF_DEPTH:  integer :=   12;
         STM_FEEDBACK        :  integer :=    1;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;
@@ -497,17 +503,21 @@ component ArgSort_AXI_Reader
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12;
-        WORD_INDEX_LO   :  integer :=  0;
-        WORD_INDEX_HI   :  integer := 31;
-        WORD_COMP_LO    :  integer := 32;
-        WORD_COMP_HI    :  integer := 63
+        AXI_XFER_SIZE   :  integer := 10;
+        AXI_BUF_DEPTH   :  integer := 11;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_RDATA_REGS  :  integer :=  2;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------
@@ -569,6 +579,10 @@ component ArgSort_AXI_Writer
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -577,11 +591,12 @@ component ArgSort_AXI_Writer
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12;
-        WORD_INDEX_LO   :  integer :=  0;
-        WORD_INDEX_HI   :  integer := 31;
-        WORD_COMP_LO    :  integer := 32;
-        WORD_COMP_HI    :  integer := 63
+        AXI_XFER_SIZE   :  integer := 11;
+        AXI_BUF_DEPTH   :  integer := 12;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------

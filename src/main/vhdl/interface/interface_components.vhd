@@ -246,7 +246,11 @@ component Merge_AXI_Reader
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 10;
+        AXI_BUF_DEPTH   :  integer := 11;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_RDATA_REGS  :  integer :=  2;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------
@@ -318,7 +322,12 @@ component Merge_AXI_Writer
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 11;
+        AXI_BUF_DEPTH   :  integer := 12;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------

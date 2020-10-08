@@ -52,7 +52,10 @@ entity  ArgSort_AXI_Interface is
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
-        MRG_AXI_XFER_SIZE   :  integer :=   12;
+        MRG_RD_AXI_XFER_SIZE:  integer :=   11;
+        MRG_RD_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_WR_AXI_XFER_SIZE:  integer :=   11;
+        MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
         STM_AXI_ID          :  integer :=    1;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
@@ -60,7 +63,10 @@ entity  ArgSort_AXI_Interface is
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
         STM_AXI_DATA_WIDTH  :  integer :=   64;
-        STM_AXI_XFER_SIZE   :  integer :=   12;
+        STM_RD_AXI_XFER_SIZE:  integer :=   11;
+        STM_RD_AXI_BUF_DEPTH:  integer :=   12;
+        STM_WR_AXI_XFER_SIZE:  integer :=   11;
+        STM_WR_AXI_BUF_DEPTH:  integer :=   12;
         STM_FEEDBACK        :  integer :=    1;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;
@@ -354,7 +360,8 @@ begin
             AXI_AUSER_WIDTH => STM_AXI_AUSER_WIDTH , --
             AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
-            AXI_XFER_SIZE   => STM_AXI_XFER_SIZE   , --
+            AXI_XFER_SIZE   => STM_RD_AXI_XFER_SIZE, --
+            AXI_BUF_DEPTH   => STM_RD_AXI_BUF_DEPTH, --
             WORD_INDEX_LO   => WORD_INDEX_LO       , --
             WORD_INDEX_HI   => WORD_INDEX_HI       , --
             WORD_COMP_LO    => WORD_COMP_LO        , --
@@ -427,7 +434,8 @@ begin
             AXI_BUSER_WIDTH => STM_AXI_BUSER_WIDTH , --
             AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
-            AXI_XFER_SIZE   => STM_AXI_XFER_SIZE   , --
+            AXI_XFER_SIZE   => STM_WR_AXI_XFER_SIZE, --
+            AXI_BUF_DEPTH   => STM_WR_AXI_BUF_DEPTH, --
             WORD_INDEX_LO   => WORD_INDEX_LO       , --
             WORD_INDEX_HI   => WORD_INDEX_HI       , --
             WORD_COMP_LO    => WORD_COMP_LO        , --
@@ -507,7 +515,8 @@ begin
             AXI_AUSER_WIDTH => MRG_AXI_AUSER_WIDTH , --
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
-            AXI_XFER_SIZE   => MRG_AXI_XFER_SIZE     --
+            AXI_XFER_SIZE   => MRG_RD_AXI_XFER_SIZE, --
+            AXI_BUF_DEPTH   => MRG_RD_AXI_BUF_DEPTH  --
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -578,7 +587,8 @@ begin
             AXI_BUSER_WIDTH => MRG_AXI_BUSER_WIDTH , --
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
-            AXI_XFER_SIZE   => MRG_AXI_XFER_SIZE     --
+            AXI_XFER_SIZE   => MRG_WR_AXI_XFER_SIZE, --
+            AXI_BUF_DEPTH   => MRG_WR_AXI_BUF_DEPTH  --
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------

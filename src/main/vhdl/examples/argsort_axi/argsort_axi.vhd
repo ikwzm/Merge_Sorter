@@ -267,6 +267,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Core_Components.Merge_Sorter_Core;
 use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_AXI_Interface;
 library PIPEWORK;
+use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_REGISTER_INTERFACE;
 use     PIPEWORK.COMPONENTS.REGISTER_ACCESS_ADAPTER;
 architecture RTL of ArgSort_AXI is
@@ -278,6 +279,26 @@ architecture RTL of ArgSort_AXI is
     constant  MRG_WORD_COMP_LO  :  integer := MRG_WORD_INDEX_HI + 1;
     constant  MRG_WORD_COMP_HI  :  integer := MRG_WORD_COMP_LO  + WORD_BITS  - 1;
     constant  MRG_WORD_BITS     :  integer := MRG_WORD_COMP_HI  - MRG_WORD_INDEX_LO + 1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  STM_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_AXI_XFER_SIZE);
+    constant  STM_RD_BUF_DEPTH  :  integer := STM_RD_XFER_SIZE+1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  STM_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_AXI_XFER_SIZE);
+    constant  STM_WR_BUF_DEPTH  :  integer := STM_WR_XFER_SIZE+1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  MRG_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_AXI_XFER_SIZE);
+    constant  MRG_RD_BUF_DEPTH  :  integer := MRG_RD_XFER_SIZE+1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  MRG_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_AXI_XFER_SIZE);
+    constant  MRG_WR_BUF_DEPTH  :  integer := MRG_WR_XFER_SIZE+1;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -741,7 +762,10 @@ begin
             MRG_AXI_BUSER_WIDTH => 1                   , --   
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --   
             MRG_AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --   
-            MRG_AXI_XFER_SIZE   => MRG_AXI_XFER_SIZE   , --   
+            MRG_RD_AXI_XFER_SIZE=> MRG_RD_XFER_SIZE    , --   
+            MRG_RD_AXI_BUF_DEPTH=> MRG_RD_BUF_DEPTH    , --   
+            MRG_WR_AXI_XFER_SIZE=> MRG_WR_XFER_SIZE    , --   
+            MRG_WR_AXI_BUF_DEPTH=> MRG_WR_BUF_DEPTH    , --   
             STM_AXI_ID          => STM_AXI_ID          , --   
             STM_AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --   
             STM_AXI_AUSER_WIDTH => STM_AXI_USER_WIDTH  , --   
@@ -749,7 +773,10 @@ begin
             STM_AXI_BUSER_WIDTH => 1                   , --   
             STM_AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --   
             STM_AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --   
-            STM_AXI_XFER_SIZE   => STM_AXI_XFER_SIZE   , --   
+            STM_RD_AXI_XFER_SIZE=> STM_RD_XFER_SIZE    , --   
+            STM_RD_AXI_BUF_DEPTH=> STM_RD_BUF_DEPTH    , --   
+            STM_WR_AXI_XFER_SIZE=> STM_WR_XFER_SIZE    , --   
+            STM_WR_AXI_BUF_DEPTH=> STM_WR_BUF_DEPTH    , --   
             STM_FEEDBACK        => STM_FEEDBACK        , --   
             REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
             REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   

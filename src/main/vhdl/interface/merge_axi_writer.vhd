@@ -50,7 +50,12 @@ entity  Merge_AXI_Writer is
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 12
+        AXI_XFER_SIZE   :  integer := 11;
+        AXI_BUF_DEPTH   :  integer := 12;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------
@@ -127,17 +132,20 @@ library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
 architecture RTL of Merge_AXI_Writer is
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MAX(A,B:integer) return integer is
+    begin
+        if (A > B) then return A;
+        else            return B;
+        end if;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  MAX_XFER_SIZE     :  integer := AXI4_MAX_XFER_SIZE(AXI_DATA_WIDTH, AXI_XFER_SIZE);
-    constant  MAX_XFER_BYTES    :  integer := 2**MAX_XFER_SIZE;
-    ------------------------------------------------------------------------------
-    -- 
-    ------------------------------------------------------------------------------
-    constant  BUF_DEPTH         :  integer := MAX_XFER_SIZE + 1;
-    constant  BUF_BYTES         :  integer := 2**BUF_DEPTH;
-    constant  BUF_DATA_BITS     :  integer := AXI_DATA_WIDTH;
+    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
+    constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -214,12 +222,12 @@ begin
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
             BUF_PTR_BITS        => BUF_DEPTH           , -- 
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
-            XFER_MIN_SIZE       => MAX_XFER_SIZE       , -- 
-            XFER_MAX_SIZE       => MAX_XFER_SIZE       , -- 
-            REQ_REGS            => 1                   , -- 
-            ACK_REGS            => 1                   , -- 
-            QUEUE_SIZE          => 4                   , -- 
-            RESP_REGS           => 1                     -- 
+            XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
+            XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
+            REQ_REGS            => AXI_REQ_REGS        , -- 
+            ACK_REGS            => AXI_ACK_REGS        , -- 
+            QUEUE_SIZE          => AXI_QUEUE_SIZE      , -- 
+            RESP_REGS           => AXI_RESP_REGS         -- 
         )                                                -- 
         port map (                                       -- 
         --------------------------------------------------------------------------
@@ -370,7 +378,7 @@ begin
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => MAX_XFER_SIZE         --   
+            MAX_XFER_SIZE       => AXI_XFER_SIZE         --   
         )                                                -- 
         port map (                                       -- 
         -------------------------------------------------------------------------------
