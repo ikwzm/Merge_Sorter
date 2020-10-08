@@ -695,16 +695,8 @@ component ArgSort_AXI
                               integer := 1;
         STM_AXI_ID          : --! @brief STREAM IN/OUT AXI ID :
                               integer := 0;
-        STM_AXI_PROT        : --! @brief STREAM IN/OUT AXI PROT :
-                              integer := 1;
-        STM_AXI_CACHE       : --! @brief STREAM IN/OUT AXI REGION :
-                              integer := 15;
-        STM_AXI_AUSER       : --! @brief STREAM IN/OUT AXI ADDRESS USER VALUE:
-                              integer := 0;
-        STM_AXI_REQ_QUEUE   : --! @brief STREAM IN/OUT AXI REQUEST QUEUE SIZE :
-                              integer := 4;
         STM_AXI_XFER_SIZE   : --! @brief STREAM IN/OUT AXI MAX XFER SIZE :
-                              integer := 12;
+                              integer := 11;
         MRG_AXI_ADDR_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                               integer := 32;
         MRG_AXI_DATA_WIDTH  : --! @brief MERGE IN/OUT AXI DATA WIDTH :
@@ -715,16 +707,8 @@ component ArgSort_AXI
                               integer := 1;
         MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
                               integer := 0;
-        MRG_AXI_PROT        : --! @brief MERGE IN/OUT AXI PROT :
-                              integer := 1;
-        MRG_AXI_CACHE       : --! @brief MERGE IN/OUT AXI REGION :
-                              integer := 15;
-        MRG_AXI_AUSER       : --! @brief MERGE IN/OUT AXI ADDRESS USER VALUE:
-                              integer := 0;
-        MRG_AXI_REQ_QUEUE   : --! @brief MERGE IN/OUT AXI REQUEST QUEUE SIZE :
-                              integer := 4;
         MRG_AXI_XFER_SIZE   : --! @brief MERGE IN/OUT AXI MAX XFER SIZE :
-                              integer := 12
+                              integer := 11
     );
     port(
     -------------------------------------------------------------------------------

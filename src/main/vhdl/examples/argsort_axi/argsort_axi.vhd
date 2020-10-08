@@ -68,16 +68,8 @@ entity  ArgSort_AXI is
                               integer := 1;
         STM_AXI_ID          : --! @brief STREAM IN/OUT AXI ID :
                               integer := 0;
-        STM_AXI_PROT        : --! @brief STREAM IN/OUT AXI PROT :
-                              integer := 1;
-        STM_AXI_CACHE       : --! @brief STREAM IN/OUT AXI REGION :
-                              integer := 15;
-        STM_AXI_AUSER       : --! @brief STREAM IN/OUT AXI ADDRESS USER VALUE:
-                              integer := 0;
-        STM_AXI_REQ_QUEUE   : --! @brief STREAM IN/OUT AXI REQUEST QUEUE SIZE :
-                              integer := 4;
         STM_AXI_XFER_SIZE   : --! @brief STREAM IN/OUT AXI MAX XFER SIZE :
-                              integer := 12;
+                              integer := 11;
         MRG_AXI_ADDR_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                               integer := 32;
         MRG_AXI_DATA_WIDTH  : --! @brief MERGE IN/OUT AXI DATA WIDTH :
@@ -88,16 +80,8 @@ entity  ArgSort_AXI is
                               integer := 1;
         MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
                               integer := 0;
-        MRG_AXI_PROT        : --! @brief MERGE IN/OUT AXI PROT :
-                              integer := 1;
-        MRG_AXI_CACHE       : --! @brief MERGE IN/OUT AXI REGION :
-                              integer := 15;
-        MRG_AXI_AUSER       : --! @brief MERGE IN/OUT AXI ADDRESS USER VALUE:
-                              integer := 0;
-        MRG_AXI_REQ_QUEUE   : --! @brief MERGE IN/OUT AXI REQUEST QUEUE SIZE :
-                              integer := 4;
         MRG_AXI_XFER_SIZE   : --! @brief MERGE IN/OUT AXI MAX XFER SIZE :
-                              integer := 12
+                              integer := 11
     );
     port(
     -------------------------------------------------------------------------------
@@ -314,77 +298,86 @@ architecture RTL of ArgSort_AXI is
     constant  REG_STAT_BITS     :  integer :=  8;
     constant  REG_CTRL_BITS     :  integer :=  8;
     -------------------------------------------------------------------------------
+    -- RESV_REGS
+    -------------------------------------------------------------------------------
+    constant  RESV_REGS_ADDR    :  integer := 16#00#;
+    constant  RESV_REGS_BITS    :  integer := 64;
+    constant  RESV_REGS_LO      :  integer := 8*RESV_REGS_ADDR;
+    constant  RESV_REGS_HI      :  integer := 8*RESV_REGS_ADDR    + RESV_REGS_BITS   - 1;
+    constant  RESV_REGS_DATA    :  std_logic_vector(RESV_REGS_BITS-1 downto 0)
+                                := (others => '0');
+    -------------------------------------------------------------------------------
     -- RD_ADDR_REGS
     -------------------------------------------------------------------------------
-    constant  RD_ADDR_REGS_ADDR :  integer := 16#00#;
+    constant  RD_ADDR_REGS_ADDR :  integer := 16#08#;
     constant  RD_ADDR_REGS_LO   :  integer := 8*RD_ADDR_REGS_ADDR;
     constant  RD_ADDR_REGS_HI   :  integer := 8*RD_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
     -------------------------------------------------------------------------------
     -- WR_ADDR_REGS
     -------------------------------------------------------------------------------
-    constant  WR_ADDR_REGS_ADDR :  integer := 16#08#;
+    constant  WR_ADDR_REGS_ADDR :  integer := 16#10#;
     constant  WR_ADDR_REGS_LO   :  integer := 8*WR_ADDR_REGS_ADDR;
     constant  WR_ADDR_REGS_HI   :  integer := 8*WR_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
     -------------------------------------------------------------------------------
     -- T0_ADDR_REGS
     -------------------------------------------------------------------------------
-    constant  T0_ADDR_REGS_ADDR :  integer := 16#10#;
+    constant  T0_ADDR_REGS_ADDR :  integer := 16#18#;
     constant  T0_ADDR_REGS_LO   :  integer := 8*T0_ADDR_REGS_ADDR;
     constant  T0_ADDR_REGS_HI   :  integer := 8*T0_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
     -------------------------------------------------------------------------------
     -- T1_ADDR_REGS
     -------------------------------------------------------------------------------
-    constant  T1_ADDR_REGS_ADDR :  integer := 16#18#;
+    constant  T1_ADDR_REGS_ADDR :  integer := 16#20#;
     constant  T1_ADDR_REGS_LO   :  integer := 8*T1_ADDR_REGS_ADDR;
     constant  T1_ADDR_REGS_HI   :  integer := 8*T1_ADDR_REGS_ADDR + REG_RW_ADDR_BITS - 1;
     -------------------------------------------------------------------------------
     -- RD_MODE_REGS
     -------------------------------------------------------------------------------
-    constant  RD_MODE_REGS_ADDR :  integer := 16#20#;
+    constant  RD_MODE_REGS_ADDR :  integer := 16#28#;
     constant  RD_MODE_REGS_LO   :  integer := 8*RD_MODE_REGS_ADDR;
     constant  RD_MODE_REGS_HI   :  integer := 8*RD_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
     -------------------------------------------------------------------------------
     -- WR_MODE_REGS
     -------------------------------------------------------------------------------
-    constant  WR_MODE_REGS_ADDR :  integer := 16#24#;
+    constant  WR_MODE_REGS_ADDR :  integer := 16#2C#;
     constant  WR_MODE_REGS_LO   :  integer := 8*WR_MODE_REGS_ADDR;
     constant  WR_MODE_REGS_HI   :  integer := 8*WR_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
     -------------------------------------------------------------------------------
     -- T0_MODE_REGS
     -------------------------------------------------------------------------------
-    constant  T0_MODE_REGS_ADDR :  integer := 16#28#;
+    constant  T0_MODE_REGS_ADDR :  integer := 16#30#;
     constant  T0_MODE_REGS_LO   :  integer := 8*T0_MODE_REGS_ADDR;
     constant  T0_MODE_REGS_HI   :  integer := 8*T0_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
     -------------------------------------------------------------------------------
     -- T1_MODE_REGS
     -------------------------------------------------------------------------------
-    constant  T1_MODE_REGS_ADDR :  integer := 16#2C#;
+    constant  T1_MODE_REGS_ADDR :  integer := 16#34#;
     constant  T1_MODE_REGS_LO   :  integer := 8*T1_MODE_REGS_ADDR;
     constant  T1_MODE_REGS_HI   :  integer := 8*T1_MODE_REGS_ADDR + REG_RW_MODE_BITS - 1;
     -------------------------------------------------------------------------------
     -- SIZE_REGS
     -------------------------------------------------------------------------------
-    constant  SIZE_REGS_ADDR    :  integer := 16#30#;
+    constant  SIZE_REGS_ADDR    :  integer := 16#38#;
     constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
     constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + REG_SIZE_BITS - 1;
     -------------------------------------------------------------------------------
     -- MODE_REGS
     -------------------------------------------------------------------------------
-    constant  MODE_REGS_ADDR    :  integer := 16#38#;
+    constant  MODE_REGS_ADDR    :  integer := 16#3C#;
     constant  MODE_REGS_LO      :  integer := 8*MODE_REGS_ADDR;
     constant  MODE_REGS_HI      :  integer := 8*MODE_REGS_ADDR    + REG_MODE_BITS - 1;
     constant  MODE_IRQ_EN_POS   :  integer := 0;
     -------------------------------------------------------------------------------
     -- STAT_REGS
     -------------------------------------------------------------------------------
-    constant  STAT_REGS_ADDR    :  integer := 16#3A#;
+    constant  STAT_REGS_ADDR    :  integer := 16#3E#;
     constant  STAT_REGS_LO      :  integer := 8*STAT_REGS_ADDR;
     constant  STAT_REGS_HI      :  integer := 8*STAT_REGS_ADDR    + REG_STAT_BITS - 1;
     constant  STAT_DONE_POS     :  integer := 0;
     -------------------------------------------------------------------------------
     -- CTRL_REGS
     -------------------------------------------------------------------------------
-    constant  CTRL_REGS_ADDR    :  integer := 16#3B#;
+    constant  CTRL_REGS_ADDR    :  integer := 16#3F#;
     constant  CTRL_REGS_LO      :  integer := 8*CTRL_REGS_ADDR;
     constant  CTRL_REGS_HI      :  integer := 8*CTRL_REGS_ADDR    + REG_CTRL_BITS - 1;
     constant  CTRL_RESET_POS    :  integer := 7;
@@ -633,6 +626,10 @@ begin
                 O_WLOAD         => regs_load         , -- Out :
                 O_RDATA         => regs_rbit           -- In  :
             );                                         -- 
+        ---------------------------------------------------------------------------
+        -- resv_regs
+        ---------------------------------------------------------------------------
+        regs_rbit(RESV_REGS_HI downto RESV_REGS_LO) <= RESV_REGS_DATA;
         ---------------------------------------------------------------------------
         -- reg_rd_addr
         ---------------------------------------------------------------------------

@@ -148,7 +148,6 @@ architecture RTL of Merge_AXI_Reader is
     constant  REQ_ID            :  std_logic_vector(AXI_ID_WIDTH   -1 downto 0)
                                 := std_logic_vector(to_unsigned(AXI_ID, AXI_ID_WIDTH));
     constant  REQ_LOCK          :  std_logic_vector(0 downto 0) := (others => '0');
-    constant  REQ_PROT          :  std_logic_vector(2 downto 0) := (others => '0');
     constant  REQ_QOS           :  std_logic_vector(3 downto 0) := (others => '0');
     constant  REQ_REGION        :  std_logic_vector(3 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
@@ -159,6 +158,7 @@ architecture RTL of Merge_AXI_Reader is
     signal    req_buf_ptr       :  std_logic_vector(BUF_DEPTH      -1 downto 0);
     signal    req_mode          :  std_logic_vector(REQ_MODE_BITS  -1 downto 0);
     signal    req_cache         :  std_logic_vector(3 downto 0);
+    signal    req_prot          :  std_logic_vector(2 downto 0);
     signal    req_speculative   :  std_logic;
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
@@ -257,7 +257,7 @@ begin
             REQ_BURST           => AXI4_ABURST_INCR    , -- In  :
             REQ_LOCK            => REQ_LOCK            , -- In  :
             REQ_CACHE           => req_cache           , -- In  :
-            REQ_PROT            => REQ_PROT            , -- In  :
+            REQ_PROT            => req_prot            , -- In  :
             REQ_QOS             => REQ_QOS             , -- In  :
             REQ_REGION          => REQ_REGION          , -- In  :
             REQ_BUF_PTR         => req_buf_ptr         , -- In  :
@@ -328,6 +328,8 @@ begin
     REQ_MODE_BLK: block
         constant  REQ_MODE_CACHE_HI   :  integer := REG_PARAM.MODE_CACHE_HI   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_CACHE_LO   :  integer := REG_PARAM.MODE_CACHE_LO   - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_HI   :  integer := REG_PARAM.MODE_APROT_HI   - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_LO   :  integer := REG_PARAM.MODE_APROT_LO   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_HI   :  integer := REG_PARAM.MODE_AUSER_HI   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_LO   :  integer := REG_PARAM.MODE_AUSER_LO   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_SPECUL_POS :  integer := REG_PARAM.MODE_SPECUL_POS - REG_PARAM.MODE_LO;
@@ -344,6 +346,7 @@ begin
                 end if;
             end if;
         end process;
+        req_prot        <= req_mode(REQ_MODE_APROT_HI downto REQ_MODE_APROT_LO);
         req_cache       <= req_mode(REQ_MODE_CACHE_HI downto REQ_MODE_CACHE_LO);
         req_speculative <= req_mode(REQ_MODE_SPECUL_POS);
         req_safety      <= req_mode(REQ_MODE_SAFETY_POS);

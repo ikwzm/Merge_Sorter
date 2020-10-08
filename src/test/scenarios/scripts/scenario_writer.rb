@@ -136,44 +136,37 @@ module ScenarioWriter
     
   class AXI_Memory < Writer
     
-    attr_reader   :name, :size, :addr_start, :addr_last, :read, :write
-    def initialize(name, file, size, addr_start, read, write)
+    attr_reader   :name, :size
+    attr_reader   :addr_start, :addr_last
+    attr_reader   :read, :write, :cache, :prot
+    def initialize(name, file, size, addr_start, cache=nil, prot=nil)
       super(name,file)
       @size       = size
       @addr_start = addr_start
       @addr_last  = addr_start + size - 1
-      @read       = read
-      @write      = write
+      @read       = true
+      @write      = true
+      @cache      = cache
+      @prot       = prot
       @timeout    = 100000
       @latency    = 1
       @read_delay = 12
     end
 
     def init
+      cache = (@cache.nil?)? "\"4'b----\"" : sprintf("\"4'b%04b\"", @cache)
+      prot  = (@prot.nil? )? "\"3'b---\""  : sprintf("\"3'b%03b\"", @prot )
       my_name
-      index = 0
-      @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: true, WRITE: true,"
+      @file.puts   "  - {DOMAIN: {INDEX: 0, MAP: 0, READ: true, WRITE: true,"
       @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: DECERR,\n", 0, 0xFFFFFFFF
       @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
       @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
       @file.puts   "              LATENCY: 8, TIMEOUT: 10000}}"
-      index = index + 1
-      if @read == true then
-        @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: true, WRITE: false,"
-        @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
-        @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
-        @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
-        @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
-        index = index + 1
-      end
-      if @write == true then
-        @file.puts   "  - {DOMAIN: {INDEX: #{index}, MAP: 0, READ: false, WRITE: true,"
-        @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
-        @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
-        @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
-        @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
-        index = index + 1
-      end
+      @file.puts   "  - {DOMAIN: {INDEX: 1, MAP: 0, READ: true, WRITE: true,"
+      @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
+      @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  #{cache},"
+      @file.puts   "              APROT: #{prot}, AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
     end
 
     def clear(size=nil, org=0, data=0)
