@@ -269,14 +269,23 @@ begin
     -------------------------------------------------------------------------------
     REQ: block
         constant  ARB_NULL          :  std_logic_vector  (WAYS-1 downto 0) := (others => '0');
-        signal    arb_request       :  std_logic_vector  (WAYS-1 downto 0);
-        signal    arb_grant         :  std_logic_vector  (WAYS-1 downto 0);
+        signal    arb_request       :  std_logic_vector  (0 to WAYS-1);
+        signal    arb_grant         :  std_logic_vector  (0 to WAYS-1);
         signal    arb_valid         :  std_logic;
         signal    arb_shift         :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, SEL_STATE, REQ_STATE, ACK_STATE);
         signal    curr_state        :  STATE_TYPE;
+        signal    arb_sel           :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_sel          :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
+        function  REVERSE_VECTOR(A: in std_logic_vector) return std_logic_vector is
+            variable  reserved_a :  std_logic_vector(A'reverse_range);
+        begin
+            for i in reserved_a'range loop
+                reserved_a(i) := A(i);
+            end loop;
+            return reserved_a;
+        end function;
     begin
         ---------------------------------------------------------------------------
         --
@@ -295,7 +304,8 @@ begin
                 REQUEST_O   => arb_valid  ,  -- Out :
                 SHIFT       => arb_shift     -- In  :
             );                               --
-        arb_request <= i_req_valid and (i_flow_ready or i_flow_stop or i_req_none);
+        arb_request <= REVERSE_VECTOR(i_req_valid and (i_flow_ready or i_flow_stop or i_req_none));
+        arb_sel     <= REVERSE_VECTOR(arb_grant);
         arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
         --
@@ -331,7 +341,7 @@ begin
                         when IDLE_STATE =>
                             if (arb_valid = '1') then
                                 curr_state <= SEL_STATE;
-                                curr_sel   <= arb_grant;
+                                curr_sel   <= arb_sel;
                             else
                                 curr_state <= IDLE_STATE;
                                 curr_sel   <= (others => '0');
