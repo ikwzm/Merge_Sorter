@@ -298,14 +298,30 @@ architecture RTL of ArgSort_AXI is
     constant  REG_STAT_BITS     :  integer :=  8;
     constant  REG_CTRL_BITS     :  integer :=  8;
     -------------------------------------------------------------------------------
-    -- RESV_REGS
+    -- STR_TO_STD_LOGIC_VECTOR
     -------------------------------------------------------------------------------
-    constant  RESV_REGS_ADDR    :  integer := 16#00#;
-    constant  RESV_REGS_BITS    :  integer := 64;
-    constant  RESV_REGS_LO      :  integer := 8*RESV_REGS_ADDR;
-    constant  RESV_REGS_HI      :  integer := 8*RESV_REGS_ADDR    + RESV_REGS_BITS   - 1;
-    constant  RESV_REGS_DATA    :  std_logic_vector(RESV_REGS_BITS-1 downto 0)
-                                := (others => '0');
+    function  STR_TO_STD_LOGIC_VECTOR(STR: STRING) return std_logic_vector is
+        variable  value         :  std_logic_vector(8*STR'length-1 downto 0);
+    begin
+        for i in STR'range loop
+            value(8*(i)-1 downto 8*(i-1)) := std_logic_vector(to_unsigned(character'pos(STR(i)),8));
+        end loop;
+        return value;
+    end function;
+    -------------------------------------------------------------------------------
+    -- VERSION_REGS
+    -------------------------------------------------------------------------------
+    constant  VERSION_REGS_ADDR :  integer := 16#00#;
+    constant  VERSION_REGS_BITS :  integer := 64;
+    constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
+    constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
+    constant  VERSION_TAG       :  STRING(1 to 7) := "ArgSort";
+    constant  VERSION_MAJOR     :  integer range 0 to 15 := 0;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 5;
+    constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
+                                := std_logic_vector(to_unsigned(VERSION_MAJOR,4)) &
+                                   std_logic_vector(to_unsigned(VERSION_MINOR,4)) &
+                                   STR_TO_STD_LOGIC_VECTOR(VERSION_TAG);
     -------------------------------------------------------------------------------
     -- RD_ADDR_REGS
     -------------------------------------------------------------------------------
@@ -627,9 +643,9 @@ begin
                 O_RDATA         => regs_rbit           -- In  :
             );                                         -- 
         ---------------------------------------------------------------------------
-        -- resv_regs
+        -- version_regs
         ---------------------------------------------------------------------------
-        regs_rbit(RESV_REGS_HI downto RESV_REGS_LO) <= RESV_REGS_DATA;
+        regs_rbit(VERSION_REGS_HI downto VERSION_REGS_LO) <= VERSION_REGS_DATA;
         ---------------------------------------------------------------------------
         -- reg_rd_addr
         ---------------------------------------------------------------------------
