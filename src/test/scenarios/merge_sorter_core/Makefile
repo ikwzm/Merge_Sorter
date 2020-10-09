@@ -13,6 +13,6 @@ all: $(SCENARIO_FILES)
 clean:
 	rm $(SCENARIO_FILES)
 
-%.snr : %.rb test_1.rb test_2.rb
+%.snr : %.rb test_1.rb test_2.rb sort.rb
 	ruby $<
 

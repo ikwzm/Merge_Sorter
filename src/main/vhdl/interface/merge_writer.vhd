@@ -2,7 +2,7 @@
 --!     @file    merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -72,6 +72,7 @@ entity  Merge_Writer is
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -116,7 +117,7 @@ entity  Merge_Writer is
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -139,14 +140,6 @@ library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_OUTLET_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of Merge_Writer is
-    ------------------------------------------------------------------------------
-    -- 出力側のフロー制御用定数.
-    ------------------------------------------------------------------------------
-    constant  O_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**MAX_XFER_SIZE   , BUF_DEPTH+1));
-    constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
@@ -163,6 +156,16 @@ architecture RTL of Merge_Writer is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    ------------------------------------------------------------------------------
+    -- 出力側のフロー制御用定数.
+    ------------------------------------------------------------------------------
+    constant  O_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(MAX_XFER_BYTES     , BUF_DEPTH+1));
+    constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -191,6 +194,10 @@ architecture RTL of Merge_Writer is
     signal    i_error               :  std_logic;
     signal    i_open_valid          :  std_logic;
     signal    i_close_valid         :  std_logic;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    signal    i_strb                :  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
@@ -297,6 +304,7 @@ begin
             O_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
             O_REQ_FIRST         => REQ_FIRST                           , --  Out :
             O_REQ_LAST          => REQ_LAST                            , --  Out :
+            O_REQ_NONE          => REQ_NONE                            , --  Out :
             O_REQ_READY         => REQ_READY                           , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transaction Command Acknowledge Signals.
@@ -359,7 +367,7 @@ begin
         -- Intake Stream Interface.
         ---------------------------------------------------------------------------
             I_DATA              => MRG_DATA                            , --  In  :
-            I_STRB              => MRG_STRB                            , --  In  :
+            I_STRB              => i_strb                              , --  In  :
             I_LAST              => MRG_LAST                            , --  In  :
             I_VALID             => MRG_VALID                           , --  In  :
             I_READY             => MRG_READY                           , --  Out :
@@ -392,6 +400,16 @@ begin
             BUF_DATA            => buf_wdata                             --  Out :
         );                                                               --
     REQ_MODE <= reg_rbit(REG_PARAM.MODE_HI downto REG_PARAM.MODE_LO);    -- 
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    I_STRB_GEN: for i in 0 to WORDS-1 generate
+        constant  STRB_BITS     :  integer := WORD_BITS/8;
+        constant  STRB_1        :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '1');
+        constant  STRB_0        :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '0');
+    begin
+        i_strb((i+1)*STRB_BITS-1 downto i*STRB_BITS) <= STRB_1 when (MRG_STRB(i) = '1') else STRB_0;
+    end generate;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -442,6 +460,7 @@ begin
                            (o_state = O_TAR                  )) else '0';
         DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
                            (o_state = O_TAR  and o_open = '0')) else '0';
+        reg_rbit(REG_PARAM.CTRL_EBLK_POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 

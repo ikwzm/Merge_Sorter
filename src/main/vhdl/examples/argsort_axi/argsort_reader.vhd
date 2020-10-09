@@ -2,7 +2,7 @@
 --!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -76,6 +76,7 @@ entity  ArgSort_Reader is
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -117,12 +118,12 @@ entity  ArgSort_Reader is
         BUF_WEN         :  in  std_logic;
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  out std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  out std_logic;
         STM_VALID       :  out std_logic;
         STM_READY       :  in  std_logic;
@@ -145,14 +146,6 @@ library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of ArgSort_Reader is
-    ------------------------------------------------------------------------------
-    -- 入力側のフロー制御用定数.
-    ------------------------------------------------------------------------------
-    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2**MAX_XFER_SIZE   , BUF_DEPTH+1));
-    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
@@ -174,6 +167,16 @@ architecture RTL of ArgSort_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    ------------------------------------------------------------------------------
+    -- 入力側のフロー制御用定数.
+    ------------------------------------------------------------------------------
+    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-MAX_XFER_BYTES     , BUF_DEPTH+1));
+    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -231,7 +234,7 @@ begin
             I_FIXED_FLOW_OPEN   => 0                       , --
             I_FIXED_POOL_OPEN   => 1                       , --
             O_CLK_RATE          => 1                       , --
-            O_DATA_BITS         => WORDS*WORD_COMP_BITS , --
+            O_DATA_BITS         => WORDS*WORD_COMP_BITS    , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             I2O_OPEN_INFO_BITS  => 1                       , --
@@ -312,6 +315,7 @@ begin
             I_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
             I_REQ_FIRST         => REQ_FIRST                           , --  Out :
             I_REQ_LAST          => REQ_LAST                            , --  Out :
+            I_REQ_NONE          => REQ_NONE                            , --  Out :
             I_REQ_READY         => REQ_READY                           , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Transaction Command Acknowledge Signals.
@@ -456,6 +460,7 @@ begin
                            (i_state = I_TAR                  )) else '0';
         DONE  <= '1' when ((i_state = I_RUN  and i_open = '0' and i_close_valid = '1') or
                            (i_state = I_TAR  and i_open = '0')) else '0';
+        reg_rbit(REG_PARAM.CTRL_EBLK_POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 
@@ -482,10 +487,6 @@ begin
     --
     -------------------------------------------------------------------------------
     STM_OUT: for i in 0 to WORDS-1 generate
-        constant  STRB_BITS      :  integer := WORD_BITS/8;
-        constant  STRB_ALL_1     :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '1');
-        constant  STRB_ALL_0     :  std_logic_vector(STRB_BITS-1 downto 0) := (others => '0');
-        signal    o_strb         :  std_logic_vector(STRB_BITS-1 downto 0);
         signal    o_word         :  std_logic_vector(WORD_BITS-1 downto 0);
         signal    index          :  unsigned(WORD_INDEX_BITS-1 downto 0);
     begin
@@ -506,17 +507,16 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        o_strb <= STRB_ALL_1 when (comp_strb(i*(WORD_COMP_BITS/8)) = '1') else STRB_ALL_0;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
         o_word(WORD_COMP_HI  downto WORD_COMP_LO ) <= comp_data((i+1)*WORD_COMP_BITS-1 downto i*WORD_COMP_BITS);
         o_word(WORD_INDEX_HI downto WORD_INDEX_LO) <= std_logic_vector(index);
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS) <= o_word;
-        STM_STRB((i+1)*STRB_BITS-1 downto i*STRB_BITS) <= o_strb;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        STM_STRB(i) <= comp_strb(i*(WORD_COMP_BITS/8)) when (i > 0) else '1';
     end generate;
     STM_LAST   <= comp_last;
     STM_VALID  <= comp_valid;

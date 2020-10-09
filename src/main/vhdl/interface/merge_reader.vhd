@@ -2,7 +2,7 @@
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -72,6 +72,7 @@ entity  Merge_Reader is
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -113,7 +114,7 @@ entity  Merge_Reader is
         BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
         BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
         BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
@@ -144,14 +145,6 @@ use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
 use     PIPEWORK.COMPONENTS.QUEUE_ARBITER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of Merge_Reader is
-    ------------------------------------------------------------------------------
-    -- 入力側のフロー制御用定数.
-    ------------------------------------------------------------------------------
-    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2**MAX_XFER_SIZE   , BUF_DEPTH+1));
-    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**BUF_DEPTH-2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
@@ -168,13 +161,24 @@ architecture RTL of Merge_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_DATA_BYTES        :  integer := BUF_DATA_BITS/8;
+    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    ------------------------------------------------------------------------------
+    -- 入力側のフロー制御用定数.
+    ------------------------------------------------------------------------------
+    constant  I_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-MAX_XFER_BYTES  , BUF_DEPTH+1));
+    constant  I_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(BUF_BYTES-2*BUF_DATA_BYTES, BUF_DEPTH+1));
+    constant  I_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
     type      REQ_ADDR_VECTOR       is array (integer range <>) of std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
     type      REQ_SIZE_VECTOR       is array (integer range <>) of std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
     type      REQ_MODE_VECTOR       is array (integer range <>) of std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
-    type      REQ_BUF_PTR_VECTOR    is array (integer range <>) of std_logic_vector(BUF_DEPTH             downto 0);
+    type      REQ_BUF_PTR_VECTOR    is array (integer range <>) of std_logic_vector(BUF_DEPTH          -1 downto 0);
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -235,7 +239,7 @@ architecture RTL of Merge_Reader is
     -- 
     ------------------------------------------------------------------------------
     function  SELECT_REQ_BUF_PTR(SEL: std_logic_vector; VEC: REQ_BUF_PTR_VECTOR) return std_logic_vector is
-        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH downto 0);
+        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH-1 downto 0);
     begin
         v_req_buf_ptr := (others => '0');
         for i in VEC'range loop
@@ -254,6 +258,7 @@ architecture RTL of Merge_Reader is
     signal    i_req_buf_ptr         :  REQ_BUF_PTR_VECTOR(WAYS-1 downto 0);
     signal    i_req_first           :  std_logic_vector  (WAYS-1 downto 0);
     signal    i_req_last            :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_none            :  std_logic_vector  (WAYS-1 downto 0);
     signal    i_req_valid           :  std_logic_vector  (WAYS-1 downto 0);
     signal    i_req_ready           :  std_logic_vector  (WAYS-1 downto 0);
     signal    i_flow_ready          :  std_logic_vector  (WAYS-1 downto 0);
@@ -264,14 +269,23 @@ begin
     -------------------------------------------------------------------------------
     REQ: block
         constant  ARB_NULL          :  std_logic_vector  (WAYS-1 downto 0) := (others => '0');
-        signal    arb_request       :  std_logic_vector  (WAYS-1 downto 0);
-        signal    arb_grant         :  std_logic_vector  (WAYS-1 downto 0);
+        signal    arb_request       :  std_logic_vector  (0 to WAYS-1);
+        signal    arb_grant         :  std_logic_vector  (0 to WAYS-1);
         signal    arb_valid         :  std_logic;
         signal    arb_shift         :  std_logic;
         type      STATE_TYPE        is (IDLE_STATE, SEL_STATE, REQ_STATE, ACK_STATE);
         signal    curr_state        :  STATE_TYPE;
+        signal    arb_sel           :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_sel          :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
+        function  REVERSE_VECTOR(A: in std_logic_vector) return std_logic_vector is
+            variable  reserved_a :  std_logic_vector(A'reverse_range);
+        begin
+            for i in reserved_a'range loop
+                reserved_a(i) := A(i);
+            end loop;
+            return reserved_a;
+        end function;
     begin
         ---------------------------------------------------------------------------
         --
@@ -290,7 +304,8 @@ begin
                 REQUEST_O   => arb_valid  ,  -- Out :
                 SHIFT       => arb_shift     -- In  :
             );                               --
-        arb_request <= i_req_valid and (i_flow_ready or i_flow_stop);
+        arb_request <= REVERSE_VECTOR(i_req_valid and (i_flow_ready or i_flow_stop or i_req_none));
+        arb_sel     <= REVERSE_VECTOR(arb_grant);
         arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
         --
@@ -306,6 +321,7 @@ begin
                     REQ_MODE    <= (others => '0');
                     REQ_FIRST   <= '0';
                     REQ_LAST    <= '0';
+                    REQ_NONE    <= '0';
                     FLOW_STOP   <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
@@ -318,13 +334,14 @@ begin
                     REQ_MODE    <= (others => '0');
                     REQ_FIRST   <= '0';
                     REQ_LAST    <= '0';
+                    REQ_NONE    <= '0';
                     FLOW_STOP   <= '0';
                 else
                     case curr_state is
                         when IDLE_STATE =>
                             if (arb_valid = '1') then
                                 curr_state <= SEL_STATE;
-                                curr_sel   <= arb_grant;
+                                curr_sel   <= arb_sel;
                             else
                                 curr_state <= IDLE_STATE;
                                 curr_sel   <= (others => '0');
@@ -339,6 +356,7 @@ begin
                             REQ_MODE    <= SELECT_REQ_MODE(   curr_sel, i_req_mode   );
                             REQ_FIRST   <= SELECT_REQ_FLAG(   curr_sel, i_req_first  );
                             REQ_LAST    <= SELECT_REQ_FLAG(   curr_sel, i_req_last   );
+                            REQ_NONE    <= SELECT_REQ_FLAG(   curr_sel, i_req_none   );
                             FLOW_STOP   <= SELECT_REQ_FLAG(   curr_sel, i_flow_stop  );
                         when REQ_STATE =>
                             if    (REQ_READY = '0') then
@@ -370,7 +388,7 @@ begin
         FLOW_READY  <= '1';
         FLOW_PAUSE  <= '0';
         FLOW_LAST   <= '0';
-        FLOW_SIZE   <= std_logic_vector(to_unsigned(2**MAX_XFER_SIZE, FLOW_SIZE'length));
+        FLOW_SIZE   <= std_logic_vector(to_unsigned(MAX_XFER_BYTES, FLOW_SIZE'length));
         i_req_ready <= (others => '1');
     end block;
     -------------------------------------------------------------------------------
@@ -394,17 +412,16 @@ begin
         signal    mrg_in_eblk       :  std_logic;
         signal    i_open            :  std_logic;
         signal    i_end_of_blk      :  std_logic;
-        signal    i_size_zero       :  std_logic;
         signal    o_open_valid      :  std_logic;
         signal    o_close_valid     :  std_logic;
         signal    o_end_of_blk      :  std_logic;
-        signal    o_size_zero       :  std_logic;
         signal    o_reset           :  std_logic;
         signal    o_stop            :  std_logic;
         signal    o_error           :  std_logic;
         signal    o_open            :  std_logic;
         signal    o_done            :  std_logic;
-        type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, END_NONE_STATE);
+        signal    o_none            :  std_logic;
+        type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, CHK_NONE_STATE, END_NONE_STATE);
         signal    curr_state        :  STATE_TYPE;
     begin
         ---------------------------------------------------------------------------
@@ -434,7 +451,7 @@ begin
                 O_DATA_BITS         => WORD_BITS               , --
                 BUF_DEPTH           => BUF_DEPTH               , --
                 BUF_DATA_BITS       => BUF_DATA_BITS           , --
-                I2O_OPEN_INFO_BITS  => 2                       , --
+                I2O_OPEN_INFO_BITS  => 1                       , --
                 I2O_CLOSE_INFO_BITS => 1                       , --
                 O2I_OPEN_INFO_BITS  => 1                       , --
                 O2I_CLOSE_INFO_BITS => 1                       , --
@@ -512,6 +529,7 @@ begin
                 I_REQ_BUF_PTR       => i_req_buf_ptr (channel) , --  Out :
                 I_REQ_FIRST         => i_req_first   (channel) , --  Out :
                 I_REQ_LAST          => i_req_last    (channel) , --  Out :
+                I_REQ_NONE          => i_req_none    (channel) , --  Out :
                 I_REQ_READY         => i_req_ready   (channel) , --  In  :
             -----------------------------------------------------------------------
             -- Intake Transaction Command Acknowledge Signals.
@@ -557,8 +575,7 @@ begin
             -----------------------------------------------------------------------
             -- Intake Open/Close Infomation Interface
             -----------------------------------------------------------------------
-                I_I2O_OPEN_INFO(0)  => i_size_zero             , --  In  :
-                I_I2O_OPEN_INFO(1)  => i_end_of_blk            , --  In  :
+                I_I2O_OPEN_INFO(0)  => i_end_of_blk            , --  In  :
                 I_I2O_CLOSE_INFO    => "0"                     , --  In  :
                 I_O2I_OPEN_INFO     => open                    , --  Out :
                 I_O2I_OPEN_VALID    => open                    , --  Out :
@@ -595,8 +612,7 @@ begin
                 O_I2O_RESET         => o_reset                 , --  Out :
                 O_I2O_ERROR         => o_error                 , --  Out :
                 O_I2O_STOP          => o_stop                  , --  Out :
-                O_I2O_OPEN_INFO(0)  => o_size_zero             , --  Out :
-                O_I2O_OPEN_INFO(1)  => o_end_of_blk            , --  Out :
+                O_I2O_OPEN_INFO(0)  => o_end_of_blk            , --  Out :
                 O_I2O_OPEN_VALID    => o_open_valid            , --  Out :
                 O_I2O_CLOSE_INFO    => open                    , --  Out :
                 O_I2O_CLOSE_VALID   => o_close_valid           , --  Out :
@@ -626,30 +642,46 @@ begin
         --
         ---------------------------------------------------------------------------
         i_req_mode(channel) <= reg_rbit(REG_PARAM.MODE_HI downto REG_PARAM.MODE_LO);
-        i_size_zero <= '1' when (unsigned(reg_rbit(REG_PARAM.SIZE_HI downto REG_PARAM.SIZE_LO)) = 0) else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         process (CLK, RST) begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
+                    o_none      <= '0';
                     mrg_in_eblk <= '0';
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1' or o_reset = '1') then
                     curr_state  <= IDLE_STATE;
+                    o_none      <= '0';
                     mrg_in_eblk <= '0';
                 else
                     case curr_state is
                         when IDLE_STATE =>
-                            if    (o_open_valid = '1' and o_size_zero = '1') then
-                                curr_state <= MRG_NONE_STATE;
-                            elsif (o_open_valid = '1' and o_size_zero = '0') then
+                            if (o_open_valid = '1') then
                                 curr_state <= MRG_READ_STATE;
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
                             if (o_open_valid = '1') then
                                 mrg_in_eblk <= o_end_of_blk;
+                            end if;
+                            o_none <= '1';
+                        when MRG_READ_STATE =>
+                            if (o_open = '0') or
+                               (o_open = '1' and o_done = '1') then
+                                curr_state <= CHK_NONE_STATE;
+                            else
+                                curr_state <= MRG_READ_STATE;
+                            end if;
+                            if (mrg_in_valid = '1' and mrg_in_ready = '1') then
+                                o_none <= '0';
+                            end if;
+                        when CHK_NONE_STATE =>
+                            if (o_none = '0') then
+                                curr_state <= IDLE_STATE;
+                            else
+                                curr_state <= MRG_NONE_STATE;
                             end if;
                         when MRG_NONE_STATE =>
                             if (MRG_READY(channel) = '1') then
@@ -658,19 +690,7 @@ begin
                                 curr_state <= MRG_NONE_STATE;
                             end if;
                         when END_NONE_STATE =>
-                            if (o_open = '0') or
-                               (o_open = '1' and o_done = '1') then
                                 curr_state <= IDLE_STATE;
-                            else
-                                curr_state <= END_NONE_STATE;
-                            end if;
-                        when MRG_READ_STATE =>
-                            if (o_open = '0') or
-                               (o_open = '1' and o_done = '1') then
-                                curr_state <= IDLE_STATE;
-                            else
-                                curr_state <= MRG_READ_STATE;
-                            end if;
                         when others => 
                                 curr_state <= IDLE_STATE;
                     end case;
@@ -678,13 +698,12 @@ begin
             end if;
         end process;
         BUSY(channel) <= '1' when ((curr_state = IDLE_STATE     and i_open = '1') or
+                                   (curr_state = MRG_READ_STATE                 ) or
+                                   (curr_state = CHK_NONE_STATE                 ) or
                                    (curr_state = MRG_NONE_STATE                 ) or
-                                   (curr_state = END_NONE_STATE                 ) or
-                                   (curr_state = MRG_NONE_STATE                 )) else '0';
-        DONE(channel) <= '1' when ((curr_state = END_NONE_STATE and o_open = '0') or
-                                   (curr_state = END_NONE_STATE and o_open = '1' and o_done = '1') or
-                                   (curr_state = MRG_READ_STATE and o_open = '0') or
-                                   (curr_state = MRG_READ_STATE and o_open = '1' and o_done = '1')) else '0';
+                                   (curr_state = END_NONE_STATE                 )) else '0';
+        DONE(channel) <= '1' when ((curr_state = CHK_NONE_STATE and o_none = '0') or
+                                   (curr_state = END_NONE_STATE                 )) else '0';
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------

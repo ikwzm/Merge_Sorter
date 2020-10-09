@@ -2,7 +2,7 @@
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -45,9 +45,11 @@ entity  Interface_Controller is
         STM_FEEDBACK        :  integer :=    1;
         STM_RD_DATA_BITS    :  integer :=   32;
         STM_WR_DATA_BITS    :  integer :=   32;
-        REG_ADDR_BITS       :  integer :=   64;
+        REG_RW_ADDR_BITS    :  integer :=   64;
+        REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
-        REG_MODE_BITS       :  integer :=   32;
+        REG_MODE_BITS       :  integer :=   16;
+        REG_STAT_BITS       :  integer :=    6;
         MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
@@ -63,39 +65,55 @@ entity  Interface_Controller is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T0_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_L       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_D       :  in  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_T1_ADDR_Q       :  out std_logic_vector(REG_ADDR_BITS-1 downto 0);
-        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_RD_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_WR_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T0_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_L       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_D       :  in  std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_T1_MODE_Q       :  out std_logic_vector(REG_MODE_BITS-1 downto 0);
-        REG_START_L         :  in  std_logic;
-        REG_START_D         :  in  std_logic;
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T0_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T0_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_T1_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_SIZE_L          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_D          :  in  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_SIZE_Q          :  out std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+        REG_START_L         :  in  std_logic := '0';
+        REG_START_D         :  in  std_logic := '0';
         REG_START_Q         :  out std_logic;
-        REG_RESET_L         :  in  std_logic;
-        REG_RESET_D         :  in  std_logic;
+        REG_RESET_L         :  in  std_logic := '0';
+        REG_RESET_D         :  in  std_logic := '0';
         REG_RESET_Q         :  out std_logic;
+        REG_DONE_EN_L       :  in  std_logic := '0';
+        REG_DONE_EN_D       :  in  std_logic := '0';
+        REG_DONE_EN_Q       :  out std_logic;
+        REG_DONE_ST_L       :  in  std_logic := '0';
+        REG_DONE_ST_D       :  in  std_logic := '0';
+        REG_DONE_ST_Q       :  out std_logic;
+        REG_ERR_ST_L        :  in  std_logic := '0';
+        REG_ERR_ST_D        :  in  std_logic := '0';
+        REG_ERR_ST_Q        :  out std_logic;
+        REG_MODE_L          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_D          :  in  std_logic_vector(REG_MODE_BITS   -1 downto 0) := (others => '0');
+        REG_MODE_Q          :  out std_logic_vector(REG_MODE_BITS   -1 downto 0);
+        REG_STAT_L          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
+        REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Merge Sorter Core Control Interface
     -------------------------------------------------------------------------------
@@ -177,23 +195,23 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     signal   stm_reader_request  :  boolean;
     signal   stm_reader_running  :  boolean;
-    signal   stm_reader_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   stm_reader_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
+    signal   stm_reader_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   stm_reader_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     signal   stm_writer_request  :  boolean;
     signal   stm_writer_running  :  boolean;
-    signal   stm_writer_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   stm_writer_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
+    signal   stm_writer_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   stm_writer_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     signal   mrg_reader_request  :  boolean;
     signal   mrg_reader_running  :  boolean;
     signal   mrg_reader_xsize    :  unsigned(SIZE_BITS-1 downto 0);
-    signal   mrg_reader_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   mrg_reader_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
+    signal   mrg_reader_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   mrg_reader_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     signal   mrg_reader_busy     :  std_logic_vector(WAYS-1 downto 0);
     constant MRG_READER_ALL_IDLE :  std_logic_vector(WAYS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
@@ -201,32 +219,37 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     signal   mrg_writer_request  :  boolean;
     signal   mrg_writer_running  :  boolean;
-    signal   mrg_writer_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   mrg_writer_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
+    signal   mrg_writer_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   mrg_writer_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal   tmp_0_base_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   tmp_1_base_addr     :  std_logic_vector(REG_ADDR_BITS-1 downto 0);
-    signal   tmp_0_xfer_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal   tmp_1_xfer_mode     :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal   reg_size            :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
+    signal   tmp_0_base_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   tmp_1_base_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+    signal   tmp_0_xfer_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+    signal   tmp_1_xfer_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal   reg_reset           :  std_logic;
+    signal   done_en_bit         :  std_logic;
+    signal   done_bit            :  std_logic;
+    signal   error_bit           :  std_logic;
+    signal   reset_bit           :  std_logic;
+    signal   size_regs           :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
+    signal   mode_regs           :  std_logic_vector(REG_MODE_BITS-1 downto 0);
+    signal   stat_regs           :  std_logic_vector(REG_STAT_BITS-1 downto 0);
 begin
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     process (CLK, RST) begin
         if (RST = '1') then
-                reg_reset <= '0';
+                reset_bit <= '0';
         elsif (CLK'event and CLK = '1') then
             if (CLR = '1') then
-                reg_reset <= '0';
+                reset_bit <= '0';
             elsif (REG_RESET_L = '1') then
-                reg_reset <= REG_RESET_D;
+                reset_bit <= REG_RESET_D;
             end if;
         end if;
     end process;
@@ -243,9 +266,10 @@ begin
                 tmp_0_xfer_mode <= (others => '0');
                 tmp_1_base_addr <= (others => '0');
                 tmp_1_xfer_mode <= (others => '0');
-                reg_size        <= (others => '0');
+                size_regs       <= (others => '0');
+                mode_regs       <= (others => '0');
         elsif (CLK'event and CLK = '1') then
-            if (CLR = '1' or reg_reset = '1') then
+            if (CLR = '1' or reset_bit = '1') then
                 stm_reader_addr <= (others => '0');
                 stm_reader_mode <= (others => '0');
                 stm_writer_addr <= (others => '0');
@@ -254,7 +278,8 @@ begin
                 tmp_0_xfer_mode <= (others => '0');
                 tmp_1_base_addr <= (others => '0');
                 tmp_1_xfer_mode <= (others => '0');
-                reg_size    <= (others => '0');
+                size_regs       <= (others => '0');
+                mode_regs       <= (others => '0');
             else
                 for i in stm_reader_addr'range loop
                     if (REG_RD_ADDR_L(i) = '1') then
@@ -296,9 +321,14 @@ begin
                         tmp_1_xfer_mode(i) <= REG_T1_MODE_D(i);
                     end if;
                 end loop;
-                for i in reg_size'range loop
+                for i in size_regs'range loop
                     if (REG_SIZE_L(i) = '1') then
-                        reg_size(i) <= REG_SIZE_D(i);
+                        size_regs(i) <= REG_SIZE_D(i);
+                    end if;
+                end loop;
+                for i in mode_regs'range loop
+                    if (REG_MODE_L(i) = '1') then
+                        mode_regs(i) <= REG_MODE_D(i);
                     end if;
                 end loop;
             end if;
@@ -312,8 +342,13 @@ begin
     REG_T0_MODE_Q <= tmp_0_xfer_mode;
     REG_T1_ADDR_Q <= tmp_1_base_addr;
     REG_T1_MODE_Q <= tmp_1_xfer_mode;
-    REG_SIZE_Q    <= reg_size;
-    REG_RESET_Q   <= reg_reset;
+    REG_SIZE_Q    <= size_regs;
+    REG_RESET_Q   <= reset_bit;
+    REG_DONE_EN_Q <= done_en_bit;
+    REG_DONE_ST_Q <= done_bit;
+    REG_ERR_ST_Q  <= '0';
+    REG_MODE_Q    <= mode_regs;
+    REG_STAT_Q    <= stat_regs;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -343,9 +378,13 @@ begin
                     mrg_reader_mode  <= (others => '0');
                     mrg_writer_addr  <= (others => '0');
                     mrg_writer_mode  <= (others => '0');
+                    stat_regs        <= (others => '0');
+                    done_en_bit      <= '0';
+                    done_bit         <= '0';
+                    error_bit        <= '0';
                     REG_START_Q      <= '0';
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state       <= IDLE_STATE;
                     last_proc        <= FALSE;
                     stm_writer_on    <= FALSE;
@@ -357,6 +396,10 @@ begin
                     mrg_reader_mode  <= (others => '0');
                     mrg_writer_addr  <= (others => '0');
                     mrg_writer_mode  <= (others => '0');
+                    stat_regs        <= (others => '0');
+                    done_en_bit      <= '0';
+                    done_bit         <= '0';
+                    error_bit        <= '0';
                     REG_START_Q      <= '0';
                 else
                     case curr_state is
@@ -373,8 +416,8 @@ begin
                             mrg_reader_mode <= tmp_1_xfer_mode;
                             mrg_writer_addr <= tmp_0_base_addr;
                             mrg_writer_mode <= tmp_0_xfer_mode;
-                            sort_total_size <= resize(unsigned(reg_size), SIZE_BITS);
-                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), SIZE_BITS);
+                            sort_total_size <= resize     (unsigned(size_regs)   , sort_total_size'length);
+                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), sort_block_size'length);
                         when STM_RD_CHK_STATE =>
                             next_state  := STM_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -400,8 +443,8 @@ begin
                             else
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
-                            mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * WAYS;
+                            mrg_reader_xsize <= resize(sort_block_size     , mrg_reader_xsize'length);
+                            sort_block_size  <= resize(sort_block_size*WAYS, sort_block_size 'length);
                         when MRG_RD_CHK_STATE =>
                             next_state := MRG_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -431,8 +474,8 @@ begin
                             else
                                 next_state := MRG_RD_CHK_STATE;
                             end if;
-                            mrg_reader_xsize <= sort_block_size;
-                            sort_block_size  <= sort_block_size * WAYS;
+                            mrg_reader_xsize <= resize(sort_block_size     , mrg_reader_xsize'length);
+                            sort_block_size  <= resize(sort_block_size*WAYS, sort_block_size 'length);
                         when DONE_STATE =>
                             next_state := IDLE_STATE;
                     end case;
@@ -441,6 +484,29 @@ begin
                         REG_START_Q <= '1';
                     else
                         REG_START_Q <= '0';
+                    end if;
+                    if    (reset_bit = '1') then
+                        done_en_bit  <= '0';
+                    elsif (REG_DONE_EN_L  = '1') then
+                        done_en_bit  <= REG_DONE_EN_D;
+                    end if;
+                    if    (reset_bit = '1') then
+                        done_bit  <= '0';
+                    elsif (done_en_bit = '1' and next_state = DONE_STATE) then
+                         done_bit  <= '1';
+                    elsif (REG_DONE_ST_L  = '1' and REG_DONE_ST_D = '0') then
+                         done_bit  <= '0';
+                    end if;
+                    if    (reset_bit = '1') then
+                        stat_regs <= (others => '0');
+                    else
+                        for i in stat_regs'range loop
+                            if    (REG_STAT_L(i) = '1' and REG_STAT_D(i) = '0') then
+                                stat_regs(i) <= '0';
+                            elsif (REG_STAT_I(i) = '1') then
+                                stat_regs(i) <= '1';
+                            end if;
+                        end loop;
                     end if;
                 end if;
             end if;
@@ -479,7 +545,7 @@ begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
                 else
                     case curr_state is
@@ -534,7 +600,7 @@ begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
                 else
                     case curr_state is
@@ -595,7 +661,7 @@ begin
                     read_addr   <= (others => '0');
                     read_bytes  <= (others => '0');
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
                     read_addr   <= (others => '0');
                     read_bytes  <= (others => '0');
@@ -607,8 +673,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            read_addr  <= resize(unsigned(stm_reader_addr), read_addr'length);
-                            read_bytes <= sort_total_size * STM_RD_DATA_BYTES;
+                            read_addr  <= resize(unsigned(stm_reader_addr)        , read_addr 'length);
+                            read_bytes <= resize(sort_total_size*STM_RD_DATA_BYTES, read_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
@@ -642,13 +708,13 @@ begin
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (reg_reset, read_addr, read_bytes, stm_reader_mode) begin
+        process (reset_bit, read_addr, read_bytes, stm_reader_mode) begin
             reg_data <= (others => '0');
             reg_data(STM_RD_REG_PARAM.ADDR_HI downto STM_RD_REG_PARAM.ADDR_LO) <= std_logic_vector(read_addr);
             reg_data(STM_RD_REG_PARAM.SIZE_HI downto STM_RD_REG_PARAM.SIZE_LO) <= std_logic_vector(read_bytes);
             reg_data(STM_RD_REG_PARAM.MODE_HI downto STM_RD_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(stm_reader_mode), STM_RD_REG_PARAM.MODE_BITS));
             reg_data(STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO) <= (STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO => '0');
-            reg_data(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+            reg_data(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(STM_RD_REG_PARAM.CTRL_PAUSE_POS) <= '0';
             reg_data(STM_RD_REG_PARAM.CTRL_STOP_POS ) <= '0';
             reg_data(STM_RD_REG_PARAM.CTRL_START_POS) <= '1';
@@ -660,12 +726,12 @@ begin
         ---------------------------------------------------------------------------
         -- reg_load
         ---------------------------------------------------------------------------
-        process (curr_state, reg_reset) begin
+        process (curr_state, reset_bit) begin
             if (curr_state = REQ_STATE) then
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+                reg_load(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -681,7 +747,8 @@ begin
     MRG_RD_CTRL: for channel in 0 to WAYS-1 generate
         type     STATE_TYPE     is (IDLE_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   base           :  unsigned(SIZE_BITS-1 downto 0);
+        signal   curr_base      :  unsigned(SIZE_BITS-1 downto 0);
+        signal   next_base      :  unsigned(SIZE_BITS-1 downto 0);
         signal   offset         :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_size    :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_zero    :  boolean;
@@ -699,7 +766,8 @@ begin
         process (CLK, RST) begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
-                    base        <= (others => '0');
+                    curr_base   <= (others => '0');
+                    next_base   <= (others => '0');
                     offset      <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
@@ -707,9 +775,10 @@ begin
                     read_bytes  <= (others => '0');
                     read_last   <= FALSE;
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
-                    base        <= (others => '0');
+                    curr_base   <= (others => '0');
+                    next_base   <= (others => '0');
                     offset      <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
@@ -724,7 +793,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            base         <= (others => '0');
+                            curr_base    <= (others => '0');
+                            next_base    <= sort_block_size;
                             offset       <= (others => '0');
                             remain_zero  <= FALSE;
                             remain_size  <= (others => '0');
@@ -733,7 +803,8 @@ begin
                             read_last    <= FALSE;
                         when S0_STATE =>
                             curr_state   <= S1_STATE;
-                            offset       <= base + (channel * mrg_reader_xsize);
+                            offset       <= resize(curr_base + (channel * mrg_reader_xsize), offset'length);
+                            read_last    <= (sort_total_size <= next_base);
                         when S1_STATE =>
                             curr_state   <= S2_STATE;
                             if (offset > sort_total_size) then
@@ -741,7 +812,7 @@ begin
                                 remain_size <= (others => '0');
                             else
                                 remain_zero <= FALSE;
-                                remain_size <= sort_total_size - offset;
+                                remain_size <= resize(sort_total_size - offset, remain_size'length);
                             end if;
                         when S2_STATE =>
                             if (reader_state = READER_IDLE) then
@@ -751,19 +822,18 @@ begin
                             end if;
                             if (remain_zero = TRUE) or
                                (remain_size <= mrg_reader_xsize) then
-                                read_bytes <= remain_size      * WORD_BYTES;
-                                read_last  <= TRUE;
+                                read_bytes <= resize(remain_size      * WORD_BYTES, read_bytes'length);
                             else
-                                read_bytes <= mrg_reader_xsize * WORD_BYTES;
-                                read_last  <= FALSE;
+                                read_bytes <= resize(mrg_reader_xsize * WORD_BYTES, read_bytes'length);
                             end if;
-                            read_addr <= resize(unsigned(mrg_reader_addr), read_addr'length) + offset * WORD_BYTES;
+                            read_addr <= resize(unsigned(mrg_reader_addr) + offset*WORD_BYTES, read_addr'length);
                         when REQ_STATE =>
                             if    (read_last = TRUE) then
                                 curr_state <= RUN_STATE;
                             else
                                 curr_state <= S0_STATE;
-                                base       <= base + sort_block_size;
+                                curr_base  <= next_base;
+                                next_base  <= resize(next_base + sort_block_size, next_base'length);
                             end if;
                         when RUN_STATE =>
                             if (reader_state = READER_IDLE) then
@@ -821,13 +891,13 @@ begin
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (read_addr, read_bytes, read_last, mrg_reader_mode, reg_reset) begin
+        process (read_addr, read_bytes, read_last, mrg_reader_mode, reset_bit) begin
             reg_data <= (others => '0');
             reg_data(MRG_RD_REG_PARAM.ADDR_HI downto MRG_RD_REG_PARAM.ADDR_LO) <= std_logic_vector(read_addr);
             reg_data(MRG_RD_REG_PARAM.SIZE_HI downto MRG_RD_REG_PARAM.SIZE_LO) <= std_logic_vector(read_bytes);
             reg_data(MRG_RD_REG_PARAM.MODE_HI downto MRG_RD_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(mrg_reader_mode), MRG_RD_REG_PARAM.MODE_BITS));
             reg_data(MRG_RD_REG_PARAM.STAT_HI downto MRG_RD_REG_PARAM.STAT_LO) <= (MRG_RD_REG_PARAM.STAT_HI downto MRG_RD_REG_PARAM.STAT_LO => '0');
-            reg_data(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+            reg_data(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(MRG_RD_REG_PARAM.CTRL_PAUSE_POS) <= '0';
             reg_data(MRG_RD_REG_PARAM.CTRL_STOP_POS ) <= '0';
             reg_data(MRG_RD_REG_PARAM.CTRL_START_POS) <= '1';
@@ -844,12 +914,12 @@ begin
         ---------------------------------------------------------------------------
         -- reg_load
         ---------------------------------------------------------------------------
-        process (curr_state, reg_reset) begin
+        process (curr_state, reset_bit) begin
             if (curr_state = REQ_STATE) then
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+                reg_load(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -879,7 +949,7 @@ begin
                     write_addr  <= (others => '0');
                     write_bytes <= (others => '0');
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
                     write_addr  <= (others => '0');
                     write_bytes <= (others => '0');
@@ -891,8 +961,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            write_addr  <= resize(unsigned(stm_writer_addr), write_addr'length);
-                            write_bytes <= sort_total_size * STM_WR_DATA_BYTES;
+                            write_addr  <= resize(unsigned(stm_writer_addr)        , write_addr 'length);
+                            write_bytes <= resize(sort_total_size*STM_WR_DATA_BYTES, write_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
@@ -926,13 +996,13 @@ begin
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (reg_reset, write_addr, write_bytes, stm_writer_mode) begin
+        process (reset_bit, write_addr, write_bytes, stm_writer_mode) begin
             reg_data <= (others => '0');
             reg_data(STM_WR_REG_PARAM.ADDR_HI downto STM_WR_REG_PARAM.ADDR_LO) <= std_logic_vector(write_addr);
             reg_data(STM_WR_REG_PARAM.SIZE_HI downto STM_WR_REG_PARAM.SIZE_LO) <= std_logic_vector(write_bytes);
             reg_data(STM_WR_REG_PARAM.MODE_HI downto STM_WR_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(stm_writer_mode), STM_WR_REG_PARAM.MODE_BITS));
             reg_data(STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO) <= (STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO => '0');
-            reg_data(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+            reg_data(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(STM_WR_REG_PARAM.CTRL_PAUSE_POS) <= '0';
             reg_data(STM_WR_REG_PARAM.CTRL_STOP_POS ) <= '0';
             reg_data(STM_WR_REG_PARAM.CTRL_START_POS) <= '1';
@@ -944,12 +1014,12 @@ begin
         ---------------------------------------------------------------------------
         -- reg_load
         ---------------------------------------------------------------------------
-        process (curr_state, reg_reset) begin
+        process (curr_state, reset_bit) begin
             if (curr_state = REQ_STATE) then
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+                reg_load(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -979,7 +1049,7 @@ begin
                     write_addr  <= (others => '0');
                     write_bytes <= (others => '0');
             elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or reg_reset = '1') then
+                if (CLR = '1' or reset_bit = '1') then
                     curr_state  <= IDLE_STATE;
                     write_addr  <= (others => '0');
                     write_bytes <= (others => '0');
@@ -991,8 +1061,8 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            write_addr  <= resize(unsigned(mrg_writer_addr), write_addr'length);
-                            write_bytes <= sort_total_size * WORD_BYTES;
+                            write_addr  <= resize(unsigned(mrg_writer_addr) , write_addr 'length);
+                            write_bytes <= resize(sort_total_size*WORD_BYTES, write_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
                         when RUN0_STATE =>
@@ -1026,13 +1096,13 @@ begin
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (reg_reset, write_addr, write_bytes, mrg_writer_mode) begin
+        process (reset_bit, write_addr, write_bytes, mrg_writer_mode) begin
             reg_data <= (others => '0');
             reg_data(MRG_WR_REG_PARAM.ADDR_HI downto MRG_WR_REG_PARAM.ADDR_LO) <= std_logic_vector(write_addr );
             reg_data(MRG_WR_REG_PARAM.SIZE_HI downto MRG_WR_REG_PARAM.SIZE_LO) <= std_logic_vector(write_bytes);
             reg_data(MRG_WR_REG_PARAM.MODE_HI downto MRG_WR_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(mrg_writer_mode), MRG_WR_REG_PARAM.MODE_BITS));
             reg_data(MRG_WR_REG_PARAM.STAT_HI downto MRG_WR_REG_PARAM.STAT_LO) <= (MRG_WR_REG_PARAM.STAT_HI downto MRG_WR_REG_PARAM.STAT_LO => '0');
-            reg_data(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+            reg_data(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(MRG_WR_REG_PARAM.CTRL_PAUSE_POS) <= '0';
             reg_data(MRG_WR_REG_PARAM.CTRL_STOP_POS ) <= '0';
             reg_data(MRG_WR_REG_PARAM.CTRL_START_POS) <= '1';
@@ -1044,12 +1114,12 @@ begin
         ---------------------------------------------------------------------------
         -- reg_load
         ---------------------------------------------------------------------------
-        process (curr_state, reg_reset) begin
+        process (curr_state, reset_bit) begin
             if (curr_state = REQ_STATE) then
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reg_reset;
+                reg_load(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------

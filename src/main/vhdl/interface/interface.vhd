@@ -2,7 +2,7 @@
 --!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -63,6 +63,8 @@ package Interface is
                   MODE_AFIX_POS     :  integer;
                   MODE_AUSER_HI     :  integer;
                   MODE_AUSER_LO     :  integer;
+                  MODE_APROT_HI     :  integer;
+                  MODE_APROT_LO     :  integer;
                   MODE_CACHE_HI     :  integer;
                   MODE_CACHE_LO     :  integer;
                   MODE_CLOSE_POS    :  integer;
@@ -158,8 +160,9 @@ package body Interface is
         -- Mode[15]    = 1:AXI4 Master I/F をセイフティモードで動かす.
         -- Mode[14]    = 1:AXI4 Master I/F を投機モードで動かす.
         -- Mode[13]    = 1:AXI4 Master I/F をアドレス固定モードにする.
-        -- Mode[11:08] = AXI4 Master I/F の ARUSER の値を指定する.
-        -- Mode[07:04] = AXI4 Master I/F のキャッシュモードを指定する.
+        -- Mode[11]    = AXI4 Master I/F の ARUSER[0] の値を指定する.
+        -- Mode[10:08] = AXI4 Master I/F の APORT[2:0] の値を指定する.
+        -- Mode[07:04] = AXI4 Master I/F の ACHACHE[3:0]を指定する.
         -- Mode[03]    = 予約.
         -- Mode[02]    = 1:クローズ時(Status[2]='1')に割り込みを発生する.
         -- Mode[01]    = 1:エラー発生時(Status[1]='1')に割り込みを発生する.
@@ -172,8 +175,10 @@ package body Interface is
         regs_field.MODE_SAFETY_POS:= 8*regs_field.MODE_BASE_ADDR + 15;
         regs_field.MODE_SPECUL_POS:= 8*regs_field.MODE_BASE_ADDR + 14;
         regs_field.MODE_AFIX_POS  := 8*regs_field.MODE_BASE_ADDR + 13;
-        regs_field.MODE_AUSER_HI  := 8*regs_field.MODE_BASE_ADDR + 12;
-        regs_field.MODE_AUSER_LO  := 8*regs_field.MODE_BASE_ADDR +  8;
+        regs_field.MODE_AUSER_HI  := 8*regs_field.MODE_BASE_ADDR + 11;
+        regs_field.MODE_AUSER_LO  := 8*regs_field.MODE_BASE_ADDR + 11;
+        regs_field.MODE_APROT_HI  := 8*regs_field.MODE_BASE_ADDR + 10;
+        regs_field.MODE_APROT_LO  := 8*regs_field.MODE_BASE_ADDR +  8;
         regs_field.MODE_CACHE_HI  := 8*regs_field.MODE_BASE_ADDR +  7;
         regs_field.MODE_CACHE_LO  := 8*regs_field.MODE_BASE_ADDR +  4;
         regs_field.MODE_CLOSE_POS := 8*regs_field.MODE_BASE_ADDR +  2;
@@ -196,7 +201,7 @@ package body Interface is
         regs_field.STAT_CLOSE_POS := 8*regs_field.STAT_BASE_ADDR +  2;
         regs_field.STAT_ERROR_POS := 8*regs_field.STAT_BASE_ADDR +  1;
         regs_field.STAT_DONE_POS  := 8*regs_field.STAT_BASE_ADDR +  0;
-        regs_field.STAT_RESV_BITS := regs_field.STAT_HI - regs_field.STAT_LO + 1;
+        regs_field.STAT_RESV_BITS := regs_field.STAT_RESV_HI - regs_field.STAT_RESV_LO + 1;
         ---------------------------------------------------------------------------
         -- Control Register
         ---------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -76,6 +76,7 @@ entity  ArgSort_Writer is
         REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
+        REQ_NONE        :  out std_logic;
         REQ_READY       :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
@@ -120,7 +121,7 @@ entity  ArgSort_Writer is
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8  -1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -143,14 +144,6 @@ library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_OUTLET_CONTROLLER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of ArgSort_Writer is
-    ------------------------------------------------------------------------------
-    -- 出力側のフロー制御用定数.
-    ------------------------------------------------------------------------------
-    constant  O_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2**MAX_XFER_SIZE   , BUF_DEPTH+1));
-    constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- データバスのビット数の２のべき乗値を計算する.
     -------------------------------------------------------------------------------
@@ -172,6 +165,16 @@ architecture RTL of ArgSort_Writer is
     -- 
     ------------------------------------------------------------------------------
     constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    ------------------------------------------------------------------------------
+    -- 出力側のフロー制御用定数.
+    ------------------------------------------------------------------------------
+    constant  O_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(MAX_XFER_BYTES     , BUF_DEPTH+1));
+    constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
+                                    := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -314,6 +317,7 @@ begin
             O_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
             O_REQ_FIRST         => REQ_FIRST                           , --  Out :
             O_REQ_LAST          => REQ_LAST                            , --  Out :
+            O_REQ_NONE          => REQ_NONE                            , --  Out :
             O_REQ_READY         => REQ_READY                           , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transaction Command Acknowledge Signals.
@@ -459,6 +463,7 @@ begin
                            (o_state = O_TAR                  )) else '0';
         DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
                            (o_state = O_TAR  and o_open = '0')) else '0';
+        reg_rbit(REG_PARAM.CTRL_EBLK_POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 
@@ -489,9 +494,9 @@ begin
         constant  INDEX_STRB_ALL_1 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '1');
         constant  INDEX_STRB_ALL_0 :  std_logic_vector(INDEX_STRB_BITS-1 downto 0) := (others => '0');
         signal    i_strb           :  std_logic_vector(INDEX_STRB_BITS-1 downto 0);
-        signal    i_data           :  std_logic_vector(WORD_INDEX_BITS-1 downto 0);
+        signal    i_data           :  std_logic_vector(WORD_BITS      -1 downto 0);
     begin
-        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i*(WORD_BITS/8)) = '1') else INDEX_STRB_ALL_0;
+        i_strb  <= INDEX_STRB_ALL_1 when (STM_STRB(i) = '1') else INDEX_STRB_ALL_0;
         i_data  <= STM_DATA((i+1)*WORD_BITS-1 downto i*WORD_BITS);
         index_data((i+1)*WORD_INDEX_BITS-1 downto i*WORD_INDEX_BITS) <= i_data(WORD_INDEX_HI downto WORD_INDEX_LO);
         index_strb((i+1)*INDEX_STRB_BITS-1 downto i*INDEX_STRB_BITS) <= i_strb;

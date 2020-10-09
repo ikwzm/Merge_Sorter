@@ -134,5 +134,84 @@ module ScenarioWriter
 
   end
     
+  class AXI_Memory < Writer
+    
+    attr_reader   :name, :size
+    attr_reader   :addr_start, :addr_last
+    attr_reader   :read, :write, :cache, :prot
+    def initialize(name, file, size, addr_start, cache=nil, prot=nil)
+      super(name,file)
+      @size       = size
+      @addr_start = addr_start
+      @addr_last  = addr_start + size - 1
+      @read       = true
+      @write      = true
+      @cache      = cache
+      @prot       = prot
+      @timeout    = 100000
+      @latency    = 1
+      @read_delay = 12
+    end
+
+    def init
+      cache = (@cache.nil?)? "\"4'b----\"" : sprintf("\"4'b%04b\"", @cache)
+      prot  = (@prot.nil? )? "\"3'b---\""  : sprintf("\"3'b%03b\"", @prot )
+      my_name
+      @file.puts   "  - {DOMAIN: {INDEX: 0, MAP: 0, READ: true, WRITE: true,"
+      @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: DECERR,\n", 0, 0xFFFFFFFF
+      @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
+      @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              LATENCY: 8, TIMEOUT: 10000}}"
+      @file.puts   "  - {DOMAIN: {INDEX: 1, MAP: 0, READ: true, WRITE: true,"
+      @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
+      @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  #{cache},"
+      @file.puts   "              APROT: #{prot}, AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
+    end
+
+    def clear(size=nil, org=0, data=0)
+      if size.nil? then
+        size = @last_addr - @start_addr + 1
+      end
+      my_name
+      @file.puts "  - FILL  : #{size}"
+      @file.puts "  - ORG   : #{org}"
+      @file.puts "  - DB    : #{data}"
+    end
+
+    def run(timeout=100000)
+      my_name
+      @file.puts "  - WAIT  : {GPI(0): 1, TIMEOUT: #{timeout}}"
+      @file.puts "  - START"
+      @file.puts "  - WAIT  : {GPI(0): 0, TIMEOUT: #{timeout}}"
+      @file.puts "  - STOP"
+    end
+
+    def word_data(data)
+      remain_words = data.dup
+      while remain_words.empty? == false do
+        words = remain_words.shift(4).map{|word| sprintf("0x%08X", word & 0xFFFFFFFF)}
+        @file.puts "  - DW    : [" + words.join(", ") + "]"
+      end
+    end
+
+    def set_word_data(data, org=0)
+      data_bytes = data.length*4
+      warn "#{self.class}(#{@name}) data overflow (memory size = #{@size}, data size = #{data_bytes})" if (data_bytes > @size)
+      my_name
+      @file.puts   "  - SET"
+      @file.printf "  - ORG   : 0x%04X\n", org
+      word_data(data)
+    end
+
+    def check_word_data(data, org=0)
+      data_end = data.length*4 + org
+      warn "#{self.class}(#{@name}) data overflow (memory size = #{@size}, end of data = #{data_end})" if (data_end > @size)
+      my_name
+      @file.puts   "  - CHECK"
+      @file.printf "  - ORG   : 0x%04X\n", org
+      word_data(data)
+    end
+  end
 end
 

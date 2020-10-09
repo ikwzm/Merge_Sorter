@@ -1,6 +1,7 @@
 require_relative '../scripts/scenario_writer.rb'
+require_relative './sort.rb'
 
-def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback)
+def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order)
 
   title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 1", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
   random   = Random.new
@@ -21,7 +22,7 @@ def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback)
       outlet_data = []
       temp_data   = intake_data.dup
       while(not temp_data.empty?) do
-        outlet_data.concat(temp_data.shift(blk_size).sort{|a,b| b <=> a})
+        outlet_data.concat(sort(temp_data.shift(blk_size), sort_order))
       end
   
       merchal.sync

@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/9
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -144,8 +144,13 @@ architecture RTL of Merge_Sorter_Core is
         else
             fifo_size := 0;
         end if;
-        if (MRG_IN_ENABLE = TRUE and fifo_size < MRG_FIFO_SIZE) then
-            fifo_size := MRG_FIFO_SIZE;
+        if (MRG_IN_ENABLE = TRUE) then
+            if (fifo_size < MRG_FIFO_SIZE) then
+                fifo_size := MRG_FIFO_SIZE;
+            end if;
+            if (fifo_size = 0) then
+                fifo_size := 16;
+            end if;
         end if;
         return fifo_size;
     end function;

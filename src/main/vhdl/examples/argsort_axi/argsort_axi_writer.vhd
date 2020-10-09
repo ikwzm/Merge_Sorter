@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_writer.vhd
 --!     @brief   Merge Sorter ArgSort AXI Writer Module :
 --!     @version 0.5.0
---!     @date    2020/9/18
+--!     @date    2020/10/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -42,6 +42,10 @@ entity  ArgSort_AXI_Writer is
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
+        WORD_INDEX_LO   :  integer :=  0;
+        WORD_INDEX_HI   :  integer := 31;
+        WORD_COMP_LO    :  integer := 32;
+        WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
         AXI_ID_WIDTH    :  integer :=  8;
@@ -50,11 +54,12 @@ entity  ArgSort_AXI_Writer is
         AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        MAX_XFER_SIZE   :  integer := 12;
-        WORD_INDEX_LO   :  integer :=  0;
-        WORD_INDEX_HI   :  integer := 31;
-        WORD_COMP_LO    :  integer := 32;
-        WORD_COMP_HI    :  integer := 63
+        AXI_XFER_SIZE   :  integer := 11;
+        AXI_BUF_DEPTH   :  integer := 12;
+        AXI_QUEUE_SIZE  :  integer :=  4;
+        AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
     );
     port (
     -------------------------------------------------------------------------------
@@ -107,7 +112,7 @@ entity  ArgSort_AXI_Writer is
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  in  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        STM_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
         STM_LAST        :  in  std_logic;
         STM_VALID       :  in  std_logic;
         STM_READY       :  out std_logic;
@@ -126,7 +131,7 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Interface;
-use     Merge_Sorter.Interface_Components.ArgSort_Writer;
+use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_Writer;
 library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
@@ -134,8 +139,25 @@ architecture RTL of ArgSort_AXI_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  BUF_DATA_BITS     :  integer := AXI_DATA_WIDTH;
-    constant  BUF_DEPTH         :  integer := MAX_XFER_SIZE+1;
+    constant  WORD_COMP_BITS    :  integer := WORD_COMP_HI  - WORD_COMP_LO  + 1;
+    constant  WORD_INDEX_BITS   :  integer := WORD_INDEX_HI - WORD_INDEX_LO + 1;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MAX(A,B:integer) return integer is
+    begin
+        if (A > B) then return A;
+        else            return B;
+        end if;
+    end function;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_INDEX_BITS, AXI_DATA_WIDTH);
+    constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
     constant  REQ_SIZE_BITS     :  integer := REG_PARAM.SIZE_BITS;
     constant  REQ_MODE_BITS     :  integer := REG_PARAM.MODE_BITS;
@@ -145,7 +167,6 @@ architecture RTL of ArgSort_AXI_Writer is
     constant  REQ_ID            :  std_logic_vector(AXI_ID_WIDTH   -1 downto 0)
                                 := std_logic_vector(to_unsigned(AXI_ID, AXI_ID_WIDTH));
     constant  REQ_LOCK          :  std_logic_vector(0 downto 0) := (others => '0');
-    constant  REQ_PROT          :  std_logic_vector(2 downto 0) := (others => '0');
     constant  REQ_QOS           :  std_logic_vector(3 downto 0) := (others => '0');
     constant  REQ_REGION        :  std_logic_vector(3 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
@@ -156,10 +177,12 @@ architecture RTL of ArgSort_AXI_Writer is
     signal    req_buf_ptr       :  std_logic_vector(BUF_DEPTH      -1 downto 0);
     signal    req_mode          :  std_logic_vector(REQ_MODE_BITS  -1 downto 0);
     signal    req_cache         :  std_logic_vector(3 downto 0);
+    signal    req_prot          :  std_logic_vector(2 downto 0);
     signal    req_speculative   :  std_logic;
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
     signal    req_last          :  std_logic;
+    signal    req_none          :  std_logic;
     signal    req_valid         :  std_logic;
     signal    req_ready         :  std_logic;
     signal    xfer_busy         :  std_logic;
@@ -208,12 +231,12 @@ begin
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
             BUF_PTR_BITS        => BUF_DEPTH           , -- 
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
-            XFER_MIN_SIZE       => MAX_XFER_SIZE       , -- 
-            XFER_MAX_SIZE       => MAX_XFER_SIZE       , -- 
-            REQ_REGS            => 1                   , -- 
-            ACK_REGS            => 1                   , -- 
-            QUEUE_SIZE          => 4                   , -- 
-            RESP_REGS           => 1                     -- 
+            XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
+            XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
+            REQ_REGS            => AXI_REQ_REGS        , -- 
+            ACK_REGS            => AXI_ACK_REGS        , -- 
+            QUEUE_SIZE          => AXI_QUEUE_SIZE      , -- 
+            RESP_REGS           => AXI_RESP_REGS         -- 
         )                                                -- 
         port map (                                       -- 
         --------------------------------------------------------------------------
@@ -262,7 +285,7 @@ begin
             REQ_BURST           => AXI4_ABURST_INCR    , -- In  :
             REQ_LOCK            => REQ_LOCK            , -- In  :
             REQ_CACHE           => req_cache           , -- In  :
-            REQ_PROT            => REQ_PROT            , -- In  :
+            REQ_PROT            => req_prot            , -- In  :
             REQ_QOS             => REQ_QOS             , -- In  :
             REQ_REGION          => REQ_REGION          , -- In  :
             REQ_BUF_PTR         => req_buf_ptr         , -- In  :
@@ -332,6 +355,8 @@ begin
     REQ_MODE_BLK: block
         constant  REQ_MODE_CACHE_HI   :  integer := REG_PARAM.MODE_CACHE_HI   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_CACHE_LO   :  integer := REG_PARAM.MODE_CACHE_LO   - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_HI   :  integer := REG_PARAM.MODE_APROT_HI   - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_LO   :  integer := REG_PARAM.MODE_APROT_LO   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_HI   :  integer := REG_PARAM.MODE_AUSER_HI   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_LO   :  integer := REG_PARAM.MODE_AUSER_LO   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_SPECUL_POS :  integer := REG_PARAM.MODE_SPECUL_POS - REG_PARAM.MODE_LO;
@@ -349,6 +374,7 @@ begin
             end if;
         end process;
         req_cache       <= req_mode(REQ_MODE_CACHE_HI downto REQ_MODE_CACHE_LO);
+        req_prot        <= req_mode(REQ_MODE_APROT_HI downto REQ_MODE_APROT_LO);
         req_speculative <= req_mode(REQ_MODE_SPECUL_POS);
         req_safety      <= req_mode(REQ_MODE_SAFETY_POS);
     end block;
@@ -364,7 +390,7 @@ begin
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => MAX_XFER_SIZE       , --   
+            MAX_XFER_SIZE       => AXI_XFER_SIZE       , --   
             WORD_INDEX_LO       => WORD_INDEX_LO       , --   
             WORD_INDEX_HI       => WORD_INDEX_HI       , --   
             WORD_COMP_LO        => WORD_COMP_LO        , --   
@@ -393,6 +419,7 @@ begin
             REQ_MODE            => req_mode            , --  Out :
             REQ_FIRST           => req_first           , --  Out :
             REQ_LAST            => req_last            , --  Out :
+            REQ_NONE            => req_none            , --  Out :
             REQ_READY           => req_ready           , --  In  :
         -------------------------------------------------------------------------------
         -- Transaction Command Acknowledge Signals.

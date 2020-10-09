@@ -1,6 +1,6 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, count=100)
+def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order, count=100)
 
   title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
   random   = Random.new
@@ -30,9 +30,9 @@ def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, count=100)
         while (outlet_data.size == 0) do
           intake_data = intake.map{ |channel|
             size = random.rand(0..4)
-            (size == 0)? [nil] : Array.new(size){|x| random.rand(0..1024)}.sort{|a,b| b <=> a}
+            (size == 0)? [nil] : sort(Array.new(size){|x| random.rand(0..1024)}, sort_order)
           }
-          outlet_data = intake_data.flatten.reject{|x| x.nil?}.sort{|a,b| b <=> a}
+          outlet_data = sort(intake_data.flatten.reject{|x| x.nil?}, sort_order)
         end
         intake_last = true
         intake_done = (block_num == block_count-1)
