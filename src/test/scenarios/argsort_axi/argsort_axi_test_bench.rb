@@ -42,7 +42,7 @@ class ArgSort_AXI_Test_Bench
     @merchal.sync
   end
 
-  def run(data, args, title)
+  def run(data, args, title, params=nil)
     if ((data.length * 4) > @rd_size) then
       abort "#{title} data size overflow"
     end
@@ -55,7 +55,7 @@ class ArgSort_AXI_Test_Bench
     if ((data.length * 8) > @t1_size) then
       abort "#{title} data size overflow"
     end
-    csr_params = Hash.new
+    csr_params = (params.nil?)? Hash.new : params.dup
     csr_params[:rd_addr  ] = @stm_mem_addr + @rd_offset
     csr_params[:wr_addr  ] = @stm_mem_addr + @wr_offset
     csr_params[:t0_addr  ] = @mrg_mem_addr + @t0_offset
