@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 0.5.0
---!     @date    2020/10/9
+--!     @version 0.6.0
+--!     @date    2020/10/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -298,15 +298,13 @@ architecture RTL of ArgSort_AXI is
     constant  REG_STAT_BITS     :  integer :=  8;
     constant  REG_CTRL_BITS     :  integer :=  8;
     -------------------------------------------------------------------------------
-    -- STR_TO_STD_LOGIC_VECTOR
+    -- 
     -------------------------------------------------------------------------------
-    function  STR_TO_STD_LOGIC_VECTOR(STR: STRING) return std_logic_vector is
-        variable  value         :  std_logic_vector(8*STR'length-1 downto 0);
+    function  to_unsigned(I: boolean; LEN: integer) return unsigned is
     begin
-        for i in STR'range loop
-            value(8*(i)-1 downto 8*(i-1)) := std_logic_vector(to_unsigned(character'pos(STR(i)),8));
-        end loop;
-        return value;
+        if (I = TRUE) then return to_unsigned(1, LEN);
+        else               return to_unsigned(0, LEN);
+        end if;
     end function;
     -------------------------------------------------------------------------------
     -- VERSION_REGS
@@ -315,13 +313,19 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_BITS :  integer := 64;
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
-    constant  VERSION_TAG       :  STRING(1 to 7) := "ArgSort";
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 0;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 5;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 6;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
-                                := std_logic_vector(to_unsigned(VERSION_MAJOR,4)) &
-                                   std_logic_vector(to_unsigned(VERSION_MINOR,4)) &
-                                   STR_TO_STD_LOGIC_VECTOR(VERSION_TAG);
+                                := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
+                                   std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
+                                   std_logic_vector(to_unsigned(MRG_WAYS     ,10)) &
+                                   std_logic_vector(to_unsigned(MRG_WORDS    ,10)) &
+                                   std_logic_vector(to_unsigned(STM_FEEDBACK , 4)) &
+                                   std_logic_vector(to_unsigned(WORD_BITS    ,12)) &
+                                   std_logic_vector(to_unsigned(INDEX_BITS   ,12)) &
+                                   std_logic_vector(to_unsigned(SORT_ORDER   , 1)) &
+                                   std_logic_vector(to_unsigned(COMP_SIGN    , 1)) &
+                                   std_logic_vector(to_unsigned(0            , 6));
     -------------------------------------------------------------------------------
     -- RD_ADDR_REGS
     -------------------------------------------------------------------------------
