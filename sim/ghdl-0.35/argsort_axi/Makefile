@@ -19,6 +19,7 @@ GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 test   : test_x04_f0 \
          test_x04_f1 \
          test_x04_f2 \
+         test_x16_f2 \
          $(END_LIST)
 
 clean  :
@@ -40,6 +41,10 @@ test_x04_f2 : test_x04_f2.snr test_bench dut
 	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F2
 	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F2
 
+test_x16_f2 : test_x16_f2.snr test_bench dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X16_F2
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X16_F2
+
 test_x04_f0.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
 	$(CAT) $^ > $@
 
@@ -47,6 +52,9 @@ test_x04_f1.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCEN
 	$(CAT) $^ > $@
 
 test_x04_f2.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
+	$(CAT) $^ > $@
+
+test_x16_f2.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
 	$(CAT) $^ > $@
 
 sources.mk   : sources.yml
