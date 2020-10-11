@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.5.1
+--!     @date    2020/10/10
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -449,6 +449,7 @@ begin
                 I_FIXED_POOL_OPEN   => 1                       , --
                 O_CLK_RATE          => 1                       , --
                 O_DATA_BITS         => WORD_BITS               , --
+                O_WORD_BITS         => WORD_BITS               , --
                 BUF_DEPTH           => BUF_DEPTH               , --
                 BUF_DATA_BITS       => BUF_DATA_BITS           , --
                 I2O_OPEN_INFO_BITS  => 1                       , --

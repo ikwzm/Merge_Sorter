@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 0.5.0                                                           --
---!     @date    2020/10/08                                                      --
+--!     @version 0.5.1                                                           --
+--!     @date    2020/10/11                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -678,7 +678,7 @@ component ArgSort_AXI
         SORT_ORDER          : --! @brief SORT ORDER :
                               integer :=  0;
         MRG_FIFO_SIZE       : --! @brief MERGE FIFO SIZE :
-                              integer :=  0;
+                              integer :=  16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
                               integer :=  0;
         CSR_AXI_ADDR_WIDTH  : --! @brief CSR I/F AXI ADDRRESS WIDTH :

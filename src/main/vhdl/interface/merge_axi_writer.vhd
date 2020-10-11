@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.5.1
+--!     @date    2020/10/10
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -141,9 +141,19 @@ architecture RTL of Merge_AXI_Writer is
         else            return B;
         end if;
     end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MIN(A,B:integer) return integer is
+    begin
+        if (A < B) then return A;
+        else            return B;
+        end if;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    constant  ALIGNMENT_BITS    :  integer := MIN(WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
@@ -221,6 +231,7 @@ begin
             FLOW_VALID          => 1                   , -- 
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
             BUF_PTR_BITS        => BUF_DEPTH           , -- 
+            ALIGNMENT_BITS      => ALIGNMENT_BITS      , --
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
             XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
             XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
