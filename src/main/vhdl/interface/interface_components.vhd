@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 0.5.1                                                           --
---!     @date    2020/10/11                                                      --
+--!     @version 0.6.0                                                           --
+--!     @date    2020/10/17                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -55,7 +55,9 @@ component Merge_Reader
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
-        MAX_XFER_SIZE   :  integer := 12
+        MAX_XFER_SIZE   :  integer := 12;
+        ARB_NODE_NUM    :  integer :=  4;
+        ARB_PIPELINE    :  integer :=  0
     );
     port (
     -------------------------------------------------------------------------------
@@ -250,7 +252,9 @@ component Merge_AXI_Reader
         AXI_BUF_DEPTH   :  integer := 11;
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_RDATA_REGS  :  integer :=  2;
-        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        ARB_NODE_NUM    :  integer :=  4;
+        ARB_PIPELINE    :  integer :=  0
     );
     port (
     -------------------------------------------------------------------------------

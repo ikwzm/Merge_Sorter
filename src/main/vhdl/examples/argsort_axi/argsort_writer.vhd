@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
---!     @version 0.5.1
---!     @date    2020/10/10
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

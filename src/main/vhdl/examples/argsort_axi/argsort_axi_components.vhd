@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 0.5.1                                                           --
---!     @date    2020/10/11                                                      --
+--!     @version 0.6.0                                                           --
+--!     @date    2020/10/17                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -64,8 +64,17 @@ component ArgSort_AXI_Interface
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
         MRG_RD_AXI_XFER_SIZE:  integer :=   11;
         MRG_RD_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_RD_AXI_QUEUE    :  integer :=    4;
+        MRG_RD_AXI_DATA_REGS:  integer :=    2;
+        MRG_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        MRG_RD_ARB_NODE_NUM :  integer :=    4;
+        MRG_RD_ARB_PIPELINE :  integer :=    0;
         MRG_WR_AXI_XFER_SIZE:  integer :=   11;
         MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_WR_AXI_QUEUE    :  integer :=    4;
+        MRG_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
+        MRG_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_AXI_ID          :  integer :=    1;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
@@ -76,7 +85,14 @@ component ArgSort_AXI_Interface
         STM_RD_AXI_XFER_SIZE:  integer :=   11;
         STM_RD_AXI_BUF_DEPTH:  integer :=   12;
         STM_WR_AXI_XFER_SIZE:  integer :=   11;
+        STM_RD_AXI_QUEUE    :  integer :=    4;
+        STM_RD_AXI_DATA_REGS:  integer :=    2;
+        STM_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         STM_WR_AXI_BUF_DEPTH:  integer :=   12;
+        STM_WR_AXI_QUEUE    :  integer :=    4;
+        STM_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
+        STM_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        STM_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_FEEDBACK        :  integer :=    1;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;
@@ -697,6 +713,20 @@ component ArgSort_AXI
                               integer := 0;
         STM_AXI_XFER_SIZE   : --! @brief STREAM IN/OUT AXI MAX XFER SIZE :
                               integer := 11;
+        STM_RD_AXI_QUEUE    : --! @brief STREAM IN  AXI QUEUE SIZE :
+                              integer :=  4;
+        STM_RD_AXI_DATA_REGS: --! @brief STREAM IN  AXI DATA REGISTER :
+                              integer :=  2;
+        STM_RD_AXI_ACK_REGS : --! @brief STREAM IN  AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_QUEUE    : --! @brief STREAM OUT AXI QUEUE SIZE :
+                              integer :=  4;
+        STM_WR_AXI_REQ_REGS : --! @brief STREAM OUT AXI REQUEST REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_ACK_REGS : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_RESP_REGS: --! @brief STREAM OUT AXI RESPONSE REGISTER :
+                              integer range 0 to 1 := 1;
         MRG_AXI_ADDR_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                               integer := 32;
         MRG_AXI_DATA_WIDTH  : --! @brief MERGE IN/OUT AXI DATA WIDTH :
@@ -708,7 +738,25 @@ component ArgSort_AXI
         MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
                               integer := 0;
         MRG_AXI_XFER_SIZE   : --! @brief MERGE IN/OUT AXI MAX XFER SIZE :
-                              integer := 11
+                              integer := 11;
+        MRG_RD_AXI_QUEUE    : --! @brief MERGE IN  AXI QUEUE SIZE :
+                              integer :=  4;
+        MRG_RD_AXI_DATA_REGS: --! @brief MERGE IN  AXI DATA REGISTER :
+                              integer :=  2;
+        MRG_RD_AXI_ACK_REGS : --! @brief MERGE IN  AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_RD_ARB_NODE_NUM : --! @brief MERGE IN  ARBITER NODE SIZE :
+                              integer :=  4;
+        MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
+                              integer :=  0;
+        MRG_WR_AXI_QUEUE    : --! @brief MERGE OUT AXI QUEUE SIZE :
+                              integer :=  4;
+        MRG_WR_AXI_REQ_REGS : --! @brief MERGE OUT AXI REQUEST REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_WR_AXI_RESP_REGS: --! @brief MERGE OUT AXI RESPONSE REGISTER :
+                              integer range 0 to 1 := 1
     );
     port(
     -------------------------------------------------------------------------------

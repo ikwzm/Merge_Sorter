@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 0.6.0
---!     @date    2020/10/11
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -70,6 +70,20 @@ entity  ArgSort_AXI is
                               integer := 0;
         STM_AXI_XFER_SIZE   : --! @brief STREAM IN/OUT AXI MAX XFER SIZE :
                               integer := 11;
+        STM_RD_AXI_QUEUE    : --! @brief STREAM IN  AXI QUEUE SIZE :
+                              integer :=  4;
+        STM_RD_AXI_DATA_REGS: --! @brief STREAM IN  AXI DATA REGISTER :
+                              integer :=  2;
+        STM_RD_AXI_ACK_REGS : --! @brief STREAM IN  AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_QUEUE    : --! @brief STREAM OUT AXI QUEUE SIZE :
+                              integer :=  4;
+        STM_WR_AXI_REQ_REGS : --! @brief STREAM OUT AXI REQUEST REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_ACK_REGS : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        STM_WR_AXI_RESP_REGS: --! @brief STREAM OUT AXI RESPONSE REGISTER :
+                              integer range 0 to 1 := 1;
         MRG_AXI_ADDR_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                               integer := 32;
         MRG_AXI_DATA_WIDTH  : --! @brief MERGE IN/OUT AXI DATA WIDTH :
@@ -81,7 +95,25 @@ entity  ArgSort_AXI is
         MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
                               integer := 0;
         MRG_AXI_XFER_SIZE   : --! @brief MERGE IN/OUT AXI MAX XFER SIZE :
-                              integer := 11
+                              integer := 11;
+        MRG_RD_AXI_QUEUE    : --! @brief MERGE IN  AXI QUEUE SIZE :
+                              integer :=  4;
+        MRG_RD_AXI_DATA_REGS: --! @brief MERGE IN  AXI DATA REGISTER :
+                              integer :=  2;
+        MRG_RD_AXI_ACK_REGS : --! @brief MERGE IN  AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_RD_ARB_NODE_NUM : --! @brief MERGE IN  ARBITER NODE SIZE :
+                              integer :=  4;
+        MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
+                              integer :=  0;
+        MRG_WR_AXI_QUEUE    : --! @brief MERGE OUT AXI QUEUE SIZE :
+                              integer :=  4;
+        MRG_WR_AXI_REQ_REGS : --! @brief MERGE OUT AXI REQUEST REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
+                              integer range 0 to 1 := 1;
+        MRG_WR_AXI_RESP_REGS: --! @brief MERGE OUT AXI RESPONSE REGISTER :
+                              integer range 0 to 1 := 1
     );
     port(
     -------------------------------------------------------------------------------
@@ -781,8 +813,17 @@ begin
             MRG_AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --   
             MRG_RD_AXI_XFER_SIZE=> MRG_RD_XFER_SIZE    , --   
             MRG_RD_AXI_BUF_DEPTH=> MRG_RD_BUF_DEPTH    , --   
+            MRG_RD_AXI_QUEUE    => MRG_RD_AXI_QUEUE    , --
+            MRG_RD_AXI_DATA_REGS=> MRG_RD_AXI_DATA_REGS, --
+            MRG_RD_AXI_ACK_REGS => MRG_RD_AXI_ACK_REGS , -- 
+            MRG_RD_ARB_NODE_NUM => MRG_RD_ARB_NODE_NUM , --   
+            MRG_RD_ARB_PIPELINE => MRG_RD_ARB_PIPELINE , --   
             MRG_WR_AXI_XFER_SIZE=> MRG_WR_XFER_SIZE    , --   
             MRG_WR_AXI_BUF_DEPTH=> MRG_WR_BUF_DEPTH    , --   
+            MRG_WR_AXI_QUEUE    => MRG_WR_AXI_QUEUE    , -- 
+            MRG_WR_AXI_REQ_REGS => MRG_WR_AXI_REQ_REGS , -- 
+            MRG_WR_AXI_ACK_REGS => MRG_WR_AXI_ACK_REGS , -- 
+            MRG_WR_AXI_RESP_REGS=> MRG_WR_AXI_RESP_REGS, -- 
             STM_AXI_ID          => STM_AXI_ID          , --   
             STM_AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --   
             STM_AXI_AUSER_WIDTH => STM_AXI_USER_WIDTH  , --   
@@ -791,9 +832,16 @@ begin
             STM_AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --   
             STM_AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --   
             STM_RD_AXI_XFER_SIZE=> STM_RD_XFER_SIZE    , --   
-            STM_RD_AXI_BUF_DEPTH=> STM_RD_BUF_DEPTH    , --   
+            STM_RD_AXI_BUF_DEPTH=> STM_RD_BUF_DEPTH    , --
+            STM_RD_AXI_QUEUE    => STM_RD_AXI_QUEUE    , --
+            STM_RD_AXI_DATA_REGS=> STM_RD_AXI_DATA_REGS, --
+            STM_RD_AXI_ACK_REGS => STM_RD_AXI_ACK_REGS , --
             STM_WR_AXI_XFER_SIZE=> STM_WR_XFER_SIZE    , --   
             STM_WR_AXI_BUF_DEPTH=> STM_WR_BUF_DEPTH    , --   
+            STM_WR_AXI_QUEUE    => STM_WR_AXI_QUEUE    , --
+            STM_WR_AXI_REQ_REGS => STM_WR_AXI_REQ_REGS , --
+            STM_WR_AXI_ACK_REGS => STM_WR_AXI_ACK_REGS , --
+            STM_WR_AXI_RESP_REGS=> STM_WR_AXI_RESP_REGS, -- 
             STM_FEEDBACK        => STM_FEEDBACK        , --   
             REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
             REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   
