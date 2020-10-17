@@ -2,7 +2,7 @@
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
 --!     @version 0.6.0
---!     @date    2020/10/12
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -47,7 +47,9 @@ entity  Merge_Reader is
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
-        MAX_XFER_SIZE   :  integer := 12
+        MAX_XFER_SIZE   :  integer := 12;
+        ARB_NODE_NUM    :  integer :=  4;
+        ARB_PIPELINE    :  integer :=  0
     );
     port (
     -------------------------------------------------------------------------------
@@ -142,7 +144,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
-use     PIPEWORK.COMPONENTS.QUEUE_ARBITER;
+use     PIPEWORK.COMPONENTS.QUEUE_TREE_ARBITER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of Merge_Reader is
     -------------------------------------------------------------------------------
@@ -273,10 +275,9 @@ begin
         signal    arb_grant         :  std_logic_vector  (0 to WAYS-1);
         signal    arb_valid         :  std_logic;
         signal    arb_shift         :  std_logic;
-        type      STATE_TYPE        is (IDLE_STATE, SEL_STATE, REQ_STATE, ACK_STATE);
+        type      STATE_TYPE        is (IDLE_STATE, REQ_STATE, ACK_STATE);
         signal    curr_state        :  STATE_TYPE;
         signal    arb_sel           :  std_logic_vector  (WAYS-1 downto 0);
-        signal    curr_sel          :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
         function  REVERSE_VECTOR(A: in std_logic_vector) return std_logic_vector is
             variable  reserved_a :  std_logic_vector(A'reverse_range);
@@ -290,20 +291,22 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        ARB: QUEUE_ARBITER                   -- 
-            generic map (                    -- 
-                MIN_NUM     => 0          ,  -- 
-                MAX_NUM     => WAYS-1      -- 
-            )                                -- 
-            port map (                       -- 
-                CLK         => CLK        ,  -- In  :
-                RST         => RST        ,  -- In  :
-                CLR         => CLR        ,  -- In  :
-                REQUEST     => arb_request,  -- In  :
-                GRANT       => arb_grant  ,  -- Out :
-                REQUEST_O   => arb_valid  ,  -- Out :
-                SHIFT       => arb_shift     -- In  :
-            );                               --
+        ARB: QUEUE_TREE_ARBITER                  -- 
+            generic map (                        -- 
+                MIN_NUM     => 0              ,  -- 
+                MAX_NUM     => WAYS-1         , -- 
+                NODE_NUM    => ARB_NODE_NUM   ,  --
+                PIPELINE    => ARB_PIPELINE      -- 
+            )                                    -- 
+            port map (                           -- 
+                CLK         => CLK            ,  -- In  :
+                RST         => RST            ,  -- In  :
+                CLR         => CLR            ,  -- In  :
+                REQUEST     => arb_request    ,  -- In  :
+                GRANT       => arb_grant      ,  -- Out :
+                VALID       => arb_valid      ,  -- Out :
+                SHIFT       => arb_shift         -- In  :
+            );                                   --
         arb_request <= REVERSE_VECTOR(i_req_valid);
         arb_sel     <= REVERSE_VECTOR(arb_grant);
         arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
@@ -313,7 +316,6 @@ begin
         process (CLK, RST) begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
-                    curr_sel    <= (others => '0');
                     curr_val    <= (others => '0');
                     REQ_ADDR    <= (others => '0');
                     REQ_SIZE    <= (others => '0');
@@ -326,7 +328,6 @@ begin
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     curr_state  <= IDLE_STATE;
-                    curr_sel    <= (others => '0');
                     curr_val    <= (others => '0');
                     REQ_ADDR    <= (others => '0');
                     REQ_SIZE    <= (others => '0');
@@ -340,24 +341,20 @@ begin
                     case curr_state is
                         when IDLE_STATE =>
                             if (arb_valid = '1') then
-                                curr_state <= SEL_STATE;
-                                curr_sel   <= arb_sel;
+                                curr_state <= REQ_STATE;
+                                curr_val   <= arb_sel;
                             else
                                 curr_state <= IDLE_STATE;
-                                curr_sel   <= (others => '0');
+                                curr_val   <= (others => '0');
                             end if;
-                            curr_val    <= (others => '0');
-                        when SEL_STATE =>
-                            curr_state  <= REQ_STATE;
-                            curr_val    <= curr_sel;
-                            REQ_ADDR    <= SELECT_REQ_ADDR(   curr_sel, i_req_addr   );
-                            REQ_SIZE    <= SELECT_REQ_SIZE(   curr_sel, i_req_size   );
-                            REQ_BUF_PTR <= SELECT_REQ_BUF_PTR(curr_sel, i_req_buf_ptr);
-                            REQ_MODE    <= SELECT_REQ_MODE(   curr_sel, i_req_mode   );
-                            REQ_FIRST   <= SELECT_REQ_FLAG(   curr_sel, i_req_first  );
-                            REQ_LAST    <= SELECT_REQ_FLAG(   curr_sel, i_req_last   );
-                            REQ_NONE    <= SELECT_REQ_FLAG(   curr_sel, i_req_none   );
-                            FLOW_STOP   <= SELECT_REQ_FLAG(   curr_sel, i_flow_stop  );
+                            REQ_ADDR    <= SELECT_REQ_ADDR(   arb_sel, i_req_addr   );
+                            REQ_SIZE    <= SELECT_REQ_SIZE(   arb_sel, i_req_size   );
+                            REQ_BUF_PTR <= SELECT_REQ_BUF_PTR(arb_sel, i_req_buf_ptr);
+                            REQ_MODE    <= SELECT_REQ_MODE(   arb_sel, i_req_mode   );
+                            REQ_FIRST   <= SELECT_REQ_FLAG(   arb_sel, i_req_first  );
+                            REQ_LAST    <= SELECT_REQ_FLAG(   arb_sel, i_req_last   );
+                            REQ_NONE    <= SELECT_REQ_FLAG(   arb_sel, i_req_none   );
+                            FLOW_STOP   <= SELECT_REQ_FLAG(   arb_sel, i_flow_stop  );
                         when REQ_STATE =>
                             if    (REQ_READY = '0') then
                                 curr_state <= REQ_STATE;
