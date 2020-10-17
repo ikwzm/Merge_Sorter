@@ -331,13 +331,15 @@ begin
             STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
             STM_AXI_USER_WIDTH  => STM_AXI_WIDTH.ARUSER, -- 
             STM_AXI_ID          => STM_AXI_ID          , -- 
-            STM_AXI_XFER_SIZE   => AXI_XFER_SIZE       , -- 
+            STM_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
+            STM_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_WIDTH.ARADDR, -- 
             MRG_AXI_DATA_WIDTH  => MRG_AXI_WIDTH.RDATA , -- 
             MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
             MRG_AXI_USER_WIDTH  => MRG_AXI_WIDTH.ARUSER, -- 
             MRG_AXI_ID          => MRG_AXI_ID          , -- 
-            MRG_AXI_XFER_SIZE   => AXI_XFER_SIZE         -- 
+            MRG_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
+            MRG_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE         -- 
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------

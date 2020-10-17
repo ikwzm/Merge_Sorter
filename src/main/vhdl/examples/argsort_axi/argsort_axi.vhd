@@ -68,16 +68,22 @@ entity  ArgSort_AXI is
                               integer := 1;
         STM_AXI_ID          : --! @brief STREAM IN/OUT AXI ID :
                               integer := 0;
-        STM_AXI_XFER_SIZE   : --! @brief STREAM IN/OUT AXI MAX XFER SIZE :
+        STM_RD_AXI_XFER_SIZE: --! @brief STREAM IN  AXI MAX XFER SIZE :
                               integer := 11;
+        STM_RD_AXI_BUF_SIZE : --! @brief STREAM IN  AXI BUFFER SIZE :
+                              integer := 0;
         STM_RD_AXI_QUEUE    : --! @brief STREAM IN  AXI QUEUE SIZE :
-                              integer :=  4;
+                              integer := 4;
         STM_RD_AXI_DATA_REGS: --! @brief STREAM IN  AXI DATA REGISTER :
-                              integer :=  2;
+                              integer := 2;
         STM_RD_AXI_ACK_REGS : --! @brief STREAM IN  AXI ACKNOWLEDGE REGISTER :
                               integer range 0 to 1 := 1;
+        STM_WR_AXI_XFER_SIZE: --! @brief STREAM OUT AXI MAX XFER SIZE :
+                              integer := 11;
+        STM_WR_AXI_BUF_SIZE : --! @brief STREAM OUT AXI BUFFER SIZE :
+                              integer := 0;
         STM_WR_AXI_QUEUE    : --! @brief STREAM OUT AXI QUEUE SIZE :
-                              integer :=  4;
+                              integer := 4;
         STM_WR_AXI_REQ_REGS : --! @brief STREAM OUT AXI REQUEST REGISTER :
                               integer range 0 to 1 := 1;
         STM_WR_AXI_ACK_REGS : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
@@ -94,20 +100,26 @@ entity  ArgSort_AXI is
                               integer := 1;
         MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
                               integer := 0;
-        MRG_AXI_XFER_SIZE   : --! @brief MERGE IN/OUT AXI MAX XFER SIZE :
+        MRG_RD_AXI_XFER_SIZE: --! @brief MERGE IN  AXI MAX XFER SIZE :
                               integer := 11;
+        MRG_RD_AXI_BUF_SIZE : --! @brief MERGE IN  AXI BUFFER SIZE :
+                              integer := 0;
         MRG_RD_AXI_QUEUE    : --! @brief MERGE IN  AXI QUEUE SIZE :
-                              integer :=  4;
+                              integer := 4;
         MRG_RD_AXI_DATA_REGS: --! @brief MERGE IN  AXI DATA REGISTER :
-                              integer :=  2;
+                              integer := 2;
         MRG_RD_AXI_ACK_REGS : --! @brief MERGE IN  AXI ACKNOWLEDGE REGISTER :
                               integer range 0 to 1 := 1;
         MRG_RD_ARB_NODE_NUM : --! @brief MERGE IN  ARBITER NODE SIZE :
-                              integer :=  4;
+                              integer := 4;
         MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
-                              integer :=  0;
+                              integer := 0;
+        MRG_WR_AXI_XFER_SIZE: --! @brief MERGE OUT AXI MAX XFER SIZE :
+                              integer := 11;
+        MRG_WR_AXI_BUF_SIZE : --! @brief MERGE OUT AXI BUFFER SIZE :
+                              integer := 0;
         MRG_WR_AXI_QUEUE    : --! @brief MERGE OUT AXI QUEUE SIZE :
-                              integer :=  4;
+                              integer := 4;
         MRG_WR_AXI_REQ_REGS : --! @brief MERGE OUT AXI REQUEST REGISTER :
                               integer range 0 to 1 := 1;
         MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
@@ -290,6 +302,15 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    function  MAX(A,B:integer) return integer is
+    begin
+        if (A > B) then return A;
+        else            return B;
+        end if;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     constant  MRG_WORD_INDEX_LO :  integer := 0;
     constant  MRG_WORD_INDEX_HI :  integer := MRG_WORD_INDEX_LO + INDEX_BITS - 1;
     constant  MRG_WORD_COMP_LO  :  integer := MRG_WORD_INDEX_HI + 1;
@@ -298,23 +319,23 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  STM_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_AXI_XFER_SIZE);
-    constant  STM_RD_BUF_DEPTH  :  integer := STM_RD_XFER_SIZE+1;
+    constant  STM_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_RD_AXI_XFER_SIZE);
+    constant  STM_RD_BUF_DEPTH  :  integer := MAX(STM_RD_XFER_SIZE+1, STM_RD_AXI_BUF_SIZE);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  STM_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_AXI_XFER_SIZE);
-    constant  STM_WR_BUF_DEPTH  :  integer := STM_WR_XFER_SIZE+1;
+    constant  STM_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(STM_AXI_DATA_WIDTH, STM_WR_AXI_XFER_SIZE);
+    constant  STM_WR_BUF_DEPTH  :  integer := MAX(STM_WR_XFER_SIZE+1, STM_WR_AXI_BUF_SIZE);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  MRG_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_AXI_XFER_SIZE);
-    constant  MRG_RD_BUF_DEPTH  :  integer := MRG_RD_XFER_SIZE+1;
+    constant  MRG_RD_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_RD_AXI_XFER_SIZE);
+    constant  MRG_RD_BUF_DEPTH  :  integer := MAX(MRG_RD_XFER_SIZE+1, MRG_RD_AXI_BUF_SIZE);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  MRG_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_AXI_XFER_SIZE);
-    constant  MRG_WR_BUF_DEPTH  :  integer := MRG_WR_XFER_SIZE+1;
+    constant  MRG_WR_XFER_SIZE  :  integer := AXI4_MAX_XFER_SIZE(MRG_AXI_DATA_WIDTH, MRG_WR_AXI_XFER_SIZE);
+    constant  MRG_WR_BUF_DEPTH  :  integer := MAX(MRG_WR_XFER_SIZE+1, MRG_WR_AXI_BUF_SIZE);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
