@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -54,8 +54,17 @@ entity  ArgSort_AXI_Interface is
         MRG_AXI_DATA_WIDTH  :  integer :=   64;
         MRG_RD_AXI_XFER_SIZE:  integer :=   11;
         MRG_RD_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_RD_AXI_QUEUE    :  integer :=    4;
+        MRG_RD_AXI_DATA_REGS:  integer :=    2;
+        MRG_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        MRG_RD_ARB_NODE_NUM :  integer :=    4;
+        MRG_RD_ARB_PIPELINE :  integer :=    0;
         MRG_WR_AXI_XFER_SIZE:  integer :=   11;
         MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
+        MRG_WR_AXI_QUEUE    :  integer :=    4;
+        MRG_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
+        MRG_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_AXI_ID          :  integer :=    1;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
@@ -66,7 +75,14 @@ entity  ArgSort_AXI_Interface is
         STM_RD_AXI_XFER_SIZE:  integer :=   11;
         STM_RD_AXI_BUF_DEPTH:  integer :=   12;
         STM_WR_AXI_XFER_SIZE:  integer :=   11;
+        STM_RD_AXI_QUEUE    :  integer :=    4;
+        STM_RD_AXI_DATA_REGS:  integer :=    2;
+        STM_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         STM_WR_AXI_BUF_DEPTH:  integer :=   12;
+        STM_WR_AXI_QUEUE    :  integer :=    4;
+        STM_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
+        STM_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
+        STM_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_FEEDBACK        :  integer :=    1;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;
@@ -354,6 +370,10 @@ begin
         generic map (                                -- 
             WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
+            WORD_INDEX_LO   => WORD_INDEX_LO       , --
+            WORD_INDEX_HI   => WORD_INDEX_HI       , --
+            WORD_COMP_LO    => WORD_COMP_LO        , --
+            WORD_COMP_HI    => WORD_COMP_HI        , --
             REG_PARAM       => STM_RD_REG_PARAM    , --
             AXI_ID          => STM_AXI_ID          , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
@@ -362,10 +382,9 @@ begin
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE   => STM_RD_AXI_XFER_SIZE, --
             AXI_BUF_DEPTH   => STM_RD_AXI_BUF_DEPTH, --
-            WORD_INDEX_LO   => WORD_INDEX_LO       , --
-            WORD_INDEX_HI   => WORD_INDEX_HI       , --
-            WORD_COMP_LO    => WORD_COMP_LO        , --
-            WORD_COMP_HI    => WORD_COMP_HI          --
+            AXI_QUEUE_SIZE  => STM_RD_AXI_QUEUE    , --
+            AXI_RDATA_REGS  => STM_RD_AXI_DATA_REGS, --
+            AXI_ACK_REGS    => STM_RD_AXI_ACK_REGS   -- 
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -426,6 +445,10 @@ begin
         generic map (                                -- 
             WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
+            WORD_INDEX_LO   => WORD_INDEX_LO       , --
+            WORD_INDEX_HI   => WORD_INDEX_HI       , --
+            WORD_COMP_LO    => WORD_COMP_LO        , --
+            WORD_COMP_HI    => WORD_COMP_HI        , --
             REG_PARAM       => STM_WR_REG_PARAM    , --
             AXI_ID          => STM_AXI_ID          , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
@@ -436,10 +459,10 @@ begin
             AXI_DATA_WIDTH  => STM_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE   => STM_WR_AXI_XFER_SIZE, --
             AXI_BUF_DEPTH   => STM_WR_AXI_BUF_DEPTH, --
-            WORD_INDEX_LO   => WORD_INDEX_LO       , --
-            WORD_INDEX_HI   => WORD_INDEX_HI       , --
-            WORD_COMP_LO    => WORD_COMP_LO        , --
-            WORD_COMP_HI    => WORD_COMP_HI          --
+            AXI_QUEUE_SIZE  => STM_WR_AXI_QUEUE    , --
+            AXI_REQ_REGS    => STM_WR_AXI_REQ_REGS , --
+            AXI_ACK_REGS    => STM_WR_AXI_ACK_REGS , --
+            AXI_RESP_REGS   => STM_WR_AXI_RESP_REGS  -- 
         )                                            --
         port map (                                   --
         ---------------------------------------------------------------------------
@@ -516,7 +539,12 @@ begin
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE   => MRG_RD_AXI_XFER_SIZE, --
-            AXI_BUF_DEPTH   => MRG_RD_AXI_BUF_DEPTH  --
+            AXI_BUF_DEPTH   => MRG_RD_AXI_BUF_DEPTH, --
+            AXI_QUEUE_SIZE  => MRG_RD_AXI_QUEUE    , --
+            AXI_RDATA_REGS  => MRG_RD_AXI_DATA_REGS, -- 
+            AXI_ACK_REGS    => MRG_RD_AXI_ACK_REGS , -- 
+            ARB_NODE_NUM    => MRG_RD_ARB_NODE_NUM , -- 
+            ARB_PIPELINE    => MRG_RD_ARB_PIPELINE   -- 
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -588,7 +616,11 @@ begin
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH  => MRG_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE   => MRG_WR_AXI_XFER_SIZE, --
-            AXI_BUF_DEPTH   => MRG_WR_AXI_BUF_DEPTH  --
+            AXI_BUF_DEPTH   => MRG_WR_AXI_BUF_DEPTH, --
+            AXI_QUEUE_SIZE  => MRG_WR_AXI_QUEUE    , -- 
+            AXI_REQ_REGS    => MRG_WR_AXI_REQ_REGS , -- 
+            AXI_ACK_REGS    => MRG_WR_AXI_ACK_REGS , --
+            AXI_RESP_REGS   => MRG_WR_AXI_RESP_REGS  -- 
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------

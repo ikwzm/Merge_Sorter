@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_reader.vhd
 --!     @brief   Merge Sorter ArgSort Reader Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -235,6 +235,7 @@ begin
             I_FIXED_POOL_OPEN   => 1                       , --
             O_CLK_RATE          => 1                       , --
             O_DATA_BITS         => WORDS*WORD_COMP_BITS    , --
+            O_WORD_BITS         => WORD_COMP_BITS          , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             I2O_OPEN_INFO_BITS  => 1                       , --

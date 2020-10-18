@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -47,7 +47,9 @@ entity  Merge_Reader is
         REQ_SIZE_BITS   :  integer := 32;
         BUF_DATA_BITS   :  integer := 64;
         BUF_DEPTH       :  integer := 13;
-        MAX_XFER_SIZE   :  integer := 12
+        MAX_XFER_SIZE   :  integer := 12;
+        ARB_NODE_NUM    :  integer :=  4;
+        ARB_PIPELINE    :  integer :=  0
     );
     port (
     -------------------------------------------------------------------------------
@@ -142,7 +144,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 library PIPEWORK;
 use     PIPEWORK.PUMP_COMPONENTS.PUMP_STREAM_INTAKE_CONTROLLER;
-use     PIPEWORK.COMPONENTS.QUEUE_ARBITER;
+use     PIPEWORK.COMPONENTS.QUEUE_TREE_ARBITER;
 use     PIPEWORK.COMPONENTS.SDPRAM;
 architecture RTL of Merge_Reader is
     -------------------------------------------------------------------------------
@@ -273,10 +275,9 @@ begin
         signal    arb_grant         :  std_logic_vector  (0 to WAYS-1);
         signal    arb_valid         :  std_logic;
         signal    arb_shift         :  std_logic;
-        type      STATE_TYPE        is (IDLE_STATE, SEL_STATE, REQ_STATE, ACK_STATE);
+        type      STATE_TYPE        is (IDLE_STATE, REQ_STATE, ACK_STATE);
         signal    curr_state        :  STATE_TYPE;
         signal    arb_sel           :  std_logic_vector  (WAYS-1 downto 0);
-        signal    curr_sel          :  std_logic_vector  (WAYS-1 downto 0);
         signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
         function  REVERSE_VECTOR(A: in std_logic_vector) return std_logic_vector is
             variable  reserved_a :  std_logic_vector(A'reverse_range);
@@ -290,21 +291,23 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        ARB: QUEUE_ARBITER                   -- 
-            generic map (                    -- 
-                MIN_NUM     => 0          ,  -- 
-                MAX_NUM     => WAYS-1      -- 
-            )                                -- 
-            port map (                       -- 
-                CLK         => CLK        ,  -- In  :
-                RST         => RST        ,  -- In  :
-                CLR         => CLR        ,  -- In  :
-                REQUEST     => arb_request,  -- In  :
-                GRANT       => arb_grant  ,  -- Out :
-                REQUEST_O   => arb_valid  ,  -- Out :
-                SHIFT       => arb_shift     -- In  :
-            );                               --
-        arb_request <= REVERSE_VECTOR(i_req_valid and (i_flow_ready or i_flow_stop or i_req_none));
+        ARB: QUEUE_TREE_ARBITER                  -- 
+            generic map (                        -- 
+                MIN_NUM     => 0              ,  -- 
+                MAX_NUM     => WAYS-1         , -- 
+                NODE_NUM    => ARB_NODE_NUM   ,  --
+                PIPELINE    => ARB_PIPELINE      -- 
+            )                                    -- 
+            port map (                           -- 
+                CLK         => CLK            ,  -- In  :
+                RST         => RST            ,  -- In  :
+                CLR         => CLR            ,  -- In  :
+                REQUEST     => arb_request    ,  -- In  :
+                GRANT       => arb_grant      ,  -- Out :
+                VALID       => arb_valid      ,  -- Out :
+                SHIFT       => arb_shift         -- In  :
+            );                                   --
+        arb_request <= REVERSE_VECTOR(i_req_valid);
         arb_sel     <= REVERSE_VECTOR(arb_grant);
         arb_shift   <= '1' when ((ACK_VALID and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
@@ -313,7 +316,6 @@ begin
         process (CLK, RST) begin
             if (RST = '1') then
                     curr_state  <= IDLE_STATE;
-                    curr_sel    <= (others => '0');
                     curr_val    <= (others => '0');
                     REQ_ADDR    <= (others => '0');
                     REQ_SIZE    <= (others => '0');
@@ -326,7 +328,6 @@ begin
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
                     curr_state  <= IDLE_STATE;
-                    curr_sel    <= (others => '0');
                     curr_val    <= (others => '0');
                     REQ_ADDR    <= (others => '0');
                     REQ_SIZE    <= (others => '0');
@@ -340,24 +341,20 @@ begin
                     case curr_state is
                         when IDLE_STATE =>
                             if (arb_valid = '1') then
-                                curr_state <= SEL_STATE;
-                                curr_sel   <= arb_sel;
+                                curr_state <= REQ_STATE;
+                                curr_val   <= arb_sel;
                             else
                                 curr_state <= IDLE_STATE;
-                                curr_sel   <= (others => '0');
+                                curr_val   <= (others => '0');
                             end if;
-                            curr_val    <= (others => '0');
-                        when SEL_STATE =>
-                            curr_state  <= REQ_STATE;
-                            curr_val    <= curr_sel;
-                            REQ_ADDR    <= SELECT_REQ_ADDR(   curr_sel, i_req_addr   );
-                            REQ_SIZE    <= SELECT_REQ_SIZE(   curr_sel, i_req_size   );
-                            REQ_BUF_PTR <= SELECT_REQ_BUF_PTR(curr_sel, i_req_buf_ptr);
-                            REQ_MODE    <= SELECT_REQ_MODE(   curr_sel, i_req_mode   );
-                            REQ_FIRST   <= SELECT_REQ_FLAG(   curr_sel, i_req_first  );
-                            REQ_LAST    <= SELECT_REQ_FLAG(   curr_sel, i_req_last   );
-                            REQ_NONE    <= SELECT_REQ_FLAG(   curr_sel, i_req_none   );
-                            FLOW_STOP   <= SELECT_REQ_FLAG(   curr_sel, i_flow_stop  );
+                            REQ_ADDR    <= SELECT_REQ_ADDR(   arb_sel, i_req_addr   );
+                            REQ_SIZE    <= SELECT_REQ_SIZE(   arb_sel, i_req_size   );
+                            REQ_BUF_PTR <= SELECT_REQ_BUF_PTR(arb_sel, i_req_buf_ptr);
+                            REQ_MODE    <= SELECT_REQ_MODE(   arb_sel, i_req_mode   );
+                            REQ_FIRST   <= SELECT_REQ_FLAG(   arb_sel, i_req_first  );
+                            REQ_LAST    <= SELECT_REQ_FLAG(   arb_sel, i_req_last   );
+                            REQ_NONE    <= SELECT_REQ_FLAG(   arb_sel, i_req_none   );
+                            FLOW_STOP   <= SELECT_REQ_FLAG(   arb_sel, i_flow_stop  );
                         when REQ_STATE =>
                             if    (REQ_READY = '0') then
                                 curr_state <= REQ_STATE;
@@ -405,11 +402,29 @@ begin
         signal    buf_rptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
         signal    buf_rdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
         signal    buf_we            :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
+        signal    c_req_valid       :  std_logic;
+        signal    c_req_ready       :  std_logic;
+        signal    c_ack_valid       :  std_logic;
+        signal    c_ack_size        :  std_logic_vector(BUF_DEPTH         downto 0);
+        signal    c_ack_error       :  std_logic;
+        signal    c_ack_next        :  std_logic;
+        signal    c_ack_last        :  std_logic;
+        signal    c_ack_stop        :  std_logic;
+        signal    c_ack_none        :  std_logic;
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
         signal    mrg_in_data       :  std_logic_vector(WORD_BITS      -1 downto 0);
         signal    mrg_in_last       :  std_logic;
         signal    mrg_in_valid      :  std_logic;
         signal    mrg_in_ready      :  std_logic;
         signal    mrg_in_eblk       :  std_logic;
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
         signal    i_open            :  std_logic;
         signal    i_end_of_blk      :  std_logic;
         signal    o_open_valid      :  std_logic;
@@ -420,9 +435,6 @@ begin
         signal    o_error           :  std_logic;
         signal    o_open            :  std_logic;
         signal    o_done            :  std_logic;
-        signal    o_none            :  std_logic;
-        type      STATE_TYPE        is (IDLE_STATE, MRG_READ_STATE, MRG_NONE_STATE, CHK_NONE_STATE, END_NONE_STATE);
-        signal    curr_state        :  STATE_TYPE;
     begin
         ---------------------------------------------------------------------------
         --
@@ -449,6 +461,7 @@ begin
                 I_FIXED_POOL_OPEN   => 1                       , --
                 O_CLK_RATE          => 1                       , --
                 O_DATA_BITS         => WORD_BITS               , --
+                O_WORD_BITS         => WORD_BITS               , --
                 BUF_DEPTH           => BUF_DEPTH               , --
                 BUF_DATA_BITS       => BUF_DATA_BITS           , --
                 I2O_OPEN_INFO_BITS  => 1                       , --
@@ -523,24 +536,24 @@ begin
             -----------------------------------------------------------------------
             -- Intake Transaction Command Request Signals.
             -----------------------------------------------------------------------
-                I_REQ_VALID         => i_req_valid   (channel) , --  Out :
+                I_REQ_VALID         => c_req_valid             , --  Out :
                 I_REQ_ADDR          => i_req_addr    (channel) , --  Out :
                 I_REQ_SIZE          => i_req_size    (channel) , --  Out :
                 I_REQ_BUF_PTR       => i_req_buf_ptr (channel) , --  Out :
                 I_REQ_FIRST         => i_req_first   (channel) , --  Out :
                 I_REQ_LAST          => i_req_last    (channel) , --  Out :
                 I_REQ_NONE          => i_req_none    (channel) , --  Out :
-                I_REQ_READY         => i_req_ready   (channel) , --  In  :
+                I_REQ_READY         => c_req_ready             , --  In  :
             -----------------------------------------------------------------------
             -- Intake Transaction Command Acknowledge Signals.
             -----------------------------------------------------------------------
-                I_ACK_VALID         => ACK_VALID     (channel) , --  In  :
-                I_ACK_SIZE          => ACK_SIZE                , --  In  :
-                I_ACK_ERROR         => ACK_ERROR               , --  In  :
-                I_ACK_NEXT          => ACK_NEXT                , --  In  :
-                I_ACK_LAST          => ACK_LAST                , --  In  :
-                I_ACK_STOP          => ACK_STOP                , --  In  :
-                I_ACK_NONE          => ACK_NONE                , --  In  :
+                I_ACK_VALID         => c_ack_valid             , --  In  :
+                I_ACK_SIZE          => c_ack_size              , --  In  :
+                I_ACK_ERROR         => c_ack_error             , --  In  :
+                I_ACK_NEXT          => c_ack_next              , --  In  :
+                I_ACK_LAST          => c_ack_last              , --  In  :
+                I_ACK_STOP          => c_ack_stop              , --  In  :
+                I_ACK_NONE          => c_ack_none              , --  In  :
             -----------------------------------------------------------------------
             -- Intake Transfer Status Signals.
             -----------------------------------------------------------------------
@@ -626,6 +639,70 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
+        REQ: block
+            type      STATE_TYPE    is (IDLE_STATE    ,
+                                        I_REQ_STATE   ,
+                                        NONE_ACK_STATE);
+            signal    curr_state    :  STATE_TYPE;
+            signal    req_last      :  std_logic;
+        begin
+            process (CLK, RST) begin
+                if (RST = '1') then
+                        curr_state  <= IDLE_STATE;
+                        req_last    <= '0';
+                elsif (CLK'event and CLK = '1') then
+                    if (CLR = '1' or o_reset = '1') then
+                        curr_state  <= IDLE_STATE;
+                        req_last    <= '0';
+                    else
+                        case curr_state is
+                            when IDLE_STATE =>
+                                if    (c_req_valid = '1' and i_req_none  (channel) = '1') then
+                                    curr_state <= NONE_ACK_STATE;
+                                elsif (c_req_valid = '1' and i_flow_ready(channel) = '1') or
+                                      (c_req_valid = '1' and i_flow_stop (channel) = '1') then
+                                    curr_state <= I_REQ_STATE;
+                                else
+                                    curr_state <= IDLE_STATE;
+                                end if;
+                                req_last <= i_req_last(channel);
+                            when I_REQ_STATE =>
+                                if    (ACK_VALID(channel) = '1') then
+                                    curr_state <= IDLE_STATE;
+                                else
+                                    curr_state <= I_REQ_STATE;
+                                end if;
+                            when NONE_ACK_STATE =>
+                                    curr_state <= IDLE_STATE;
+                            when others =>
+                                    curr_state <= IDLE_STATE;
+                        end case;
+                    end if;
+                end if;
+            end process;
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            i_req_valid(channel) <= '1' when (curr_state = I_REQ_STATE) else '0';
+            c_req_ready          <= '1';
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            c_ack_valid <= ACK_VALID (channel) when (curr_state = I_REQ_STATE   ) else
+                           '1'                 when (curr_state = NONE_ACK_STATE) else '0';
+            c_ack_size  <= ACK_SIZE            when (curr_state = I_REQ_STATE   ) else (others => '0');
+            c_ack_error <= ACK_ERROR           when (curr_state = I_REQ_STATE   ) else '0';
+            c_ack_next  <= ACK_NEXT            when (curr_state = I_REQ_STATE   ) else
+                           '1'                 when (curr_state = NONE_ACK_STATE and req_last = '0') else '0';
+            c_ack_last  <= ACK_LAST            when (curr_state = I_REQ_STATE   ) else
+                           '1'                 when (curr_state = NONE_ACK_STATE and req_last = '1') else '0';
+            c_ack_stop  <= ACK_STOP            when (curr_state = I_REQ_STATE   ) else '0';
+            c_ack_none  <= ACK_NONE            when (curr_state = I_REQ_STATE   ) else
+                           '1'                 when (curr_state = NONE_ACK_STATE) else '0';
+        end block;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
         process (CLK, RST) begin
             if (RST = '1') then
                     i_end_of_blk <= '0';
@@ -645,76 +722,89 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (CLK, RST) begin
-            if (RST = '1') then
-                    curr_state  <= IDLE_STATE;
-                    o_none      <= '0';
-                    mrg_in_eblk <= '0';
-            elsif (CLK'event and CLK = '1') then
-                if (CLR = '1' or o_reset = '1') then
-                    curr_state  <= IDLE_STATE;
-                    o_none      <= '0';
-                    mrg_in_eblk <= '0';
-                else
-                    case curr_state is
-                        when IDLE_STATE =>
-                            if (o_open_valid = '1') then
-                                curr_state <= MRG_READ_STATE;
-                            else
-                                curr_state <= IDLE_STATE;
-                            end if;
-                            if (o_open_valid = '1') then
-                                mrg_in_eblk <= o_end_of_blk;
-                            end if;
-                            o_none <= '1';
-                        when MRG_READ_STATE =>
-                            if (o_open = '0') or
-                               (o_open = '1' and o_done = '1') then
-                                curr_state <= CHK_NONE_STATE;
-                            else
-                                curr_state <= MRG_READ_STATE;
-                            end if;
-                            if (mrg_in_valid = '1' and mrg_in_ready = '1') then
-                                o_none <= '0';
-                            end if;
-                        when CHK_NONE_STATE =>
-                            if (o_none = '0') then
-                                curr_state <= IDLE_STATE;
-                            else
-                                curr_state <= MRG_NONE_STATE;
-                            end if;
-                        when MRG_NONE_STATE =>
-                            if (MRG_READY(channel) = '1') then
-                                curr_state <= END_NONE_STATE;
-                            else
-                                curr_state <= MRG_NONE_STATE;
-                            end if;
-                        when END_NONE_STATE =>
-                                curr_state <= IDLE_STATE;
-                        when others => 
-                                curr_state <= IDLE_STATE;
-                    end case;
+        MRG: block
+            type      STATE_TYPE    is (IDLE_STATE    ,
+                                        MRG_READ_STATE,
+                                        MRG_NONE_STATE,
+                                        CHK_NONE_STATE,
+                                        END_NONE_STATE);
+            signal    curr_state    :  STATE_TYPE;
+            signal    o_none        :  std_logic;
+        begin 
+            process (CLK, RST) begin
+                if (RST = '1') then
+                        curr_state  <= IDLE_STATE;
+                        o_none      <= '0';
+                        mrg_in_eblk <= '0';
+                elsif (CLK'event and CLK = '1') then
+                    if (CLR = '1' or o_reset = '1') then
+                        curr_state  <= IDLE_STATE;
+                        o_none      <= '0';
+                        mrg_in_eblk <= '0';
+                    else
+                        case curr_state is
+                            when IDLE_STATE =>
+                                if (o_open_valid = '1') then
+                                    curr_state <= MRG_READ_STATE;
+                                else
+                                    curr_state <= IDLE_STATE;
+                                end if;
+                                if (o_open_valid = '1') then
+                                    mrg_in_eblk <= o_end_of_blk;
+                                end if;
+                                o_none <= '1';
+                            when MRG_READ_STATE =>
+                                if (o_open = '0') or
+                                   (o_open = '1' and o_done = '1') then
+                                    curr_state <= CHK_NONE_STATE;
+                                else
+                                    curr_state <= MRG_READ_STATE;
+                                end if;
+                                if (mrg_in_valid = '1' and mrg_in_ready = '1') then
+                                    o_none <= '0';
+                                end if;
+                            when CHK_NONE_STATE =>
+                                if (o_none = '0') then
+                                    curr_state <= IDLE_STATE;
+                                else
+                                    curr_state <= MRG_NONE_STATE;
+                                end if;
+                            when MRG_NONE_STATE =>
+                                if (MRG_READY(channel) = '1') then
+                                    curr_state <= END_NONE_STATE;
+                                else
+                                    curr_state <= MRG_NONE_STATE;
+                                end if;
+                            when END_NONE_STATE =>
+                                    curr_state <= IDLE_STATE;
+                            when others => 
+                                    curr_state <= IDLE_STATE;
+                        end case;
+                    end if;
                 end if;
-            end if;
-        end process;
-        BUSY(channel) <= '1' when ((curr_state = IDLE_STATE     and i_open = '1') or
-                                   (curr_state = MRG_READ_STATE                 ) or
-                                   (curr_state = CHK_NONE_STATE                 ) or
-                                   (curr_state = MRG_NONE_STATE                 ) or
-                                   (curr_state = END_NONE_STATE                 )) else '0';
-        DONE(channel) <= '1' when ((curr_state = CHK_NONE_STATE and o_none = '0') or
-                                   (curr_state = END_NONE_STATE                 )) else '0';
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        MRG_DATA((channel+1)*WORD_BITS-1 downto channel*WORD_BITS) <= mrg_in_data;
-        MRG_VALID(channel) <= '1' when (curr_state = MRG_NONE_STATE) or
-                                       (curr_state = MRG_READ_STATE and mrg_in_valid = '1') else '0';
-        MRG_LAST (channel) <= '1' when (curr_state = MRG_NONE_STATE) or
-                                       (curr_state = MRG_READ_STATE and mrg_in_last  = '1') else '0';
-        MRG_NONE (channel) <= '1' when (curr_state = MRG_NONE_STATE) else '0';
-        MRG_EBLK (channel) <= mrg_in_eblk;
-        mrg_in_ready       <= '1' when (curr_state = MRG_READ_STATE and MRG_READY(channel) = '1') else '0';
+            end process;
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            BUSY(channel) <= '1' when ((curr_state = IDLE_STATE     and i_open = '1') or
+                                       (curr_state = MRG_READ_STATE                 ) or
+                                       (curr_state = CHK_NONE_STATE                 ) or
+                                       (curr_state = MRG_NONE_STATE                 ) or
+                                       (curr_state = END_NONE_STATE                 )) else '0';
+            DONE(channel) <= '1' when ((curr_state = CHK_NONE_STATE and o_none = '0') or
+                                       (curr_state = END_NONE_STATE                 )) else '0';
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            MRG_DATA((channel+1)*WORD_BITS-1 downto channel*WORD_BITS) <= mrg_in_data;
+            MRG_VALID(channel) <= '1' when (curr_state = MRG_NONE_STATE) or
+                                           (curr_state = MRG_READ_STATE and mrg_in_valid = '1') else '0';
+            MRG_LAST (channel) <= '1' when (curr_state = MRG_NONE_STATE) or
+                                           (curr_state = MRG_READ_STATE and mrg_in_last  = '1') else '0';
+            MRG_NONE (channel) <= '1' when (curr_state = MRG_NONE_STATE) else '0';
+            MRG_EBLK (channel) <= mrg_in_eblk;
+            mrg_in_ready       <= '1' when (curr_state = MRG_READ_STATE and MRG_READY(channel) = '1') else '0';
+        end block;
         ---------------------------------------------------------------------------
         -- 
         ---------------------------------------------------------------------------

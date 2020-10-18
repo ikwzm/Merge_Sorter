@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_reader.vhd
 --!     @brief   Merge Sorter ArgSort AXI Reader Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -138,9 +138,19 @@ architecture RTL of ArgSort_AXI_Reader is
         else            return B;
         end if;
     end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MIN(A,B:integer) return integer is
+    begin
+        if (A < B) then return A;
+        else            return B;
+        end if;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_COMP_BITS, AXI_DATA_WIDTH);
     constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_COMP_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
@@ -216,6 +226,7 @@ begin
             FLOW_VALID          => 1                   , -- 
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
             BUF_PTR_BITS        => BUF_DEPTH           , -- 
+            ALIGNMENT_BITS      => ALIGNMENT_BITS      , --
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
             XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
             XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 

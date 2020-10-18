@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 0.5.0
---!     @date    2020/9/29
+--!     @version 0.6.0
+--!     @date    2020/10/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -331,13 +331,15 @@ begin
             STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
             STM_AXI_USER_WIDTH  => STM_AXI_WIDTH.ARUSER, -- 
             STM_AXI_ID          => STM_AXI_ID          , -- 
-            STM_AXI_XFER_SIZE   => AXI_XFER_SIZE       , -- 
+            STM_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
+            STM_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_WIDTH.ARADDR, -- 
             MRG_AXI_DATA_WIDTH  => MRG_AXI_WIDTH.RDATA , -- 
             MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
             MRG_AXI_USER_WIDTH  => MRG_AXI_WIDTH.ARUSER, -- 
             MRG_AXI_ID          => MRG_AXI_ID          , -- 
-            MRG_AXI_XFER_SIZE   => AXI_XFER_SIZE         -- 
+            MRG_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
+            MRG_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE         -- 
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -936,6 +938,29 @@ begin
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => 4             ,
+        STM_FEEDBACK    => 2             ,
+        FINISH_ABORT    => FINISH_ABORT
+    );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X16_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X16_F2";
+        SCENARIO_FILE   :  STRING  := "test_x16_f2.snr";
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X16_F2;
+architecture Model of ArgSort_AXI_Test_Bench_X16_F2 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        AXI_DATA_WIDTH  => 128           ,
+        MRG_WAYS        => 16            ,
         STM_FEEDBACK    => 2             ,
         FINISH_ABORT    => FINISH_ABORT
     );

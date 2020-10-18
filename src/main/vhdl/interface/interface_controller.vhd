@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.5.0
---!     @date    2020/10/3
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -750,6 +750,7 @@ begin
         signal   curr_base      :  unsigned(SIZE_BITS-1 downto 0);
         signal   next_base      :  unsigned(SIZE_BITS-1 downto 0);
         signal   offset         :  unsigned(SIZE_BITS-1 downto 0);
+        signal   offset_size    :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_size    :  unsigned(SIZE_BITS-1 downto 0);
         signal   remain_zero    :  boolean;
         signal   read_addr      :  unsigned(MRG_RD_REG_PARAM.ADDR_BITS-1 downto 0);
@@ -769,6 +770,7 @@ begin
                     curr_base   <= (others => '0');
                     next_base   <= (others => '0');
                     offset      <= (others => '0');
+                    offset_size <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
                     read_addr   <= (others => '0');
@@ -780,6 +782,7 @@ begin
                     curr_base   <= (others => '0');
                     next_base   <= (others => '0');
                     offset      <= (others => '0');
+                    offset_size <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
                     read_addr   <= (others => '0');
@@ -796,6 +799,7 @@ begin
                             curr_base    <= (others => '0');
                             next_base    <= sort_block_size;
                             offset       <= (others => '0');
+                            offset_size  <= resize(channel * mrg_reader_xsize, offset_size'length);
                             remain_zero  <= FALSE;
                             remain_size  <= (others => '0');
                             read_addr    <= (others => '0');
@@ -803,7 +807,7 @@ begin
                             read_last    <= FALSE;
                         when S0_STATE =>
                             curr_state   <= S1_STATE;
-                            offset       <= resize(curr_base + (channel * mrg_reader_xsize), offset'length);
+                            offset       <= resize(curr_base + offset_size, offset'length);
                             read_last    <= (sort_total_size <= next_base);
                         when S1_STATE =>
                             curr_state   <= S2_STATE;

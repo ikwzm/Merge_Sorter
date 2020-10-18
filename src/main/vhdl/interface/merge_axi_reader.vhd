@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -52,7 +52,9 @@ entity  Merge_AXI_Reader is
         AXI_BUF_DEPTH   :  integer := 11;
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_RDATA_REGS  :  integer :=  2;
-        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        ARB_NODE_NUM    :  integer :=  4;
+        ARB_PIPELINE    :  integer :=  0
     );
     port (
     -------------------------------------------------------------------------------
@@ -131,9 +133,19 @@ architecture RTL of Merge_AXI_Reader is
         else            return B;
         end if;
     end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  MIN(A,B:integer) return integer is
+    begin
+        if (A < B) then return A;
+        else            return B;
+        end if;
+    end function;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
+    constant  ALIGNMENT_BITS    :  integer := MIN(WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DATA_BITS     :  integer := MAX(WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
@@ -209,7 +221,8 @@ begin
             REQ_SIZE_VALID      => 1                   , -- 
             FLOW_VALID          => 1                   , -- 
             BUF_DATA_WIDTH      => BUF_DATA_BITS       , -- 
-            BUF_PTR_BITS        => BUF_DEPTH           , -- 
+            BUF_PTR_BITS        => BUF_DEPTH           , --
+            ALIGNMENT_BITS      => ALIGNMENT_BITS      , --
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
             XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
             XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
@@ -363,7 +376,9 @@ begin
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => AXI_XFER_SIZE         --   
+            MAX_XFER_SIZE       => AXI_XFER_SIZE       , --   
+            ARB_NODE_NUM        => ARB_NODE_NUM        , --   
+            ARB_PIPELINE        => ARB_PIPELINE          --   
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------

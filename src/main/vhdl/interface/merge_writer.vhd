@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
---!     @version 0.5.0
---!     @date    2020/10/8
+--!     @version 0.6.0
+--!     @date    2020/10/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -224,6 +224,7 @@ begin
             O_FIXED_POOL_OPEN   => 1                       , --
             I_CLK_RATE          => 1                       , --
             I_DATA_BITS         => WORDS*WORD_BITS         , --
+            I_WORD_BITS         => WORD_BITS               , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
             O2I_OPEN_INFO_BITS  => 1                       , --
