@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 0.5.0                                                           --
---!     @date    2020/10/05                                                      --
+--!     @version 0.7.0                                                           --
+--!     @date    2020/10/27                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -39,6 +39,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
+use     Merge_Sorter.Sorting_Network;
 -----------------------------------------------------------------------------------
 --! @brief Merge Sorter Core Component Library Description Package               --
 -----------------------------------------------------------------------------------
@@ -231,6 +232,30 @@ component Core_Stream_Intake
         O_LAST          :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
         O_VALID         :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
         O_READY         :  in  std_logic_vector(MRG_WAYS                      -1 downto 0)
+    );
+end component;
+-----------------------------------------------------------------------------------
+--! @brief Sorting_Network_Core                                                  --
+-----------------------------------------------------------------------------------
+component Sorting_Network_Core
+    generic (
+        NETWORK_PARAM   :  Sorting_Network.Param_Type := Sorting_Network.Param_Null;
+        WORD_PARAM      :  Word.Param_Type            := Word.Default_Param;
+        INFO_BITS       :  integer :=  3
+    );
+    port (
+        CLK             :  in  std_logic;
+        RST             :  in  std_logic;
+        CLR             :  in  std_logic;
+        I_WORD          :  in  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
+        I_INFO          :  in  std_logic_vector(INFO_BITS-1 downto 0) := (others => '0');
+        I_VALID         :  in  std_logic;
+        I_READY         :  out std_logic;
+        O_WORD          :  out std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(INFO_BITS-1 downto 0);
+        O_VALID         :  out std_logic;
+        O_READY         :  in  std_logic;
+        BUSY            :  out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
