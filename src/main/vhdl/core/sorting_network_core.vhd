@@ -2,7 +2,7 @@
 --!     @file    sorting_network_core.vhd
 --!     @brief   Sorting Network Core Module :
 --!     @version 0.7.0
---!     @date    2020/10/27
+--!     @date    2020/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -76,8 +76,8 @@ architecture RTL of Sorting_Network_Core is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  STAGE_FIRST       :  integer := NETWORK_PARAM.Stage_Lo - 1;
-    constant  STAGE_SECOND      :  integer := NETWORK_PARAM.Stage_Lo;
+    constant  STAGE_OPENER      :  integer := NETWORK_PARAM.Stage_Lo - 1;
+    constant  STAGE_FIRST       :  integer := NETWORK_PARAM.Stage_Lo;
     constant  STAGE_LAST        :  integer := NETWORK_PARAM.Stage_Hi;
     -------------------------------------------------------------------------------
     --
@@ -85,57 +85,47 @@ architecture RTL of Sorting_Network_Core is
     subtype   WORD_TYPE         is std_logic_vector (WORD_PARAM.BITS-1 downto 0);
     type      STAGE_WORD_TYPE   is array (NETWORK_PARAM.Lo to NETWORK_PARAM.Hi) of WORD_TYPE;
     type      STAGE_WORD_VECTOR is array (integer range <>) of STAGE_WORD_TYPE;
-    signal    stage_word        :  STAGE_WORD_VECTOR(STAGE_FIRST to STAGE_LAST);
+    signal    stage_word        :  STAGE_WORD_VECTOR(STAGE_OPENER to STAGE_LAST);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     subtype   STAGE_INFO_TYPE   is std_logic_vector (INFO_BITS-1 downto 0);
     type      STAGE_INFO_VECTOR is array (integer range <>) of STAGE_INFO_TYPE;
-    signal    stage_info        :  STAGE_INFO_VECTOR(STAGE_FIRST to STAGE_LAST);
+    signal    stage_info        :  STAGE_INFO_VECTOR(STAGE_OPENER to STAGE_LAST);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    stage_valid       :  std_logic_vector (STAGE_FIRST to STAGE_LAST);
-    signal    stage_ready       :  std_logic_vector (STAGE_FIRST to STAGE_LAST);
-    signal    stage_busy        :  std_logic_vector (STAGE_FIRST to STAGE_LAST);
-    constant  STAGE_BUSY_ALL0   :  std_logic_vector (STAGE_FIRST to STAGE_LAST) := (others => '0');
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    constant  REGS_LO           :  integer := 0;
-    constant  REGS_WORD_LO      :  integer := REGS_LO;
-    constant  REGS_WORD_HI      :  integer := REGS_WORD_LO + NETWORK_PARAM.Size*WORD_PARAM.BITS-1;
-    constant  REGS_INFO_LO      :  integer := REGS_WORD_HI + 1;
-    constant  REGS_INFO_HI      :  integer := REGS_INFO_LO + INFO_BITS - 1;
-    constant  REGS_HI           :  integer := REGS_INFO_HI;
-    constant  REGS_BITS         :  integer := REGS_HI - REGS_LO + 1;
+    signal    stage_valid       :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
+    signal    stage_ready       :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
+    signal    stage_busy        :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
+    constant  STAGE_BUSY_ALL0   :  std_logic_vector (STAGE_OPENER to STAGE_LAST) := (others => '0');
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    INTAKE: block
+    OPENER: block
     begin
         NET: for i in 0 to NETWORK_PARAM.Size-1 generate
-            stage_word(STAGE_FIRST)(NETWORK_PARAM.Lo+i) <= I_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+            stage_word(STAGE_OPENER)(NETWORK_PARAM.Lo+i) <= I_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
         end generate;
-        stage_info (STAGE_FIRST) <= I_INFO;
-        stage_valid(STAGE_FIRST) <= I_VALID;
-        stage_busy (STAGE_FIRST) <= '0';
-        I_READY <= stage_ready(STAGE_FIRST);
+        stage_info (STAGE_OPENER) <= I_INFO;
+        stage_valid(STAGE_OPENER) <= I_VALID;
+        stage_busy (STAGE_OPENER) <= '0';
+        I_READY <= stage_ready(STAGE_OPENER);
     end block;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    STAGE: for curr_stage in STAGE_SECOND to STAGE_LAST generate
-        constant  Stage_Param   :  Sorting_Network.Stage_Type := NETWORK_PARAM.Stage_List(curr_stage);
+    MAIN: for stage in STAGE_FIRST to STAGE_LAST generate
+        constant  Stage_Param   :  Sorting_Network.Stage_Type := NETWORK_PARAM.Stage_List(stage);
         signal    sorted_word   :  STAGE_WORD_TYPE;
     begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
-            constant   STEP              :  integer := Stage_Param.Comparator_List(i).STEP;
-            constant   SORT_ORDER        :  integer := Stage_Param.Comparator_List(i).ORDER;
+            constant  STEP           :  integer := Stage_Param.Comparator_List(i).STEP;
+            constant  SORT_ORDER     :  integer := Stage_Param.Comparator_List(i).ORDER;
         begin
             XCHG: if STEP > 0 generate
                 signal    comp_sel_a     :  std_logic;
@@ -144,64 +134,73 @@ begin
                 -------------------------------------------------------------------
                 --
                 -------------------------------------------------------------------
-                COMP: Word_Compare                                        --
-                    generic map(                                          --
-                        WORD_PARAM  => WORD_PARAM                       , -- 
-                        SORT_ORDER  => SORT_ORDER                         -- 
-                    )                                                     -- 
-                    port map (                                            --
-                        CLK         => CLK                              , -- In  :
-                        RST         => RST                              , -- In  :
-                        CLR         => CLR                              , -- In  :
-                        A_WORD      => stage_word(curr_stage-1)(i     ) , -- In  :
-                        B_WORD      => stage_word(curr_stage-1)(i+STEP) , -- In  :
-                        VALID       => '1'                              , -- In  :
-                        READY       => open                             , -- Out :
-                        SEL_A       => comp_sel_a                       , -- Out :
-                        SEL_B       => comp_sel_b                         -- Out :
-                    );                                                    -- 
-                sorted_word(i     ) <= stage_word(curr_stage-1)(i     ) when (comp_sel_a = '1') else
-                                       stage_word(curr_stage-1)(i+STEP);
-                sorted_word(i+STEP) <= stage_word(curr_stage-1)(i+STEP) when (comp_sel_a = '1') else
-                                       stage_word(curr_stage-1)(i     );
+                COMP: Word_Compare                                    --
+                    generic map(                                      --
+                        WORD_PARAM  => WORD_PARAM                   , -- 
+                        SORT_ORDER  => SORT_ORDER                     -- 
+                    )                                                 -- 
+                    port map (                                        --
+                        CLK         => CLK                          , -- In  :
+                        RST         => RST                          , -- In  :
+                        CLR         => CLR                          , -- In  :
+                        A_WORD      => stage_word(stage-1)(i     )  , -- In  :
+                        B_WORD      => stage_word(stage-1)(i+STEP)  , -- In  :
+                        VALID       => '1'                          , -- In  :
+                        READY       => open                         , -- Out :
+                        SEL_A       => comp_sel_a                   , -- Out :
+                        SEL_B       => comp_sel_b                     -- Out :
+                    );                                                -- 
+                sorted_word(i     ) <= stage_word(stage-1)(i     ) when (comp_sel_a = '1') else
+                                       stage_word(stage-1)(i+STEP);
+                sorted_word(i+STEP) <= stage_word(stage-1)(i+STEP) when (comp_sel_a = '1') else
+                                       stage_word(stage-1)(i     );
             end generate;
             PASS: if STEP = 0 generate
-                sorted_word(i     ) <= stage_word(curr_stage-1)(i     );
+                sorted_word(i     ) <= stage_word(stage-1)(i     );
             end generate;
         end generate;
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
         REGS: block
-            signal    i_data     :  std_logic_vector(REGS_BITS-1 downto 0);
-            signal    o_data     :  std_logic_vector(REGS_BITS-1 downto 0);
+            constant  WORD_LO   :  integer := 0;
+            constant  DATA_LO   :  integer := WORD_LO;
+            constant  DATA_HI   :  integer := DATA_LO + NETWORK_PARAM.Size*WORD_PARAM.BITS-1;
+            constant  INFO_LO   :  integer := DATA_HI + 1;
+            constant  INFO_HI   :  integer := INFO_LO + INFO_BITS - 1;
+            constant  WORD_HI   :  integer := INFO_HI;
+            constant  WORD_BITS :  integer := WORD_HI - WORD_LO + 1;
+            signal    d_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+            signal    q_word    :  std_logic_vector(WORD_BITS-1 downto 0);
         begin
             NET_I: for i in 0 to NETWORK_PARAM.Size-1 generate
-                i_data((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= sorted_word(i+NETWORK_PARAM.Lo);
+                d_word((i+1)*WORD_PARAM.BITS-1+DATA_LO downto i*WORD_PARAM.BITS+DATA_LO)
+                    <= sorted_word(i+NETWORK_PARAM.Lo);
             end generate;
-            i_data(REGS_INFO_HI downto REGS_INFO_LO) <= stage_info(curr_stage-1);
-            Q: PIPELINE_REGISTER                                 -- 
-                generic map (                                    -- 
-                    WORD_BITS   => REGS_BITS,                    -- 
-                    QUEUE_SIZE  => Stage_Param.QUEUE_SIZE        -- 
-                )                                                -- 
-                port map (                                       -- 
-                    CLK         => CLK                         , -- In  :
-                    RST         => RST                         , -- In  :
-                    CLR         => CLR                         , -- In  :
-                    I_WORD      => i_data                      , -- In  :
-                    I_VAL       => stage_valid(curr_stage-1)   , -- In  :
-                    I_RDY       => stage_ready(curr_stage-1)   , -- Out :
-                    Q_WORD      => o_data                      , -- Out :
-                    Q_VAL       => stage_valid(curr_stage  )   , -- Out :
-                    Q_RDY       => stage_ready(curr_stage  )   , -- In  :
-                    VALID       => open                        , -- Out :
-                    BUSY        => stage_busy (curr_stage  )     -- 
+            d_word(INFO_HI downto INFO_LO) <= stage_info(stage-1);
+            Q: PIPELINE_REGISTER                            -- 
+                generic map (                               -- 
+                    WORD_BITS   => WORD_BITS,               -- 
+                    QUEUE_SIZE  => Stage_Param.QUEUE_SIZE   -- 
+                )                                           -- 
+                port map (                                  -- 
+                    CLK         => CLK                    , -- In  :
+                    RST         => RST                    , -- In  :
+                    CLR         => CLR                    , -- In  :
+                    I_WORD      => d_word                 , -- In  :
+                    I_VAL       => stage_valid(stage-1)   , -- In  :
+                    I_RDY       => stage_ready(stage-1)   , -- Out :
+                    Q_WORD      => q_word                 , -- Out :
+                    Q_VAL       => stage_valid(stage  )   , -- Out :
+                    Q_RDY       => stage_ready(stage  )   , -- In  :
+                    VALID       => open                   , -- Out :
+                    BUSY        => stage_busy (stage  )     -- 
                 );
             NET_O: for i in 0 to NETWORK_PARAM.Size-1 generate
-                stage_word(curr_stage)(i+NETWORK_PARAM.Lo) <= o_data((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+                stage_word(stage)(i+NETWORK_PARAM.Lo)
+                    <= q_word((i+1)*WORD_PARAM.BITS-1+DATA_LO downto i*WORD_PARAM.BITS+DATA_LO);
             end generate;
-            stage_info(curr_stage) <= o_data(REGS_INFO_HI downto REGS_INFO_LO);
+            stage_info(stage) <= q_word(INFO_HI downto INFO_LO);
         end block;
     end generate;
     -------------------------------------------------------------------------------
