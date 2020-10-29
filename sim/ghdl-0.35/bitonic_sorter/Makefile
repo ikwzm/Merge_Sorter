@@ -8,7 +8,7 @@ DUMMY_PLUG_SRC_PATH  = $(DUMMY_PLUG_PATH)/src/main/vhdl
 DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl-0.35/dummy_plug
 DUMMY_PLUG_TOOL_PATH = $(DUMMY_PLUG_PATH)/tools
 
-SCENARIO_PATH        = ../../../src/test/scenarios/bitonic_sorter
+SCENARIO_PATH        = ../../../src/test/scenarios/sorting_network
 
 COPY       = cp
 REMOVE     = -rm

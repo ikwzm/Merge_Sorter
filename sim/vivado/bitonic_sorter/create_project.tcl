@@ -6,7 +6,7 @@ set project_directory       [file dirname [info script]]
 set project_name            "bitonic_sorter"
 set device_parts            "xc7z020clg400-1"
 set test_bench              "Bitonic_Sorter_Test_Bench_X08_O0_S0_Q2"
-set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x08_O0_S0.snr" ]
+set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" "sorting_network" "test_x08_O0_S0.snr" ]
 #
 # Create project
 #

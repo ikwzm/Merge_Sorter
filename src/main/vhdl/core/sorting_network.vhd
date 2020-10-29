@@ -2,7 +2,7 @@
 --!     @file    sorting_network.vhd
 --!     @brief   Sorting Network Package :
 --!     @version 0.7.0
---!     @date    2020/10/24
+--!     @date    2020/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -118,6 +118,11 @@ package Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_Bitonic_Sorter_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
     function   New_Bitonic_Merger_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_OddEven_Sorter_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
+    function   New_OddEven_Merger_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -316,6 +321,127 @@ package body Sorting_Network is
         network.Hi       := HI;
         network.Stage_Lo := 1;
         bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, UP);
+        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    procedure oddeven_merge(
+        variable  NETWORK     :  inout Param_Type;
+                  START_STAGE :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  R           :  in    integer;
+                  ORDER       :  in    integer
+    ) is
+        variable  step        :        integer;
+        variable  index       :        integer;
+        variable  first       :        Param_Type;
+        variable  second      :        Param_Type;
+    begin
+        step := R * 2;
+        if (HI - LO > step) then
+            first  := NETWORK;
+            second := NETWORK;
+            oddeven_merge(first , START_STAGE + 1, LO    , HI, step, ORDER);
+            oddeven_merge(second, START_STAGE + 1, LO + r, HI, step, ORDER);
+            merge_network_stage_list(NETWORK, first , START_STAGE + 1);
+            merge_network_stage_list(NETWORK, second, START_STAGE + 1);
+            index  := LO + R;
+            while (index <= HI - R) loop
+                Add_Comparator(NETWORK, START_STAGE, index, index + R, ORDER);
+                index := index + step;
+            end loop;
+        else
+            Add_Comparator(NETWORK, START_STAGE, LO, LO + R, ORDER);
+            NETWORK.Stage_Hi   := START_STAGE;
+            NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
+        end if;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    procedure oddeven_sort(
+        variable  NETWORK     :  inout Param_Type;
+                  START_STAGE :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  ORDER       :  in    integer
+    ) is
+        variable  mid         :        integer;
+        variable  first       :        Param_Type;
+        variable  second      :        Param_Type;
+        variable  next_stage  :        integer;
+    begin
+        if (HI - LO > 0) then
+            oddeven_merge(NETWORK, START_STAGE, LO, HI, 1, ORDER);
+            first      := NETWORK;
+            second     := NETWORK;
+            mid        := LO + ((HI - LO) / 2);
+            next_stage := NETWORK.Stage_HI + 1;
+            oddeven_sort(first , next_stage, LO   , mid, ORDER);
+            oddeven_sort(second, next_stage, mid+1, HI , ORDER);
+            merge_network_stage_list(NETWORK, first , next_stage);
+            merge_network_stage_list(NETWORK, second, next_stage);
+        end if;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    procedure reverse_network_stage_list(
+        variable  NETWORK     :  inout Param_Type
+    ) is
+        variable  stage_list  :        Stage_Vector(NETWORK.Stage_LO to NETWORK.Stage_HI);
+    begin
+        stage_list(NETWORK.Stage_LO to NETWORK.Stage_HI) := NETWORK.Stage_List(NETWORK.Stage_LO to NETWORK.Stage_HI);
+        for i in 0 to NETWORK.Stage_Size-1 loop
+            NETWORK.Stage_List(NETWORK.Stage_Lo+i) := stage_list(NETWORK.Stage_Hi-i);
+        end loop;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_OddEven_Sorter_Network(LO,HI:integer; UP: boolean; QUEUE: integer) return Param_Type
+    is
+        variable network :  Param_Type;
+        variable order   :  integer;
+    begin
+        network          := Param_Null;
+        network.Size     := HI - LO + 1;
+        network.Lo       := LO;
+        network.Hi       := HI;
+        network.Stage_Lo := 1;
+        if (UP) then
+            order := 1;
+        else
+            order := 0;
+        end if;
+        oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi, order);
+        reverse_network_stage_list(network);
+        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_OddEven_Merger_Network(LO,HI:integer; UP: boolean; QUEUE: integer) return Param_Type
+    is
+        variable network :  Param_Type;
+        variable order   :  integer;
+    begin
+        network          := Param_Null;
+        network.Size     := HI - LO + 1;
+        network.Lo       := LO;
+        network.Hi       := HI;
+        network.Stage_Lo := 1;
+        if (UP) then
+            order := 1;
+        else
+            order := 0;
+        end if;
+        oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1, order);
+        reverse_network_stage_list(network);
         Add_Queue_Params(network, QUEUE);
         return network;
     end function;
