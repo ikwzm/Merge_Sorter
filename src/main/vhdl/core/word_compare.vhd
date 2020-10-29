@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    word_compare.vhd
 --!     @brief   Merge Sorter Word Compare Module :
---!     @version 0.5.0
---!     @date    2020/10/5
+--!     @version 0.7.0
+--!     @date    2020/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -69,8 +69,8 @@ architecture RTL of Word_Compare is
         variable a_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
         variable b_comp  :  unsigned(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
     begin
-        a_comp := unsigned(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
-        b_comp := unsigned(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        a_comp := to_01(unsigned(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO)));
+        b_comp := to_01(unsigned(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO)));
         if (ORDER = 0) then
             return (a_comp <= b_comp);
         else
@@ -84,8 +84,8 @@ architecture RTL of Word_Compare is
         variable a_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
         variable b_comp  :    signed(WORD_PARAM.DATA_COMPARE_HI - WORD_PARAM.DATA_COMPARE_LO downto 0);
     begin
-        a_comp :=   signed(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
-        b_comp :=   signed(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO));
+        a_comp := to_01(  signed(A_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO)));
+        b_comp := to_01(  signed(B_WORD(WORD_PARAM.DATA_COMPARE_HI downto WORD_PARAM.DATA_COMPARE_LO)));
         if (ORDER = 0) then
             return (a_comp <= b_comp);
         else
