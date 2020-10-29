@@ -41,18 +41,18 @@ library Merge_Sorter;
 use     Merge_Sorter.Word;
 package Sorting_Network is
     -------------------------------------------------------------------------------
-    --
+    -- 
     -------------------------------------------------------------------------------
     constant  Max_Network_Size      :  integer := 256;
     constant  Max_Stage_Size        :  integer := 256;
     constant  Max_Stage_Queue_Size  :  integer := 2;
     constant  Stage_Queue_Ctrl_Bits :  integer := Max_Stage_Queue_Size+1;
     -------------------------------------------------------------------------------
-    --
+    -- 
     -------------------------------------------------------------------------------
     type      Comparator_Type       is record
-                  STEP              :  integer;
-                  ORDER             :  integer;
+                  STEP              :  integer;  -- Connect Network
+                  ORDER             :  integer;  -- SORT ORDER (0=Ascending,1:Descending)
     end record;
     constant  Comparator_Null       :  Comparator_Type := (
                   STEP              => 0,
@@ -60,7 +60,7 @@ package Sorting_Network is
               );
     type      Comparator_Vector     is array (integer range <>) of Comparator_Type;
     -------------------------------------------------------------------------------
-    --
+    -- 
     -------------------------------------------------------------------------------
     type      Stage_Type            is record
                   Comparator_List   :  Comparator_Vector(0 to Max_Network_Size-1);
@@ -97,7 +97,7 @@ package Sorting_Network is
                   Hi                => 0
               );
     -------------------------------------------------------------------------------
-    --
+    -- 
     -------------------------------------------------------------------------------
     procedure  Add_Comparator(
         variable  NETWORK     :  inout Param_Type;
@@ -123,24 +123,6 @@ package Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_OddEven_Sorter_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
     function   New_OddEven_Merger_Network(LO,HI:integer; UP: boolean; QUEUE:integer) return Param_Type;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    component  Sorting_Network_Core 
-        generic (
-            NETWORK_PARAM   :  Param_Type      := Param_Null;
-            WORD_PARAM      :  Word.Param_Type := Word.Default_Param
-        );
-        port (
-            CLK             :  in  std_logic;
-            RST             :  in  std_logic;
-            CLR             :  in  std_logic;
-            I_WORD          :  in  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
-            O_WORD          :  out std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
-            STAGE_LOAD      :  in  std_logic_vector(NETWORK_PARAM.Stage_Ctrl_Hi downto NETWORK_PARAM.Stage_Ctrl_Lo ) := (others => '0');
-            STAGE_SHIFT     :  in  std_logic_vector(NETWORK_PARAM.Stage_Ctrl_Hi downto NETWORK_PARAM.Stage_Ctrl_Lo) := (others => '0')
-        );
-    end component;
 end Sorting_Network;
 -----------------------------------------------------------------------------------
 --
