@@ -2,7 +2,7 @@
 --!     @file    sorting_network_core.vhd
 --!     @brief   Sorting Network Core Module :
 --!     @version 0.7.0
---!     @date    2020/10/29
+--!     @date    2020/10/30
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

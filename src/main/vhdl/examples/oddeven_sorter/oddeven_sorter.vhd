@@ -2,7 +2,7 @@
 --!     @file    oddeven_sorter.vhd
 --!     @brief   Batcher's Odd-Even Merge Sorter
 --!     @version 0.7.0
---!     @date    2020/10/29
+--!     @date    2020/10/30
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -100,7 +100,7 @@ begin
             NETWORK_PARAM   => Sorting_Network.New_OddEven_Sorter_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
-                                   UP    => (SORT_ORDER = 0),
+                                   ORDER => SORT_ORDER,
                                    QUEUE => QUEUE_SIZE
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
