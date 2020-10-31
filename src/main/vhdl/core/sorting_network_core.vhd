@@ -125,11 +125,12 @@ begin
         ---------------------------------------------------------------------------
         NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
             constant  STEP           :  integer := Stage_Param.Comparator_List(i).STEP;
-            constant  SORT_ORDER     :  integer := Stage_Param.Comparator_List(i).ORDER;
+            constant  UP             :  boolean := Stage_Param.Comparator_List(i).UP;
         begin
             XCHG: if STEP > 0 generate
                 signal    comp_sel_a     :  std_logic;
                 signal    comp_sel_b     :  std_logic;
+                signal    swap           :  boolean;
             begin
                 -------------------------------------------------------------------
                 --
@@ -137,7 +138,7 @@ begin
                 COMP: Word_Compare                                    --
                     generic map(                                      --
                         WORD_PARAM  => WORD_PARAM                   , -- 
-                        SORT_ORDER  => SORT_ORDER                     -- 
+                        SORT_ORDER  => NETWORK_PARAM.Sort_Order       -- 
                     )                                                 -- 
                     port map (                                        --
                         CLK         => CLK                          , -- In  :
@@ -149,11 +150,13 @@ begin
                         READY       => open                         , -- Out :
                         SEL_A       => comp_sel_a                   , -- Out :
                         SEL_B       => comp_sel_b                     -- Out :
-                    );                                                -- 
-                sorted_word(i     ) <= stage_word(stage-1)(i     ) when (comp_sel_a = '1') else
-                                       stage_word(stage-1)(i+STEP);
-                sorted_word(i+STEP) <= stage_word(stage-1)(i+STEP) when (comp_sel_a = '1') else
+                    );                                                --
+                swap <= (comp_sel_b = '1' and UP = TRUE ) or
+                        (comp_sel_a = '1' and UP = FALSE);
+                sorted_word(i     ) <= stage_word(stage-1)(i+STEP) when (swap) else
                                        stage_word(stage-1)(i     );
+                sorted_word(i+STEP) <= stage_word(stage-1)(i     ) when (swap) else
+                                       stage_word(stage-1)(i+STEP);
             end generate;
             PASS: if STEP = 0 generate
                 sorted_word(i     ) <= stage_word(stage-1)(i     );

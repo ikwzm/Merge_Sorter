@@ -51,12 +51,12 @@ package Sorting_Network is
     -- 
     -------------------------------------------------------------------------------
     type      Comparator_Type       is record
-                  STEP              :  integer;  -- Connect Network
-                  ORDER             :  integer;  -- SORT ORDER (0=Ascending,1:Descending)
+                  STEP              :  integer;
+                  UP                :  boolean;
     end record;
     constant  Comparator_Null       :  Comparator_Type := (
                   STEP              => 0,
-                  ORDER             => 0
+                  UP                => TRUE
               );
     type      Comparator_Vector     is array (integer range <>) of Comparator_Type;
     -------------------------------------------------------------------------------
@@ -81,6 +81,7 @@ package Sorting_Network is
                   Stage_Hi          :  integer range 0 to Max_Stage_Size;
                   Stage_Ctrl_Lo     :  integer range 0 to Max_Stage_Size*Stage_Queue_Ctrl_Bits;
                   Stage_Ctrl_Hi     :  integer range 0 to Max_Stage_Size*Stage_Queue_Ctrl_Bits;
+                  Sort_Order        :  integer;
                   Size              :  integer range 0 to Max_Network_Size;
                   Lo                :  integer range 0 to Max_Network_Size-1;
                   Hi                :  integer range 0 to Max_Network_Size-1;
@@ -92,6 +93,7 @@ package Sorting_Network is
                   Stage_Hi          => 0,
                   Stage_Ctrl_Lo     => 0,
                   Stage_Ctrl_Hi     => 0,
+                  Sort_Order        => 0,
                   Size              => 0,
                   Lo                => 0,
                   Hi                => 0
@@ -104,7 +106,7 @@ package Sorting_Network is
                   STAGE       :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
-                  ORDER       :  in    integer
+                  UP          :  in    boolean
     );
     -------------------------------------------------------------------------------
     --
@@ -139,23 +141,23 @@ package body Sorting_Network is
                   STAGE       :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
-                  ORDER       :  in    integer
+                  UP          :  in    boolean
     ) is
     begin
         assert (HI - LO > 0)
             report "Add_Comparator error" severity ERROR;
         assert ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  = HI-LO) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).ORDER = ORDER)))
+                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = HI-LO) and
+                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).UP   = UP   )))
             report "Add_Comparator error" severity ERROR;
         assert ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  = LO-HI) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).ORDER = ORDER)))
+                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = LO-HI) and
+                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).UP   = UP   )))
             report "Add_Comparator error" severity ERROR;
         NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  := HI-LO;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).ORDER := ORDER;
+        NETWORK.Stage_List(STAGE).Comparator_List(LO).UP    := UP;
         NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  := LO-HI;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).ORDER := ORDER;
+        NETWORK.Stage_List(STAGE).Comparator_List(HI).UP    := UP;
     end procedure;
     -------------------------------------------------------------------------------
     --
@@ -174,12 +176,54 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    procedure merge_network_stage(
+        variable  NETWORK     :  inout Param_Type;
+                  A           :  in    Param_Type;
+                  STAGE       :  in    integer
+    ) is
+        variable  n_comp      :        Comparator_Type;
+        variable  a_comp      :        Comparator_Type;
+    begin
+        for i in NETWORK.Lo to NETWORK.Hi loop
+            n_comp := NETWORK.Stage_List(STAGE).Comparator_List(i);
+            a_comp := A      .Stage_List(STAGE).Comparator_List(i);
+            if (a_comp.STEP /= 0) then
+                assert ((n_comp.STEP = 0) or (n_comp = a_comp))
+                    report "merge_network_stage error" severity ERROR;
+                NETWORK.Stage_List(STAGE).Comparator_List(i) := a_comp;
+            end if;
+        end loop;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    procedure merge_network_stage_list(
+        variable  NETWORK     :  inout Param_Type;
+                  A           :  in    Param_Type;
+                  START_STAGE :  in    integer
+    ) is
+        variable  stage_size  :        integer;
+        variable  stage_hi    :        integer;
+    begin
+        if (NETWORK.Stage_Hi <= A.Stage_Hi) then
+            NETWORK.Stage_Hi := A.Stage_Hi;
+        end if;
+        for stage in START_STAGE to NETWORK.Stage_Hi loop
+            if (stage <= A.Stage_Hi) then
+                merge_network_stage(NETWORK, A, stage);
+            end if;
+        end loop;
+        NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     procedure bitonic_merge(
         variable  NETWORK     :  inout Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
-                  ORDER       :  in    integer
+                  UP          :  in    boolean
     ) is
         variable  dist        :        integer;
         variable  index       :        integer;
@@ -188,15 +232,15 @@ package body Sorting_Network is
             dist   := (HI-LO+1)/2;
             index  := LO;
             while (index+dist <= HI) loop
-                Add_Comparator(NETWORK, START_STAGE, index, index+dist, ORDER);
+                Add_Comparator(NETWORK, START_STAGE, index, index+dist, UP);
                 index := index + 1;
             end loop;
             if (START_STAGE > NETWORK.Stage_Hi) then
                 NETWORK.Stage_Hi   := START_STAGE;
                 NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
             end if;
-            bitonic_merge(NETWORK, START_STAGE + 1, LO     , LO+dist-1, ORDER);
-            bitonic_merge(NETWORK, START_STAGE + 1, LO+dist, HI       , ORDER);
+            bitonic_merge(NETWORK, START_STAGE + 1, LO     , LO+dist-1, UP);
+            bitonic_merge(NETWORK, START_STAGE + 1, LO+dist, HI       , UP);
         end if;
     end procedure;
     -------------------------------------------------------------------------------
@@ -207,15 +251,23 @@ package body Sorting_Network is
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
-                  ORDER       :  in    integer
+                  UP          :  in    boolean
     ) is
         variable  dist        :        integer;
+        variable  first       :        Param_Type;
+        variable  second      :        Param_Type;
+        variable  next_stage  :        integer;
     begin
         if (HI - LO > 0) then
             dist := (HI-LO+1)/2;
-            bitonic_sort (NETWORK, START_STAGE         , LO        , LO + dist-1, 0    );
-            bitonic_sort (NETWORK, START_STAGE         , LO + dist , HI         , 1    );
-            bitonic_merge(NETWORK, NETWORK.Stage_Hi + 1, LO        , HI         , ORDER);
+            first  := NETWORK;
+            second := NETWORK;
+            bitonic_sort (first  , START_STAGE, LO        , LO + dist-1, TRUE );
+            bitonic_sort (second , START_STAGE, LO + dist , HI         , FALSE);
+            merge_network_stage_list(NETWORK, first , START_STAGE);
+            merge_network_stage_list(NETWORK, second, START_STAGE);
+            next_stage := NETWORK.Stage_Hi + 1;
+            bitonic_merge(NETWORK, next_stage , LO        , HI         , UP   );
         end if;
     end procedure;
     -------------------------------------------------------------------------------
@@ -223,14 +275,16 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_Bitonic_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
     is
-        variable network :  Param_Type;
+        variable  network  :  Param_Type;
     begin
-        network          := Param_Null;
-        network.Size     := HI - LO + 1;
-        network.Lo       := LO;
-        network.Hi       := HI;
-        network.Stage_Lo := 1;
-        bitonic_sort(network, network.Stage_Lo, network.Lo, network.Hi, ORDER);
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        bitonic_sort(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
         Add_Queue_Params(network, QUEUE);
         return network;
     end function;
@@ -239,14 +293,16 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_Bitonic_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
     is
-        variable network :  Param_Type;
+        variable  network  :  Param_Type;
     begin
-        network          := Param_Null;
-        network.Size     := HI - LO + 1;
-        network.Lo       := LO;
-        network.Hi       := HI;
-        network.Stage_Lo := 1;
-        bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, ORDER);
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
         Add_Queue_Params(network, QUEUE);
         return network;
     end function;
@@ -258,23 +314,22 @@ package body Sorting_Network is
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
-                  R           :  in    integer;
-                  ORDER       :  in    integer
+                  R           :  in    integer
     ) is
         variable  step        :        integer;
         variable  index       :        integer;
     begin
         step := R * 2;
         if (HI - LO > step) then
-            oddeven_merge(NETWORK, START_STAGE + 1, LO    , HI, step, ORDER);
-            oddeven_merge(NETWORK, START_STAGE + 1, LO + r, HI, step, ORDER);
+            oddeven_merge(NETWORK, START_STAGE + 1, LO    , HI, step);
+            oddeven_merge(NETWORK, START_STAGE + 1, LO + r, HI, step);
             index  := LO + R;
             while (index <= HI - R) loop
-                Add_Comparator(NETWORK, START_STAGE, index, index + R, ORDER);
+                Add_Comparator(NETWORK, START_STAGE, index, index + R, TRUE);
                 index := index + step;
             end loop;
         else
-            Add_Comparator(NETWORK, START_STAGE, LO, LO + R, ORDER);
+            Add_Comparator(NETWORK, START_STAGE, LO, LO + R, TRUE);
         end if;
         if (START_STAGE > NETWORK.Stage_Hi) then
             NETWORK.Stage_Hi   := START_STAGE;
@@ -288,16 +343,15 @@ package body Sorting_Network is
         variable  NETWORK     :  inout Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
-                  HI          :  in    integer;
-                  ORDER       :  in    integer
+                  HI          :  in    integer
     ) is
         variable  mid         :        integer;
     begin
         if (HI - LO > 0) then
             mid := LO + ((HI - LO) / 2);
-            oddeven_merge(NETWORK, START_STAGE         , LO   , HI , 1, ORDER);
-            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, LO   , mid,    ORDER);
-            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, mid+1, HI ,    ORDER);
+            oddeven_merge(NETWORK, START_STAGE         , LO   , HI , 1);
+            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, LO   , mid   );
+            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, mid+1, HI    );
         end if;
     end procedure;
     -------------------------------------------------------------------------------
@@ -318,14 +372,16 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_OddEven_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
     is
-        variable network :  Param_Type;
+        variable  network  :  Param_Type;
     begin
-        network          := Param_Null;
-        network.Size     := HI - LO + 1;
-        network.Lo       := LO;
-        network.Hi       := HI;
-        network.Stage_Lo := 1;
-        oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi, ORDER);
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi);
         reverse_network_stage_list(network);
         Add_Queue_Params(network, QUEUE);
         return network;
@@ -335,14 +391,16 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     function   New_OddEven_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
     is
-        variable network :  Param_Type;
+        variable  network  :  Param_Type;
     begin
-        network          := Param_Null;
-        network.Size     := HI - LO + 1;
-        network.Lo       := LO;
-        network.Hi       := HI;
-        network.Stage_Lo := 1;
-        oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1, ORDER);
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1);
         reverse_network_stage_list(network);
         Add_Queue_Params(network, QUEUE);
         return network;
