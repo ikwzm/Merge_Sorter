@@ -33,10 +33,24 @@ module ScenarioWriter
   class Marchal      < Writer
   end
       
-  class IntakeStream < Writer
+  class Stream       < Writer
+
+    def initialize(name, file, data_width, user_width, word_width, atrb_width)
+      super(name, file)
+      @data_width = data_width
+      @word_width = word_width
+      @user_width = user_width
+      @atrb_width = atrb_width
+    end
 
     def transfer(vector, last=false, done=false)
       my_name
+      data_pos = 0
+      data_bit = 0
+      user_pos = 0
+      user_bit = 0
+      data_format = "0x%0#{(@data_width/4).ceil}X"
+      user_format = "0x%0#{(@user_width/4).ceil}X"
       vector.each_with_index do |data, index|
         _last = (index == vector.length-1 and last == true)? 1 : 0
         if data.nil? then
@@ -53,43 +67,32 @@ module ScenarioWriter
           _user = 0
           _data = data
         end
-        _user |= DONE_BIT if done == true
-        _data += 2**32    if _data < 0
-        @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
+        _user |= DONE_BIT        if done == true
+        _data += 2**@word_width  if _data < 0
+        data_bit = (_data << data_pos) | data_bit
+        user_bit = (_user << user_pos) | user_bit
+        data_pos = data_pos + @word_width
+        user_pos = user_pos + @atrb_width
+        if (index == vector.length-1) or (data_pos >= @data_width) then
+          @file.printf("  - XFER   : {DATA: %s, USER: %s, LAST: %d}\n", sprintf(data_format,data_bit), sprintf(user_format,user_bit), _last)
+          data_pos = 0
+          user_pos = 0
+          data_bit = 0
+          user_bit = 0
+        end
       end
     end
 
   end
 
-  class OutletStream < Writer
+  class IntakeStream < Stream
+  end
+  
+  class OutletStream < Stream
 
     def init
       my_name
       @file.puts "  - OUT    : {GPO(0): 0, GPO(1): 0}"
-    end
-
-    def transfer(vector, last=false, done=false)
-      my_name
-      vector.each_with_index do |data, index|
-        _last = (index == vector.length-1 and last == true)? 1 : 0
-        if data.nil? then
-          _user = NONE_BIT | POST_BIT
-          _data = 0
-        elsif data.kind_of?(Hash) then
-          _user  = data.fetch(:User, 0)
-          _user |= DONE_BIT if (data.fetch(:Done    , 0) == 1)
-          _user |= POST_BIT if (data.fetch(:PostPend, 0) == 1)
-          _user |= PRIO_BIT if (data.fetch(:Priority, 0) == 1)
-          _user |= NONE_BIT if (data.fetch(:None    , 0) == 1)
-          _data  = data.fetch(:Data, 0)
-        else
-          _user = 0
-          _data = data
-        end
-        _user |= DONE_BIT if done == true
-        _data += 2**32    if _data < 0
-        @file.printf("  - XFER   : {DATA: 0x%08X, USER: %d, LAST: %d}\n", _data, _user, _last)
-      end
     end
 
     def send_stm_request(timeout=nil)
