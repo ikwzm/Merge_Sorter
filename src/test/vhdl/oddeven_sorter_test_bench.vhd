@@ -70,16 +70,10 @@ architecture Model of OddEven_Sorter_Test_Bench is
     -------------------------------------------------------------------------------
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
-    constant   DATA_WORD_LO :  integer :=  0;
-    constant   DATA_WORD_HI :  integer := 11;
-    constant   DATA_ATRB_LO :  integer := 12;
-    constant   DATA_ATRB_HI :  integer := 15;
-    constant   DATA_BITS    :  integer := 16;
-    constant   WORD_COMP_LO :  integer :=  0;  
-    constant   WORD_COMP_HI :  integer :=  7;
-    constant   WORD_BITS    :  integer := DATA_WORD_HI - DATA_WORD_LO + 1;
-    constant   ATRB_BITS    :  integer := DATA_ATRB_HI - DATA_ATRB_LO + 1;
-    constant   USER_BITS    :  integer :=  2;
+    constant   DATA_BITS    :  integer :=  8;
+    constant   DATA_COMP_LO :  integer :=  0;
+    constant   DATA_COMP_HI :  integer :=  7;
+    constant   ATRB_BITS    :  integer :=  4;
     constant   SYNC_WIDTH   :  integer :=  2;
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer := GPO_WIDTH;
@@ -99,7 +93,7 @@ architecture Model of OddEven_Sorter_Test_Bench is
     -------------------------------------------------------------------------------
     constant   I_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => USER_BITS,
+                                   USER  => WORDS*ATRB_BITS,
                                    DEST  => 4,
                                    DATA  => WORDS*DATA_BITS
                                );
@@ -108,19 +102,17 @@ architecture Model of OddEven_Sorter_Test_Bench is
     signal     i_last       :  std_logic;
     signal     i_valid      :  std_logic;
     signal     i_ready      :  std_logic;
-    signal     i_word       :  std_logic_vector(WORDS*WORD_BITS-1 downto 0);
-    signal     i_atrb       :  std_logic_vector(WORDS*ATRB_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     constant   O_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => USER_BITS,
+                                   USER  => WORDS*ATRB_BITS,
                                    DEST  => 4,
                                    DATA  => WORDS*DATA_BITS
                                );
     signal     o_data       :  std_logic_vector(O_WIDTH.DATA  -1 downto 0);
-    constant   o_user       :  std_logic_vector(O_WIDTH.USER  -1 downto 0) := (others => '0');
+    signal     o_user       :  std_logic_vector(O_WIDTH.USER  -1 downto 0);
     signal     o_last       :  std_logic;
     signal     o_valid      :  std_logic;
     signal     o_ready      :  std_logic;
@@ -128,8 +120,6 @@ architecture Model of OddEven_Sorter_Test_Bench is
     constant   o_strb       :  std_logic_vector(O_WIDTH.DATA/8-1 downto 0) := (others => '1');
     constant   o_id         :  std_logic_vector(O_WIDTH.ID    -1 downto 0) := (others => '0');
     constant   o_dest       :  std_logic_vector(O_WIDTH.DEST  -1 downto 0) := (others => '0');
-    signal     o_word       :  std_logic_vector(WORDS*WORD_BITS-1 downto 0);
-    signal     o_atrb       :  std_logic_vector(WORDS*ATRB_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- GPIO(General Purpose Input/Output)
     -------------------------------------------------------------------------------
@@ -199,16 +189,6 @@ begin
             REPORT_STATUS   => O_REPORT        , -- Out :
             FINISH          => O_FINISH          -- Out :
         );                                       --
-    process (o_word, o_atrb)
-        variable   data : std_logic_vector(DATA_BITS-1 downto 0);
-    begin
-        for i in 0 to WORDS-1 loop
-            data := (others => '0');
-            data(DATA_WORD_HI downto DATA_WORD_LO) := o_word((i+1)*WORD_BITS-1 downto i*WORD_BITS);
-            data(DATA_ATRB_HI downto DATA_ATRB_LO) := o_atrb((i+1)*ATRB_BITS-1 downto i*ATRB_BITS);
-            o_data((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= data;
-        end loop;
-    end process;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -242,15 +222,6 @@ begin
             REPORT_STATUS   => I_REPORT        , -- Out :
             FINISH          => I_FINISH          -- Out :
         );                                       --
-    process (i_data)
-        variable   data : std_logic_vector(DATA_BITS-1 downto 0);
-    begin
-        for i in 0 to WORDS-1 loop
-            data := i_data((i+1)*DATA_BITS-1 downto i*DATA_BITS);
-            i_word((i+1)*WORD_BITS-1 downto i*WORD_BITS) <= data(DATA_WORD_HI downto DATA_WORD_LO);
-            i_atrb((i+1)*ATRB_BITS-1 downto i*ATRB_BITS) <= data(DATA_ATRB_HI downto DATA_ATRB_LO);
-        end loop;
-    end process;
     I_GPI <= O_GPO;
     O_GPI <= I_GPO;
     -------------------------------------------------------------------------------
@@ -259,9 +230,9 @@ begin
     DUT: entity Merge_Sorter.OddEven_Sorter      -- 
         generic map (                            -- 
             WORDS       => WORDS               , --
-            DATA_BITS   => WORD_BITS           , --
-            COMP_HIGH   => WORD_COMP_HI        , --
-            COMP_LOW    => WORD_COMP_LO        , --
+            DATA_BITS   => DATA_BITS           , --
+            COMP_HIGH   => DATA_COMP_HI        , --
+            COMP_LOW    => DATA_COMP_LO        , --
             COMP_SIGN   => COMP_SIGN           , --
             SORT_ORDER  => SORT_ORDER          , --
             ATRB_BITS   => ATRB_BITS           , --
@@ -272,13 +243,13 @@ begin
             CLK         => CLOCK               , -- In  :
             RST         => RESET               , -- In  :
             CLR         => CLEAR               , -- In  :
-            I_DATA      => i_word              , -- In  :
-            I_ATRB      => i_atrb              , -- In  :
+            I_DATA      => i_data              , -- In  :
+            I_ATRB      => i_user              , -- In  :
             I_INFO(0)   => i_last              , -- In  :
             I_VALID     => i_valid             , -- In  :
             I_READY     => i_ready             , -- Out :
-            O_DATA      => o_word              , -- Out :
-            O_ATRB      => o_atrb              , -- Out :
+            O_DATA      => o_data              , -- Out :
+            O_ATRB      => o_user              , -- Out :
             O_INFO(0)   => o_last              , -- Out :
             O_VALID     => o_valid             , -- Out :
             O_READY     => o_ready               -- In  :
@@ -320,93 +291,6 @@ begin
         end if;
         wait;
     end process;
-end Model;
------------------------------------------------------------------------------------
---
------------------------------------------------------------------------------------
-library ieee;
-use     ieee.std_logic_1164.all;
-entity  OddEven_Sorter_Test_Bench_X04_O0_S0_Q0 is
-    generic (
-        NAME            :  STRING  := "TEST_X04_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x04_O0_S0.snr";
-        WORDS           :  integer := 4;
-        SORT_ORDER      :  integer := 0;
-        COMP_SIGN       :  boolean := FALSE;
-        QUEUE_SIZE      :  integer := 0;
-        FINISH_ABORT    :  boolean := FALSE
-    );
-end     OddEven_Sorter_Test_Bench_X04_O0_S0_Q0;
-architecture Model of OddEven_Sorter_Test_Bench_X04_O0_S0_Q0 is
-begin
-    TEST: entity  WORK.OddEven_Sorter_Test_Bench
-        generic map (
-            NAME            => NAME,
-            SCENARIO_FILE   => SCENARIO_FILE,
-            WORDS           => WORDS,
-            SORT_ORDER      => SORT_ORDER,
-            COMP_SIGN       => COMP_SIGN,
-            QUEUE_SIZE      => QUEUE_SIZE,
-            FINISH_ABORT    => FINISH_ABORT
-        );
-end Model;
------------------------------------------------------------------------------------
---
------------------------------------------------------------------------------------
-library ieee;
-use     ieee.std_logic_1164.all;
-entity  OddEven_Sorter_Test_Bench_X04_O0_S0_Q1 is
-    generic (
-        NAME            :  STRING  := "TEST_X04_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x04_O0_S0.snr";
-        WORDS           :  integer := 4;
-        SORT_ORDER      :  integer := 0;
-        COMP_SIGN       :  boolean := FALSE;
-        QUEUE_SIZE      :  integer := 1;
-        FINISH_ABORT    :  boolean := FALSE
-    );
-end     OddEven_Sorter_Test_Bench_X04_O0_S0_Q1;
-architecture Model of OddEven_Sorter_Test_Bench_X04_O0_S0_Q1 is
-begin
-    TEST: entity  WORK.OddEven_Sorter_Test_Bench
-        generic map (
-            NAME            => NAME,
-            SCENARIO_FILE   => SCENARIO_FILE,
-            WORDS           => WORDS,
-            SORT_ORDER      => SORT_ORDER,
-            COMP_SIGN       => COMP_SIGN,
-            QUEUE_SIZE      => QUEUE_SIZE,
-            FINISH_ABORT    => FINISH_ABORT
-        );
-end Model;
------------------------------------------------------------------------------------
---
------------------------------------------------------------------------------------
-library ieee;
-use     ieee.std_logic_1164.all;
-entity  OddEven_Sorter_Test_Bench_X04_O0_S0_Q2 is
-    generic (
-        NAME            :  STRING  := "TEST_X04_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x04_O0_S0.snr";
-        WORDS           :  integer := 4;
-        SORT_ORDER      :  integer := 0;
-        COMP_SIGN       :  boolean := FALSE;
-        QUEUE_SIZE      :  integer := 2;
-        FINISH_ABORT    :  boolean := FALSE
-    );
-end     OddEven_Sorter_Test_Bench_X04_O0_S0_Q2;
-architecture Model of OddEven_Sorter_Test_Bench_X04_O0_S0_Q2 is
-begin
-    TEST: entity  WORK.OddEven_Sorter_Test_Bench
-        generic map (
-            NAME            => NAME,
-            SCENARIO_FILE   => SCENARIO_FILE,
-            WORDS           => WORDS,
-            SORT_ORDER      => SORT_ORDER,
-            COMP_SIGN       => COMP_SIGN,
-            QUEUE_SIZE      => QUEUE_SIZE,
-            FINISH_ABORT    => FINISH_ABORT
-        );
 end Model;
 -----------------------------------------------------------------------------------
 --
@@ -483,6 +367,267 @@ entity  OddEven_Sorter_Test_Bench_X08_O0_S0_Q2 is
     );
 end     OddEven_Sorter_Test_Bench_X08_O0_S0_Q2;
 architecture Model of OddEven_Sorter_Test_Bench_X08_O0_S0_Q2 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O0_S1_Q0 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O0_S1_Q0;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O0_S1_Q0 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O0_S1_Q1 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 1;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O0_S1_Q1;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O0_S1_Q1 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O0_S1_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O0_S1_Q2;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O0_S1_Q2 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S0_Q0 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S0_Q0;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S0_Q0 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S0_Q1 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 1;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S0_Q1;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S0_Q1 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S0_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S0_Q2;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S0_Q2 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S1_Q0 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S1_Q0;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S1_Q0 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S1_Q1 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 1;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S1_Q1;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S1_Q1 is
+begin
+    TEST: entity  WORK.OddEven_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter_Test_Bench_X08_O1_S1_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X08_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        WORDS           :  integer := 8;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := TRUE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     OddEven_Sorter_Test_Bench_X08_O1_S1_Q2;
+architecture Model of OddEven_Sorter_Test_Bench_X08_O1_S1_Q2 is
 begin
     TEST: entity  WORK.OddEven_Sorter_Test_Bench
         generic map (
