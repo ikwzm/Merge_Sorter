@@ -1,7 +1,10 @@
 word.o : ../../../src/main/vhdl/core/word.vhd 
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/word.vhd
 
-core_components.o : ../../../src/main/vhdl/core/core_components.vhd word.o
+sorting_network.o : ../../../src/main/vhdl/core/sorting_network.vhd word.o
+	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.vhd
+
+core_components.o : ../../../src/main/vhdl/core/core_components.vhd word.o sorting_network.o
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/core_components.vhd
 
 word_compare.o : ../../../src/main/vhdl/core/word_compare.vhd word.o

@@ -7,9 +7,9 @@ def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order, cou
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = (0..mrg_ways-1).to_a.map{ |i|
                name = sprintf("MRG_I%02X", i)
-               ScenarioWriter::IntakeStream.new(name, file)
+               ScenarioWriter::IntakeStream.new(name, file, 32, 4, 32, 4)
              }
-  outlet   = ScenarioWriter::OutletStream.new("OUT", file)
+  outlet   = ScenarioWriter::OutletStream.new("OUT" , file, 32, 4, 32, 4)
   
   merchal.sync
   merchal.init
