@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    merge_sorter_single_word_tree_test_bench.vhd
---!     @brief   Merge Sorter Single Word Tree Test Bench :
---!     @version 0.5.0
---!     @date    2020/9/18
+--!     @file    merge_sorter_tree_test_bench.vhd
+--!     @brief   Merge Sorter Tree Test Bench :
+--!     @version 0.7.0
+--!     @date    2020/11/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -36,16 +36,17 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Word_Tree_Test_Bench is
+entity  Merge_Sorter_Tree_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
         WAYS            :  integer :=  4;
+        WORDS           :  integer :=  1;
         SORT_ORDER      :  integer :=  0;
         SIGN            :  boolean := FALSE;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Word_Tree_Test_Bench;
+end     Merge_Sorter_Tree_Test_Bench;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -63,25 +64,24 @@ use     DUMMY_PLUG.UTIL.HEX_TO_STRING;
 use     DUMMY_PLUG.CORE.MARCHAL;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_TYPE;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_VECTOR;
-architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench is
+architecture Model of Merge_Sorter_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     -- 各種定数
     -------------------------------------------------------------------------------
     constant   PERIOD       :  time    := 10 ns;
     constant   DELAY        :  time    :=  1 ns;
     constant   QUEUE_SIZE   :  integer :=  2;
-    constant   WORD_PARAM   :  Word.Param_Type := Word.New_Param(32, SIGN);
-    constant   DATA_BITS    :  integer := WORD_PARAM.DATA_BITS;
-    constant   ATRB_BITS    :  integer := WORD_PARAM.ATRB_BITS;
-    constant   INFO_BITS    :  integer :=  4;
-    constant   USER_BITS    :  integer :=  ATRB_BITS + INFO_BITS;
-    constant   USER_ATRB_LO :  integer :=  0;
-    constant   USER_ATRB_HI :  integer :=  USER_ATRB_LO + ATRB_BITS - 1;
-    constant   USER_INFO_LO :  integer :=  USER_ATRB_HI + 1;
-    constant   USER_INFO_HI :  integer :=  USER_INFO_LO + INFO_BITS - 1;
+    constant   DATA_BITS    :  integer := 32;
+    constant   ATRB_BITS    :  integer :=  4;
+    constant   INFO_BITS    :  integer :=  8;
     constant   SYNC_WIDTH   :  integer :=  2;
+    constant   WORD_PARAM   :  Word.PARAM_TYPE := Word.New_Param(DATA_BITS, SIGN);
     constant   GPO_WIDTH    :  integer :=  8;
     constant   GPI_WIDTH    :  integer :=  GPO_WIDTH;
+    constant   USER_ATRB_LO :  integer := 0;
+    constant   USER_ATRB_HI :  integer := USER_ATRB_LO + WORDS*ATRB_BITS - 1;
+    constant   USER_INFO_LO :  integer := USER_ATRB_HI + 1;
+    constant   USER_INFO_HI :  integer := USER_INFO_LO + INFO_BITS - 1;
     -------------------------------------------------------------------------------
     -- グローバルシグナル.
     -------------------------------------------------------------------------------
@@ -98,39 +98,39 @@ architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench is
     -------------------------------------------------------------------------------
     constant   I_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => USER_BITS,
+                                   USER  => WORDS*ATRB_BITS+INFO_BITS,
                                    DEST  => 4,
-                                   DATA  => DATA_BITS
+                                   DATA  => WORDS*DATA_BITS
                                );
-    type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(DATA_BITS-1 downto 0);
-    type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(USER_BITS-1 downto 0);
+    type       I_DATA_VECTOR is array (integer range <>) of std_logic_vector(I_WIDTH.DATA-1 downto 0);
+    type       I_USER_VECTOR is array (integer range <>) of std_logic_vector(I_WIDTH.USER-1 downto 0);
     signal     i_data       :  I_DATA_VECTOR   (WAYS-1 downto 0);
     signal     i_user       :  I_USER_VECTOR   (WAYS-1 downto 0);
     signal     i_last       :  std_logic_vector(WAYS-1 downto 0);
     signal     i_valid      :  std_logic_vector(WAYS-1 downto 0);
     signal     i_ready      :  std_logic_vector(WAYS-1 downto 0);
-    signal     i_word       :  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
-    signal     i_info       :  std_logic_vector(WAYS*INFO_BITS      -1 downto 0);
+    signal     i_word       :  std_logic_vector(WAYS*WORDS*WORD_PARAM.BITS-1 downto 0);
+    signal     i_info       :  std_logic_vector(WAYS*INFO_BITS            -1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     constant   O_WIDTH      :  AXI4_STREAM_SIGNAL_WIDTH_TYPE := (
                                    ID    => 4,
-                                   USER  => USER_BITS,
+                                   USER  => WORDS*ATRB_BITS+INFO_BITS,
                                    DEST  => 4,
-                                   DATA  => DATA_BITS
+                                   DATA  => WORDS*DATA_BITS
                                );
-    signal     o_data       :  std_logic_vector(DATA_BITS-1 downto 0);
-    signal     o_user       :  std_logic_vector(USER_BITS-1 downto 0);
+    signal     o_data       :  std_logic_vector(O_WIDTH.DATA-1 downto 0);
+    signal     o_user       :  std_logic_vector(O_WIDTH.USER-1 downto 0);
     signal     o_last       :  std_logic;
     signal     o_valid      :  std_logic;
     signal     o_ready      :  std_logic;
-    constant   o_keep       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
-    constant   o_strb       :  std_logic_vector(DATA_BITS/8 -1 downto 0) := (others => '1');
-    constant   o_id         :  std_logic_vector(O_WIDTH.ID  -1 downto 0) := (others => '0');
-    constant   o_dest       :  std_logic_vector(O_WIDTH.DEST-1 downto 0) := (others => '0');
-    signal     o_word       :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-    signal     o_info       :  std_logic_vector(INFO_BITS      -1 downto 0);
+    constant   o_keep       :  std_logic_vector(O_WIDTH.DATA/8 -1 downto 0) := (others => '1');
+    constant   o_strb       :  std_logic_vector(O_WIDTH.DATA/8 -1 downto 0) := (others => '1');
+    constant   o_id         :  std_logic_vector(O_WIDTH.ID     -1 downto 0) := (others => '0');
+    constant   o_dest       :  std_logic_vector(O_WIDTH.DEST   -1 downto 0) := (others => '0');
+    signal     o_word       :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+    signal     o_info       :  std_logic_vector(INFO_BITS            -1 downto 0);
     -------------------------------------------------------------------------------
     -- GPIO(General Purpose Input/Output)
     -------------------------------------------------------------------------------
@@ -198,16 +198,30 @@ begin
             REPORT_STATUS   => O_REPORT        , -- Out :
             FINISH          => O_FINISH          -- Out :
         );                                       --
-    o_data                                   <= o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
-    o_user(USER_ATRB_HI downto USER_ATRB_LO) <= o_word(WORD_PARAM.ATRB_HI downto WORD_PARAM.ATRB_LO);
-    o_user(USER_INFO_HI downto USER_INFO_LO) <= o_info;
+    process(o_word, o_info)
+        variable i_word  :  std_logic_vector(WORD_PARAM.BITS     -1 downto 0);
+        variable i_data  :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
+        variable i_atrb  :  std_logic_vector(WORD_PARAM.ATRB_BITS-1 downto 0);
+    begin
+        o_data <= (others => '0');
+        o_user <= (others => '0');
+        for i in 0 to WORDS-1 loop
+            i_word := o_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+            i_data := i_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+            i_atrb := i_word(WORD_PARAM.ATRB_HI downto WORD_PARAM.ATRB_LO);
+            o_data((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= i_data;
+            o_user(i*ATRB_BITS + Word.ATRB_NONE_POS    ) <= i_atrb(Word.ATRB_NONE_POS    );
+            o_user(i*ATRB_BITS + Word.ATRB_PRIORITY_POS) <= i_atrb(Word.ATRB_PRIORITY_POS);
+            o_user(i*ATRB_BITS + Word.ATRB_POSTPEND_POS) <= i_atrb(Word.ATRB_POSTPEND_POS);
+        end loop;
+        o_user(USER_INFO_HI downto USER_INFO_LO) <= o_info;
+    end process;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
     I_MASTER:  for i in 0 to WAYS-1 generate        --
         constant  gpi  :  std_logic_vector(GPI_WIDTH-1 downto 0) := (others => '0');
         constant  name :  string(1 to 3) := string'("I") & HEX_TO_STRING(i,8);
-        signal    word :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
     begin                                            -- 
         PLAYER: AXI4_STREAM_MASTER_PLAYER            -- 
             generic map (                            -- 
@@ -239,11 +253,23 @@ begin
                 REPORT_STATUS   => I_REPORT(i)     , -- Out :
                 FINISH          => I_FINISH(i)       -- Out :
             );                                       --
-        word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO)       <= i_data(i);
-        word(WORD_PARAM.ATRB_HI downto WORD_PARAM.ATRB_LO)       <= i_user(i)(USER_ATRB_HI downto USER_ATRB_LO);
-        i_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
-        i_info((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= i_user(i)(USER_INFO_HI downto USER_INFO_LO);
     end generate;
+    process (i_data, i_user)
+        variable word_item :  std_logic_vector(      WORD_PARAM.BITS-1 downto 0);
+        variable word_vec  :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+    begin
+        for w in 0 to WAYS-1 loop
+            for i in 0 to WORDS-1 loop
+                word_item(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := i_data(w)((i+1)*WORD_PARAM.DATA_BITS-1 downto i*WORD_PARAM.DATA_BITS);
+                word_item(WORD_PARAM.ATRB_NONE_POS    ) := i_user(w)(i*ATRB_BITS + Word.ATRB_NONE_POS    );
+                word_item(WORD_PARAM.ATRB_PRIORITY_POS) := i_user(w)(i*ATRB_BITS + Word.ATRB_PRIORITY_POS);
+                word_item(WORD_PARAM.ATRB_POSTPEND_POS) := i_user(w)(i*ATRB_BITS + Word.ATRB_POSTPEND_POS);
+                word_vec((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) := word_item;
+            end loop;
+            i_word((w+1)*(WORDS*WORD_PARAM.BITS)-1 downto w*(WORDS*WORD_PARAM.BITS)) <= word_vec;
+            i_info((w+1)*(INFO_BITS            )-1 downto w*(INFO_BITS            )) <= i_user(w)(USER_INFO_HI downto USER_INFO_LO);
+        end loop;
+    end process;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -313,22 +339,27 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S0 is
+entity  Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S0 is
     generic (
-        NAME            :  STRING  := "TEST_X04_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x04_o0_s0.snr";
+        NAME            :  STRING  := "TEST_X04_W1_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x04_w1_o0_s0.snr";
+        WAYS            :  integer := 4;
+        WORDS           :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        SIGN            :  boolean := FALSE;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S0;
-architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S0 is
+end     Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S0;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S0 is
 begin
-    TEST: entity WORK.Merge_Sorter_Single_Word_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
         generic map (
-            NAME            => NAME,
+            NAME            => NAME         ,
             SCENARIO_FILE   => SCENARIO_FILE,
-            WAYS            => 4,
-            SORT_ORDER      => 0,
-            SIGN            => FALSE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
@@ -337,22 +368,27 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1 is
+entity  Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S1 is
     generic (
-        NAME            :  STRING  := "TEST_X04_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x04_o0_s1.snr";
+        NAME            :  STRING  := "TEST_X04_W1_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x04_w1_o0_s1.snr";
+        WAYS            :  integer := 4;
+        WORDS           :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        SIGN            :  boolean := TRUE;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1;
-architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench_X04_O0_S1 is
+end     Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S1;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S1 is
 begin
-    TEST: entity WORK.Merge_Sorter_Single_Word_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
         generic map (
-            NAME            => NAME,
+            NAME            => NAME         ,
             SCENARIO_FILE   => SCENARIO_FILE,
-            WAYS            => 4,
-            SORT_ORDER      => 0,
-            SIGN            => TRUE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
@@ -361,22 +397,27 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S0 is
+entity  Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S0 is
     generic (
-        NAME            :  STRING  := "TEST_X02_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x02_o1_s0.snr";
+        NAME            :  STRING  := "TEST_X02_W1_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x02_w1_o1_s0.snr";
+        WAYS            :  integer := 2;
+        WORDS           :  integer := 1;
+        SORT_ORDER      :  integer := 1;
+        SIGN            :  boolean := FALSE;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S0;
-architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S0 is
+end     Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S0;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S0 is
 begin
-    TEST: entity WORK.Merge_Sorter_Single_Word_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
         generic map (
-            NAME            => NAME,
+            NAME            => NAME         ,
             SCENARIO_FILE   => SCENARIO_FILE,
-            WAYS            => 2,
-            SORT_ORDER      => 1,
-            SIGN            => FALSE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
@@ -385,22 +426,143 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S1 is
+entity  Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S1 is
     generic (
-        NAME            :  STRING  := "TEST_X02_O1_S1";
-        SCENARIO_FILE   :  STRING  := "test_x02_o1_s1.snr";
+        NAME            :  STRING  := "TEST_X02_W1_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x02_w1_o1_s1.snr";
+        WAYS            :  integer := 2;
+        WORDS           :  integer := 1;
+        SORT_ORDER      :  integer := 1;
+        SIGN            :  boolean := TRUE;
         FINISH_ABORT    :  boolean := FALSE
     );
-end     Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S1;
-architecture Model of Merge_Sorter_Single_Word_Tree_Test_Bench_X02_O1_S1 is
+end     Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S1;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S1 is
 begin
-    TEST: entity WORK.Merge_Sorter_Single_Word_Tree_Test_Bench
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
         generic map (
-            NAME            => NAME,
+            NAME            => NAME         ,
             SCENARIO_FILE   => SCENARIO_FILE,
-            WAYS            => 2,
-            SORT_ORDER      => 1,
-            SIGN            => TRUE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_W2_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_o0_s0.snr";
+        WAYS            :  integer := 4;
+        WORDS           :  integer := 2;
+        SORT_ORDER      :  integer := 0;
+        SIGN            :  boolean := FALSE;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S0;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S0 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S1 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_W2_O0_S1";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_o0_s1.snr";
+        WAYS            :  integer := 4;
+        WORDS           :  integer := 2;
+        SORT_ORDER      :  integer := 0;
+        SIGN            :  boolean := TRUE;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S1;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S1 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S0 is
+    generic (
+        NAME            :  STRING  := "TEST_X02_W2_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x02_w2_o1_s0.snr";
+        WAYS            :  integer := 2;
+        WORDS           :  integer := 2;
+        SORT_ORDER      :  integer := 1;
+        SIGN            :  boolean := FALSE;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S0;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S0 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S1 is
+    generic (
+        NAME            :  STRING  := "TEST_X02_W2_O1_S1";
+        SCENARIO_FILE   :  STRING  := "test_x02_w2_o1_s1.snr";
+        WAYS            :  integer := 2;
+        WORDS           :  integer := 2;
+        SORT_ORDER      :  integer := 1;
+        SIGN            :  boolean := TRUE;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S1;
+architecture Model of Merge_Sorter_Tree_Test_Bench_X02_W2_O1_S1 is
+begin
+    TEST: entity WORK.Merge_Sorter_Tree_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WAYS            => WAYS         ,
+            WORDS           => WORDS        ,
+            SORT_ORDER      => SORT_ORDER   ,
+            SIGN            => SIGN         ,
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;

@@ -2,11 +2,16 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_compare.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network_core.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.old
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/components.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pipeline_register_controller.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pipeline_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_register.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/reducer.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/util.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/reader.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/sync.vhd
@@ -19,4 +24,4 @@ add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_m
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_stream_master_player.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_stream_slave_player.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/marchal.vhd
-add_vhdl_file sim_1     WORK ../../../src/test/vhdl/merge_sorter_single_word_tree_test_bench.vhd
+add_vhdl_file sim_1     WORK ../../../src/test/vhdl/merge_sorter_tree_test_bench.vhd
