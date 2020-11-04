@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Single Word Tree Module :
---!     @version 0.5.0
---!     @date    2020/9/17
+--!     @version 0.7.0
+--!     @date    2020/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ use     Merge_Sorter.Word;
 entity  Merge_Sorter_Tree is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
         WAYS        :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
@@ -50,13 +51,13 @@ entity  Merge_Sorter_Tree is
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
-        I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
-        I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
-        I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
-        O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
+        I_WORD      :  in  std_logic_vector(WAYS*WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(WAYS*            INFO_BITS-1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic_vector(WAYS                      -1 downto 0);
+        I_VALID     :  in  std_logic_vector(WAYS                      -1 downto 0);
+        I_READY     :  out std_logic_vector(WAYS                      -1 downto 0);
+        O_WORD      :  out std_logic_vector(     WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(                 INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -78,6 +79,7 @@ architecture RTL of Merge_Sorter_Tree is
     component  Merge_Sorter_Tree 
         generic (
             WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+            WORDS       :  integer :=  1;
             WAYS        :  integer :=  8;
             INFO_BITS   :  integer :=  3;
             SORT_ORDER  :  integer :=  0;
@@ -87,13 +89,13 @@ architecture RTL of Merge_Sorter_Tree is
             CLK         :  in  std_logic;
             RST         :  in  std_logic;
             CLR         :  in  std_logic;
-            I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
-            I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
-            I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
-            I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
-            I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
-            O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
-            O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
+            I_WORD      :  in  std_logic_vector(WAYS*WORDS*WORD_PARAM.BITS-1 downto 0);
+            I_INFO      :  in  std_logic_vector(WAYS*            INFO_BITS-1 downto 0) := (others => '0');
+            I_LAST      :  in  std_logic_vector(WAYS                      -1 downto 0);
+            I_VALID     :  in  std_logic_vector(WAYS                      -1 downto 0);
+            I_READY     :  out std_logic_vector(WAYS                      -1 downto 0);
+            O_WORD      :  out std_logic_vector(     WORDS*WORD_PARAM.BITS-1 downto 0);
+            O_INFO      :  out std_logic_vector(                 INFO_BITS-1 downto 0);
             O_LAST      :  out std_logic;
             O_VALID     :  out std_logic;
             O_READY     :  in  std_logic
@@ -102,8 +104,8 @@ architecture RTL of Merge_Sorter_Tree is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal    q_word        :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-    signal    q_info        :  std_logic_vector(INFO_BITS      -1 downto 0);
+    signal    q_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+    signal    q_info        :  std_logic_vector(            INFO_BITS-1 downto 0);
     signal    q_last        :  std_logic;
     signal    q_valid       :  std_logic;
     signal    q_ready       :  std_logic;
@@ -129,11 +131,11 @@ begin
         constant  A_FLAG_LO :  integer := 0;
         constant  A_FLAG_HI :  integer := A_WAYS - 1;
         constant  A_WORD_LO :  integer := 0;
-        constant  A_WORD_HI :  integer := A_WAYS*WORD_PARAM.BITS - 1;
+        constant  A_WORD_HI :  integer := A_WAYS*WORDS*WORD_PARAM.BITS - 1;
         constant  A_INFO_LO :  integer := 0;
-        constant  A_INFO_HI :  integer := A_WAYS*INFO_BITS       - 1;
-        signal    a_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        signal    a_info    :  std_logic_vector(INFO_BITS      -1 downto 0);
+        constant  A_INFO_HI :  integer := A_WAYS*INFO_BITS             - 1;
+        signal    a_word    :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    a_info    :  std_logic_vector(            INFO_BITS-1 downto 0);
         signal    a_last    :  std_logic;
         signal    a_valid   :  std_logic;
         signal    a_ready   :  std_logic;
@@ -142,13 +144,13 @@ begin
         ---------------------------------------------------------------------------
         constant  B_WAYS    :  integer := WAYS - A_WAYS;
         constant  B_FLAG_LO :  integer := A_FLAG_HI + 1;
-        constant  B_FLAG_HI :  integer := WAYS     - 1;
+        constant  B_FLAG_HI :  integer := WAYS      - 1;
         constant  B_WORD_LO :  integer := A_WORD_HI + 1;
-        constant  B_WORD_HI :  integer := WAYS*WORD_PARAM.BITS - 1;
+        constant  B_WORD_HI :  integer := WAYS*WORDS*WORD_PARAM.BITS - 1;
         constant  B_INFO_LO :  integer := A_INFO_HI + 1;
-        constant  B_INFO_HI :  integer := WAYS*INFO_BITS       - 1;
-        signal    b_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        signal    b_info    :  std_logic_vector(INFO_BITS      -1 downto 0);
+        constant  B_INFO_HI :  integer := WAYS*INFO_BITS             - 1;
+        signal    b_word    :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    b_info    :  std_logic_vector(            INFO_BITS-1 downto 0);
         signal    b_last    :  std_logic;
         signal    b_valid   :  std_logic;
         signal    b_ready   :  std_logic;
@@ -159,6 +161,7 @@ begin
         A: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
+                WORDS       => WORDS                              , --
                 WAYS        => A_WAYS                             , --
                 INFO_BITS   => INFO_BITS                          , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
@@ -185,6 +188,7 @@ begin
         B: Merge_Sorter_Tree                                        -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , --
+                WORDS       => WORDS                              , --
                 WAYS        => B_WAYS                             , --
                 INFO_BITS   => INFO_BITS                          , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
@@ -211,6 +215,7 @@ begin
         NODE: Merge_Sorter_Node                                     -- 
            generic map(                                             -- 
                 WORD_PARAM  => WORD_PARAM                         , --
+                WORDS       => WORDS                              , --
                 SORT_ORDER  => SORT_ORDER                         , -- 
                 INFO_BITS   => INFO_BITS                            -- 
             )                                                       -- 
@@ -243,6 +248,7 @@ begin
         QUEUE: Word_Queue                                           -- 
             generic map (                                           -- 
                 WORD_PARAM  => WORD_PARAM                         , -- 
+                WORDS       => WORDS                              , --
                 INFO_BITS   => INFO_BITS                          , -- 
                 QUEUE_SIZE  => QUEUE_SIZE                           -- 
             )                                                       -- 

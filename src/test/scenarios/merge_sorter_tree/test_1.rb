@@ -65,14 +65,20 @@ def test_1(file, ways, words, sort_order, sign, count)
   count.times do |test_num|
     merchal.sync
     merchal.say "#{title}.#{test_num+1} Start."
+    size_min = 0
+    size_max = words*4 + 2
+
     random.rand(1..4).times do
-    
+
       intake_data = intake.map{ |channel|
-        size = random.rand(0..6)
-        vec  = (size == 0)? [{PostPend: 1, None: 1}] : 
-               (size == 5)? Array.new(4){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}) :
-               (size == 6)? Array.new(4){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}).push({Priority: 1, None: 1}) :
-                            Array.new(size){|x| random.rand(n_min..n_max)}
+        size = random.rand(0..size_max)
+        vec  = (size == size_min  )? [{PostPend: 1, None: 1}] : 
+               (size == size_max-1)? Array.new(size-1){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}) :
+               (size == size_max  )? Array.new(size-2){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}).push({Priority: 1, None: 1}) :
+                                     Array.new(size  ){|x| random.rand(n_min..n_max)}
+        while((vec.size % words) > 0) do
+          vec.push({PostPend: 1, None: 1})
+        end
         vec.sort{|a,b| sort_proc(a,b,sort_order)}
       }
       outlet_data = intake_data.flatten.sort{|a,b| sort_proc(a,b,sort_order)}
