@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    word_queue.vhd
 --!     @brief   Merge Sorter Word Queue Module :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @version 0.7.0
+--!     @date    2020/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ use     Merge_Sorter.Word;
 entity  Word_Queue is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
         INFO_BITS   :  integer :=  1;
         QUEUE_SIZE  :  integer :=  2
     );
@@ -48,13 +49,13 @@ entity  Word_Queue is
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0);
+        I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0);
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -70,10 +71,11 @@ use     PipeWork.Components.QUEUE_REGISTER;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 architecture RTL of Word_Queue is
+    constant  DATA_WORD_BITS    :  integer := WORDS*WORD_PARAM.BITS;
     constant  DATA_WORD_LO_POS  :  integer := 0;
-    constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;
+    constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + DATA_WORD_BITS - 1;
     constant  DATA_INFO_LO_POS  :  integer := DATA_WORD_HI_POS + 1;
-    constant  DATA_INFO_HI_POS  :  integer := DATA_INFO_LO_POS + INFO_BITS       - 1;
+    constant  DATA_INFO_HI_POS  :  integer := DATA_INFO_LO_POS + INFO_BITS      - 1;
     constant  DATA_LAST_POS     :  integer := DATA_INFO_HI_POS + 1;
     constant  DATA_LO_POS       :  integer := DATA_WORD_LO_POS;
     constant  DATA_HI_POS       :  integer := DATA_LAST_POS;

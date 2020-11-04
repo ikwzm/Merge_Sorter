@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 0.5.0                                                           --
---!     @date    2020/10/05                                                      --
+--!     @version 0.7.0                                                           --
+--!     @date    2020/11/04                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -39,6 +39,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
+use     Merge_Sorter.Sorting_Network;
 -----------------------------------------------------------------------------------
 --! @brief Merge Sorter Core Component Library Description Package               --
 -----------------------------------------------------------------------------------
@@ -97,6 +98,7 @@ end component;
 component Merge_Sorter_Node
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
         INFO_BITS   :  integer :=  1;
         SORT_ORDER  :  integer :=  0
     );
@@ -104,18 +106,18 @@ component Merge_Sorter_Node
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        A_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        A_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        A_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        A_INFO      :  in  std_logic_vector(            INFO_BITS-1 downto 0) := (others => '0');
         A_LAST      :  in  std_logic;
         A_VALID     :  in  std_logic;
         A_READY     :  out std_logic;
-        B_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        B_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        B_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        B_INFO      :  in  std_logic_vector(            INFO_BITS-1 downto 0) := (others => '0');
         B_LAST      :  in  std_logic;
         B_VALID     :  in  std_logic;
         B_READY     :  out std_logic;
-        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(            INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -127,6 +129,7 @@ end component;
 component Merge_Sorter_Tree
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
         WAYS        :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
@@ -136,13 +139,13 @@ component Merge_Sorter_Tree
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WAYS*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(WAYS*INFO_BITS      -1 downto 0) := (others => '0');
-        I_LAST      :  in  std_logic_vector(WAYS                -1 downto 0);
-        I_VALID     :  in  std_logic_vector(WAYS                -1 downto 0);
-        I_READY     :  out std_logic_vector(WAYS                -1 downto 0);
-        O_WORD      :  out std_logic_vector(     WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(     INFO_BITS      -1 downto 0);
+        I_WORD      :  in  std_logic_vector(WAYS*WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(WAYS*            INFO_BITS-1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic_vector(WAYS                      -1 downto 0);
+        I_VALID     :  in  std_logic_vector(WAYS                      -1 downto 0);
+        I_READY     :  out std_logic_vector(WAYS                      -1 downto 0);
+        O_WORD      :  out std_logic_vector(     WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(                 INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -234,6 +237,30 @@ component Core_Stream_Intake
     );
 end component;
 -----------------------------------------------------------------------------------
+--! @brief Sorting_Network_Core                                                  --
+-----------------------------------------------------------------------------------
+component Sorting_Network_Core
+    generic (
+        NETWORK_PARAM   :  Sorting_Network.Param_Type := Sorting_Network.Param_Null;
+        WORD_PARAM      :  Word.Param_Type            := Word.Default_Param;
+        INFO_BITS       :  integer :=  3
+    );
+    port (
+        CLK             :  in  std_logic;
+        RST             :  in  std_logic;
+        CLR             :  in  std_logic;
+        I_WORD          :  in  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
+        I_INFO          :  in  std_logic_vector(INFO_BITS-1 downto 0) := (others => '0');
+        I_VALID         :  in  std_logic;
+        I_READY         :  out std_logic;
+        O_WORD          :  out std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(INFO_BITS-1 downto 0);
+        O_VALID         :  out std_logic;
+        O_READY         :  in  std_logic;
+        BUSY            :  out std_logic
+    );
+end component;
+-----------------------------------------------------------------------------------
 --! @brief Word_Compare                                                          --
 -----------------------------------------------------------------------------------
 component Word_Compare
@@ -259,6 +286,7 @@ end component;
 component Word_Queue
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
         INFO_BITS   :  integer :=  1;
         QUEUE_SIZE  :  integer :=  2
     );
@@ -266,13 +294,13 @@ component Word_Queue
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0);
+        I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0);
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic

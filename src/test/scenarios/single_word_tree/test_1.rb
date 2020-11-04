@@ -49,9 +49,9 @@ def test_1(file, ways, sort_order, sign, count)
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = (0..ways-1).to_a.map{ |i|
                name = sprintf("I%02X", i)
-               ScenarioWriter::IntakeStream.new(name, file)
+               ScenarioWriter::IntakeStream.new(name, file, 32, 8, 32, 4)
              }
-  outlet   = ScenarioWriter::OutletStream.new("O" , file)
+  outlet   = ScenarioWriter::OutletStream.new("O" , file, 32, 8, 32, 4)
   n_min    = (sign)? -512 : 0;
   n_max    = (sign)?  512 : 1024;
 

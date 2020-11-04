@@ -6,8 +6,8 @@ def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order)
   title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 1", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
-  intake   = ScenarioWriter::IntakeStream.new("STM_I", file)
-  outlet   = ScenarioWriter::OutletStream.new("OUT"  , file)
+  intake   = ScenarioWriter::IntakeStream.new("STM_I", file, 32, 4, 32, 4)
+  outlet   = ScenarioWriter::OutletStream.new("OUT"  , file, 32, 4, 32, 4)
   blk_size = mrg_ways**(stm_feedback+1)
   
   merchal.sync
