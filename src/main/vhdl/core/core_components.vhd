@@ -2,7 +2,7 @@
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
 --!     @version 0.7.0                                                           --
---!     @date    2020/11/04                                                      --
+--!     @date    2020/11/08                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ component Merge_Sorter_Core
     generic (
         MRG_IN_ENABLE   :  boolean := TRUE;
         MRG_WAYS        :  integer :=    8;
+        MRG_WORDS       :  integer :=    1;
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
@@ -70,8 +71,8 @@ component Merge_Sorter_Core
         STM_REQ_READY   :  out std_logic;
         STM_RES_VALID   :  out std_logic;
         STM_RES_READY   :  in  std_logic;
-        STM_IN_DATA     :  in  std_logic_vector(STM_WORDS*DATA_BITS-1 downto 0);
-        STM_IN_STRB     :  in  std_logic_vector(STM_WORDS          -1 downto 0);
+        STM_IN_DATA     :  in  std_logic_vector(         STM_WORDS*DATA_BITS-1 downto 0);
+        STM_IN_STRB     :  in  std_logic_vector(         STM_WORDS          -1 downto 0);
         STM_IN_LAST     :  in  std_logic;
         STM_IN_VALID    :  in  std_logic;
         STM_IN_READY    :  out std_logic;
@@ -79,14 +80,15 @@ component Merge_Sorter_Core
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS* DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
-        OUT_DATA        :  out std_logic_vector(          DATA_BITS-1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS*MRG_WORDS*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS*MRG_WORDS          -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS                    -1 downto 0);
+        OUT_DATA        :  out std_logic_vector(         MRG_WORDS*DATA_BITS-1 downto 0);
+        OUT_STRB        :  out std_logic_vector(         MRG_WORDS          -1 downto 0);
         OUT_LAST        :  out std_logic;
         OUT_VALID       :  out std_logic;
         OUT_READY       :  in  std_logic
@@ -129,23 +131,28 @@ end component;
 component Merge_Sorter_Tree
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
-        WORDS       :  integer :=  1;
+        I_WORDS     :  integer :=  1;
+        O_WORDS     :  integer :=  1;
         WAYS        :  integer :=  8;
         INFO_BITS   :  integer :=  3;
         SORT_ORDER  :  integer :=  0;
-        QUEUE_SIZE  :  integer :=  2
+        QUEUE_SIZE  :  integer :=  2;
+        WORDS_FRAC  :  integer :=  0;
+        WORDS_DIV   :  integer :=  1;
+        WORDS_DEC   :  integer :=  1;
+        WORDS_STEP  :  integer :=  1
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WAYS*WORDS*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(WAYS*            INFO_BITS-1 downto 0) := (others => '0');
-        I_LAST      :  in  std_logic_vector(WAYS                      -1 downto 0);
-        I_VALID     :  in  std_logic_vector(WAYS                      -1 downto 0);
-        I_READY     :  out std_logic_vector(WAYS                      -1 downto 0);
-        O_WORD      :  out std_logic_vector(     WORDS*WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(                 INFO_BITS-1 downto 0);
+        I_WORD      :  in  std_logic_vector(WAYS*I_WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(WAYS*              INFO_BITS-1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic_vector(WAYS                        -1 downto 0);
+        I_VALID     :  in  std_logic_vector(WAYS                        -1 downto 0);
+        I_READY     :  out std_logic_vector(WAYS                        -1 downto 0);
+        O_WORD      :  out std_logic_vector(     O_WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(                   INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -157,6 +164,7 @@ end component;
 component Core_Intake_Fifo
     generic (
         WORD_PARAM      :  Word.Param_Type := Word.New_Param(DATA_BITS => 8);
+        WORDS           :  integer :=    1;
         FBK_IN_ENABLE   :  boolean := TRUE;
         MRG_IN_ENABLE   :  boolean := TRUE;
         SIZE_BITS       :  integer :=    6;
@@ -176,22 +184,22 @@ component Core_Intake_Fifo
         FBK_ACK         :  out std_logic;
         FBK_DONE        :  out std_logic;
         FBK_OUT_START   :  in  std_logic := '0';
-        FBK_OUT_SIZE    :  in  std_logic_vector(SIZE_BITS      -1 downto 0);
+        FBK_OUT_SIZE    :  in  std_logic_vector(            SIZE_BITS-1 downto 0);
         FBK_OUT_LAST    :  in  std_logic := '0';
-        FBK_IN_WORD     :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        FBK_IN_WORD     :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
         FBK_IN_LAST     :  in  std_logic;
         FBK_IN_VALID    :  in  std_logic := '0';
         FBK_IN_READY    :  out std_logic;
         MRG_REQ         :  in  std_logic := '0';
         MRG_ACK         :  out std_logic;
-        MRG_IN_WORD     :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        MRG_IN_WORD     :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
         MRG_IN_EBLK     :  in  std_logic;
         MRG_IN_LAST     :  in  std_logic;
         MRG_IN_VALID    :  in  std_logic := '0';
         MRG_IN_READY    :  out std_logic;
         MRG_IN_LEVEL    :  out std_logic;
-        OUTLET_WORD     :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        OUTLET_INFO     :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        OUTLET_WORD     :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        OUTLET_INFO     :  out std_logic_vector(            INFO_BITS-1 downto 0);
         OUTLET_LAST     :  out std_logic;
         OUTLET_VALID    :  out std_logic;
         OUTLET_READY    :  in  std_logic
@@ -204,8 +212,10 @@ component Core_Stream_Intake
     generic (
         WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
         MRG_WAYS        :  integer :=  8;
+        MRG_WORDS       :  integer :=  1;
         STM_WORDS       :  integer :=  1;
         FEEDBACK        :  integer :=  1;
+        SORT_ORDER      :  integer :=  0;
         MRG_WAYS_BITS   :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
         INFO_BITS       :  integer :=  8;
@@ -222,18 +232,18 @@ component Core_Stream_Intake
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                     -1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                         -1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(STM_WORDS*WORD_PARAM.DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(STM_WORDS                     -1 downto 0);
+        I_DATA          :  in  std_logic_vector(STM_WORDS*    WORD_PARAM.DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(STM_WORDS                         -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_WORD          :  out std_logic_vector(MRG_WAYS *WORD_PARAM.BITS     -1 downto 0);
-        O_INFO          :  out std_logic_vector(MRG_WAYS *INFO_BITS           -1 downto 0);
-        O_LAST          :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
-        O_VALID         :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
-        O_READY         :  in  std_logic_vector(MRG_WAYS                      -1 downto 0)
+        O_WORD          :  out std_logic_vector(MRG_WAYS*MRG_WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(MRG_WAYS*                INFO_BITS-1 downto 0);
+        O_LAST          :  out std_logic_vector(MRG_WAYS                          -1 downto 0);
+        O_VALID         :  out std_logic_vector(MRG_WAYS                          -1 downto 0);
+        O_READY         :  in  std_logic_vector(MRG_WAYS                          -1 downto 0)
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -307,24 +317,82 @@ component Word_Queue
     );
 end component;
 -----------------------------------------------------------------------------------
+--! @brief Word_Reducer                                                          --
+-----------------------------------------------------------------------------------
+component Word_Reducer
+    generic (
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
+        I_WORDS     :  integer :=  1;
+        O_WORDS     :  integer :=  1;
+        INFO_BITS   :  integer :=  1;
+        QUEUE_SIZE  :  integer :=  0;
+        VALID_MIN   :  integer :=  0;
+        VALID_MAX   :  integer :=  0;
+        O_VAL_SIZE  :  integer :=  0;
+        O_SHIFT_MIN :  integer :=  1;
+        O_SHIFT_MAX :  integer :=  1;
+        NO_VAL_SET  :  integer :=  1;
+        I_JUSTIFIED :  integer range 0 to 1 := 0;
+        FLUSH_ENABLE:  integer range 0 to 1 := 0
+    );
+    port (
+        CLK         :  in  std_logic; 
+        RST         :  in  std_logic;
+        CLR         :  in  std_logic;
+        START       :  in  std_logic := '0';
+        OFFSET      :  in  std_logic_vector(O_WORDS        -1 downto 0) := (others => '0');
+        DONE        :  in  std_logic := '0';
+        FLUSH       :  in  std_logic := '0';
+        START_WORD  :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0) := (others => '0');
+        START_INFO  :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        FLUSH_WORD  :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0) := (others => '0');
+        FLUSH_INFO  :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        NO_VAL_WORD :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0) := (others => '0');
+        NO_VAL_INFO :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        BUSY        :  out std_logic;
+        VALID       :  out std_logic_vector(VALID_MAX downto VALID_MIN);
+        I_ENABLE    :  in  std_logic := '1';
+        I_WORD      :  in  std_logic_vector(I_WORDS*WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        I_STRB      :  in  std_logic_vector(I_WORDS        -1 downto 0);
+        I_DONE      :  in  std_logic := '0';
+        I_FLUSH     :  in  std_logic := '0';
+        I_VALID     :  in  std_logic;
+        I_READY     :  out std_logic;
+        O_ENABLE    :  in  std_logic := '1';
+        O_WORD      :  out std_logic_vector(O_WORDS*WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_STRB      :  out std_logic_vector(O_WORDS        -1 downto 0);
+        O_DONE      :  out std_logic;
+        O_FLUSH     :  out std_logic;
+        O_VALID     :  out std_logic;
+        O_READY     :  in  std_logic;
+        O_SHIFT     :  in  std_logic_vector(O_SHIFT_MAX downto O_SHIFT_MIN) := (others => '0')
+    );
+end component;
+-----------------------------------------------------------------------------------
 --! @brief Drop_None                                                             --
 -----------------------------------------------------------------------------------
 component Drop_None
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        I_WORDS     :  integer :=  1;
+        O_WORDS     :  integer :=  1;
         INFO_BITS   :  integer :=  1
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        I_WORD      :  in  std_logic_vector(I_WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(              INFO_BITS-1 downto 0) := (others => '0');
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_WORD      :  out std_logic_vector(O_WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_STRB      :  out std_logic_vector(O_WORDS                -1 downto 0);
+        O_INFO      :  out std_logic_vector(              INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic

@@ -15,58 +15,66 @@ REMOVE     = -rm
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
-test   : test_x04_w1_o0_s0 \
-         test_x04_w1_o0_s1 \
-         test_x02_w1_o1_s0 \
-         test_x02_w1_o1_s1 \
-         test_x02_w2_o0_s0 \
-         test_x04_w2_o0_s0 
+test   : test_x04_i1_w1_o0_s0 \
+         test_x04_i1_w1_o0_s1 \
+         test_x02_i1_w1_o1_s0 \
+         test_x02_i1_w1_o1_s1 \
+         test_x02_i2_w2_o0_s0 \
+         test_x04_i2_w2_o0_s0 \
+         test_x04_i1_w2_o0_s0 \
 
 clean  :
 	$(REMOVE) *.o *.snr sources.mk
 
-test_x02_w1_o1_s0 : test_x02_w1_o1_s0.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S0
+test_x02_i1_w1_o1_s0 : test_x02_i1_w1_o1_s0.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I1_W1_O1_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I1_W1_O1_S0
 
-test_x02_w2_o0_s0 : test_x02_w2_o0_s0.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W2_O0_S0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W2_O0_S0
+test_x02_i2_w2_o0_s0 : test_x02_i2_w2_o0_s0.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I2_W2_O0_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I2_W2_O0_S0
 
-test_x02_w1_o1_s1 : test_x02_w1_o1_s1.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_W1_O1_S1
+test_x02_i1_w1_o1_s1 : test_x02_i1_w1_o1_s1.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I1_W1_O1_S1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X02_I1_W1_O1_S1
 
-test_x04_w1_o0_s0 : test_x04_w1_o0_s0.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S0
+test_x04_i1_w1_o0_s0 : test_x04_i1_w1_o0_s0.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W1_O0_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W1_O0_S0
 
-test_x04_w2_o0_s0 : test_x04_w2_o0_s0.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W2_O0_S0
+test_x04_i2_w2_o0_s0 : test_x04_i2_w2_o0_s0.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I2_W2_O0_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I2_W2_O0_S0
 
-test_x04_w1_o0_s1 : test_x04_w1_o0_s1.snr merge_sorter_tree_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_W1_O0_S1
+test_x04_i1_w1_o0_s1 : test_x04_i1_w1_o0_s1.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W1_O0_S1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W1_O0_S1
+
+test_x04_i1_w2_o0_s0 : test_x04_i1_w2_o0_s0.snr merge_sorter_tree_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W2_O0_S0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Tree_Test_Bench_X04_I1_W2_O0_S0
 
 dut    : merge_sorter_tree.o
 
-test_x02_w1_o1_s0.snr : $(SCENARIO_PATH)/test_x02_w1_o1_s0.snr
+test_x02_i1_w1_o1_s0.snr : $(SCENARIO_PATH)/test_x02_i1_w1_o1_s0.snr
 	$(COPY) $< $@
 
-test_x02_w2_o0_s0.snr : $(SCENARIO_PATH)/test_x02_w2_o0_s0.snr
+test_x02_i2_w2_o0_s0.snr : $(SCENARIO_PATH)/test_x02_i2_w2_o0_s0.snr
 	$(COPY) $< $@
 
-test_x02_w1_o1_s1.snr : $(SCENARIO_PATH)/test_x02_w1_o1_s1.snr
+test_x02_i1_w1_o1_s1.snr : $(SCENARIO_PATH)/test_x02_i1_w1_o1_s1.snr
 	$(COPY) $< $@
 
-test_x04_w1_o0_s0.snr : $(SCENARIO_PATH)/test_x04_w1_o0_s0.snr
+test_x04_i1_w1_o0_s0.snr : $(SCENARIO_PATH)/test_x04_i1_w1_o0_s0.snr
 	$(COPY) $< $@
 
-test_x04_w2_o0_s0.snr : $(SCENARIO_PATH)/test_x04_w2_o0_s0.snr
+test_x04_i2_w2_o0_s0.snr : $(SCENARIO_PATH)/test_x04_i2_w2_o0_s0.snr
 	$(COPY) $< $@
 
-test_x04_w1_o0_s1.snr : $(SCENARIO_PATH)/test_x04_w1_o0_s1.snr
+test_x04_i1_w1_o0_s1.snr : $(SCENARIO_PATH)/test_x04_i1_w1_o0_s1.snr
+	$(COPY) $< $@
+
+test_x04_i1_w2_o0_s0.snr : $(SCENARIO_PATH)/test_x04_i1_w2_o0_s0.snr
 	$(COPY) $< $@
 
 sources.mk   : sources.yml

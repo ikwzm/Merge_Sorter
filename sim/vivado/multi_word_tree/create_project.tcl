@@ -5,8 +5,8 @@
 set project_directory       [file dirname [info script]]
 set project_name            "multi_word_tree"
 set device_parts            "xc7z020clg400-1"
-set test_bench              "Merge_Sorter_Tree_Test_Bench_X02_W2_O0_S0"
-set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" "merge_sorter_tree" "test_x02_w2_o0_s0.snr" ]
+set test_bench              "Merge_Sorter_Tree_Test_Bench_X04_I1_W2_O0_S0"
+set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" "merge_sorter_tree" "test_x04_i1_w2_o0_s0.snr" ]
 #
 # Create project
 #

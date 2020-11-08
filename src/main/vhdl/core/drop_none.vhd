@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    drop_none.vhd
 --!     @brief   Merge Sorter Drop None Module :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @version 0.7.0
+--!     @date    2020/11/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,19 +41,22 @@ use     Merge_Sorter.Word;
 entity  Drop_None is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        I_WORDS     :  integer :=  1;
+        O_WORDS     :  integer :=  1;
         INFO_BITS   :  integer :=  1
     );
     port (
         CLK         :  in  std_logic;
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
-        I_WORD      :  in  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS      -1 downto 0) := (others => '0');
+        I_WORD      :  in  std_logic_vector(I_WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(              INFO_BITS-1 downto 0) := (others => '0');
         I_LAST      :  in  std_logic;
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
-        O_WORD      :  out std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        O_INFO      :  out std_logic_vector(INFO_BITS      -1 downto 0);
+        O_WORD      :  out std_logic_vector(O_WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_STRB      :  out std_logic_vector(O_WORDS                -1 downto 0);
+        O_INFO      :  out std_logic_vector(              INFO_BITS-1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
@@ -64,58 +67,62 @@ end Drop_None;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-library PipeWork;
-use     PipeWork.Components.REDUCER;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+use     Merge_Sorter.Core_Components.Word_Reducer;
 architecture RTL of Drop_None is
-    constant  DATA_WORD_LO_POS  :  integer := 0;
-    constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + WORD_PARAM.BITS - 1;
-    constant  DATA_INFO_LO_POS  :  integer := DATA_WORD_HI_POS + 1;
-    constant  DATA_INFO_HI_POS  :  integer := DATA_INFO_LO_POS + INFO_BITS - 1;
-    constant  DATA_LO_POS       :  integer := DATA_WORD_LO_POS;
-    constant  DATA_HI_POS       :  integer := DATA_INFO_HI_POS;
-    constant  DATA_BITS         :  integer := DATA_HI_POS - DATA_LO_POS + 1;
-    signal    i_strb            :  std_logic_vector(0 downto 0);
-    signal    i_data            :  std_logic_vector(DATA_BITS-1 downto 0);
-    signal    o_data            :  std_logic_vector(DATA_BITS-1 downto 0);
+    signal    i_strb            :  std_logic_vector(I_WORDS-1 downto 0);
+    constant  POSTPEND_WORD     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0)
+                                := Word.New_Postpend_Word(WORD_PARAM);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    Q: REDUCER                               -- 
-        generic map (                        -- 
-            WORD_BITS       => DATA_BITS,    --
-            STRB_BITS       => 1,            -- 
-            I_WIDTH         => 1,            -- 
-            O_WIDTH         => 1,            -- 
-            QUEUE_SIZE      => 3,            -- 3word分のキューを用意
-            VALID_MIN       => 0,            -- 
-            VALID_MAX       => 0,            -- 
-            O_VAL_SIZE      => 2,            -- 2word分貯めてからO_VALIDをアサート
-            O_SHIFT_MIN     => 1,            -- 
-            O_SHIFT_MAX     => 1,            -- 
-            I_JUSTIFIED     => 1,            -- 
-            FLUSH_ENABLE    => 0             -- 
-        )                                    -- 
-        port map (                           -- 
-            CLK             => CLK         , -- In  :
-            RST             => RST         , -- In  :
-            CLR             => CLR         , -- In  :
-            I_DATA          => i_data      , -- In  :
-            I_STRB          => i_strb      , -- In  :
-            I_DONE          => I_LAST      , -- In  :
-            I_VAL           => I_VALID     , -- In  :
-            I_RDY           => I_READY     , -- Out :
-            O_DATA          => o_data      , -- Out :
-            O_DONE          => O_LAST      , -- Out :
-            O_VAL           => O_VALID     , -- Out :
-            O_RDY           => O_READY       -- In  :
-        );
+    process(I_WORD)
+        variable  a_word :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    begin
+        for i in 0 to I_WORDS-1 loop
+            a_word := I_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+            if (a_word(WORD_PARAM.ATRB_NONE_POS) = '0') then
+                i_strb(i) <= '1';
+            else
+                i_strb(i) <= '0';
+            end if;
+        end loop;
+    end process;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    i_strb <= "1" when (I_WORD(WORD_PARAM.ATRB_NONE_POS) = '0') else "0";
-    i_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS) <= I_WORD;
-    i_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS) <= I_INFO;
-    O_WORD <= o_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS);
-    O_INFO <= o_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS);
+    Q: Word_Reducer                           -- 
+        generic map (                         -- 
+            WORD_PARAM      => WORD_PARAM   , --
+            I_WORDS         => I_WORDS      , -- 入力側のワード数
+            O_WORDS         => O_WORDS      , -- 出力側のワード数
+            INFO_BITS       => INFO_BITS    , -- 
+            QUEUE_SIZE      => O_WORDS+2*I_WORDS, -- 
+            O_VAL_SIZE      => O_WORDS+1    , -- O_WORDS+1分貯めてからO_VALIDをアサート
+            O_SHIFT_MIN     => O_WORDS      , -- キューから取り出す時は WORDS 単位
+            O_SHIFT_MAX     => O_WORDS      , -- キューから取り出す時は WORDS 単位
+            NO_VAL_SET      => O_WORDS      , --
+            I_JUSTIFIED     => 1,             -- 
+            FLUSH_ENABLE    => 0              -- 
+        )                                     -- 
+        port map (                            -- 
+            CLK             => CLK          , -- In  :
+            RST             => RST          , -- In  :
+            CLR             => CLR          , -- In  :
+            NO_VAL_WORD     => POSTPEND_WORD, -- In  :
+            I_WORD          => I_WORD       , -- In  :
+            I_INFO          => I_INFO       , -- In  :
+            I_STRB          => i_strb       , -- In  :
+            I_DONE          => I_LAST       , -- In  :
+            I_VALID         => I_VALID      , -- In  :
+            I_READY         => I_READY      , -- Out :
+            O_WORD          => O_WORD       , -- Out :
+            O_INFO          => O_INFO       , -- Out :
+            O_STRB          => O_STRB       , -- Out :
+            O_DONE          => O_LAST       , -- Out :
+            O_VALID         => O_VALID      , -- Out :
+            O_READY         => O_READY        -- In  :
+        );
 end RTL;

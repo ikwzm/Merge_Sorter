@@ -305,26 +305,8 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        function  GEN_PRIORITY_WORD return std_logic_vector is
-            variable  word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        begin
-            word := (others => '0');
-            word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
-            word(WORD_PARAM.ATRB_PRIORITY_POS) := '1';
-            word(WORD_PARAM.ATRB_POSTPEND_POS) := '0';
-            return word;
-        end function;
-        function  GEN_POSTPEND_WORD return std_logic_vector is
-            variable  word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        begin
-            word := (others => '0');
-            word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
-            word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
-            word(WORD_PARAM.ATRB_POSTPEND_POS) := '1';
-            return word;
-        end function;
-        constant  PRIORITY_WORD     :  WORD_TYPE := GEN_PRIORITY_WORD;
-        constant  POSTPEND_WORD     :  WORD_TYPE := GEN_POSTPEND_WORD;
+        constant  PRIORITY_WORD     :  WORD_TYPE := Word.New_Priority_Word(WORD_PARAM);
+        constant  POSTPEND_WORD     :  WORD_TYPE := Word.New_Postpend_Word(WORD_PARAM);
         constant  PRIORITY_TEAM     :  TEAM_TYPE := (others => PRIORITY_WORD);
         constant  POSTPEND_TEAM     :  TEAM_TYPE := (others => POSTPEND_WORD);
         ---------------------------------------------------------------------------
