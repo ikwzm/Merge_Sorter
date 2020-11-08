@@ -1,6 +1,6 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_1(file, ways, i_words, o_words, sort_order, sign, count)
+def test_1(file, ways, words, sort_order, sign, count)
 
   def sort_proc(a,b, sort_order)
     if a.nil? then
@@ -44,7 +44,7 @@ def test_1(file, ways, i_words, o_words, sort_order, sign, count)
     end
   end
 
-  title    = sprintf("Merge_Sorter_Tree(WAYS=%d,I_WORDS=%d,O_WORDS=%d,SORT_ORDER=%d,SIGN=%d) TEST 1", ways, i_words, o_words, sort_order, (sign)?1:0)
+  title    = sprintf("Merge_Sorter_Tree(WAYS=%d,WORDS=%d,SORT_ORDER=%d,SIGN=%d) TEST 1", ways, words, sort_order, (sign)?1:0)
   data_bits= 32
   atrb_bits=  4
   info_bits=  4
@@ -52,9 +52,9 @@ def test_1(file, ways, i_words, o_words, sort_order, sign, count)
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = (0..ways-1).to_a.map{ |i|
                name = sprintf("I%02X", i)
-               ScenarioWriter::IntakeStream.new(name, file, i_words*data_bits, i_words*atrb_bits, data_bits, atrb_bits)
+               ScenarioWriter::IntakeStream.new(name, file, words*data_bits, words*atrb_bits, data_bits, atrb_bits)
              }
-  outlet   = ScenarioWriter::OutletStream.new("O" , file, o_words*data_bits, o_words*atrb_bits, data_bits, atrb_bits)
+  outlet   = ScenarioWriter::OutletStream.new("O" , file, words*data_bits, words*atrb_bits, data_bits, atrb_bits)
   n_min    = (sign)? -512 : 0;
   n_max    = (sign)?  512 : 1024;
 
@@ -66,7 +66,7 @@ def test_1(file, ways, i_words, o_words, sort_order, sign, count)
     merchal.sync
     merchal.say "#{title}.#{test_num+1} Start."
     size_min = 0
-    size_max = i_words*4 + 2
+    size_max = words*4 + 2
 
     random.rand(1..4).times do
 
@@ -76,7 +76,7 @@ def test_1(file, ways, i_words, o_words, sort_order, sign, count)
                (size == size_max-1)? Array.new(size-1){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}) :
                (size == size_max  )? Array.new(size-2){|x| random.rand(n_min..n_max)}.push({PostPend: 1, None: 1}).push({Priority: 1, None: 1}) :
                                      Array.new(size  ){|x| random.rand(n_min..n_max)}
-        while((vec.size % o_words) > 0) do
+        while((vec.size % words) > 0) do
           vec.push({PostPend: 1, None: 1})
         end
         vec.sort{|a,b| sort_proc(a,b,sort_order)}

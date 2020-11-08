@@ -19,10 +19,7 @@ word_queue.o : ../../../src/main/vhdl/core/word_queue.vhd word.o
 merge_sorter_node.o : ../../../src/main/vhdl/core/merge_sorter_node.vhd word.o sorting_network.o core_components.o word_compare.o word_queue.o sorting_network_core.o
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 
-word_reducer.o : ../../../src/main/vhdl/core/word_reducer.vhd word.o
-	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/word_reducer.vhd
-
-merge_sorter_tree.o : ../../../src/main/vhdl/core/merge_sorter_tree.vhd word.o core_components.o merge_sorter_node.o word_queue.o word_reducer.o
+merge_sorter_tree.o : ../../../src/main/vhdl/core/merge_sorter_tree.vhd word.o core_components.o merge_sorter_node.o word_queue.o
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
 
 sorting_network.old.o : ../../../src/main/vhdl/core/sorting_network.old word.o sorting_network.o
