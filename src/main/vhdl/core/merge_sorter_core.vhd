@@ -641,12 +641,13 @@ begin
     -------------------------------------------------------------------------------
     outlet_i_word <= sort_outlet_word;
     outlet_i_eblk <= sort_outlet_info(INFO_EBLK_POS);
-    outlet_i_last <= '1' when (sort_outlet_last = '1' and outlet_i_eblk = '1') else '0';
+    outlet_i_last <= sort_outlet_last;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     OUTLET: block
-        signal    o_word  :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        signal    o_word  :  std_logic_vector(MRG_WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    o_eblk  :  std_logic;
         signal    o_last  :  std_logic;
         signal    o_valid :  std_logic;
         signal    o_ready :  std_logic;
@@ -668,11 +669,12 @@ begin
                 RST             => RST                     , -- In  :
                 CLR             => CLR                     , -- In  :
                 I_WORD          => outlet_i_word           , -- In  :
-                I_INFO          => "0"                     , -- In  :
+                I_INFO(0)       => outlet_i_eblk           , -- In  :
                 I_LAST          => outlet_i_last           , -- In  :
                 I_VALID         => outlet_i_valid          , -- In  :
                 I_READY         => outlet_i_ready          , -- Out :
                 O_WORD          => o_word                  , -- Out :
+                O_INFO(0)       => o_eblk                  , -- Out :
                 O_STRB          => OUT_STRB                , -- Out :
                 O_LAST          => o_last                  , -- Out :
                 O_VALID         => o_valid                 , -- Out :
@@ -682,10 +684,19 @@ begin
         --
         ---------------------------------------------------------------------------
         o_ready   <= OUT_READY;
-        OUT_DATA  <= o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
-        OUT_LAST  <= o_last;
+        OUT_LAST  <= o_last and o_eblk;
         OUT_VALID <= o_valid;
         o_done    <= (o_valid = '1' and o_ready = '1' and o_last = '1');
+        process (o_word)
+            variable  a_word  :  std_logic_vector(WORD_PARAM.BITS     -1 downto 0);
+            variable  a_data  :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
+        begin
+            for i in 0 to MRG_WORDS-1 loop
+                a_word := o_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+                a_data := a_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+                OUT_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= a_data;
+            end loop;
+        end process;
         process (CLK, RST) begin
             if (RST = '1') then
                     q_done <= FALSE;
