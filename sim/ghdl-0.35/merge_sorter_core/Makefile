@@ -15,11 +15,12 @@ REMOVE     = -rm
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
-test   : test_x04_m1_s1_f2 \
-         test_x04_m1_s0_f0 \
-         test_x04_m0_s1_f0 \
-         test_x04_m0_s1_f1 \
-         test_x04_m0_s1_f2 \
+test   : test_x04_w1_m1_s1_f2 \
+         test_x04_w1_m1_s0_f0 \
+         test_x04_w1_m0_s1_f0 \
+         test_x04_w1_m0_s1_f1 \
+         test_x04_w1_m0_s1_f2 \
+         test_x04_w2_m1_s0_f0 \
          $(END_LIST)
 
 clean  :
@@ -27,39 +28,46 @@ clean  :
 
 dut    : merge_sorter_core.o
 
-test_x04_m1_s1_f2 : test_x04_m1_s1_f2.snr merge_sorter_core_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2
+test_x04_w1_m1_s1_f2 : test_x04_w1_m1_s1_f2.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M1_S1_F2
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M1_S1_F2
 
-test_x04_m1_s0_f0 : test_x04_m1_s0_f0.snr merge_sorter_core_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M1_S0_F0
+test_x04_w1_m1_s0_f0 : test_x04_w1_m1_s0_f0.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M1_S0_F0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M1_S0_F0
 
-test_x04_m0_s1_f0 : test_x04_m0_s1_f0.snr merge_sorter_core_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F0
+test_x04_w1_m0_s1_f0 : test_x04_w1_m0_s1_f0.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F0
 
-test_x04_m0_s1_f1 : test_x04_m0_s1_f1.snr merge_sorter_core_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F1
+test_x04_w1_m0_s1_f1 : test_x04_w1_m0_s1_f1.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F1
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F1
 
-test_x04_m0_s1_f2 : test_x04_m0_s1_f2.snr merge_sorter_core_test_bench.o dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_M0_S1_F2
+test_x04_w1_m0_s1_f2 : test_x04_w1_m0_s1_f2.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F2
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W1_M0_S1_F2
 
-test_x04_m1_s1_f2.snr : $(SCENARIO_PATH)/test_x04_m1_s1_f2.snr
+test_x04_w2_m1_s0_f0 : test_x04_w2_m1_s0_f0.snr merge_sorter_core_test_bench.o dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W2_M1_S0_F0
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER Merge_Sorter_Core_Test_Bench_X04_W2_M1_S0_F0
+
+test_x04_w1_m1_s1_f2.snr : $(SCENARIO_PATH)/test_x04_w1_m1_s1_f2.snr
 	$(COPY) $< $@
 
-test_x04_m1_s0_f0.snr : $(SCENARIO_PATH)/test_x04_m1_s0_f0.snr
+test_x04_w1_m1_s0_f0.snr : $(SCENARIO_PATH)/test_x04_w1_m1_s0_f0.snr
 	$(COPY) $< $@
 
-test_x04_m0_s1_f0.snr : $(SCENARIO_PATH)/test_x04_m0_s1_f0.snr
+test_x04_w1_m0_s1_f0.snr : $(SCENARIO_PATH)/test_x04_w1_m0_s1_f0.snr
 	$(COPY) $< $@
 
-test_x04_m0_s1_f1.snr : $(SCENARIO_PATH)/test_x04_m0_s1_f1.snr
+test_x04_w1_m0_s1_f1.snr : $(SCENARIO_PATH)/test_x04_w1_m0_s1_f1.snr
 	$(COPY) $< $@
 
-test_x04_m0_s1_f2.snr : $(SCENARIO_PATH)/test_x04_m0_s1_f2.snr
+test_x04_w1_m0_s1_f2.snr : $(SCENARIO_PATH)/test_x04_w1_m0_s1_f2.snr
+	$(COPY) $< $@
+
+test_x04_w2_m1_s0_f0.snr : $(SCENARIO_PATH)/test_x04_w2_m1_s0_f0.snr
 	$(COPY) $< $@
 
 sources.mk   : sources.yml
