@@ -10,7 +10,7 @@ def test_1(file, mrg_ways, mrg_words, mrg_enable, stm_enable, stm_feedback, sort
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = ScenarioWriter::IntakeStream.new("STM_I", file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
   outlet   = ScenarioWriter::OutletStream.new("OUT"  , file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
-  blk_size = (mrg_ways*mrg_words)**(stm_feedback+1)
+  blk_size = mrg_words*(mrg_ways**(stm_feedback+1))
   
   merchal.sync
   merchal.init

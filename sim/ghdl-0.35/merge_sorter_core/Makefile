@@ -21,12 +21,15 @@ TEST   = test_x04_w1_m1_s1_f2 \
          test_x04_w1_m0_s1_f1 \
          test_x04_w1_m0_s1_f2 \
          test_x04_w2_m1_s0_f0 \
+         test_x04_w2_m0_s1_f0 \
+         test_x04_w2_m0_s1_f1 \
+         test_x04_w2_m0_s1_f2 \
          $(END_LIST)
 
 test   : $(TEST)
 
 clean  :
-	$(REMOVE) sources.mk *.o *.cf
+	$(REMOVE) sources.mk *.cf 
 
 dut    : merge_sorter_core
 

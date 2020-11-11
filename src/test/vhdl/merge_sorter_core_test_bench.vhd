@@ -675,3 +675,120 @@ begin
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F0 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_W2_M0_S1_F0";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_m0_s1_f0.snr";
+        MRG_WAYS        :  integer := 4;     -- X04
+        MRG_WORDS       :  integer := 2;     -- W1
+        MRG_FIFO_SIZE   :  integer := 64;    -- 
+        MRG_IN_ENABLE   :  boolean := FALSE; -- M0
+        STM_IN_ENABLE   :  boolean := TRUE;  -- S1
+        STM_WORDS       :  integer := 2;     -- W1
+        STM_FEEDBACK    :  integer := 0;     -- F0
+        SORT_ORDER      :  integer := 0;     -- 
+        COMP_SIGN       :  boolean := FALSE; --
+        FINISH_ABORT    :  boolean := FALSE  --
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F0;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F0 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            MRG_IN_ENABLE   => MRG_IN_ENABLE,
+            MRG_WAYS        => MRG_WAYS     ,
+            MRG_WORDS       => MRG_WORDS    ,
+            MRG_FIFO_SIZE   => MRG_FIFO_SIZE,
+            STM_IN_ENABLE   => STM_IN_ENABLE,
+            STM_WORDS       => STM_WORDS    ,
+            STM_FEEDBACK    => STM_FEEDBACK ,
+            SORT_ORDER      => SORT_ORDER   ,
+            COMP_SIGN       => COMP_SIGN    ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F1 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_W2_M0_S1_F1";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_m0_s1_f1.snr";
+        MRG_WAYS        :  integer := 4;     -- X04
+        MRG_WORDS       :  integer := 2;     -- W1
+        MRG_FIFO_SIZE   :  integer := 64;    -- 
+        MRG_IN_ENABLE   :  boolean := FALSE; -- M0
+        STM_IN_ENABLE   :  boolean := TRUE;  -- S1
+        STM_WORDS       :  integer := 2;     -- W1
+        STM_FEEDBACK    :  integer := 1;     -- F1
+        SORT_ORDER      :  integer := 0;     -- 
+        COMP_SIGN       :  boolean := FALSE; --
+        FINISH_ABORT    :  boolean := FALSE  --
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F1;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F1 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            MRG_IN_ENABLE   => MRG_IN_ENABLE,
+            MRG_WAYS        => MRG_WAYS     ,
+            MRG_WORDS       => MRG_WORDS    ,
+            MRG_FIFO_SIZE   => MRG_FIFO_SIZE,
+            STM_IN_ENABLE   => STM_IN_ENABLE,
+            STM_WORDS       => STM_WORDS    ,
+            STM_FEEDBACK    => STM_FEEDBACK ,
+            SORT_ORDER      => SORT_ORDER   ,
+            COMP_SIGN       => COMP_SIGN    ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X04_W2_M0_S1_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_m0_s1_f2.snr";
+        MRG_WAYS        :  integer := 4;     -- X04
+        MRG_WORDS       :  integer := 2;     -- W1
+        MRG_FIFO_SIZE   :  integer := 64;    -- 
+        MRG_IN_ENABLE   :  boolean := FALSE; -- M0
+        STM_IN_ENABLE   :  boolean := TRUE;  -- S1
+        STM_WORDS       :  integer := 2;     -- W1
+        STM_FEEDBACK    :  integer := 2;     -- F2
+        SORT_ORDER      :  integer := 0;     -- 
+        COMP_SIGN       :  boolean := FALSE; --
+        FINISH_ABORT    :  boolean := FALSE  --
+    );
+end     Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F2;
+architecture Model of Merge_Sorter_Core_Test_Bench_X04_W2_M0_S1_F2 is
+begin
+    TEST: entity  WORK.Merge_Sorter_Core_Test_Bench
+        generic map (
+            NAME            => NAME         ,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            MRG_IN_ENABLE   => MRG_IN_ENABLE,
+            MRG_WAYS        => MRG_WAYS     ,
+            MRG_WORDS       => MRG_WORDS    ,
+            MRG_FIFO_SIZE   => MRG_FIFO_SIZE,
+            STM_IN_ENABLE   => STM_IN_ENABLE,
+            STM_WORDS       => STM_WORDS    ,
+            STM_FEEDBACK    => STM_FEEDBACK ,
+            SORT_ORDER      => SORT_ORDER   ,
+            COMP_SIGN       => COMP_SIGN    ,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
