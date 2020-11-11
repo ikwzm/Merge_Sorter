@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 0.6.0
---!     @date    2020/10/11
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -45,6 +45,7 @@ entity  ArgSort_AXI_Test_Bench is
         AXI_XFER_SIZE   :  integer := 12;
         AXI_REQ_QUEUE   :  integer := 12;
         MRG_WAYS        :  integer :=  4;
+        MRG_WORDS       :  integer :=  1;
         STM_FEEDBACK    :  integer :=  1;
         WORD_BITS       :  integer := 32;
         INDEX_BITS      :  integer := 32;
@@ -317,7 +318,7 @@ begin
     DUT:  ArgSort_AXI                                    -- 
         generic map (
             MRG_WAYS            => MRG_WAYS            ,
-            MRG_WORDS           => 1                   ,
+            MRG_WORDS           => MRG_WORDS           ,
             WORD_BITS           => WORD_BITS           , 
             INDEX_BITS          => INDEX_BITS          ,
             COMP_SIGN           => TRUE                ,
@@ -881,20 +882,24 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_AXI_Test_Bench_X04_F0 is
+entity  ArgSort_AXI_Test_Bench_X04_W1_F0 is
     generic (
-        NAME            :  STRING  := "TEST_X04_F0";
-        SCENARIO_FILE   :  STRING  := "test_x04_f0.snr";
+        NAME            :  STRING  := "TEST_X04_W1_F0";
+        SCENARIO_FILE   :  STRING  := "test_x04_W1_f0.snr";
+        MRG_WAYS        :  integer := 4;  -- X04
+        MRG_WORDS       :  integer := 1;  -- W1
+        STM_FEEDBACK    :  integer := 0;  -- F0
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_AXI_Test_Bench_X04_F0;
-architecture Model of ArgSort_AXI_Test_Bench_X04_F0 is
+end ArgSort_AXI_Test_Bench_X04_W1_F0;
+architecture Model of ArgSort_AXI_Test_Bench_X04_W1_F0 is
 begin
     TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
-        MRG_WAYS        => 4             ,
-        STM_FEEDBACK    => 0             ,
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -903,20 +908,24 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_AXI_Test_Bench_X04_F1 is
+entity  ArgSort_AXI_Test_Bench_X04_W1_F1 is
     generic (
-        NAME            :  STRING  := "TEST_X04_F1";
-        SCENARIO_FILE   :  STRING  := "test_x04_f1.snr";
+        NAME            :  STRING  := "TEST_X04_W1_F1";
+        SCENARIO_FILE   :  STRING  := "test_x04_W1_f1.snr";
+        MRG_WAYS        :  integer := 4;  -- X04
+        MRG_WORDS       :  integer := 1;  -- W1
+        STM_FEEDBACK    :  integer := 1;  -- F1
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_AXI_Test_Bench_X04_F1;
-architecture Model of ArgSort_AXI_Test_Bench_X04_F1 is
+end ArgSort_AXI_Test_Bench_X04_W1_F1;
+architecture Model of ArgSort_AXI_Test_Bench_X04_W1_F1 is
 begin
     TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
-        MRG_WAYS        => 4             ,
-        STM_FEEDBACK    => 1             ,
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -925,20 +934,24 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_AXI_Test_Bench_X04_F2 is
+entity  ArgSort_AXI_Test_Bench_X04_W1_F2 is
     generic (
-        NAME            :  STRING  := "TEST_X04_F2";
-        SCENARIO_FILE   :  STRING  := "test_x04_f2.snr";
+        NAME            :  STRING  := "TEST_X04_W1_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_W1_f2.snr";
+        MRG_WAYS        :  integer := 4;  -- X04
+        MRG_WORDS       :  integer := 1;  -- W1
+        STM_FEEDBACK    :  integer := 2;  -- F2
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_AXI_Test_Bench_X04_F2;
-architecture Model of ArgSort_AXI_Test_Bench_X04_F2 is
+end ArgSort_AXI_Test_Bench_X04_W1_F2;
+architecture Model of ArgSort_AXI_Test_Bench_X04_W1_F2 is
 begin
     TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
-        MRG_WAYS        => 4             ,
-        STM_FEEDBACK    => 2             ,
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -947,21 +960,50 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_AXI_Test_Bench_X16_F2 is
+entity  ArgSort_AXI_Test_Bench_X04_W2_F2 is
     generic (
-        NAME            :  STRING  := "TEST_X16_F2";
-        SCENARIO_FILE   :  STRING  := "test_x16_f2.snr";
+        NAME            :  STRING  := "TEST_X04_W2_F2";
+        SCENARIO_FILE   :  STRING  := "test_x04_W2_f2.snr";
+        MRG_WAYS        :  integer := 4;  -- X04
+        MRG_WORDS       :  integer := 2;  -- W1
+        STM_FEEDBACK    :  integer := 2;  -- F2
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_AXI_Test_Bench_X16_F2;
-architecture Model of ArgSort_AXI_Test_Bench_X16_F2 is
+end ArgSort_AXI_Test_Bench_X04_W2_F2;
+architecture Model of ArgSort_AXI_Test_Bench_X04_W2_F2 is
 begin
     TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
-        AXI_DATA_WIDTH  => 128           ,
-        MRG_WAYS        => 16            ,
-        STM_FEEDBACK    => 2             ,
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
+        FINISH_ABORT    => FINISH_ABORT
+    );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X16_W1_F2 is
+    generic (
+        NAME            :  STRING  := "TEST_X16_W1_F2";
+        SCENARIO_FILE   :  STRING  := "test_x16_W1_f2.snr";
+        MRG_WAYS        :  integer := 16; -- X16
+        MRG_WORDS       :  integer := 1;  -- W1
+        STM_FEEDBACK    :  integer := 2;  -- F2
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X16_W1_F2;
+architecture Model of ArgSort_AXI_Test_Bench_X16_W1_F2 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
