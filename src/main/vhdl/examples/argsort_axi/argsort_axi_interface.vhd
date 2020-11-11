@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -280,7 +280,7 @@ entity  ArgSort_AXI_Interface is
     -------------------------------------------------------------------------------
         MRG_RD_DATA         :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
         MRG_RD_NONE         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
-        MRG_RD_EBLK         :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_RD_EBLK         :  out std_logic_vector(WAYS                -1 downto 0);
         MRG_RD_LAST         :  out std_logic_vector(WAYS                -1 downto 0);
         MRG_RD_VALID        :  out std_logic_vector(WAYS                -1 downto 0);
         MRG_RD_READY        :  in  std_logic_vector(WAYS                -1 downto 0);
@@ -531,6 +531,7 @@ begin
     MRG_RD: Merge_AXI_Reader                         -- 
         generic map (                                -- 
             WAYS            => WAYS                , --
+            WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => MRG_RD_REG_PARAM    , --
             AXI_ID          => MRG_AXI_ID          , --
@@ -696,6 +697,7 @@ begin
     CTRL: Interface_Controller                       -- 
         generic map (                                -- 
             WAYS            => WAYS                , --
+            WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
             STM_FEEDBACK    => STM_FEEDBACK        , --
             STM_RD_DATA_BITS=> STM_RD_DATA_BITS    , --

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ use     Merge_Sorter.Interface;
 entity  Merge_AXI_Reader is
     generic (
         WAYS            :  integer :=  8;
+        WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID          :  integer :=  1;
@@ -66,14 +67,14 @@ entity  Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
-        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
-        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
-        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH -1 downto 0);
+        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH        -1 downto 0);
+        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH      -1 downto 0);
         AXI_ARLEN       :  out std_logic_vector(7 downto 0);
         AXI_ARSIZE      :  out std_logic_vector(2 downto 0);
         AXI_ARBURST     :  out std_logic_vector(1 downto 0);
@@ -82,14 +83,14 @@ entity  Merge_AXI_Reader is
         AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH-1 downto 0);
+        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH     -1 downto 0);
         AXI_ARVALID     :  out std_logic;
         AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
-        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH -1 downto 0);
+        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH        -1 downto 0);
+        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH      -1 downto 0);
         AXI_RRESP       :  in  std_logic_vector(1 downto 0);
         AXI_RLAST       :  in  std_logic;
         AXI_RVALID      :  in  std_logic;
@@ -97,18 +98,18 @@ entity  Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(WAYS           -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(WAYS           -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(WAYS           -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(WAYS           -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(WAYS           -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(WAYS           -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS                -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS                -1 downto 0);
     -------------------------------------------------------------------------------
     -- Status Output.
     -------------------------------------------------------------------------------
-        BUSY            :  out std_logic_vector(WAYS           -1 downto 0);
-        DONE            :  out std_logic_vector(WAYS           -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS                -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS                -1 downto 0)
     );
 end Merge_AXI_Reader;
 -----------------------------------------------------------------------------------
@@ -145,8 +146,8 @@ architecture RTL of Merge_AXI_Reader is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  ALIGNMENT_BITS    :  integer := MIN(WORD_BITS, AXI_DATA_WIDTH);
-    constant  BUF_DATA_BITS     :  integer := MAX(WORD_BITS, AXI_DATA_WIDTH);
+    constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_BITS, AXI_DATA_WIDTH);
+    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
     -- 
@@ -370,6 +371,7 @@ begin
     READER:  Merge_Reader                                -- 
         generic map (                                    --
             WAYS                => WAYS                , -- 
+            WORDS               => WORDS               , -- 
             WORD_BITS           => WORD_BITS           , --   
             REG_PARAM           => REG_PARAM           , --
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   

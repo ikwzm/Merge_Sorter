@@ -532,7 +532,7 @@ architecture RTL of ArgSort_AXI is
     signal    mrg_res_valid     :  std_logic;
     signal    mrg_res_ready     :  std_logic;
     signal    mrg_in_data       :  std_logic_vector(MRG_WAYS*MRG_WORDS*MRG_WORD_BITS-1 downto 0);
-    signal    mrg_in_none       :  std_logic_vector(MRG_WAYS-1 downto 0);
+    signal    mrg_in_none       :  std_logic_vector(MRG_WAYS*MRG_WORDS              -1 downto 0);
     signal    mrg_in_eblk       :  std_logic_vector(MRG_WAYS-1 downto 0);
     signal    mrg_in_level      :  std_logic_vector(MRG_WAYS-1 downto 0);
     signal    mrg_in_last       :  std_logic_vector(MRG_WAYS-1 downto 0);
@@ -1083,7 +1083,8 @@ begin
     CORE: Merge_Sorter_Core                              -- 
         generic map (                                    -- 
             MRG_IN_ENABLE       => TRUE               ,  -- 
-            MRG_WAYS            => MRG_WAYS           ,  --  
+            MRG_WAYS            => MRG_WAYS           ,  --
+            MRG_WORDS           => MRG_WORDS          ,  --
             MRG_FIFO_SIZE       => MRG_FIFO_SIZE      ,  --  
             MRG_LEVEL_SIZE      => 0                  ,  --  
             STM_IN_ENABLE       => TRUE               ,  --  

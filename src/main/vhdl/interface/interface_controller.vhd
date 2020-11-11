@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ use     Merge_Sorter.Interface;
 entity  Interface_Controller is
     generic (
         WAYS                :  integer :=    8;
+        WORDS               :  integer :=    8;
         WORD_BITS           :  integer :=   64;
         STM_FEEDBACK        :  integer :=    1;
         STM_RD_DATA_BITS    :  integer :=   32;
@@ -416,8 +417,8 @@ begin
                             mrg_reader_mode <= tmp_1_xfer_mode;
                             mrg_writer_addr <= tmp_0_base_addr;
                             mrg_writer_mode <= tmp_0_xfer_mode;
-                            sort_total_size <= resize     (unsigned(size_regs)   , sort_total_size'length);
-                            sort_block_size <= to_unsigned(WAYS**(STM_FEEDBACK+1), sort_block_size'length);
+                            sort_total_size <= resize     (unsigned(size_regs)           , sort_total_size'length);
+                            sort_block_size <= to_unsigned(WORDS*(WAYS**(STM_FEEDBACK+1)), sort_block_size'length);
                         when STM_RD_CHK_STATE =>
                             next_state  := STM_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
