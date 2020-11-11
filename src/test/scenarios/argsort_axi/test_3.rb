@@ -14,7 +14,8 @@ def test_3(file)
               :t1_speculative => true}
   size_list.each do |size|
     title = "TEST 3.#{test_num} SIZE=#{size}"
-    data = Array.new(size){rand(-127..128)}
+    # data = Array.new(size){rand(-127..128)}
+    data = Array.new(size){|i| i-(size/2).ceil}.shuffle
     args = testbench.argsort(data)
     testbench.run(data, args, title, params)
     test_num = test_num + 1

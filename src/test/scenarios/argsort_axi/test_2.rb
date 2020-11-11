@@ -10,7 +10,8 @@ def test_2(file)
   size_list= [512,768,1024]
   size_list.each do |size|
     title = "TEST 2.#{test_num} SIZE=#{size}"
-    data = Array.new(size){rand(-127..128)}
+    # data = Array.new(size){rand(-127..128)}
+    data = Array.new(size){|i| i-(size/2).ceil}.shuffle
     args = testbench.argsort(data)
     testbench.run(data, args, title)
     test_num = test_num + 1

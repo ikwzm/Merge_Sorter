@@ -9,7 +9,8 @@ def test_1(file)
   test_num = 1
   (1..128).to_a.each do |size|
     title = "TEST 1.#{test_num}"
-    data = Array.new(size){rand(-2147483648..2147483647)}
+    # data = Array.new(size){rand(-2147483648..2147483647)}
+    data = Array.new(size){|i| i-(size/2).ceil}.shuffle
     args = testbench.argsort(data)
     testbench.run(data, args, title)
     test_num = test_num + 1
