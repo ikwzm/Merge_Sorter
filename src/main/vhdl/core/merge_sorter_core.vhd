@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
 --!     @version 0.7.0
---!     @date    2020/11/6
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -714,4 +714,86 @@ begin
         outlet_done <= '1' when (outlet_req = '1' and o_done = TRUE) or
                                 (outlet_req = '1' and q_done = TRUE) else '0';
     end block;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    DBG: if (FALSE) generate
+        type      WORD_TYPE     is array(0 to MRG_WORDS-1)
+                                of std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        type      STAGE_TYPE    is record
+                  WORD          :  WORD_TYPE;
+                  INFO          :  std_logic_vector(INFO_BITS-1 downto 0);
+                  LAST          :  std_logic;
+                  VALID         :  std_logic;
+                  READY         :  std_logic;
+        end record;
+        type      STAGE_VECTOR  is array(integer range <>) of STAGE_TYPE;
+        function  BUILD_STAGE(
+                      WORD      :  std_logic_vector;
+                      INFO      :  std_logic_vector;
+                      LAST      :  std_logic_vector;
+                      VALID     :  std_logic_vector;
+                      READY     :  std_logic_vector)
+                      return       STAGE_VECTOR
+        is
+            variable  stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+            variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+        begin
+            for i in 0 to MRG_WAYS-1 loop
+                a_word := WORD((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+                for n in 0 to MRG_WORDS-1 loop
+                    stage(i).WORD(n) := a_word((n+1)*WORD_PARAM.BITS-1 downto n*WORD_PARAM.BITS);
+                end loop;
+                stage(i).VALID := VALID(i);
+                stage(i).READY := READY(i);
+                stage(i).LAST  := LAST(i);
+                stage(i).INFO  := INFO((i+1)*INFO_BITS-1 downto i*INFO_BITS);
+            end loop;
+            return stage;
+        end function;
+        function  BUILD_STAGE(
+                      WORD      :  std_logic_vector;
+                      INFO      :  std_logic_vector;
+                      LAST      :  std_logic;
+                      VALID     :  std_logic;
+                      READY     :  std_logic)
+                      return       STAGE_TYPE
+        is
+            variable  stage     :  STAGE_TYPE;
+        begin
+            for n in 0 to MRG_WORDS-1 loop
+                stage.WORD(n) := WORD((n+1)*WORD_PARAM.BITS-1 downto n*WORD_PARAM.BITS);
+            end loop;
+            stage.VALID := VALID;
+            stage.READY := READY;
+            stage.LAST  := LAST;
+            stage.INFO  := INFO;
+            return stage;
+        end function;
+        signal    stream_intake_stage   :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    fifo_intake_stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    sort_intake_stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    sort_outlet_stage     :  STAGE_TYPE;
+    begin 
+        stream_intake_stage <= BUILD_STAGE(stream_intake_word,
+                                           stream_intake_info,
+                                           stream_intake_last,
+                                           stream_intake_valid,
+                                           stream_intake_ready);
+        fifo_intake_stage   <= BUILD_STAGE(fifo_intake_word,
+                                           fifo_intake_info,
+                                           fifo_intake_last,
+                                           fifo_intake_valid,
+                                           fifo_intake_ready);
+        sort_intake_stage   <= BUILD_STAGE(sort_intake_word,
+                                           sort_intake_info,
+                                           sort_intake_last,
+                                           sort_intake_valid,
+                                           sort_intake_ready);
+        sort_outlet_stage   <= BUILD_STAGE(sort_outlet_word,
+                                           sort_outlet_info,
+                                           sort_outlet_last,
+                                           sort_outlet_valid,
+                                           sort_outlet_ready);
+    end generate;
 end RTL;
