@@ -8,7 +8,7 @@ DUMMY_PLUG_SRC_PATH  = $(DUMMY_PLUG_PATH)/src/main/vhdl
 DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl-0.35/dummy_plug
 DUMMY_PLUG_TOOL_PATH = $(DUMMY_PLUG_PATH)/tools
 
-SCENARIO_PATH        = ../../../src/test/scenarios/argsort_axi
+SCENARIO_PATH        = ../../../src/test/scenarios/argsort_axi/
 
 COPY       = cp
 CAT        = cat
@@ -16,46 +16,32 @@ REMOVE     = -rm
 GHDL       = ghdl
 GHDLFLAGS  = --mb-comments -P$(DUMMY_PLUG_WORK_PATH) -P$(PIPEWORK_WORK_PATH)
 
-test   : test_x04_f0 \
-         test_x04_f1 \
-         test_x04_f2 \
-         test_x16_f2 \
+TEST   = test_x04_w1_f0 \
+         test_x04_w1_f1 \
+         test_x04_w1_f2 \
+         test_x04_w2_f2 \
+         test_x16_w1_f2 \
          $(END_LIST)
 
+test   : $(TEST)
+
 clean  :
-	$(REMOVE) sources.mk *.o *.cf
+	$(REMOVE) sources.mk *.cf
 
-dut         : argsort_axi.o
+dut         : argsort_axi
 
-test_bench  : argsort_axi_test_bench.o
+test_bench  : argsort_axi_test_bench
 
-test_x04_f0 : test_x04_f0.snr test_bench dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F0
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F0
+define RUN
+$(1): $(2) test_bench dut 
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_AXI_Test_Bench_,$(1))
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_AXI_Test_Bench_,$(1))
 
-test_x04_f1 : test_x04_f1.snr test_bench dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F1
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F1
+$(2): $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
+	$(CAT) $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr > $(2)
+endef
 
-test_x04_f2 : test_x04_f2.snr test_bench dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F2
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X04_F2
-
-test_x16_f2 : test_x16_f2.snr test_bench dut 
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X16_F2
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER ArgSort_AXI_Test_Bench_X16_F2
-
-test_x04_f0.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
-	$(CAT) $^ > $@
-
-test_x04_f1.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
-	$(CAT) $^ > $@
-
-test_x04_f2.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
-	$(CAT) $^ > $@
-
-test_x16_f2.snr : $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
-	$(CAT) $^ > $@
+$(foreach ENTITY, $(TEST), $(eval $(call RUN, $(ENTITY), $(addsuffix .snr,$(ENTITY)))))
 
 sources.mk   : sources.yml
 	$(PIPEWORK_TOOL_PATH)/vhdl-archiver.rb -v --config sources.yml > sources.mk

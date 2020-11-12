@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    word.vhd
 --!     @brief   Merge Sorter Word Package :
---!     @version 0.3.0
---!     @date    2020/9/17
+--!     @version 0.7.0
+--!     @date    2020/11/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -88,6 +88,30 @@ package Word is
     --
     -------------------------------------------------------------------------------
     constant  Default_Param        :  Param_Type := New_Param(DATA_BITS => 8,SIGN => FALSE);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector;
+                  PRIORITY         :  std_logic;
+                  POSTPEND         :  std_logic;
+                  NONE             :  std_logic
+              )   return              std_logic_vector;
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector
+              )   return              std_logic_vector;
+    function  New_Postpend_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := "0";
+                  NONE             :  std_logic        := '1'
+              )   return              std_logic_vector;
+    function  New_Priority_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := "0";
+                  NONE             :  std_logic        := '1'
+              )   return              std_logic_vector;
 end Word;
 -----------------------------------------------------------------------------------
 --
@@ -179,5 +203,83 @@ package body Word is
                   SIGN              => FALSE
                );
     end New_Param;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  resize(I: std_logic_vector;LEN: integer) return std_logic_vector
+    is
+    begin
+        return std_logic_vector(resize(unsigned(I), LEN));
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector;
+                  PRIORITY         :  std_logic;
+                  POSTPEND         :  std_logic;
+                  NONE             :  std_logic
+              )   return              std_logic_vector
+    is
+        variable  a_word           :  std_logic_vector(PARAM.BITS-1 downto 0);
+    begin
+        a_word := (others => '0');
+        a_word(PARAM.DATA_HI downto PARAM.DATA_LO) := DATA;
+        a_word(PARAM.ATRB_NONE_POS    ) := NONE;
+        a_word(PARAM.ATRB_PRIORITY_POS) := PRIORITY;
+        a_word(PARAM.ATRB_POSTPEND_POS) := POSTPEND;
+        return a_word;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM,
+                        DATA     => DATA ,
+                        PRIORITY => '0'  ,
+                        POSTPEND => '0'  ,
+                        NONE     => '0'
+               );
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  New_Postpend_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := "0";
+                  NONE             :  std_logic        := '1'
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM                       ,
+                        DATA     => resize(DATA,PARAM.DATA_BITS),
+                        PRIORITY => '0'                         ,
+                        POSTPEND => '1'                         ,
+                        NONE     => NONE
+               );
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function  New_Priority_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := "0";
+                  NONE             :  std_logic        := '1'
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM                       ,
+                        DATA     => resize(DATA,PARAM.DATA_BITS),
+                        PRIORITY => '1'                         ,
+                        POSTPEND => '0'                         ,
+                        NONE     => NONE
+               );
+    end function;
 
 end Word;

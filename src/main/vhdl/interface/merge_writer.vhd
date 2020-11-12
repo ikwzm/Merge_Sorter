@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

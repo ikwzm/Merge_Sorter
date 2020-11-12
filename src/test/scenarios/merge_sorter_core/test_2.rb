@@ -1,15 +1,17 @@
 require_relative '../scripts/scenario_writer.rb'
 
-def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order, count=100)
+def test_2(file, mrg_ways, mrg_words, mrg_enable, stm_enable, stm_feedback, sort_order, count=100)
 
-  title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
+  title    = sprintf("Merge_Sorter_Core(MRG_WAYS=%d,MRG_WORDS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 2", mrg_ways, mrg_words, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
+  data_bits= 32
+  atrb_bits=  4
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
   intake   = (0..mrg_ways-1).to_a.map{ |i|
                name = sprintf("MRG_I%02X", i)
-               ScenarioWriter::IntakeStream.new(name, file, 32, 4, 32, 4)
+               ScenarioWriter::IntakeStream.new(name, file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
              }
-  outlet   = ScenarioWriter::OutletStream.new("OUT" , file, 32, 4, 32, 4)
+  outlet   = ScenarioWriter::OutletStream.new("OUT" , file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
   
   merchal.sync
   merchal.init
@@ -29,7 +31,7 @@ def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order, cou
         outlet_data = []
         while (outlet_data.size == 0) do
           intake_data = intake.map{ |channel|
-            size = random.rand(0..4)
+            size = random.rand(0..4*mrg_words)
             (size == 0)? [nil] : sort(Array.new(size){|x| random.rand(0..1024)}, sort_order)
           }
           outlet_data = sort(intake_data.flatten.reject{|x| x.nil?}, sort_order)
@@ -39,8 +41,14 @@ def test_2(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order, cou
         outlet_last = intake_done
 
         intake.each_with_index do |channel, index|
+          while ((intake_data[index].size % mrg_words) > 0) do
+            intake_data[index].push({PostPend: 1, None: 1})
+          end
           channel.transfer(intake_data[index], intake_last, intake_done)
-        end 
+        end
+        while ((outlet_data.size % mrg_words) > 0) do
+          outlet_data.push({PostPend: 1, None: 1})
+        end
         outlet.transfer(outlet_data, outlet_last)
       end
       outlet.wait_mrg_response

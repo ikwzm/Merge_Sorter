@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -153,7 +153,7 @@ architecture RTL of Merge_AXI_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  ALIGNMENT_BITS    :  integer := MIN(WORD_BITS, AXI_DATA_WIDTH);
+    constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------

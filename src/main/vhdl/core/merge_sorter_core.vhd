@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.5.0
---!     @date    2020/10/9
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ entity  Merge_Sorter_Core is
     generic (
         MRG_IN_ENABLE   :  boolean := TRUE;
         MRG_WAYS        :  integer :=    8;
+        MRG_WORDS       :  integer :=    1;
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
@@ -60,8 +61,8 @@ entity  Merge_Sorter_Core is
         STM_REQ_READY   :  out std_logic;
         STM_RES_VALID   :  out std_logic;
         STM_RES_READY   :  in  std_logic;
-        STM_IN_DATA     :  in  std_logic_vector(STM_WORDS*DATA_BITS-1 downto 0);
-        STM_IN_STRB     :  in  std_logic_vector(STM_WORDS          -1 downto 0);
+        STM_IN_DATA     :  in  std_logic_vector(         STM_WORDS*DATA_BITS-1 downto 0);
+        STM_IN_STRB     :  in  std_logic_vector(         STM_WORDS          -1 downto 0);
         STM_IN_LAST     :  in  std_logic;
         STM_IN_VALID    :  in  std_logic;
         STM_IN_READY    :  out std_logic;
@@ -69,14 +70,15 @@ entity  Merge_Sorter_Core is
         MRG_REQ_READY   :  out std_logic;
         MRG_RES_VALID   :  out std_logic;
         MRG_RES_READY   :  in  std_logic;
-        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS* DATA_BITS-1 downto 0);
-        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
-        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS           -1 downto 0);
-        OUT_DATA        :  out std_logic_vector(          DATA_BITS-1 downto 0);
+        MRG_IN_DATA     :  in  std_logic_vector(MRG_WAYS*MRG_WORDS*DATA_BITS-1 downto 0);
+        MRG_IN_NONE     :  in  std_logic_vector(MRG_WAYS*MRG_WORDS          -1 downto 0);
+        MRG_IN_EBLK     :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_LAST     :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_VALID    :  in  std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_READY    :  out std_logic_vector(MRG_WAYS                    -1 downto 0);
+        MRG_IN_LEVEL    :  out std_logic_vector(MRG_WAYS                    -1 downto 0);
+        OUT_DATA        :  out std_logic_vector(         MRG_WORDS*DATA_BITS-1 downto 0);
+        OUT_STRB        :  out std_logic_vector(         MRG_WORDS          -1 downto 0);
         OUT_LAST        :  out std_logic;
         OUT_VALID       :  out std_logic;
         OUT_READY       :  in  std_logic
@@ -192,7 +194,7 @@ architecture RTL of Merge_Sorter_Core is
     constant  INFO_BITS             :  integer := INFO_FBK_NUM_HI + 1;
     constant  WORD_PARAM            :  Word.Param_Type
                                     := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
-    constant  WORD_BITS             :  integer := WORD_PARAM.BITS;
+    constant  WORD_BITS             :  integer := MRG_WORDS*WORD_PARAM.BITS;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -408,9 +410,11 @@ begin
         QUEUE: Core_Stream_Intake                        -- 
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
-                MRG_WAYS        => MRG_WAYS            , -- 
-                STM_WORDS       => STM_WORDS           , -- 
+                MRG_WAYS        => MRG_WAYS            , --
+                MRG_WORDS       => MRG_WORDS           , --
+                STM_WORDS       => STM_WORDS           , --
                 FEEDBACK        => STM_FEEDBACK        , -- 
+                SORT_ORDER      => SORT_ORDER          , --
                 MRG_WAYS_BITS   => MRG_WAYS_BITS       , -- 
                 SIZE_BITS       => SIZE_BITS           , --
                 INFO_BITS       => INFO_BITS           , --
@@ -457,56 +461,68 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    FIFO: for i in 0 to MRG_WAYS-1 generate
-        signal   mrg_in_word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    FIFO: for way in 0 to MRG_WAYS-1 generate
+        signal   mrg_in_word    :  std_logic_vector(MRG_WORDS*WORD_PARAM.BITS-1 downto 0);
     begin
-        mrg_in_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) <= MRG_IN_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
-        mrg_in_word(WORD_PARAM.ATRB_NONE_POS    ) <= MRG_IN_NONE(i);
-        mrg_in_word(WORD_PARAM.ATRB_PRIORITY_POS) <= '0';
-        mrg_in_word(WORD_PARAM.ATRB_POSTPEND_POS) <= MRG_IN_NONE(i);
-        U: Core_Intake_Fifo                              -- 
-            generic map (                                -- 
-                WORD_PARAM      => WORD_PARAM          , --
+        process (MRG_IN_DATA, MRG_IN_NONE)
+            variable  a_word    :  std_logic_vector(    WORD_PARAM.BITS-1 downto 0);
+            variable  i_data    :  std_logic_vector(MRG_WORDS*DATA_BITS-1 downto 0);
+            variable  i_none    :  std_logic_vector(MRG_WORDS          -1 downto 0);
+        begin
+            i_data := MRG_IN_DATA((way+1)*(MRG_WORDS*DATA_BITS)-1 downto way*(MRG_WORDS*DATA_BITS));
+            i_none := MRG_IN_NONE((way+1)*(MRG_WORDS          )-1 downto way*(MRG_WORDS          ));
+            for i in 0 to MRG_WORDS-1 loop
+                a_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := i_data((i+1)*DATA_BITS-1 downto i*DATA_BITS);
+                a_word(WORD_PARAM.ATRB_NONE_POS    ) := i_none(i);
+                a_word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
+                a_word(WORD_PARAM.ATRB_POSTPEND_POS) := i_none(i);
+                mrg_in_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= a_word;
+            end loop;
+        end process;
+        U: Core_Intake_Fifo                                 -- 
+            generic map (                                   -- 
+                WORD_PARAM      => WORD_PARAM             , --
+                WORDS           => MRG_WORDS              , --
                 FBK_IN_ENABLE   => (STM_IN_ENABLE = TRUE and STM_FEEDBACK > 0), -- 
-                MRG_IN_ENABLE   => MRG_IN_ENABLE       , -- 
-                SIZE_BITS       => SIZE_BITS           , -- 
-                FIFO_SIZE       => FIFO_SIZE           , -- 
-                LEVEL_SIZE      => MRG_LEVEL_SIZE      , --
-                INFO_BITS       => INFO_BITS           , --
-                INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
-                INFO_FBK_POS    => INFO_FBK_POS        , -- 
-                INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
-                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI       -- 
-            )                                            -- 
-            port map (                                   -- 
-                CLK             => CLK                 , -- In  :
-                RST             => RST                 , -- In  :
-                CLR             => CLR                 , -- In  :
-                FBK_REQ         => fifo_stream_req     , -- In  :
-                FBK_ACK         => fifo_stream_ack  (i), -- Out :
-                FBK_DONE        => fifo_stream_done (i), -- Out :
-                FBK_OUT_START   => feedback_out_start  , -- In  :
-                FBK_OUT_SIZE    => feedback_out_size   , -- In  :
-                FBK_OUT_LAST    => feedback_out_last   , -- In  :
-                FBK_IN_WORD     => feedback_word       , -- In  :
-                FBK_IN_LAST     => feedback_last       , -- In  :
-                FBK_IN_VALID    => feedback_valid   (i), -- In  :
-                FBK_IN_READY    => feedback_ready   (i), -- Out :
-                MRG_REQ         => fifo_merge_req      , -- In  :
-                MRG_ACK         => fifo_merge_ack   (i), -- Out :
-                MRG_IN_WORD     => mrg_in_word         , -- In  :
-                MRG_IN_EBLK     => MRG_IN_EBLK      (i), -- In  :
-                MRG_IN_LAST     => MRG_IN_LAST      (i), -- In  :
-                MRG_IN_VALID    => MRG_IN_VALID     (i), -- In  :
-                MRG_IN_READY    => MRG_IN_READY     (i), -- Out :
-                MRG_IN_LEVEL    => MRG_IN_LEVEL     (i), -- Out :
-                OUTLET_WORD     => fifo_intake_word ((i+1)*WORD_BITS-1 downto i*WORD_BITS), -- Out :
-                OUTLET_INFO     => fifo_intake_info ((i+1)*INFO_BITS-1 downto i*INFO_BITS), -- Out :
-                OUTLET_LAST     => fifo_intake_last (i), -- Out :
-                OUTLET_VALID    => fifo_intake_valid(i), -- Out :
-                OUTLET_READY    => fifo_intake_ready(i)  -- In  :
-            );                                           -- 
-    end generate;                                        -- 
+                MRG_IN_ENABLE   => MRG_IN_ENABLE          , -- 
+                SIZE_BITS       => SIZE_BITS              , -- 
+                FIFO_SIZE       => FIFO_SIZE              , -- 
+                LEVEL_SIZE      => MRG_LEVEL_SIZE         , --
+                INFO_BITS       => INFO_BITS              , --
+                INFO_EBLK_POS   => INFO_EBLK_POS          , -- 
+                INFO_FBK_POS    => INFO_FBK_POS           , -- 
+                INFO_FBK_NUM_LO => INFO_FBK_NUM_LO        , -- 
+                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI          -- 
+            )                                               -- 
+            port map (                                      -- 
+                CLK             => CLK                    , -- In  :
+                RST             => RST                    , -- In  :
+                CLR             => CLR                    , -- In  :
+                FBK_REQ         => fifo_stream_req        , -- In  :
+                FBK_ACK         => fifo_stream_ack  (way) , -- Out :
+                FBK_DONE        => fifo_stream_done (way) , -- Out :
+                FBK_OUT_START   => feedback_out_start     , -- In  :
+                FBK_OUT_SIZE    => feedback_out_size      , -- In  :
+                FBK_OUT_LAST    => feedback_out_last      , -- In  :
+                FBK_IN_WORD     => feedback_word          , -- In  :
+                FBK_IN_LAST     => feedback_last          , -- In  :
+                FBK_IN_VALID    => feedback_valid   (way) , -- In  :
+                FBK_IN_READY    => feedback_ready   (way) , -- Out :
+                MRG_REQ         => fifo_merge_req         , -- In  :
+                MRG_ACK         => fifo_merge_ack   (way) , -- Out :
+                MRG_IN_WORD     => mrg_in_word            , -- In  :
+                MRG_IN_EBLK     => MRG_IN_EBLK      (way) , -- In  :
+                MRG_IN_LAST     => MRG_IN_LAST      (way) , -- In  :
+                MRG_IN_VALID    => MRG_IN_VALID     (way) , -- In  :
+                MRG_IN_READY    => MRG_IN_READY     (way) , -- Out :
+                MRG_IN_LEVEL    => MRG_IN_LEVEL     (way) , -- Out :
+                OUTLET_WORD     => fifo_intake_word ((way+1)*WORD_BITS-1 downto way*WORD_BITS), -- Out :
+                OUTLET_INFO     => fifo_intake_info ((way+1)*INFO_BITS-1 downto way*INFO_BITS), -- Out :
+                OUTLET_LAST     => fifo_intake_last (way) , -- Out :
+                OUTLET_VALID    => fifo_intake_valid(way) , -- Out :
+                OUTLET_READY    => fifo_intake_ready(way)   -- In  :
+            );                                              -- 
+    end generate;                                           -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -527,6 +543,7 @@ begin
         TREE: Merge_Sorter_Tree                          -- 
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
+                WORDS           => MRG_WORDS           , --
                 WAYS            => MRG_WAYS            , -- 
                 SORT_ORDER      => SORT_ORDER          , -- 
                 QUEUE_SIZE      => 2                   , -- 
@@ -584,6 +601,7 @@ begin
         QUEUE: Word_Queue                                -- 
             generic map (                                --
                 WORD_PARAM      => WORD_PARAM          , -- 
+                WORDS           => MRG_WORDS           , --
                 QUEUE_SIZE      => 2                   , -- 
                 INFO_BITS       => MRG_WAYS              -- 
             )                                            -- 
@@ -623,12 +641,13 @@ begin
     -------------------------------------------------------------------------------
     outlet_i_word <= sort_outlet_word;
     outlet_i_eblk <= sort_outlet_info(INFO_EBLK_POS);
-    outlet_i_last <= '1' when (sort_outlet_last = '1' and outlet_i_eblk = '1') else '0';
+    outlet_i_last <= sort_outlet_last;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     OUTLET: block
-        signal    o_word  :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        signal    o_word  :  std_logic_vector(MRG_WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    o_eblk  :  std_logic;
         signal    o_last  :  std_logic;
         signal    o_valid :  std_logic;
         signal    o_ready :  std_logic;
@@ -641,6 +660,8 @@ begin
         QUEUE: Drop_None                                     -- 
             generic map (                                    -- 
                 WORD_PARAM      => WORD_PARAM              , -- 
+                I_WORDS         => MRG_WORDS               , --
+                O_WORDS         => MRG_WORDS               , --
                 INFO_BITS       => 1                         -- 
             )                                                -- 
             port map (                                       -- 
@@ -648,12 +669,13 @@ begin
                 RST             => RST                     , -- In  :
                 CLR             => CLR                     , -- In  :
                 I_WORD          => outlet_i_word           , -- In  :
-                I_INFO          => "0"                     , -- In  :
+                I_INFO(0)       => outlet_i_eblk           , -- In  :
                 I_LAST          => outlet_i_last           , -- In  :
                 I_VALID         => outlet_i_valid          , -- In  :
                 I_READY         => outlet_i_ready          , -- Out :
                 O_WORD          => o_word                  , -- Out :
-                O_INFO          => open                    , -- Out :
+                O_INFO(0)       => o_eblk                  , -- Out :
+                O_STRB          => OUT_STRB                , -- Out :
                 O_LAST          => o_last                  , -- Out :
                 O_VALID         => o_valid                 , -- Out :
                 O_READY         => o_ready                   -- In  :
@@ -662,10 +684,19 @@ begin
         --
         ---------------------------------------------------------------------------
         o_ready   <= OUT_READY;
-        OUT_DATA  <= o_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
-        OUT_LAST  <= o_last;
+        OUT_LAST  <= o_last and o_eblk;
         OUT_VALID <= o_valid;
         o_done    <= (o_valid = '1' and o_ready = '1' and o_last = '1');
+        process (o_word)
+            variable  a_word  :  std_logic_vector(WORD_PARAM.BITS     -1 downto 0);
+            variable  a_data  :  std_logic_vector(WORD_PARAM.DATA_BITS-1 downto 0);
+        begin
+            for i in 0 to MRG_WORDS-1 loop
+                a_word := o_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+                a_data := a_word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+                OUT_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS) <= a_data;
+            end loop;
+        end process;
         process (CLK, RST) begin
             if (RST = '1') then
                     q_done <= FALSE;
@@ -683,4 +714,86 @@ begin
         outlet_done <= '1' when (outlet_req = '1' and o_done = TRUE) or
                                 (outlet_req = '1' and q_done = TRUE) else '0';
     end block;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    DBG: if (FALSE) generate
+        type      WORD_TYPE     is array(0 to MRG_WORDS-1)
+                                of std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+        type      STAGE_TYPE    is record
+                  WORD          :  WORD_TYPE;
+                  INFO          :  std_logic_vector(INFO_BITS-1 downto 0);
+                  LAST          :  std_logic;
+                  VALID         :  std_logic;
+                  READY         :  std_logic;
+        end record;
+        type      STAGE_VECTOR  is array(integer range <>) of STAGE_TYPE;
+        function  BUILD_STAGE(
+                      WORD      :  std_logic_vector;
+                      INFO      :  std_logic_vector;
+                      LAST      :  std_logic_vector;
+                      VALID     :  std_logic_vector;
+                      READY     :  std_logic_vector)
+                      return       STAGE_VECTOR
+        is
+            variable  stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+            variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+        begin
+            for i in 0 to MRG_WAYS-1 loop
+                a_word := WORD((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+                for n in 0 to MRG_WORDS-1 loop
+                    stage(i).WORD(n) := a_word((n+1)*WORD_PARAM.BITS-1 downto n*WORD_PARAM.BITS);
+                end loop;
+                stage(i).VALID := VALID(i);
+                stage(i).READY := READY(i);
+                stage(i).LAST  := LAST(i);
+                stage(i).INFO  := INFO((i+1)*INFO_BITS-1 downto i*INFO_BITS);
+            end loop;
+            return stage;
+        end function;
+        function  BUILD_STAGE(
+                      WORD      :  std_logic_vector;
+                      INFO      :  std_logic_vector;
+                      LAST      :  std_logic;
+                      VALID     :  std_logic;
+                      READY     :  std_logic)
+                      return       STAGE_TYPE
+        is
+            variable  stage     :  STAGE_TYPE;
+        begin
+            for n in 0 to MRG_WORDS-1 loop
+                stage.WORD(n) := WORD((n+1)*WORD_PARAM.BITS-1 downto n*WORD_PARAM.BITS);
+            end loop;
+            stage.VALID := VALID;
+            stage.READY := READY;
+            stage.LAST  := LAST;
+            stage.INFO  := INFO;
+            return stage;
+        end function;
+        signal    stream_intake_stage   :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    fifo_intake_stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    sort_intake_stage     :  STAGE_VECTOR(0 to MRG_WAYS-1);
+        signal    sort_outlet_stage     :  STAGE_TYPE;
+    begin 
+        stream_intake_stage <= BUILD_STAGE(stream_intake_word,
+                                           stream_intake_info,
+                                           stream_intake_last,
+                                           stream_intake_valid,
+                                           stream_intake_ready);
+        fifo_intake_stage   <= BUILD_STAGE(fifo_intake_word,
+                                           fifo_intake_info,
+                                           fifo_intake_last,
+                                           fifo_intake_valid,
+                                           fifo_intake_ready);
+        sort_intake_stage   <= BUILD_STAGE(sort_intake_word,
+                                           sort_intake_info,
+                                           sort_intake_last,
+                                           sort_intake_valid,
+                                           sort_intake_ready);
+        sort_outlet_stage   <= BUILD_STAGE(sort_outlet_word,
+                                           sort_outlet_info,
+                                           sort_outlet_last,
+                                           sort_outlet_valid,
+                                           sort_outlet_ready);
+    end generate;
 end RTL;

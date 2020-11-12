@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
---!     @version 0.6.0
---!     @date    2020/10/17
+--!     @version 0.7.0
+--!     @date    2020/11/11
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,6 +41,7 @@ use     Merge_Sorter.Interface;
 entity  Merge_Reader is
     generic (
         WAYS            :  integer :=  8;
+        WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         REQ_ADDR_BITS   :  integer := 32;
@@ -61,17 +62,17 @@ entity  Merge_Reader is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
-        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
-        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS-1 downto 0);
+        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
+        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
+        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
     -------------------------------------------------------------------------------
     -- Transaction Command Request Signals.
     -------------------------------------------------------------------------------
-        REQ_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
-        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
-        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
-        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
+        REQ_VALID       :  out std_logic_vector(WAYS                -1 downto 0);
+        REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS       -1 downto 0);
+        REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS       -1 downto 0);
+        REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH           -1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS -1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_NONE        :  out std_logic;
@@ -79,8 +80,8 @@ entity  Merge_Reader is
     -------------------------------------------------------------------------------
     -- Transaction Command Acknowledge Signals.
     -------------------------------------------------------------------------------
-        ACK_VALID       :  in  std_logic_vector(WAYS               -1 downto 0);
-        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        ACK_VALID       :  in  std_logic_vector(WAYS                -1 downto 0);
+        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH              downto 0);
         ACK_ERROR       :  in  std_logic := '0';
         ACK_NEXT        :  in  std_logic;
         ACK_LAST        :  in  std_logic;
@@ -89,9 +90,9 @@ entity  Merge_Reader is
     -------------------------------------------------------------------------------
     -- Transfer Status Signals.
     -------------------------------------------------------------------------------
-        XFER_BUSY       :  in  std_logic_vector(WAYS               -1 downto 0);
-        XFER_DONE       :  in  std_logic_vector(WAYS               -1 downto 0);
-        XFER_ERROR      :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
+        XFER_BUSY       :  in  std_logic_vector(WAYS                -1 downto 0);
+        XFER_DONE       :  in  std_logic_vector(WAYS                -1 downto 0);
+        XFER_ERROR      :  in  std_logic_vector(WAYS                -1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
     -- Intake Flow Control Signals.
     -------------------------------------------------------------------------------
@@ -99,39 +100,39 @@ entity  Merge_Reader is
         FLOW_PAUSE      :  out std_logic;
         FLOW_STOP       :  out std_logic;
         FLOW_LAST       :  out std_logic;
-        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH             downto 0);
-        PUSH_FIN_VALID  :  in  std_logic_vector(WAYS               -1 downto 0);
+        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH              downto 0);
+        PUSH_FIN_VALID  :  in  std_logic_vector(WAYS                -1 downto 0);
         PUSH_FIN_LAST   :  in  std_logic;
         PUSH_FIN_ERROR  :  in  std_logic := '0';
-        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
-        PUSH_BUF_RESET  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
-        PUSH_BUF_VALID  :  in  std_logic_vector(WAYS               -1 downto 0) := (others => '0');
+        PUSH_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH              downto 0);
+        PUSH_BUF_RESET  :  in  std_logic_vector(WAYS                -1 downto 0) := (others => '0');
+        PUSH_BUF_VALID  :  in  std_logic_vector(WAYS                -1 downto 0) := (others => '0');
         PUSH_BUF_LAST   :  in  std_logic;
         PUSH_BUF_ERROR  :  in  std_logic := '0';
-        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
-        PUSH_BUF_READY  :  out std_logic_vector(WAYS               -1 downto 0);
+        PUSH_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH              downto 0);
+        PUSH_BUF_READY  :  out std_logic_vector(WAYS                -1 downto 0);
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_WEN         :  in  std_logic_vector(WAYS               -1 downto 0);
-        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8    -1 downto 0);
-        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
+        BUF_WEN         :  in  std_logic_vector(WAYS                -1 downto 0);
+        BUF_BEN         :  in  std_logic_vector(BUF_DATA_BITS/8     -1 downto 0);
+        BUF_DATA        :  in  std_logic_vector(BUF_DATA_BITS       -1 downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH           -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  out std_logic_vector(WAYS*WORD_BITS     -1 downto 0);
-        MRG_NONE        :  out std_logic_vector(WAYS               -1 downto 0);
-        MRG_EBLK        :  out std_logic_vector(WAYS               -1 downto 0);
-        MRG_LAST        :  out std_logic_vector(WAYS               -1 downto 0);
-        MRG_VALID       :  out std_logic_vector(WAYS               -1 downto 0);
-        MRG_READY       :  in  std_logic_vector(WAYS               -1 downto 0);
-        MRG_LEVEL       :  in  std_logic_vector(WAYS               -1 downto 0);
+        MRG_DATA        :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
+        MRG_NONE        :  out std_logic_vector(WAYS*WORDS          -1 downto 0);
+        MRG_EBLK        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_LAST        :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_VALID       :  out std_logic_vector(WAYS                -1 downto 0);
+        MRG_READY       :  in  std_logic_vector(WAYS                -1 downto 0);
+        MRG_LEVEL       :  in  std_logic_vector(WAYS                -1 downto 0);
     -------------------------------------------------------------------------------
     -- Status Output.
     -------------------------------------------------------------------------------
-        BUSY            :  out std_logic_vector(WAYS               -1 downto 0);
-        DONE            :  out std_logic_vector(WAYS               -1 downto 0)
+        BUSY            :  out std_logic_vector(WAYS                -1 downto 0);
+        DONE            :  out std_logic_vector(WAYS                -1 downto 0)
     );
 end Merge_Reader;
 -----------------------------------------------------------------------------------
@@ -417,7 +418,9 @@ begin
         ---------------------------------------------------------------------------
         -- 
         ---------------------------------------------------------------------------
-        signal    mrg_in_data       :  std_logic_vector(WORD_BITS      -1 downto 0);
+        signal    mrg_in_data       :  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        signal    mrg_in_strb       :  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+        signal    mrg_in_none       :  std_logic_vector(WORDS            -1 downto 0);
         signal    mrg_in_last       :  std_logic;
         signal    mrg_in_valid      :  std_logic;
         signal    mrg_in_ready      :  std_logic;
@@ -460,7 +463,7 @@ begin
                 I_FIXED_FLOW_OPEN   => 0                       , --
                 I_FIXED_POOL_OPEN   => 1                       , --
                 O_CLK_RATE          => 1                       , --
-                O_DATA_BITS         => WORD_BITS               , --
+                O_DATA_BITS         => WORD_BITS*WORDS         , --
                 O_WORD_BITS         => WORD_BITS               , --
                 BUF_DEPTH           => BUF_DEPTH               , --
                 BUF_DATA_BITS       => BUF_DATA_BITS           , --
@@ -605,7 +608,7 @@ begin
             -- Outlet Stream Interface.
             -----------------------------------------------------------------------
                 O_DATA              => mrg_in_data             , --  Out :
-                O_STRB              => open                    , --  Out :
+                O_STRB              => mrg_in_strb             , --  Out :
                 O_LAST              => mrg_in_last             , --  Out :
                 O_VALID             => mrg_in_valid            , --  Out :
                 O_READY             => mrg_in_ready            , --  In  :
@@ -796,12 +799,25 @@ begin
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
-            MRG_DATA((channel+1)*WORD_BITS-1 downto channel*WORD_BITS) <= mrg_in_data;
+            process (curr_state, mrg_in_strb) begin
+                for i in mrg_in_none'range loop
+                    if (curr_state = MRG_NONE_STATE) or
+                       (mrg_in_strb(i*(WORD_BITS/8)) = '0') then
+                        mrg_in_none(i) <= '1';
+                    else
+                        mrg_in_none(i) <= '0';
+                    end if;
+                end loop;
+            end process;
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            MRG_DATA((channel+1)*(WORDS*WORD_BITS)-1 downto channel*(WORDS*WORD_BITS)) <= mrg_in_data;
+            MRG_NONE((channel+1)*(WORDS          )-1 downto channel*(WORDS          )) <= mrg_in_none;
             MRG_VALID(channel) <= '1' when (curr_state = MRG_NONE_STATE) or
                                            (curr_state = MRG_READ_STATE and mrg_in_valid = '1') else '0';
             MRG_LAST (channel) <= '1' when (curr_state = MRG_NONE_STATE) or
                                            (curr_state = MRG_READ_STATE and mrg_in_last  = '1') else '0';
-            MRG_NONE (channel) <= '1' when (curr_state = MRG_NONE_STATE) else '0';
             MRG_EBLK (channel) <= mrg_in_eblk;
             mrg_in_ready       <= '1' when (curr_state = MRG_READ_STATE and MRG_READY(channel) = '1') else '0';
         end block;

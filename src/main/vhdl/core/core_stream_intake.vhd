@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.3.1
---!     @date    2020/9/17
+--!     @version 0.7.0
+--!     @date    2020/11/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -42,8 +42,10 @@ entity  Core_Stream_Intake is
     generic (
         WORD_PARAM      :  Word.Param_Type := Word.Default_Param;
         MRG_WAYS        :  integer :=  8;
+        MRG_WORDS       :  integer :=  1;
         STM_WORDS       :  integer :=  1;
         FEEDBACK        :  integer :=  1;
+        SORT_ORDER      :  integer :=  0;
         MRG_WAYS_BITS   :  integer :=  3;
         SIZE_BITS       :  integer :=  6;
         INFO_BITS       :  integer :=  8;
@@ -60,18 +62,18 @@ entity  Core_Stream_Intake is
         BUSY            :  out std_logic;
         DONE            :  out std_logic;
         FBK_OUT_START   :  out std_logic;
-        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                     -1 downto 0);
+        FBK_OUT_SIZE    :  out std_logic_vector(SIZE_BITS                         -1 downto 0);
         FBK_OUT_LAST    :  out std_logic;
-        I_DATA          :  in  std_logic_vector(STM_WORDS*WORD_PARAM.DATA_BITS-1 downto 0);
-        I_STRB          :  in  std_logic_vector(STM_WORDS                     -1 downto 0);
+        I_DATA          :  in  std_logic_vector(STM_WORDS*    WORD_PARAM.DATA_BITS-1 downto 0);
+        I_STRB          :  in  std_logic_vector(STM_WORDS                         -1 downto 0);
         I_LAST          :  in  std_logic;
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
-        O_WORD          :  out std_logic_vector(MRG_WAYS *WORD_PARAM.BITS     -1 downto 0);
-        O_INFO          :  out std_logic_vector(MRG_WAYS *INFO_BITS           -1 downto 0);
-        O_LAST          :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
-        O_VALID         :  out std_logic_vector(MRG_WAYS                      -1 downto 0);
-        O_READY         :  in  std_logic_vector(MRG_WAYS                      -1 downto 0)
+        O_WORD          :  out std_logic_vector(MRG_WAYS*MRG_WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(MRG_WAYS*                INFO_BITS-1 downto 0);
+        O_LAST          :  out std_logic_vector(MRG_WAYS                          -1 downto 0);
+        O_VALID         :  out std_logic_vector(MRG_WAYS                          -1 downto 0);
+        O_READY         :  in  std_logic_vector(MRG_WAYS                          -1 downto 0)
     );
 end Core_Stream_Intake;
 -----------------------------------------------------------------------------------
@@ -80,12 +82,21 @@ end Core_Stream_Intake;
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
-library PipeWork;
-use     PipeWork.Components.REDUCER;
+library Merge_Sorter;
+use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Core_Components.Sorting_Network_Core;
+use     Merge_Sorter.Core_Components.Word_Reducer;
 architecture RTL of Core_Stream_Intake is
     constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
-    signal    queue_valid       :  std_logic_vector(MRG_WAYS          -1 downto 0);
-    signal    intake_data       :  std_logic_vector(MRG_WAYS*DATA_BITS-1 downto 0);
+    constant  NULL_DATA         :  std_logic_vector(DATA_BITS-1 downto 0) := (others => '0');
+    constant  WORD_BITS         :  integer := WORD_PARAM.BITS;
+    subtype   WORD_TYPE         is std_logic_vector(WORD_BITS-1 downto 0);
+    constant  POSTPEND_WORD     :  WORD_TYPE := Word.New_Postpend_Word(WORD_PARAM);
+    constant  TEAM_BITS         :  integer := MRG_WORDS*WORD_BITS;
+    type      TEAM_TYPE         is array(0 to MRG_WORDS-1) of WORD_TYPE;
+    type      TEAM_VECTOR       is array(integer range <>) of TEAM_TYPE;
+    signal    i_word            :  std_logic_vector(STM_WORDS*WORD_BITS-1 downto 0);
+    signal    intake_word       :  TEAM_VECTOR(0 to MRG_WAYS-1);
     signal    intake_last       :  std_logic;
     signal    intake_valid      :  std_logic;
     signal    intake_ready      :  std_logic;
@@ -161,83 +172,232 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    QUEUE: REDUCER                                   -- 
-        generic map (                                -- 
-            WORD_BITS       => DATA_BITS           , --
-            STRB_BITS       => 1                   , -- 
-            I_WIDTH         => STM_WORDS           , -- 
-            O_WIDTH         => MRG_WAYS            , -- 
-            QUEUE_SIZE      => 0                   , --
-            VALID_MIN       => queue_valid'low     , -- 
-            VALID_MAX       => queue_valid'high    , -- 
-            O_VAL_SIZE      => MRG_WAYS            , -- 
-            O_SHIFT_MIN     => MRG_WAYS            , -- 
-            O_SHIFT_MAX     => MRG_WAYS            , -- 
-            I_JUSTIFIED     => 1                   , -- 
-            FLUSH_ENABLE    => 0                     -- 
-        )                                            -- 
-        port map (                                   -- 
-            CLK             => CLK                 , -- In  :
-            RST             => RST                 , -- In  :
-            CLR             => CLR                 , -- In  :
-            VALID           => queue_valid         , -- Out :
-            I_DATA          => I_DATA              , -- In  :
-            I_STRB          => I_STRB              , -- In  :
-            I_DONE          => I_LAST              , -- In  :
-            I_VAL           => I_VALID             , -- In  :
-            I_RDY           => I_READY             , -- Out :
-            O_DATA          => intake_data         , -- Out :
-            O_DONE          => intake_last         , -- Out :
-            O_VAL           => intake_valid        , -- Out :
-            O_RDY           => intake_ready          -- In  :
-        );                                           -- 
+    process(I_DATA)
+        variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+    begin
+        for i in 0 to STM_WORDS-1 loop
+            a_word := Word.New_Word(WORD_PARAM, I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS));
+            i_word((i+1)*WORD_BITS-1 downto i*WORD_BITS) <= a_word;
+        end loop;
+    end process;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    process (curr_state, intake_data, intake_number, queue_valid, intake_first, intake_last)
-        variable word      :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        variable info      :  std_logic_vector(INFO_BITS      -1 downto 0);
-        constant null_data :  std_logic_vector(DATA_BITS      -1 downto 0) := (others => '0');
+    SINGLE_WORD: if (MRG_WORDS = 1) generate
+        signal    o_word        :  std_logic_vector(MRG_WAYS *WORD_BITS-1 downto 0);
+    begin
+        QUEUE: Word_Reducer                              -- 
+            generic map (                                -- 
+                WORD_PARAM      => WORD_PARAM          , --
+                I_WORDS         => STM_WORDS           , -- 
+                O_WORDS         => MRG_WAYS            , -- 
+                QUEUE_SIZE      => 0                   , --
+                NO_VAL_SET      => MRG_WAYS            , --
+                O_VAL_SIZE      => MRG_WAYS            , -- 
+                O_SHIFT_MIN     => MRG_WAYS            , -- 
+                O_SHIFT_MAX     => MRG_WAYS            , -- 
+                I_JUSTIFIED     => 1                   , -- 
+                FLUSH_ENABLE    => 0                     -- 
+            )                                            -- 
+            port map (                                   -- 
+                CLK             => CLK                 , -- In  :
+                RST             => RST                 , -- In  :
+                CLR             => CLR                 , -- In  :
+                NO_VAL_WORD     => POSTPEND_WORD       , -- In  :
+                I_WORD          => i_word              , -- In  :
+                I_STRB          => I_STRB              , -- In  :
+                I_DONE          => I_LAST              , -- In  :
+                I_VALID         => I_VALID             , -- In  :
+                I_READY         => I_READY             , -- Out :
+                O_WORD          => o_word              , -- Out :
+                O_DONE          => intake_last         , -- Out :
+                O_VALID         => intake_valid        , -- Out :
+                O_READY         => intake_ready          -- In  :
+            );                                           --
+        process(o_word)
+            variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+        begin
+            for way in 0 to MRG_WAYS-1 loop
+                a_word := o_word((way+1)*WORD_BITS-1 downto way*WORD_BITS);
+                intake_word(way)(0) <= a_word;
+            end loop;
+        end process;
+    end generate;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    MULTI_WORD: if (MRG_WORDS > 1) generate
+        constant  SORT_PARAM        :  Sorting_Network.Param_Type
+                                    := Sorting_Network.New_OddEven_Sorter_Network(
+                                           LO     => 0           ,
+                                           HI     => MRG_WORDS-1 ,
+                                           ORDER  => SORT_ORDER  ,
+                                           QUEUE  => 1
+                                       );
+        signal    word_valid        :  std_logic_vector(MRG_WORDS          -1 downto 0);
+        signal    sort_i_word       :  TEAM_TYPE;
+        signal    sort_i_data       :  std_logic_vector(MRG_WORDS*DATA_BITS-1 downto 0);
+        signal    sort_i_team       :  std_logic_vector(          TEAM_BITS-1 downto 0);
+        signal    sort_i_last       :  std_logic;
+        signal    sort_i_valid      :  std_logic;
+        signal    sort_i_ready      :  std_logic;
+        signal    sort_o_word       :  TEAM_TYPE;
+        signal    sort_o_team       :  std_logic_vector(          TEAM_BITS-1 downto 0);
+        signal    sort_o_last       :  std_logic;
+        signal    sort_o_valid      :  std_logic;
+        signal    sort_o_ready      :  std_logic;
+        signal    intake_data       :  std_logic_vector(MRG_WAYS* TEAM_BITS-1 downto 0);
+    begin
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
+        PREPARE_QUEUE: Word_Reducer                      -- 
+            generic map (                                -- 
+                WORD_PARAM      => WORD_PARAM          , --
+                I_WORDS         => STM_WORDS           , -- 
+                O_WORDS         => MRG_WORDS           , -- 
+                QUEUE_SIZE      => 0                   , --
+                O_VAL_SIZE      => MRG_WORDS           , -- 
+                O_SHIFT_MIN     => MRG_WORDS           , -- 
+                O_SHIFT_MAX     => MRG_WORDS           , --
+                NO_VAL_SET      => MRG_WORDS           , -- 
+                I_JUSTIFIED     => 1                   , -- 
+                FLUSH_ENABLE    => 0                     -- 
+            )                                            -- 
+            port map (                                   -- 
+                CLK             => CLK                 , -- In  :
+                RST             => RST                 , -- In  :
+                CLR             => CLR                 , -- In  :
+                NO_VAL_WORD     => POSTPEND_WORD       , -- In  :
+                I_WORD          => i_word              , -- In  :
+                I_STRB          => I_STRB              , -- In  :
+                I_DONE          => I_LAST              , -- In  :
+                I_VALID         => I_VALID             , -- In  :
+                I_READY         => I_READY             , -- Out :
+                O_WORD          => sort_i_team         , -- Out :
+                O_DONE          => sort_i_last         , -- Out :
+                O_VALID         => sort_i_valid        , -- Out :
+                O_READY         => sort_i_ready          -- In  :
+            );                                           --
+        process (sort_i_team)
+            variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+        begin
+            for i in 0 to MRG_WORDS-1 loop
+                a_word := sort_i_team((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+                sort_i_word(i) <= a_word;
+            end loop;
+        end process;
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
+        SORT: Sorting_Network_Core                       -- 
+            generic map (                                -- 
+                NETWORK_PARAM   => SORT_PARAM          , --
+                WORD_PARAM      => WORD_PARAM          , -- 
+                INFO_BITS       => 1                     -- 
+            )                                            -- 
+            port map (                                   -- 
+                CLK             => CLK                 , -- In  :
+                RST             => RST                 , -- In  :
+                CLR             => CLR                 , -- In  :
+                I_WORD          => sort_i_team         , -- In  :
+                I_INFO(0)       => sort_i_last         , -- In  :
+                I_VALID         => sort_i_valid        , -- In  :
+                I_READY         => sort_i_ready        , -- Out :
+                O_WORD          => sort_o_team         , -- Out :
+                O_INFO(0)       => sort_o_last         , -- Out :
+                O_VALID         => sort_o_valid        , -- Out :
+                O_READY         => sort_o_ready        , -- In  :
+                BUSY            => open                  -- Out :
+            );                                           --
+        process (sort_o_team) begin
+            for i in 0 to MRG_WORDS-1 loop
+                sort_o_word(i) <= sort_o_team((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+            end loop;
+        end process;
+        ---------------------------------------------------------------------------
+        -- 
+        ---------------------------------------------------------------------------
+        INTAKE_QUEUE: Word_Reducer                       -- 
+            generic map (                                -- 
+                WORD_PARAM      => WORD_PARAM          , --
+                WORDS           => MRG_WORDS           , --
+                I_WORDS         => 1                   , -- 
+                O_WORDS         => MRG_WAYS            , -- 
+                QUEUE_SIZE      => 0                   , --
+                O_VAL_SIZE      => MRG_WAYS            , -- 
+                O_SHIFT_MIN     => MRG_WAYS            , -- 
+                O_SHIFT_MAX     => MRG_WAYS            , -- 
+                NO_VAL_SET      => MRG_WAYS            , -- 
+                I_JUSTIFIED     => 1                   , -- 
+                FLUSH_ENABLE    => 0                     -- 
+            )                                            -- 
+            port map (                                   -- 
+                CLK             => CLK                 , -- In  :
+                RST             => RST                 , -- In  :
+                CLR             => CLR                 , -- In  :
+                NO_VAL_WORD     => POSTPEND_WORD       , -- In  :
+                I_WORD          => sort_o_team         , -- In  :
+                I_STRB          => "1"                 , -- In  :
+                I_DONE          => sort_o_last         , -- In  :
+                I_VALID         => sort_o_valid        , -- In  :
+                I_READY         => sort_o_ready        , -- Out :
+                O_WORD          => intake_data         , -- Out :
+                O_DONE          => intake_last         , -- Out :
+                O_VALID         => intake_valid        , -- Out :
+                O_READY         => intake_ready          -- In  :
+            );                                           --
+        process(intake_data)
+            variable  a_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+            variable  a_team    :  std_logic_vector(TEAM_BITS-1 downto 0);
+        begin
+            for way in 0 to MRG_WAYS-1 loop
+                a_team := intake_data((way+1)*TEAM_BITS-1 downto way*TEAM_BITS);
+                for i in 0 to MRG_WORDS-1 loop
+                    a_word := a_team((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+                    intake_word(way)(i) <= a_word;
+                end loop;
+            end loop;
+        end process;
+    end generate;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    process (curr_state, intake_word, intake_number, intake_first, intake_last)
+        variable  a_team    :  std_logic_vector(TEAM_BITS-1 downto 0);
+        variable  a_info    :  std_logic_vector(INFO_BITS-1 downto 0);
     begin
         if (curr_state = INTAKE_STATE) then
-            for i in 0 to MRG_WAYS-1 loop
-                word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := intake_data((i+1)*DATA_BITS-1 downto i*DATA_BITS);
-                if (queue_valid(i) = '0') then
-                    word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
-                    word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
-                    word(WORD_PARAM.ATRB_POSTPEND_POS) := '1';
-                else
-                    word(WORD_PARAM.ATRB_NONE_POS    ) := '0';
-                    word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
-                    word(WORD_PARAM.ATRB_POSTPEND_POS) := '0';
-                end if;
+            for way in 0 to MRG_WAYS-1 loop
+                for i in 0 to MRG_WORDS-1 loop
+                    a_team((i+1)*WORD_BITS-1 downto i*WORD_BITS) := intake_word(way)(i);
+                end loop;
                 if  (FEEDBACK     =  0  and intake_last = '1') or
                     (intake_first = '1' and intake_last = '1') then
-                    info(INFO_EBLK_POS) := '1';
+                    a_info(INFO_EBLK_POS) := '1';
                 else
-                    info(INFO_EBLK_POS) := '0';
+                    a_info(INFO_EBLK_POS) := '0';
                 end if;
                 if  (FEEDBACK     =  0                       ) or
                     (intake_first = '1' and intake_last = '1') then
-                    info(INFO_FBK_POS ) := '0';
+                    a_info(INFO_FBK_POS ) := '0';
                 else
-                    info(INFO_FBK_POS ) := '1';
+                    a_info(INFO_FBK_POS ) := '1';
                 end if;
-                info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
-                O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
-                O_INFO((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= info;
+                a_info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
+                O_WORD((way+1)*TEAM_BITS-1 downto way*TEAM_BITS) <= a_team;
+                O_INFO((way+1)*INFO_BITS-1 downto way*INFO_BITS) <= a_info;
             end loop;
         elsif (FEEDBACK > 0 and curr_state = FLUSH_STATE) then
-            for i in 0 to MRG_WAYS-1 loop
-                word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := null_data;
-                word(WORD_PARAM.ATRB_NONE_POS        ) := '1';
-                word(WORD_PARAM.ATRB_PRIORITY_POS    ) := '0';
-                word(WORD_PARAM.ATRB_POSTPEND_POS    ) := '1';
-                info(INFO_EBLK_POS) := '0';
-                info(INFO_FBK_POS ) := '1';
-                info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
-                O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= word;
-                O_INFO((i+1)*INFO_BITS      -1 downto i*INFO_BITS      ) <= info;
+            for way in 0 to MRG_WAYS-1 loop
+                for i in 0 to MRG_WORDS-1 loop
+                    a_team((i+1)*WORD_BITS-1 downto i*WORD_BITS) := POSTPEND_WORD;
+                end loop;
+                a_info(INFO_EBLK_POS) := '0';
+                a_info(INFO_FBK_POS ) := '1';
+                a_info(INFO_FBK_NUM_HI downto INFO_FBK_NUM_LO) := intake_number;
+                O_WORD((way+1)*TEAM_BITS-1 downto way*TEAM_BITS) <= a_team;
+                O_INFO((way+1)*INFO_BITS-1 downto way*INFO_BITS) <= a_info;
             end loop;
         else
             O_WORD <= (others => '0');

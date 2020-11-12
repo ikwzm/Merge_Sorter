@@ -1,30 +1,30 @@
-word.o : ../../../src/main/vhdl/core/word.vhd 
+word : ../../../src/main/vhdl/core/word.vhd 
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/word.vhd
 
-sorting_network.o : ../../../src/main/vhdl/core/sorting_network.vhd word.o
+sorting_network : ../../../src/main/vhdl/core/sorting_network.vhd word
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.vhd
 
-core_components.o : ../../../src/main/vhdl/core/core_components.vhd word.o sorting_network.o
+core_components : ../../../src/main/vhdl/core/core_components.vhd word sorting_network
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/core_components.vhd
 
-word_compare.o : ../../../src/main/vhdl/core/word_compare.vhd word.o
+word_compare : ../../../src/main/vhdl/core/word_compare.vhd word
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/word_compare.vhd
 
-sorting_network_core.o : ../../../src/main/vhdl/core/sorting_network_core.vhd word.o sorting_network.o core_components.o word_compare.o
+sorting_network_core : ../../../src/main/vhdl/core/sorting_network_core.vhd word sorting_network core_components word_compare
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/sorting_network_core.vhd
 
-word_queue.o : ../../../src/main/vhdl/core/word_queue.vhd word.o
+word_queue : ../../../src/main/vhdl/core/word_queue.vhd word
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
 
-merge_sorter_node.o : ../../../src/main/vhdl/core/merge_sorter_node.vhd word.o sorting_network.o core_components.o word_compare.o word_queue.o sorting_network_core.o
+merge_sorter_node : ../../../src/main/vhdl/core/merge_sorter_node.vhd word sorting_network core_components word_compare word_queue sorting_network_core
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
 
-merge_sorter_tree.o : ../../../src/main/vhdl/core/merge_sorter_tree.vhd word.o core_components.o merge_sorter_node.o word_queue.o
+merge_sorter_tree : ../../../src/main/vhdl/core/merge_sorter_tree.vhd word core_components merge_sorter_node word_queue
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
 
-sorting_network.old.o : ../../../src/main/vhdl/core/sorting_network.old word.o sorting_network.o
+sorting_network.old : ../../../src/main/vhdl/core/sorting_network.old word sorting_network
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.old
 
-merge_sorter_tree_test_bench.o : ../../../src/test/vhdl/merge_sorter_tree_test_bench.vhd word.o merge_sorter_tree.o
+merge_sorter_tree_test_bench : ../../../src/test/vhdl/merge_sorter_tree_test_bench.vhd word merge_sorter_tree
 	ghdl -a -C $(GHDLFLAGS) --work=MERGE_SORTER ../../../src/test/vhdl/merge_sorter_tree_test_bench.vhd
 

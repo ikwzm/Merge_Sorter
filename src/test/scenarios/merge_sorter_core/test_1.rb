@@ -1,14 +1,16 @@
 require_relative '../scripts/scenario_writer.rb'
 require_relative './sort.rb'
 
-def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order)
+def test_1(file, mrg_ways, mrg_words, mrg_enable, stm_enable, stm_feedback, sort_order)
 
-  title    = sprintf("Merge_Sorter_Corte(MRG_WAYS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 1", mrg_ways, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
+  title    = sprintf("Merge_Sorter_Core(MRG_WAYS=%d,MRG_WORDS=%d,MRG_ENABLE=%s,STM_ENABLE=%s,STM_FEEDBACK=%d) TEST 1", mrg_ways, mrg_words, mrg_enable.to_s, stm_enable.to_s, stm_feedback)
+  data_bits= 32
+  atrb_bits=  4
   random   = Random.new
   merchal  = ScenarioWriter::Marchal.new("MARCHAL", file)
-  intake   = ScenarioWriter::IntakeStream.new("STM_I", file, 32, 4, 32, 4)
-  outlet   = ScenarioWriter::OutletStream.new("OUT"  , file, 32, 4, 32, 4)
-  blk_size = mrg_ways**(stm_feedback+1)
+  intake   = ScenarioWriter::IntakeStream.new("STM_I", file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
+  outlet   = ScenarioWriter::OutletStream.new("OUT"  , file, mrg_words*data_bits, mrg_words*atrb_bits, data_bits, atrb_bits)
+  blk_size = mrg_words*(mrg_ways**(stm_feedback+1))
   
   merchal.sync
   merchal.init
@@ -19,6 +21,9 @@ def test_1(file, mrg_ways, mrg_enable, stm_enable, stm_feedback, sort_order)
   if stm_enable == true then
     (1..2*blk_size+8).each_with_index do |size, index|
       intake_data = (1..size).to_a.map{|x| random.rand(0..1024)}
+      while ((intake_data.size % mrg_words) > 0) do
+        intake_data.push({PostPend: 1, None: 1})
+      end
       outlet_data = []
       temp_data   = intake_data.dup
       while(not temp_data.empty?) do

@@ -305,26 +305,8 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        function  GEN_PRIORITY_WORD return std_logic_vector is
-            variable  word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        begin
-            word := (others => '0');
-            word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
-            word(WORD_PARAM.ATRB_PRIORITY_POS) := '1';
-            word(WORD_PARAM.ATRB_POSTPEND_POS) := '0';
-            return word;
-        end function;
-        function  GEN_POSTPEND_WORD return std_logic_vector is
-            variable  word    :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
-        begin
-            word := (others => '0');
-            word(WORD_PARAM.ATRB_NONE_POS    ) := '1';
-            word(WORD_PARAM.ATRB_PRIORITY_POS) := '0';
-            word(WORD_PARAM.ATRB_POSTPEND_POS) := '1';
-            return word;
-        end function;
-        constant  PRIORITY_WORD     :  WORD_TYPE := GEN_PRIORITY_WORD;
-        constant  POSTPEND_WORD     :  WORD_TYPE := GEN_POSTPEND_WORD;
+        constant  PRIORITY_WORD     :  WORD_TYPE := Word.New_Priority_Word(WORD_PARAM);
+        constant  POSTPEND_WORD     :  WORD_TYPE := Word.New_Postpend_Word(WORD_PARAM);
         constant  PRIORITY_TEAM     :  TEAM_TYPE := (others => PRIORITY_WORD);
         constant  POSTPEND_TEAM     :  TEAM_TYPE := (others => POSTPEND_WORD);
         ---------------------------------------------------------------------------
@@ -337,9 +319,9 @@ begin
         signal    intake_valid      :  std_logic;
         signal    intake_ready      :  std_logic;
         signal    seeded_team       :  TEAM_TYPE;
-        signal    seeded_info       :  std_logic_vector(INFO_BITS-1 downto 0);
         signal    last_a_team       :  TEAM_TYPE;
         signal    last_b_team       :  TEAM_TYPE;
+        signal    merge_info        :  std_logic_vector(INFO_BITS-1 downto 0);
         signal    merge_last        :  std_logic;
         signal    merge_valid       :  std_logic;
         signal    merge_ready       :  std_logic;
@@ -399,17 +381,20 @@ begin
         PREPARE_TERM : block
             type      STATE_TYPE        is (IDLE_STATE, XFER_STATE, LAST_STATE);
             signal    curr_state        :  STATE_TYPE;
+            signal    last_info         :  std_logic_vector(INFO_BITS-1 downto 0);
         begin
             process (CLK, RST) begin
                 if (RST = '1') then
                         curr_state  <= IDLE_STATE;
                         last_a_team <= PRIORITY_TEAM;
                         last_b_team <= PRIORITY_TEAM;
+                        last_info   <= (others => '0');
                 elsif (CLK'event and CLK = '1') then
                     if (CLR = '1') then
                         curr_state  <= IDLE_STATE;
                         last_a_team <= PRIORITY_TEAM;
                         last_b_team <= PRIORITY_TEAM;
+                        last_info   <= (others => '0');
                     else
                         case curr_state is
                             when IDLE_STATE =>
@@ -426,6 +411,7 @@ begin
                                         last_a_team <= PRIORITY_TEAM;
                                         last_b_team <= intake_team;
                                     end if;
+                                    last_info  <= intake_info;
                                 else
                                     curr_state <= IDLE_STATE;
                                 end if;
@@ -441,6 +427,7 @@ begin
                                     else
                                         last_b_team <= intake_team;
                                     end if;
+                                    last_info  <= intake_info;
                                 else
                                     curr_state <= XFER_STATE;
                                 end if;
@@ -456,7 +443,7 @@ begin
                     end if;
                 end if;
             end process;
-            seeded_info  <= intake_info;
+            merge_info   <= last_info     when (curr_state = LAST_STATE) else intake_info;
             seeded_team  <= POSTPEND_TEAM when (curr_state = LAST_STATE) else intake_team;
             merge_valid  <= '1' when (curr_state = XFER_STATE and intake_valid = '1') or
                                      (curr_state = LAST_STATE                       ) else '0';
@@ -487,8 +474,8 @@ begin
             ii_word(WORD_TEAM0_HI downto WORD_TEAM0_LO) <= TO_STD_LOGIC_VECTOR(last_a_team);
             ii_word(WORD_TEAM1_HI downto WORD_TEAM1_LO) <= TO_STD_LOGIC_VECTOR(last_b_team);
             ii_info(INFO_TEAM_HI  downto INFO_TEAM_LO ) <= TO_STD_LOGIC_VECTOR(seeded_team);
-            ii_info(INFO_INFO_HI  downto INFO_INFO_LO ) <= seeded_info;
-            ii_info(INFO_LAST_POS                     ) <= merge_last ;
+            ii_info(INFO_INFO_HI  downto INFO_INFO_LO ) <= merge_info;
+            ii_info(INFO_LAST_POS                     ) <= merge_last;
             CORE: Sorting_Network_Core                         -- 
                 generic map (                                  -- 
                     NETWORK_PARAM       => PARAM.LOSER_MERGE , --

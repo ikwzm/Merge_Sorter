@@ -5,8 +5,8 @@
 set project_directory       [file dirname [info script]]
 set project_name            "merge_sorter_core"
 set device_parts            "xc7z020clg400-1"
-set test_bench              "Merge_Sorter_Core_Test_Bench_X04_M1_S1_F2"
-set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_m1_s1_f2.snr" ]
+set test_bench              "Merge_Sorter_Core_Test_Bench_X04_W2_M1_S0_F0"
+set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_w2_m1_s0_f0.snr" ]
 #
 # Create project
 #
