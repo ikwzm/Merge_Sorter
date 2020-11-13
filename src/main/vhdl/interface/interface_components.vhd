@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 0.7.0                                                           --
---!     @date    2020/11/11                                                      --
+--!     @version 0.8.0                                                           --
+--!     @date    2020/11/14                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -245,7 +245,7 @@ component Merge_AXI_Reader
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        AXI_ID          :  integer :=  1;
+        AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
@@ -321,7 +321,7 @@ component Merge_AXI_Writer
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        AXI_ID          :  integer :=  1;
+        AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_WUSER_WIDTH :  integer :=  4;

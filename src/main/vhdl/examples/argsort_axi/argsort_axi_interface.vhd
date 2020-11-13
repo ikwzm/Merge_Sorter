@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.8.0
+--!     @date    2020/11/13
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -45,7 +45,7 @@ entity  ArgSort_AXI_Interface is
         WORD_INDEX_HI       :  integer :=   31;
         WORD_COMP_LO        :  integer :=   32;
         WORD_COMP_HI        :  integer :=   63;
-        MRG_AXI_ID          :  integer :=    1;
+        MRG_AXI_ID_BASE     :  integer :=    0;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
         MRG_AXI_AUSER_WIDTH :  integer :=    4;
         MRG_AXI_WUSER_WIDTH :  integer :=    4;
@@ -65,7 +65,7 @@ entity  ArgSort_AXI_Interface is
         MRG_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
         MRG_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
-        STM_AXI_ID          :  integer :=    1;
+        STM_AXI_ID_BASE     :  integer :=    0;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
         STM_AXI_WUSER_WIDTH :  integer :=    4;
@@ -375,7 +375,7 @@ begin
             WORD_COMP_LO    => WORD_COMP_LO        , --
             WORD_COMP_HI    => WORD_COMP_HI        , --
             REG_PARAM       => STM_RD_REG_PARAM    , --
-            AXI_ID          => STM_AXI_ID          , --
+            AXI_ID_BASE     => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH => STM_AXI_AUSER_WIDTH , --
             AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --
@@ -450,7 +450,7 @@ begin
             WORD_COMP_LO    => WORD_COMP_LO        , --
             WORD_COMP_HI    => WORD_COMP_HI        , --
             REG_PARAM       => STM_WR_REG_PARAM    , --
-            AXI_ID          => STM_AXI_ID          , --
+            AXI_ID_BASE     => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH => STM_AXI_AUSER_WIDTH , --
             AXI_WUSER_WIDTH => STM_AXI_WUSER_WIDTH , --
@@ -534,7 +534,7 @@ begin
             WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => MRG_RD_REG_PARAM    , --
-            AXI_ID          => MRG_AXI_ID          , --
+            AXI_ID_BASE     => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH => MRG_AXI_AUSER_WIDTH , --
             AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --
@@ -609,7 +609,7 @@ begin
             WORDS           => WORDS               , --
             WORD_BITS       => WORD_BITS           , --
             REG_PARAM       => MRG_WR_REG_PARAM    , --
-            AXI_ID          => MRG_AXI_ID          , --
+            AXI_ID_BASE     => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH => MRG_AXI_AUSER_WIDTH , --
             AXI_WUSER_WIDTH => MRG_AXI_WUSER_WIDTH , --

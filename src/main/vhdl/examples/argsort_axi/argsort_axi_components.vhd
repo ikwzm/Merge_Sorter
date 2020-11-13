@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 0.7.0                                                           --
---!     @date    2020/11/11                                                      --
+--!     @version 0.8.0                                                           --
+--!     @date    2020/11/14                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ component ArgSort_AXI_Interface
         WORD_INDEX_HI       :  integer :=   31;
         WORD_COMP_LO        :  integer :=   32;
         WORD_COMP_HI        :  integer :=   63;
-        MRG_AXI_ID          :  integer :=    1;
+        MRG_AXI_ID_BASE     :  integer :=    0;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
         MRG_AXI_AUSER_WIDTH :  integer :=    4;
         MRG_AXI_WUSER_WIDTH :  integer :=    4;
@@ -75,7 +75,7 @@ component ArgSort_AXI_Interface
         MRG_WR_AXI_REQ_REGS :  integer range 0 to 1 := 1;
         MRG_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
-        STM_AXI_ID          :  integer :=    1;
+        STM_AXI_ID_BASE     :  integer :=    0;
         STM_AXI_ID_WIDTH    :  integer :=    8;
         STM_AXI_AUSER_WIDTH :  integer :=    4;
         STM_AXI_WUSER_WIDTH :  integer :=    4;
@@ -524,7 +524,7 @@ component ArgSort_AXI_Reader
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        AXI_ID          :  integer :=  1;
+        AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
@@ -600,7 +600,7 @@ component ArgSort_AXI_Writer
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        AXI_ID          :  integer :=  1;
+        AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_WUSER_WIDTH :  integer :=  4;
@@ -709,7 +709,7 @@ component ArgSort_AXI
                               integer := 1;
         STM_AXI_USER_WIDTH  : --! @brief STREAM IN/OUT AXI ADDRESS USER WIDTH :
                               integer := 1;
-        STM_AXI_ID          : --! @brief STREAM IN/OUT AXI ID :
+        STM_AXI_ID_BASE     : --! @brief STREAM IN/OUT AXI ID BASE :
                               integer := 0;
         STM_RD_AXI_XFER_SIZE: --! @brief STREAM IN  AXI MAX XFER SIZE :
                               integer := 11;
@@ -741,7 +741,7 @@ component ArgSort_AXI
                               integer := 1;
         MRG_AXI_USER_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS USER WIDTH :
                               integer := 1;
-        MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
+        MRG_AXI_ID_BASE     : --! @brief MERGE IN/OUT AXI ID BASE :
                               integer := 0;
         MRG_RD_AXI_XFER_SIZE: --! @brief MERGE IN  AXI MAX XFER SIZE :
                               integer := 11;

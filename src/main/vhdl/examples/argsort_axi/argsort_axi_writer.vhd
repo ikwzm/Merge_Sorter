@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_writer.vhd
 --!     @brief   Merge Sorter ArgSort AXI Writer Module :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.8.0
+--!     @date    2020/11/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -47,7 +47,7 @@ entity  ArgSort_AXI_Writer is
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        AXI_ID          :  integer :=  1;
+        AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
         AXI_WUSER_WIDTH :  integer :=  4;
@@ -174,8 +174,6 @@ architecture RTL of ArgSort_AXI_Writer is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  REQ_ID            :  std_logic_vector(AXI_ID_WIDTH   -1 downto 0)
-                                := std_logic_vector(to_unsigned(AXI_ID, AXI_ID_WIDTH));
     constant  REQ_LOCK          :  std_logic_vector(0 downto 0) := (others => '0');
     constant  REQ_QOS           :  std_logic_vector(3 downto 0) := (others => '0');
     constant  REQ_REGION        :  std_logic_vector(3 downto 0) := (others => '0');
@@ -188,6 +186,7 @@ architecture RTL of ArgSort_AXI_Writer is
     signal    req_mode          :  std_logic_vector(REQ_MODE_BITS  -1 downto 0);
     signal    req_cache         :  std_logic_vector(3 downto 0);
     signal    req_prot          :  std_logic_vector(2 downto 0);
+    signal    req_id            :  std_logic_vector(AXI_ID_WIDTH   -1 downto 0);
     signal    req_speculative   :  std_logic;
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
@@ -292,7 +291,7 @@ begin
         ---------------------------------------------------------------------------
             REQ_ADDR            => req_addr            , -- In  :
             REQ_SIZE            => req_size            , -- In  :
-            REQ_ID              => REQ_ID              , -- In  :
+            REQ_ID              => req_id              , -- In  :
             REQ_BURST           => AXI4_ABURST_INCR    , -- In  :
             REQ_LOCK            => REQ_LOCK            , -- In  :
             REQ_CACHE           => req_cache           , -- In  :
@@ -370,8 +369,16 @@ begin
         constant  REQ_MODE_APROT_LO   :  integer := REG_PARAM.MODE_APROT_LO   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_HI   :  integer := REG_PARAM.MODE_AUSER_HI   - REG_PARAM.MODE_LO;
         constant  REQ_MODE_AUSER_LO   :  integer := REG_PARAM.MODE_AUSER_LO   - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_LO     :  integer := REG_PARAM.MODE_AID_LO     - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_HI     :  integer := REG_PARAM.MODE_AID_HI     - REG_PARAM.MODE_LO;
         constant  REQ_MODE_SPECUL_POS :  integer := REG_PARAM.MODE_SPECUL_POS - REG_PARAM.MODE_LO;
         constant  REQ_MODE_SAFETY_POS :  integer := REG_PARAM.MODE_SAFETY_POS - REG_PARAM.MODE_LO;
+        function  GEN_REQ_ID(AID:std_logic_vector) return std_logic_vector is
+            variable  id              :  integer;
+        begin
+            id := AXI_ID_BASE + to_integer(to_01(unsigned(AID)));
+            return std_logic_vector(to_unsigned(id, AXI_ID_WIDTH));
+        end function;
     begin 
         process (CLK, RST) begin
             if (RST = '1') then
@@ -384,6 +391,7 @@ begin
                 end if;
             end if;
         end process;
+        req_id          <= GEN_REQ_ID(req_mode(REQ_MODE_AID_HI downto REQ_MODE_AID_LO));
         req_cache       <= req_mode(REQ_MODE_CACHE_HI downto REQ_MODE_CACHE_LO);
         req_prot        <= req_mode(REQ_MODE_APROT_HI downto REQ_MODE_APROT_LO);
         req_speculative <= req_mode(REQ_MODE_SPECUL_POS);

@@ -2,9 +2,11 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_compare.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network_core.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/interface.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_reducer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_reader.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_writer.vhd
@@ -47,6 +49,7 @@ add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_address_
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_transfer_queue.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_register_read_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_register_write_interface.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pipeline_register_controller.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pool_intake_port.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_arbiter.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_receiver.vhd
@@ -60,6 +63,7 @@ add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_read_int
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_master_write_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_register_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/axi4/axi4_types.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pipeline_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_arbiter_integer_arch.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_arbiter_one_hot_arch.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_tree_arbiter.vhd
