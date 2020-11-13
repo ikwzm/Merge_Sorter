@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.8.0
+--!     @date    2020/11/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -60,7 +60,8 @@ package Interface is
                   MODE_LO           :  integer;
                   MODE_SAFETY_POS   :  integer;
                   MODE_SPECUL_POS   :  integer;
-                  MODE_AFIX_POS     :  integer;
+                  MODE_AID_LO       :  integer;
+                  MODE_AID_HI       :  integer;
                   MODE_AUSER_HI     :  integer;
                   MODE_AUSER_LO     :  integer;
                   MODE_APROT_HI     :  integer;
@@ -159,7 +160,7 @@ package body Interface is
         ---------------------------------------------------------------------------
         -- Mode[15]    = 1:AXI4 Master I/F をセイフティモードで動かす.
         -- Mode[14]    = 1:AXI4 Master I/F を投機モードで動かす.
-        -- Mode[13]    = 1:AXI4 Master I/F をアドレス固定モードにする.
+        -- Mode[13]    = AXI4 Master I/F の AXID[0] の値を指定する.
         -- Mode[11]    = AXI4 Master I/F の ARUSER[0] の値を指定する.
         -- Mode[10:08] = AXI4 Master I/F の APORT[2:0] の値を指定する.
         -- Mode[07:04] = AXI4 Master I/F の ACHACHE[3:0]を指定する.
@@ -174,7 +175,8 @@ package body Interface is
         regs_field.MODE_LO        := 8*regs_field.MODE_BASE_ADDR +  0;
         regs_field.MODE_SAFETY_POS:= 8*regs_field.MODE_BASE_ADDR + 15;
         regs_field.MODE_SPECUL_POS:= 8*regs_field.MODE_BASE_ADDR + 14;
-        regs_field.MODE_AFIX_POS  := 8*regs_field.MODE_BASE_ADDR + 13;
+        regs_field.MODE_AID_HI    := 8*regs_field.MODE_BASE_ADDR + 13;
+        regs_field.MODE_AID_LO    := 8*regs_field.MODE_BASE_ADDR + 13;
         regs_field.MODE_AUSER_HI  := 8*regs_field.MODE_BASE_ADDR + 11;
         regs_field.MODE_AUSER_LO  := 8*regs_field.MODE_BASE_ADDR + 11;
         regs_field.MODE_APROT_HI  := 8*regs_field.MODE_BASE_ADDR + 10;

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 0.7.0
---!     @date    2020/11/12
+--!     @version 0.8.0
+--!     @date    2020/11/13
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -66,7 +66,7 @@ entity  ArgSort_AXI is
                               integer := 1;
         STM_AXI_USER_WIDTH  : --! @brief STREAM IN/OUT AXI ADDRESS USER WIDTH :
                               integer := 1;
-        STM_AXI_ID          : --! @brief STREAM IN/OUT AXI ID :
+        STM_AXI_ID_BASE     : --! @brief STREAM IN/OUT AXI ID BASE :
                               integer := 0;
         STM_RD_AXI_XFER_SIZE: --! @brief STREAM IN  AXI MAX XFER SIZE :
                               integer := 11;
@@ -98,7 +98,7 @@ entity  ArgSort_AXI is
                               integer := 1;
         MRG_AXI_USER_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS USER WIDTH :
                               integer := 1;
-        MRG_AXI_ID          : --! @brief MERGE IN/OUT AXI ID :
+        MRG_AXI_ID_BASE     : --! @brief MERGE IN/OUT AXI ID BASE :
                               integer := 0;
         MRG_RD_AXI_XFER_SIZE: --! @brief MERGE IN  AXI MAX XFER SIZE :
                               integer := 11;
@@ -367,7 +367,7 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 0;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 7;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 8;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
@@ -825,7 +825,7 @@ begin
             WORD_INDEX_HI       => MRG_WORD_INDEX_HI   , --   
             WORD_COMP_LO        => MRG_WORD_COMP_LO    , --   
             WORD_COMP_HI        => MRG_WORD_COMP_HI    , --   
-            MRG_AXI_ID          => MRG_AXI_ID          , -- 
+            MRG_AXI_ID_BASE     => MRG_AXI_ID_BASE     , -- 
             MRG_AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --   
             MRG_AXI_AUSER_WIDTH => MRG_AXI_USER_WIDTH  , --   
             MRG_AXI_WUSER_WIDTH => 1                   , --   
@@ -845,7 +845,7 @@ begin
             MRG_WR_AXI_REQ_REGS => MRG_WR_AXI_REQ_REGS , -- 
             MRG_WR_AXI_ACK_REGS => MRG_WR_AXI_ACK_REGS , -- 
             MRG_WR_AXI_RESP_REGS=> MRG_WR_AXI_RESP_REGS, -- 
-            STM_AXI_ID          => STM_AXI_ID          , --   
+            STM_AXI_ID_BASE     => STM_AXI_ID_BASE     , --   
             STM_AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --   
             STM_AXI_AUSER_WIDTH => STM_AXI_USER_WIDTH  , --   
             STM_AXI_WUSER_WIDTH => 1                   , --   

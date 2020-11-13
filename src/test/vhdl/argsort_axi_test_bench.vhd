@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.8.0
+--!     @date    2020/11/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -154,7 +154,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -- 
     -------------------------------------------------------------------------------
     constant  STM_MEMORY_SIZE   :  integer := 32*1024;
-    constant  STM_AXI_ID        :  integer := 1;
+    constant  STM_AXI_ID_BASE   :  integer := 0;
     constant  STM_AXI_CACHE     :  integer := 15;
     constant  STM_AXI_PROT      :  integer := 1;
     constant  STM_AXI_AUSER     :  integer := 0;
@@ -221,7 +221,7 @@ architecture Model of ArgSort_AXI_Test_Bench is
     -- 
     -------------------------------------------------------------------------------
     constant  MRG_MEMORY_SIZE   :  integer := 32*1024;
-    constant  MRG_AXI_ID        :  integer := 2;
+    constant  MRG_AXI_ID_BASE   :  integer := 2;
     constant  MRG_AXI_CACHE     :  integer := 15;
     constant  MRG_AXI_PROT      :  integer := 1;
     constant  MRG_AXI_AUSER     :  integer := 0;
@@ -329,16 +329,16 @@ begin
             CSR_AXI_DATA_WIDTH  => CSR_WIDTH.RDATA     ,
             STM_AXI_ADDR_WIDTH  => STM_AXI_WIDTH.ARADDR,
             STM_AXI_DATA_WIDTH  => STM_AXI_WIDTH.RDATA ,
-            STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
             STM_AXI_USER_WIDTH  => STM_AXI_WIDTH.ARUSER, -- 
-            STM_AXI_ID          => STM_AXI_ID          , -- 
+            STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
+            STM_AXI_ID_BASE     => STM_AXI_ID_BASE     , -- 
             STM_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             STM_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_WIDTH.ARADDR, -- 
             MRG_AXI_DATA_WIDTH  => MRG_AXI_WIDTH.RDATA , -- 
-            MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
             MRG_AXI_USER_WIDTH  => MRG_AXI_WIDTH.ARUSER, -- 
-            MRG_AXI_ID          => MRG_AXI_ID          , -- 
+            MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
+            MRG_AXI_ID_BASE     => MRG_AXI_ID_BASE     , -- 
             MRG_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             MRG_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE         -- 
         )                                                -- 
