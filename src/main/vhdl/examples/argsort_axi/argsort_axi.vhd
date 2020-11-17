@@ -1159,9 +1159,9 @@ begin
             MRG_IN_READY        => mrg_in_ready       ,  -- Out :
             MRG_IN_LEVEL        => open               ,  -- Out :
             OUT_DATA            => merged_data        ,  -- Out :
+            OUT_STRB            => merged_strb        ,  -- Out :
             OUT_LAST            => merged_last        ,  -- Out :
             OUT_VALID           => merged_valid       ,  -- Out :
             OUT_READY           => merged_ready          -- In  :
         );
-    merged_strb <= (others => '1');
 end RTL;
