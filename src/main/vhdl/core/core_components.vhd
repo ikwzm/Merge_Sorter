@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 0.8.0                                                           --
---!     @date    2020/11/14                                                      --
+--!     @version 0.9.0                                                           --
+--!     @date    2020/11/17                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -55,6 +55,7 @@ component Merge_Sorter_Core
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
+        STM_IN_QUEUE    :  integer :=    0;
         STM_WORDS       :  integer :=    1;
         STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
@@ -217,7 +218,8 @@ component Core_Stream_Intake
         INFO_EBLK_POS   :  integer :=  0;
         INFO_FBK_POS    :  integer :=  1;
         INFO_FBK_NUM_LO :  integer :=  2;
-        INFO_FBK_NUM_HI :  integer :=  7
+        INFO_FBK_NUM_HI :  integer :=  7;
+        QUEUE_SIZE      :  integer :=  0
     );
     port (
         CLK             :  in  std_logic;

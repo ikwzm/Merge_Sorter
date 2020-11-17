@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.7.0
---!     @date    2020/11/8
+--!     @version 0.9.0
+--!     @date    2020/11/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -52,7 +52,8 @@ entity  Core_Stream_Intake is
         INFO_EBLK_POS   :  integer :=  0;
         INFO_FBK_POS    :  integer :=  1;
         INFO_FBK_NUM_LO :  integer :=  2;
-        INFO_FBK_NUM_HI :  integer :=  7
+        INFO_FBK_NUM_HI :  integer :=  7;
+        QUEUE_SIZE      :  integer :=  0
     );
     port (
         CLK             :  in  std_logic;
@@ -87,6 +88,9 @@ use     Merge_Sorter.Sorting_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 use     Merge_Sorter.Core_Components.Word_Reducer;
 architecture RTL of Core_Stream_Intake is
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     constant  DATA_BITS         :  integer := WORD_PARAM.DATA_BITS;
     constant  NULL_DATA         :  std_logic_vector(DATA_BITS-1 downto 0) := (others => '0');
     constant  WORD_BITS         :  integer := WORD_PARAM.BITS;
@@ -95,6 +99,9 @@ architecture RTL of Core_Stream_Intake is
     constant  TEAM_BITS         :  integer := MRG_WORDS*WORD_BITS;
     type      TEAM_TYPE         is array(0 to MRG_WORDS-1) of WORD_TYPE;
     type      TEAM_VECTOR       is array(integer range <>) of TEAM_TYPE;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     signal    i_word            :  std_logic_vector(STM_WORDS*WORD_BITS-1 downto 0);
     signal    intake_word       :  TEAM_VECTOR(0 to MRG_WAYS-1);
     signal    intake_last       :  std_logic;
@@ -184,14 +191,14 @@ begin
     --
     -------------------------------------------------------------------------------
     SINGLE_WORD: if (MRG_WORDS = 1) generate
-        signal    o_word        :  std_logic_vector(MRG_WAYS *WORD_BITS-1 downto 0);
+        signal    o_word            :  std_logic_vector(MRG_WAYS *WORD_BITS-1 downto 0);
     begin
-        QUEUE: Word_Reducer                              -- 
+        INTAKE_QUEUE: Word_Reducer                       -- 
             generic map (                                -- 
                 WORD_PARAM      => WORD_PARAM          , --
                 I_WORDS         => STM_WORDS           , -- 
                 O_WORDS         => MRG_WAYS            , -- 
-                QUEUE_SIZE      => 0                   , --
+                QUEUE_SIZE      => QUEUE_SIZE          , --
                 NO_VAL_SET      => MRG_WAYS            , --
                 O_VAL_SIZE      => MRG_WAYS            , -- 
                 O_SHIFT_MIN     => MRG_WAYS            , -- 
@@ -324,7 +331,7 @@ begin
                 WORDS           => MRG_WORDS           , --
                 I_WORDS         => 1                   , -- 
                 O_WORDS         => MRG_WAYS            , -- 
-                QUEUE_SIZE      => 0                   , --
+                QUEUE_SIZE      => QUEUE_SIZE          , --
                 O_VAL_SIZE      => MRG_WAYS            , -- 
                 O_SHIFT_MIN     => MRG_WAYS            , -- 
                 O_SHIFT_MAX     => MRG_WAYS            , -- 

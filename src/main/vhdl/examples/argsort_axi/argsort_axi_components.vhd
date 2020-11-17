@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 0.9.0                                                           --
---!     @date    2020/11/16                                                      --
+--!     @date    2020/11/17                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -706,6 +706,8 @@ component ArgSort_AXI
                               integer :=  16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
                               integer :=  0;
+        STM_IN_QUEUE_SIZE   : --! @brief STREAM IN QUEUE SIZE :
+                              integer :=  0;
         CSR_AXI_ADDR_WIDTH  : --! @brief CSR I/F AXI ADDRRESS WIDTH :
                               integer := 12;
         CSR_AXI_DATA_WIDTH  : --! @brief CSR I/F AXI DATA WIDTH :
@@ -777,7 +779,9 @@ component ArgSort_AXI
         MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
                               integer range 0 to 1 := 1;
         MRG_WR_AXI_RESP_REGS: --! @brief MERGE OUT AXI RESPONSE REGISTER :
-                              integer range 0 to 1 := 1
+                              integer range 0 to 1 := 1;
+        DEBUG_ENABLE        : --! @brief DEBUG ENABLE :
+                              integer range 0 to 1 := 0
     );
     port(
     -------------------------------------------------------------------------------

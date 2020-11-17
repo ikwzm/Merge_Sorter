@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 0.9.0
---!     @date    2020/11/16
+--!     @date    2020/11/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -53,6 +53,8 @@ entity  ArgSort_AXI is
         MRG_FIFO_SIZE       : --! @brief MERGE FIFO SIZE :
                               integer :=  16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
+                              integer :=  0;
+        STM_IN_QUEUE_SIZE   : --! @brief STREAM IN QUEUE SIZE :
                               integer :=  0;
         CSR_AXI_ADDR_WIDTH  : --! @brief CSR I/F AXI ADDRRESS WIDTH :
                               integer := 12;
@@ -125,7 +127,9 @@ entity  ArgSort_AXI is
         MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
                               integer range 0 to 1 := 1;
         MRG_WR_AXI_RESP_REGS: --! @brief MERGE OUT AXI RESPONSE REGISTER :
-                              integer range 0 to 1 := 1
+                              integer range 0 to 1 := 1;
+        DEBUG_ENABLE        : --! @brief DEBUG ENABLE :
+                              integer range 0 to 1 := 0
     );
     port(
     -------------------------------------------------------------------------------
@@ -378,7 +382,8 @@ architecture RTL of ArgSort_AXI is
                                    std_logic_vector(to_unsigned(INDEX_BITS   ,12)) &
                                    std_logic_vector(to_unsigned(SORT_ORDER   , 1)) &
                                    std_logic_vector(to_unsigned(COMP_SIGN    , 1)) &
-                                   std_logic_vector(to_unsigned(0            , 6));
+                                   std_logic_vector(to_unsigned(DEBUG_ENABLE , 1)) &
+                                   std_logic_vector(to_unsigned(0            , 5));
     -------------------------------------------------------------------------------
     -- RD_ADDR_REGS
     -------------------------------------------------------------------------------
@@ -466,7 +471,6 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     -- DEBUG_REGS
     -------------------------------------------------------------------------------
-    constant  DEBUG_ENABLE      :  integer range 0 to 1 := 1;
     constant  DEBUG_REGS_ADDR   :  integer := 16#40#;
     constant  DEBUG_BITS        :  integer := 64;
     constant  DEBUG_SIZE        :  integer :=  8;
@@ -591,7 +595,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  REGS_ADDR_WIDTH   :  integer := 7;
+        constant  REGS_ADDR_WIDTH   :  integer := 6 + DEBUG_ENABLE;
         constant  REGS_DATA_WIDTH   :  integer := CSR_AXI_DATA_WIDTH;
         constant  REGS_DATA_BITS    :  integer := (2**REGS_ADDR_WIDTH)*8;
         signal    regs_load         :  std_logic_vector(REGS_DATA_BITS   -1 downto 0);
@@ -816,8 +820,10 @@ begin
         ---------------------------------------------------------------------------
         -- reg_debug_data/reg_debug_mode
         ---------------------------------------------------------------------------
+        DEBUG_ON: if (DEBUG_ENABLE /= 0) generate
+            regs_rbit(DEBUG_REGS_HI downto DEBUG_REGS_LO) <= reg_debug_data;
+        end generate;
         reg_debug_mode <= reg_mode_data(MODE_DEBUG_HI downto MODE_DEBUG_LO);
-        regs_rbit(DEBUG_REGS_HI downto DEBUG_REGS_LO) <= reg_debug_data;
         ---------------------------------------------------------------------------
         -- INTERRUPT
         ---------------------------------------------------------------------------
@@ -1118,7 +1124,8 @@ begin
             MRG_WORDS           => MRG_WORDS          ,  --
             MRG_FIFO_SIZE       => MRG_FIFO_SIZE      ,  --  
             MRG_LEVEL_SIZE      => 0                  ,  --  
-            STM_IN_ENABLE       => TRUE               ,  --  
+            STM_IN_ENABLE       => TRUE               ,  --
+            STM_IN_QUEUE        => STM_IN_QUEUE_SIZE  ,  --
             STM_WORDS           => MRG_WORDS          ,  --  
             STM_FEEDBACK        => STM_FEEDBACK       ,  --  
             SORT_ORDER          => SORT_ORDER         ,  --  
