@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.8.0
---!     @date    2020/11/11
+--!     @version 0.9.0
+--!     @date    2020/11/16
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -54,7 +54,11 @@ entity  Interface_Controller is
         MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
+        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        DEBUG_ENABLE        :  integer :=    0;
+        DEBUG_SIZE          :  integer :=    1;
+        DEBUG_BITS          :  integer range 64 to 64 := 64;
+        DEBUG_COUNT_BITS    :  integer :=   32
     );
     port (
     -------------------------------------------------------------------------------
@@ -157,7 +161,12 @@ entity  Interface_Controller is
         MRG_WR_REG_D        :  out std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_REG_Q        :  in  std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_BUSY         :  in  std_logic;
-        MRG_WR_DONE         :  in  std_logic
+        MRG_WR_DONE         :  in  std_logic;
+    -------------------------------------------------------------------------------
+    -- Debug Interface
+    -------------------------------------------------------------------------------
+        DEBUG_MODE          :  in  std_logic_vector(3 downto 0) := (others => '0');
+        DEBUG_DATA          :  out std_logic_vector(DEBUG_SIZE*DEBUG_BITS-1 downto 0)
     );
 end Interface_Controller;
 -----------------------------------------------------------------------------------
@@ -232,6 +241,7 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    signal   last_proc           :  boolean;
     signal   done_en_bit         :  std_logic;
     signal   done_bit            :  std_logic;
     signal   error_bit           :  std_logic;
@@ -239,6 +249,13 @@ architecture RTL of Interface_Controller is
     signal   size_regs           :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
     signal   mode_regs           :  std_logic_vector(REG_MODE_BITS-1 downto 0);
     signal   stat_regs           :  std_logic_vector(REG_STAT_BITS-1 downto 0);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    signal   debug_start         :  boolean;
+    signal   debug_req           :  boolean;
+    signal   debug_end           :  boolean;
+    signal   debug_done          :  boolean;
 begin
     -------------------------------------------------------------------------------
     -- 
@@ -358,7 +375,6 @@ begin
                                          STM_RD_CHK_STATE, STM_RD_REQ_STATE, STM_RD_RUN_STATE, STM_RD_END_STATE,
                                          MRG_RD_CHK_STATE, MRG_RD_REQ_STATE, MRG_RD_RUN_STATE, MRG_RD_END_STATE);
         signal   curr_state          :  MAIN_STATE_TYPE;
-        signal   last_proc           :  boolean;
         signal   stm_writer_on       :  boolean;
         signal   mrg_writer_on       :  boolean;
         signal   core_running        :  boolean;
@@ -531,6 +547,15 @@ begin
         writer_running     <= ((stm_writer_on and stm_writer_running) or
                                (mrg_writer_on and mrg_writer_running));
         mrg_reader_running <= (mrg_reader_busy /= MRG_READER_ALL_IDLE);
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        debug_start <= ((curr_state = STM_RD_CHK_STATE));
+        debug_req   <= ((curr_state = STM_RD_REQ_STATE) or
+                        (curr_state = MRG_RD_REQ_STATE));
+        debug_end   <= ((curr_state = STM_RD_END_STATE) or
+                        (curr_state = MRG_RD_END_STATE));
+        debug_done  <= ((curr_state = DONE_STATE));
     end block;
     -------------------------------------------------------------------------------
     --
@@ -1134,4 +1159,82 @@ begin
         MRG_WR_REG_L <= reg_load;
         MRG_WR_REG_D <= reg_data;
     end block;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    DEBUG_ON: if (DEBUG_ENABLE /= 0) generate
+        signal    active     :  std_logic_vector(0 to DEBUG_SIZE-1);
+    begin
+        process (CLK, RST) begin
+            if (RST = '1') then
+                    active <= (others => '0');
+            elsif (CLk'event and CLK = '1') then
+                if (CLR = '1') then
+                    active <= (others => '0');
+                elsif (debug_start) then
+                    for i in active'range loop
+                        if    (i = 0) then active(i) <= '1';
+                        elsif (i = 1) then active(i) <= '1';
+                        else               active(i) <= '0';
+                        end if;
+                    end loop;
+                elsif (debug_end and last_proc = TRUE ) then
+                    active <= (others => '0');
+                elsif (debug_end and last_proc = FALSE) then
+                    for i in active'range loop
+                        if    (i = 0) then active(i) <= '1';
+                        elsif (i = 1) then active(i) <= '0';
+                        else               active(i) <= active(i-1);
+                        end if;
+                    end loop;
+                end if;
+            end if;
+        end process;
+        REG: for i in 0 to DEBUG_SIZE-1 generate
+            signal    regs       :  std_logic_vector(DEBUG_BITS-1 downto 0);
+            signal    mode       :  std_logic_vector(DEBUG_MODE'range);
+            signal    count_up   :  boolean;
+        begin
+            process (CLK, RST)
+                variable curr_count :  unsigned(DEBUG_COUNT_BITS downto 0);
+                variable next_count :  unsigned(DEBUG_COUNT_BITS downto 0);
+            begin
+                if (RST = '1') then
+                        regs <= (others => '0');
+                        mode <= (others => '0');
+                elsif (CLk'event and CLK = '1') then
+                    if (CLR = '1') then
+                        regs <= (others => '0');
+                        mode <= (others => '0');
+                    elsif (debug_start) then
+                        regs <= (others => '0');
+                        mode <= DEBUG_MODE;
+                    elsif (to_01(unsigned(mode)) = 1) then
+                        if (debug_req and active(i) = '1') then
+                            regs(SIZE_BITS-1 downto 0) <= std_logic_vector(sort_block_size);
+                            if (last_proc) then
+                                regs(regs'high) <= '1';
+                            else
+                                regs(regs'high) <= '0';
+                            end if;
+                        end if;
+                    elsif (to_01(unsigned(mode)) = 2) then
+                        curr_count := unsigned'("0") & unsigned(regs(curr_count'high-1 downto 0));
+                        if (active(i) = '1') then
+                            next_count := curr_count + 1;
+                        else
+                            next_count := curr_count;
+                        end if;
+                        if (next_count(next_count'high) = '0') then
+                            regs <= std_logic_vector(resize(next_count(next_count'high-1 downto 0), regs'length));
+                        end if;
+                    end if;
+                end if;
+            end process;
+            DEBUG_DATA((i+1)*DEBUG_BITS-1 downto i*DEBUG_BITS) <= regs;
+        end generate;
+    end generate;
+    DEBUG_OFF: if (DEBUG_ENABLE = 0) generate
+        DEBUG_DATA <= (others => '0');
+    end generate;
 end RTL;

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.9.0
+--!     @date    2020/11/17
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -45,6 +45,7 @@ entity  Merge_Sorter_Core is
         MRG_FIFO_SIZE   :  integer :=  128;
         MRG_LEVEL_SIZE  :  integer :=   64;
         STM_IN_ENABLE   :  boolean := TRUE;
+        STM_IN_QUEUE    :  integer :=    0;
         STM_WORDS       :  integer :=    1;
         STM_FEEDBACK    :  integer :=    1;
         SORT_ORDER      :  integer :=    0;
@@ -421,7 +422,8 @@ begin
                 INFO_EBLK_POS   => INFO_EBLK_POS       , -- 
                 INFO_FBK_POS    => INFO_FBK_POS        , -- 
                 INFO_FBK_NUM_LO => INFO_FBK_NUM_LO     , -- 
-                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI       -- 
+                INFO_FBK_NUM_HI => INFO_FBK_NUM_HI     , --
+                QUEUE_SIZE      => STM_IN_QUEUE          --
             )                                            -- 
             port map (                                   -- 
                 CLK             => CLK                 , -- In  :

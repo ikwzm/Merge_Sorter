@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 0.8.0                                                           --
---!     @date    2020/11/14                                                      --
+--!     @version 0.9.0                                                           --
+--!     @date    2020/11/18                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -98,7 +98,11 @@ component ArgSort_AXI_Interface
         REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   16;
-        REG_STAT_BITS       :  integer :=    6
+        REG_STAT_BITS       :  integer :=    6;
+        DEBUG_ENABLE        :  integer :=    0;
+        DEBUG_SIZE          :  integer :=    1;
+        DEBUG_BITS          :  integer range 64 to 64 := 64;
+        DEBUG_COUNT_BITS    :  integer :=   32
     );
     port (
     -------------------------------------------------------------------------------
@@ -313,7 +317,12 @@ component ArgSort_AXI_Interface
         MRG_REQ_VALID       :  out std_logic;
         MRG_REQ_READY       :  in  std_logic;
         MRG_RES_VALID       :  in  std_logic;
-        MRG_RES_READY       :  out std_logic
+        MRG_RES_READY       :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Debug Interface
+    -------------------------------------------------------------------------------
+        DEBUG_MODE          :  in  std_logic_vector(3 downto 0) := (others => '0');
+        DEBUG_DATA          :  out std_logic_vector(DEBUG_SIZE*DEBUG_BITS-1 downto 0)
     );
 end component;
 -----------------------------------------------------------------------------------
@@ -697,6 +706,8 @@ component ArgSort_AXI
                               integer :=  16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
                               integer :=  0;
+        STM_IN_QUEUE_SIZE   : --! @brief STREAM IN QUEUE SIZE :
+                              integer :=  0;
         CSR_AXI_ADDR_WIDTH  : --! @brief CSR I/F AXI ADDRRESS WIDTH :
                               integer := 12;
         CSR_AXI_DATA_WIDTH  : --! @brief CSR I/F AXI DATA WIDTH :
@@ -768,7 +779,9 @@ component ArgSort_AXI
         MRG_WR_AXI_ACK_REGS : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
                               integer range 0 to 1 := 1;
         MRG_WR_AXI_RESP_REGS: --! @brief MERGE OUT AXI RESPONSE REGISTER :
-                              integer range 0 to 1 := 1
+                              integer range 0 to 1 := 1;
+        DEBUG_ENABLE        : --! @brief DEBUG ENABLE :
+                              integer range 0 to 1 := 0
     );
     port(
     -------------------------------------------------------------------------------
