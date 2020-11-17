@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 0.8.0                                                           --
---!     @date    2020/11/14                                                      --
+--!     @version 0.9.0                                                           --
+--!     @date    2020/11/17                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -416,7 +416,11 @@ component Interface_Controller
         MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
-        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
+        STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        DEBUG_ENABLE        :  integer :=    0;
+        DEBUG_SIZE          :  integer :=    1;
+        DEBUG_BITS          :  integer range 64 to 64 := 64;
+        DEBUG_COUNT_BITS    :  integer :=   32
     );
     port (
     -------------------------------------------------------------------------------
@@ -519,7 +523,12 @@ component Interface_Controller
         MRG_WR_REG_D        :  out std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_REG_Q        :  in  std_logic_vector(           MRG_WR_REG_PARAM.BITS-1 downto 0);
         MRG_WR_BUSY         :  in  std_logic;
-        MRG_WR_DONE         :  in  std_logic
+        MRG_WR_DONE         :  in  std_logic;
+    -------------------------------------------------------------------------------
+    -- Debug Interface
+    -------------------------------------------------------------------------------
+        DEBUG_MODE          :  in  std_logic_vector(3 downto 0) := (others => '0');
+        DEBUG_DATA          :  out std_logic_vector(DEBUG_SIZE*DEBUG_BITS-1 downto 0)
     );
 end component;
 end Interface_Components;

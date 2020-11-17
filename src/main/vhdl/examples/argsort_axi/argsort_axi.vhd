@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 0.8.0
---!     @date    2020/11/13
+--!     @version 0.9.0
+--!     @date    2020/11/16
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -367,7 +367,7 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 0;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 8;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 9;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
@@ -440,6 +440,8 @@ architecture RTL of ArgSort_AXI is
     constant  MODE_REGS_LO      :  integer := 8*MODE_REGS_ADDR;
     constant  MODE_REGS_HI      :  integer := 8*MODE_REGS_ADDR    + REG_MODE_BITS - 1;
     constant  MODE_IRQ_EN_POS   :  integer := 0;
+    constant  MODE_DEBUG_LO     :  integer := 12;
+    constant  MODE_DEBUG_HI     :  integer := 15;
     -------------------------------------------------------------------------------
     -- STAT_REGS
     -------------------------------------------------------------------------------
@@ -461,6 +463,16 @@ architecture RTL of ArgSort_AXI is
     constant  CTRL_DONE_POS     :  integer := 2;
     constant  CTRL_FIRST_POS    :  integer := 1;  -- Unused 
     constant  CTRL_LAST_POS     :  integer := 0;  -- Unused 
+    -------------------------------------------------------------------------------
+    -- DEBUG_REGS
+    -------------------------------------------------------------------------------
+    constant  DEBUG_ENABLE      :  integer range 0 to 1 := 1;
+    constant  DEBUG_REGS_ADDR   :  integer := 16#40#;
+    constant  DEBUG_BITS        :  integer := 64;
+    constant  DEBUG_SIZE        :  integer :=  8;
+    constant  DEBUG_COUNT_BITS  :  integer := 32;
+    constant  DEBUG_REGS_LO     :  integer := 8*DEBUG_REGS_ADDR;
+    constant  DEBUG_REGS_HI     :  integer := 8*DEBUG_REGS_ADDR + DEBUG_SIZE*DEBUG_BITS - 1;
     -------------------------------------------------------------------------------
     -- reg_xxx_load/reg_xxx_wbit/reg_xxx_data
     -------------------------------------------------------------------------------
@@ -512,6 +524,11 @@ architecture RTL of ArgSort_AXI is
     signal    reg_done_st_load  :  std_logic;
     signal    reg_done_st_wbit  :  std_logic;
     signal    reg_done_st_data  :  std_logic;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    signal    reg_debug_mode    :  std_logic_vector(3 downto 0);
+    signal    reg_debug_data    :  std_logic_vector(DEBUG_SIZE*DEBUG_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -574,7 +591,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  REGS_ADDR_WIDTH   :  integer := 6;
+        constant  REGS_ADDR_WIDTH   :  integer := 7;
         constant  REGS_DATA_WIDTH   :  integer := CSR_AXI_DATA_WIDTH;
         constant  REGS_DATA_BITS    :  integer := (2**REGS_ADDR_WIDTH)*8;
         signal    regs_load         :  std_logic_vector(REGS_DATA_BITS   -1 downto 0);
@@ -797,6 +814,11 @@ begin
             reg_ctrl_data(CTRL_DONE_POS ) <= reg_done_en_data;
         end process;
         ---------------------------------------------------------------------------
+        -- reg_debug_data/reg_debug_mode
+        ---------------------------------------------------------------------------
+        reg_debug_mode <= reg_mode_data(MODE_DEBUG_HI downto MODE_DEBUG_LO);
+        regs_rbit(DEBUG_REGS_HI downto DEBUG_REGS_LO) <= reg_debug_data;
+        ---------------------------------------------------------------------------
         -- INTERRUPT
         ---------------------------------------------------------------------------
         process(ACLK, RESET) begin
@@ -867,7 +889,11 @@ begin
             REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
             REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   
             REG_SIZE_BITS       => REG_SIZE_BITS       , --   
-            REG_MODE_BITS       => REG_MODE_BITS         --   
+            REG_MODE_BITS       => REG_MODE_BITS       , --   
+            DEBUG_ENABLE        => DEBUG_ENABLE        , --   
+            DEBUG_SIZE          => DEBUG_SIZE          , --
+            DEBUG_BITS          => DEBUG_BITS          , --
+            DEBUG_COUNT_BITS    => DEBUG_COUNT_BITS      --
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -1075,7 +1101,12 @@ begin
             MERGED_STRB         => merged_strb         , -- In  :
             MERGED_LAST         => merged_last         , -- In  :
             MERGED_VALID        => merged_valid        , -- In  :
-            MERGED_READY        => merged_ready          -- Out :
+            MERGED_READY        => merged_ready        , -- Out :
+        ---------------------------------------------------------------------------
+        -- Debug Interface
+        ---------------------------------------------------------------------------
+            DEBUG_MODE          => reg_debug_mode      , -- In  :
+            DEBUG_DATA          => reg_debug_data        -- Out :
     );
     -------------------------------------------------------------------------------
     -- 

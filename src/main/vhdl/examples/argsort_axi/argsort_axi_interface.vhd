@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 0.8.0
---!     @date    2020/11/13
+--!     @version 0.9.0
+--!     @date    2020/11/16
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -88,7 +88,11 @@ entity  ArgSort_AXI_Interface is
         REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   16;
-        REG_STAT_BITS       :  integer :=    6
+        REG_STAT_BITS       :  integer :=    6;
+        DEBUG_ENABLE        :  integer :=    0;
+        DEBUG_SIZE          :  integer :=    1;
+        DEBUG_BITS          :  integer range 64 to 64 := 64;
+        DEBUG_COUNT_BITS    :  integer :=   32
     );
     port (
     -------------------------------------------------------------------------------
@@ -303,7 +307,12 @@ entity  ArgSort_AXI_Interface is
         MRG_REQ_VALID       :  out std_logic;
         MRG_REQ_READY       :  in  std_logic;
         MRG_RES_VALID       :  in  std_logic;
-        MRG_RES_READY       :  out std_logic
+        MRG_RES_READY       :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Debug Interface
+    -------------------------------------------------------------------------------
+        DEBUG_MODE          :  in  std_logic_vector(3 downto 0) := (others => '0');
+        DEBUG_DATA          :  out std_logic_vector(DEBUG_SIZE*DEBUG_BITS-1 downto 0)
     );
 end ArgSort_AXI_Interface;
 -----------------------------------------------------------------------------------
@@ -710,7 +719,11 @@ begin
             MRG_RD_REG_PARAM=> MRG_RD_REG_PARAM    , --
             MRG_WR_REG_PARAM=> MRG_WR_REG_PARAM    , --
             STM_RD_REG_PARAM=> STM_RD_REG_PARAM    , --
-            STM_WR_REG_PARAM=> STM_WR_REG_PARAM      --
+            STM_WR_REG_PARAM=> STM_WR_REG_PARAM    , --
+            DEBUG_ENABLE    => DEBUG_ENABLE        , -- 
+            DEBUG_SIZE      => DEBUG_SIZE          , --
+            DEBUG_BITS      => DEBUG_BITS          , --
+            DEBUG_COUNT_BITS=> DEBUG_COUNT_BITS      -- 
         )                                            -- 
         port map (                                   -- 
         ---------------------------------------------------------------------------
@@ -771,6 +784,11 @@ begin
             REG_STAT_D      => REG_STAT_D          , -- In  :
             REG_STAT_Q      => REG_STAT_Q          , -- Out :
             REG_STAT_I      => REG_STAT_I          , -- In  :
+        ---------------------------------------------------------------------------
+        -- Debug Interface
+        ---------------------------------------------------------------------------
+            DEBUG_MODE      => DEBUG_MODE          , -- In  :
+            DEBUG_DATA      => DEBUG_DATA          , -- Out :
         ---------------------------------------------------------------------------
         -- Merge Sorter Core Control Interface
         ---------------------------------------------------------------------------
