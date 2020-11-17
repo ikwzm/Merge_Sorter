@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 0.9.0                                                           --
---!     @date    2020/11/17                                                      --
+--!     @date    2020/11/18                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
