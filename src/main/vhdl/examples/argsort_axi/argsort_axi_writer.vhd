@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_writer.vhd
 --!     @brief   Merge Sorter ArgSort AXI Writer Module :
---!     @version 0.8.0
---!     @date    2020/11/14
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

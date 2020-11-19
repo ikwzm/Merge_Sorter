@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_reader.vhd
 --!     @brief   Merge Sorter Merge Reader Module :
---!     @version 0.7.0
---!     @date    2020/11/11
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

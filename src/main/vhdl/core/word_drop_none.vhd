@@ -2,7 +2,7 @@
 --!     @file    word_drop_none.vhd
 --!     @brief   Merge Sorter Word Drop None Module :
 --!     @version 0.9.1
---!     @date    2020/11/18
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

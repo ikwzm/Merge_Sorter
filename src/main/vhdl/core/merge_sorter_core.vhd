@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
 --!     @version 0.9.1
---!     @date    2020/11/18
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
