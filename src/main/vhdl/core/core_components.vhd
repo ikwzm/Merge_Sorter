@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 0.9.0                                                           --
---!     @date    2020/11/17                                                      --
+--!     @version 0.9.1                                                           --
+--!     @date    2020/11/19                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -366,6 +366,34 @@ component Word_Reducer
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic;
         O_SHIFT     :  in  std_logic_vector(O_SHIFT_MAX downto O_SHIFT_MIN) := (others => '0')
+    );
+end component;
+-----------------------------------------------------------------------------------
+--! @brief Word_Pipeline_Register                                                --
+-----------------------------------------------------------------------------------
+component Word_Pipeline_Register
+    generic (
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
+        INFO_BITS   :  integer :=  1;
+        QUEUE_SIZE  :  integer :=  2
+    );
+    port (
+        CLK         :  in  std_logic;
+        RST         :  in  std_logic;
+        CLR         :  in  std_logic;
+        I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic := '0';
+        I_VALID     :  in  std_logic;
+        I_READY     :  out std_logic;
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
+        O_LAST      :  out std_logic;
+        O_VALID     :  out std_logic;
+        O_READY     :  in  std_logic;
+        VALID       :  out std_logic_vector(QUEUE_SIZE downto 0);
+        BUSY        :  out std_logic
     );
 end component;
 -----------------------------------------------------------------------------------
