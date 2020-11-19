@@ -6,6 +6,7 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_pipeline_r
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network_core.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_fifo.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_reducer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_intake_fifo.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_stream_intake.vhd
