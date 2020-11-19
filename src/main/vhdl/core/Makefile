@@ -5,6 +5,7 @@ ENTITY_FILES = merge_sorter_core.vhd      \
                core_stream_intake.vhd     \
                sorting_network_core.vhd   \
                word_compare.vhd           \
+               word_fifo.vhd              \
                word_queue.vhd             \
                word_reducer.vhd           \
                word_pipeline_register.vhd \
