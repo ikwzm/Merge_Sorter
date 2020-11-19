@@ -302,8 +302,8 @@ component Word_Queue
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
         I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0);
-        I_LAST      :  in  std_logic;
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic := '0';
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
         O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
