@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    sorting_network_core.vhd
 --!     @brief   Sorting Network Core Module :
---!     @version 0.7.0
---!     @date    2020/10/30
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -70,8 +70,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
 use     Merge_Sorter.Core_Components.Word_Compare;
-library PipeWork;
-use     PipeWork.Components.PIPELINE_REGISTER;
+use     Merge_Sorter.Core_Components.Word_Pipeline_Register;
 architecture RTL of Sorting_Network_Core is
     -------------------------------------------------------------------------------
     --
@@ -166,44 +165,38 @@ begin
         --
         ---------------------------------------------------------------------------
         REGS: block
-            constant  WORD_LO   :  integer := 0;
-            constant  DATA_LO   :  integer := WORD_LO;
-            constant  DATA_HI   :  integer := DATA_LO + NETWORK_PARAM.Size*WORD_PARAM.BITS-1;
-            constant  INFO_LO   :  integer := DATA_HI + 1;
-            constant  INFO_HI   :  integer := INFO_LO + INFO_BITS - 1;
-            constant  WORD_HI   :  integer := INFO_HI;
-            constant  WORD_BITS :  integer := WORD_HI - WORD_LO + 1;
-            signal    d_word    :  std_logic_vector(WORD_BITS-1 downto 0);
-            signal    q_word    :  std_logic_vector(WORD_BITS-1 downto 0);
+            signal    d_word    :  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
+            signal    q_word    :  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
         begin
             NET_I: for i in 0 to NETWORK_PARAM.Size-1 generate
-                d_word((i+1)*WORD_PARAM.BITS-1+DATA_LO downto i*WORD_PARAM.BITS+DATA_LO)
+                d_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS)
                     <= sorted_word(i+NETWORK_PARAM.Lo);
             end generate;
-            d_word(INFO_HI downto INFO_LO) <= stage_info(stage-1);
-            Q: PIPELINE_REGISTER                            -- 
-                generic map (                               -- 
-                    WORD_BITS   => WORD_BITS,               -- 
-                    QUEUE_SIZE  => Stage_Param.QUEUE_SIZE   -- 
-                )                                           -- 
-                port map (                                  -- 
-                    CLK         => CLK                    , -- In  :
-                    RST         => RST                    , -- In  :
-                    CLR         => CLR                    , -- In  :
-                    I_WORD      => d_word                 , -- In  :
-                    I_VAL       => stage_valid(stage-1)   , -- In  :
-                    I_RDY       => stage_ready(stage-1)   , -- Out :
-                    Q_WORD      => q_word                 , -- Out :
-                    Q_VAL       => stage_valid(stage  )   , -- Out :
-                    Q_RDY       => stage_ready(stage  )   , -- In  :
-                    VALID       => open                   , -- Out :
-                    BUSY        => stage_busy (stage  )     -- 
+            Q: Word_Pipeline_Register
+                generic map(                                      --
+                    WORD_PARAM  => WORD_PARAM                   , --
+                    WORDS       => NETWORK_PARAM.Size           , --
+                    INFO_BITS   => INFO_BITS                    , --
+                    QUEUE_SIZE  => Stage_Param.QUEUE_SIZE         --
+                )                                                 -- 
+                port map (                                        --
+                    CLK         => CLK                          , -- In  :
+                    RST         => RST                          , -- In  :
+                    CLR         => CLR                          , -- In  :
+                    I_WORD      => d_word                       , -- In  :
+                    I_INFO      => stage_info (stage-1)         , -- In  :
+                    I_VALID     => stage_valid(stage-1)         , -- In  :
+                    I_READY     => stage_ready(stage-1)         , -- Out :
+                    O_WORD      => q_word                       , -- Out :
+                    O_INFO      => stage_info (stage  )         , -- Out :
+                    O_VALID     => stage_valid(stage  )         , -- Out :
+                    O_READY     => stage_ready(stage  )         , -- In  :
+                    BUSY        => stage_busy (stage  )           -- 
                 );
             NET_O: for i in 0 to NETWORK_PARAM.Size-1 generate
                 stage_word(stage)(i+NETWORK_PARAM.Lo)
-                    <= q_word((i+1)*WORD_PARAM.BITS-1+DATA_LO downto i*WORD_PARAM.BITS+DATA_LO);
+                    <= q_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
             end generate;
-            stage_info(stage) <= q_word(INFO_HI downto INFO_LO);
         end block;
     end generate;
     -------------------------------------------------------------------------------
@@ -212,7 +205,8 @@ begin
     OUTLET: block
     begin
         NET: for i in 0 to NETWORK_PARAM.Size-1 generate
-            O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) <= stage_word(STAGE_LAST)(NETWORK_PARAM.Lo+i);
+            O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS)
+                <= stage_word(STAGE_LAST)(i+NETWORK_PARAM.Lo);
         end generate;
         O_INFO  <= stage_info (STAGE_LAST);
         O_VALID <= stage_valid(STAGE_LAST);
