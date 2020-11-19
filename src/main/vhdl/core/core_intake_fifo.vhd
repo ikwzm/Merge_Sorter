@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_intake_fifo.vhd
 --!     @brief   Merge Sorter Core Intake Fifo Module :
---!     @version 0.7.0
---!     @date    2020/11/6
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -88,21 +88,9 @@ end Core_Intake_Fifo;
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Core_Components.Word_Fifo;
 architecture RTL of Core_Intake_Fifo is
-    constant  FIFO_WORD_WORD_LO         :  integer := 0;
-    constant  FIFO_WORD_WORD_HI         :  integer := FIFO_WORD_WORD_LO  + WORDS*WORD_PARAM.BITS - 1;
-    constant  FIFO_WORD_EBLK_POS        :  integer := FIFO_WORD_WORD_HI  + 1;
-    constant  FIFO_WORD_LAST_POS        :  integer := FIFO_WORD_EBLK_POS + 1;
-    constant  FIFO_WORD_BITS            :  integer := FIFO_WORD_LAST_POS - FIFO_WORD_WORD_LO + 1;
-    signal    fifo_intake_level         :  std_logic;
-    signal    fifo_intake_valid         :  std_logic;
-    signal    fifo_intake_ready         :  std_logic;
-    signal    fifo_intake_enable        :  std_logic;
-    signal    fifo_intake_word          :  std_logic_vector(FIFO_WORD_BITS-1 downto 0);
-    signal    fifo_outlet_valid         :  std_logic;
-    signal    fifo_outlet_ready         :  std_logic;
-    signal    fifo_outlet_word          :  std_logic_vector(FIFO_WORD_BITS-1 downto 0);
-    signal    fifo_outlet_enable        :  std_logic;
 begin
     -------------------------------------------------------------------------------
     --
@@ -122,7 +110,7 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    CTRL: if (FIFO_SIZE > 0) generate
+    MAIN: if (FIFO_SIZE > 0) generate
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -143,7 +131,9 @@ begin
         signal    fbk_intake_enable :  boolean;
         signal    fbk_intake_valid  :  std_logic;
         signal    fbk_intake_ready  :  std_logic;
-        signal    fbk_intake_word   :  std_logic_vector(FIFO_WORD_BITS-1 downto 0);
+        signal    fbk_intake_word   :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    fbk_intake_eblk   :  std_logic;
+        signal    fbk_intake_last   :  std_logic;
         signal    fbk_outlet_enable :  boolean;
         signal    fbk_outlet_eblk   :  std_logic;
         signal    fbk_outlet_next   :  std_logic;
@@ -156,10 +146,31 @@ begin
         signal    mrg_intake_enable :  boolean;
         signal    mrg_intake_valid  :  std_logic;
         signal    mrg_intake_ready  :  std_logic;
-        signal    mrg_intake_word   :  std_logic_vector(FIFO_WORD_BITS-1 downto 0);
+        signal    mrg_intake_word   :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    mrg_intake_eblk   :  std_logic;
+        signal    mrg_intake_last   :  std_logic;
         signal    mrg_outlet_enable :  boolean;
         signal    mrg_outlet_eblk   :  std_logic;
         signal    mrg_state_done    :  boolean;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        signal    fifo_intake_valid :  std_logic;
+        signal    fifo_intake_ready :  std_logic;
+        signal    fifo_intake_word  :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    fifo_intake_last  :  std_logic;
+        signal    fifo_intake_eblk  :  std_logic;
+        signal    fifo_intake_enable:  std_logic;
+        signal    fifo_intake_level :  std_logic;
+        ---------------------------------------------------------------------------
+        --
+        ---------------------------------------------------------------------------
+        signal    fifo_outlet_valid :  std_logic;
+        signal    fifo_outlet_ready :  std_logic;
+        signal    fifo_outlet_word  :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        signal    fifo_outlet_last  :  std_logic;
+        signal    fifo_outlet_eblk  :  std_logic;
+        signal    fifo_outlet_enable:  std_logic;
     begin
         ---------------------------------------------------------------------------
         --
@@ -232,6 +243,8 @@ begin
         --
         ---------------------------------------------------------------------------
         fifo_intake_word   <= fbk_intake_word  or mrg_intake_word;
+        fifo_intake_last   <= fbk_intake_last  or mrg_intake_last;
+        fifo_intake_eblk   <= fbk_intake_eblk  or mrg_intake_eblk;
         fifo_intake_valid  <= fbk_intake_valid or mrg_intake_valid;
         fifo_intake_enable <= '1' when (fbk_intake_enable or mrg_intake_enable) else '0';
         ---------------------------------------------------------------------------
@@ -278,7 +291,7 @@ begin
                         if (fifo_outlet_enable = '1') and
                            (fifo_outlet_valid  = '1') and
                            (fifo_outlet_ready  = '1') and
-                           (fifo_outlet_word(FIFO_WORD_LAST_POS) = '1') then
+                           (fifo_outlet_last   = '1') then
                             next_counter := next_counter + 1;
                         end if;
                         outlet_counter <= std_logic_vector(next_counter(outlet_counter'range));
@@ -309,7 +322,7 @@ begin
                                   (fbk_outlet_last   = '1' ) and
                                   (fifo_outlet_valid = '1' ) and
                                   (fifo_outlet_ready = '1' ) and
-                                  (fifo_outlet_word(FIFO_WORD_LAST_POS) = '1'));
+                                  (fifo_outlet_last  = '1'));
             fbk_outlet_next   <= '1' when (outlet_next and fbk_outlet_enable) else '0';
             fbk_outlet_last   <= '1' when (outlet_last and fbk_outlet_enable) else '0';
             fbk_outlet_eblk   <= '1' when (fbk_outlet_last = '1' and outlet_done = '1') else '0';
@@ -319,19 +332,13 @@ begin
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
+            fbk_intake_word   <= FBK_IN_WORD       when (fbk_intake_enable) else (others => '0');
+            fbk_intake_last   <= FBK_IN_LAST       when (fbk_intake_enable) else '0';
+            fbk_intake_eblk   <= '0';
             fbk_intake_enable <= (curr_state = FBK_RUN_STATE);
             fbk_intake_valid  <= FBK_IN_VALID      when (fbk_intake_enable) else '0';
             fbk_intake_ready  <= fifo_intake_ready when (fbk_intake_enable) else '0';
             FBK_IN_READY      <= fifo_intake_ready when (fbk_intake_enable) else '0';
-            process (fbk_intake_enable, FBK_IN_WORD, FBK_IN_LAST) begin
-                if (fbk_intake_enable) then
-                    fbk_intake_word(FIFO_WORD_WORD_HI downto FIFO_WORD_WORD_LO) <= FBK_IN_WORD;
-                    fbk_intake_word(FIFO_WORD_EBLK_POS     )                    <= '0';
-                    fbk_intake_word(FIFO_WORD_LAST_POS     )                    <= FBK_IN_LAST;
-                else
-                    fbk_intake_word <= (others => '0');
-                end if;
-            end process;
         end generate;
         ---------------------------------------------------------------------------
         --
@@ -345,6 +352,8 @@ begin
             fbk_intake_enable <= FALSE;
             fbk_intake_valid  <= '0';
             fbk_intake_word   <= (others => '0');
+            fbk_intake_last   <= '0';
+            fbk_intake_eblk   <= '0';
             fbk_intake_ready  <= '0';
             FBK_IN_READY      <= '0';
             FBK_ACK           <= '0';
@@ -381,7 +390,7 @@ begin
             --
             -----------------------------------------------------------------------
             mrg_outlet_enable <= (curr_state = MRG_RUN_STATE and fifo_outlet_enable = '1');
-            mrg_outlet_eblk   <= fifo_outlet_word(FIFO_WORD_EBLK_POS) when (mrg_outlet_enable) else '0';
+            mrg_outlet_eblk   <= fifo_outlet_eblk when (mrg_outlet_enable) else '0';
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
@@ -389,26 +398,20 @@ begin
                                   (fifo_outlet_enable = '1') and
                                   (fifo_outlet_valid  = '1') and
                                   (fifo_outlet_ready  = '1') and
-                                  (fifo_outlet_word(FIFO_WORD_LAST_POS) = '1') and
-                                  (fifo_outlet_word(FIFO_WORD_EBLK_POS) = '1'));
+                                  (fifo_outlet_last   = '1') and
+                                  (fifo_outlet_eblk   = '1'));
             MRG_ACK           <= '1' when (curr_state = MRG_ACK_STATE) else '0';
             -----------------------------------------------------------------------
             --
             -----------------------------------------------------------------------
             mrg_intake_enable <= (curr_state = MRG_RUN_STATE and fifo_flush = FALSE);
+            mrg_intake_word   <= MRG_IN_WORD       when (mrg_intake_enable) else (others => '0');
+            mrg_intake_last   <= MRG_IN_LAST       when (mrg_intake_enable) else '0';
+            mrg_intake_eblk   <= MRG_IN_EBLK       when (mrg_intake_enable) else '0';
             mrg_intake_valid  <= MRG_IN_VALID      when (mrg_intake_enable) else '0';
             mrg_intake_ready  <= fifo_intake_ready when (mrg_intake_enable) else '0';
             MRG_IN_READY      <= fifo_intake_ready when (mrg_intake_enable) else '0';
             MRG_IN_LEVEL      <= fifo_intake_level when (mrg_intake_enable) else '0';
-            process (mrg_intake_enable, MRG_IN_WORD, MRG_IN_EBLK, MRG_IN_LAST) begin
-                if (mrg_intake_enable) then
-                    mrg_intake_word(FIFO_WORD_WORD_HI downto FIFO_WORD_WORD_LO) <= MRG_IN_WORD;
-                    mrg_intake_word(FIFO_WORD_EBLK_POS)                         <= MRG_IN_EBLK;
-                    mrg_intake_word(FIFO_WORD_LAST_POS)                         <= MRG_IN_LAST;
-                else
-                    mrg_intake_word <= (others => '0');
-                end if;
-            end process;
         end generate;
         ---------------------------------------------------------------------------
         --
@@ -420,6 +423,8 @@ begin
             mrg_intake_enable <= FALSE;
             mrg_intake_valid  <= '0';
             mrg_intake_word   <= (others => '0');
+            mrg_intake_last   <= '0';
+            mrg_intake_eblk   <= '0';
             mrg_intake_ready  <= '0';
             MRG_IN_READY      <= '0';
             MRG_IN_LEVEL      <= '0';
@@ -428,13 +433,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        process (fifo_outlet_enable, fifo_outlet_word) begin
-            if (fifo_outlet_enable = '1') then
-                OUTLET_WORD <= fifo_outlet_word(FIFO_WORD_WORD_HI downto FIFO_WORD_WORD_LO);
-            else
-                OUTLET_WORD <= (others => '0');
-            end if;
-        end process;
+        OUTLET_WORD <= fifo_outlet_word when (fifo_outlet_enable = '1') else (others => '0');
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
@@ -450,163 +449,37 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        OUTLET_LAST  <= fifo_outlet_word(FIFO_WORD_LAST_POS) when (fifo_outlet_enable = '1') else '0';
-        OUTLET_VALID <= fifo_outlet_valid                    when (fifo_outlet_enable = '1') else '0';
+        OUTLET_LAST  <= fifo_outlet_last   when (fifo_outlet_enable = '1') else '0';
+        OUTLET_VALID <= fifo_outlet_valid  when (fifo_outlet_enable = '1') else '0';
         fifo_outlet_ready <= OUTLET_READY;
-    end generate;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    FIFO: if (FIFO_SIZE > 0) generate
-        function  NUM_TO_BITS(NUM:integer) return integer is
-            variable value : integer;
-        begin
-            value := 0;
-            while (2**value <= NUM) loop
-                value := value + 1;
-            end loop;
-            return value;
-        end function;
-        constant  COUNT_BITS        :  integer := NUM_TO_BITS(FIFO_SIZE  );
-        constant  PTR_BITS          :  integer := NUM_TO_BITS(FIFO_SIZE-1);
-        type      MEM_TYPE          is array (integer range <>) of std_logic_vector(FIFO_WORD_BITS-1 downto 0);
-        signal    mem               :  MEM_TYPE(FIFO_SIZE -1 downto 0);
-        signal    intake_counter    :  unsigned(COUNT_BITS-1 downto 0);
-        signal    outlet_counter    :  unsigned(COUNT_BITS-1 downto 0);
-        signal    wr_ptr            :  unsigned(PTR_BITS  -1 downto 0);
-        signal    rd_ptr            :  unsigned(PTR_BITS  -1 downto 0);
-        signal    wr_addr           :  unsigned(PTR_BITS  -1 downto 0);
-        signal    rd_addr           :  unsigned(PTR_BITS  -1 downto 0);
-        signal    wr_ena_i          :  std_logic;
-        signal    wr_ena_q          :  std_logic;
-        signal    rd_ena_i          :  std_logic;
-        signal    rd_ena_q          :  std_logic;
-    begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        wr_ena_i <= '1' when (fifo_intake_enable = '1' and fifo_intake_valid = '1' and fifo_intake_ready = '1') else '0';
-        rd_ena_i <= '1' when (fifo_outlet_enable = '1' and fifo_outlet_valid = '1' and fifo_outlet_ready = '1') else '0';
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK, RST)
-            variable next_counter : unsigned(COUNT_BITS downto 0);
-        begin
-            if (RST = '1') then
-                    intake_counter    <= (others => '0');
-                    fifo_intake_ready <= '0';
-                    fifo_intake_level <= '0';
-                    wr_ena_q          <= '0';
-            elsif (CLK'event and CLK = '1') then
-                if (CLR = '1') then
-                    intake_counter    <= (others => '0');
-                    fifo_intake_ready <= '0';
-                    fifo_intake_level <= '0';
-                    wr_ena_q          <= '0';
-                else
-                    next_counter := "0" & intake_counter;
-                    if (wr_ena_i = '1') then
-                        next_counter := next_counter + 1;
-                    end if;
-                    if (rd_ena_q = '1') then
-                        next_counter := next_counter - 1;
-                    end if;
-                    if (next_counter < FIFO_SIZE) then
-                        fifo_intake_ready <= '1';
-                    else
-                        fifo_intake_ready <= '0';
-                    end if;
-                    if (next_counter >= LEVEL_SIZE) then
-                        fifo_intake_level <= '1';
-                    else
-                        fifo_intake_level <= '0';
-                    end if;
-                    intake_counter <= next_counter(intake_counter'range);
-                    wr_ena_q       <= wr_ena_i;
-                end if;
-            end if;
-        end process;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK, RST)
-            variable next_counter : unsigned(COUNT_BITS downto 0);
-        begin
-            if (RST = '1') then
-                    outlet_counter    <= (others => '0');
-                    fifo_outlet_valid <= '0';
-                    rd_ena_q          <= '0';
-            elsif (CLK'event and CLK = '1') then
-                if (CLR = '1') then
-                    outlet_counter    <= (others => '0');
-                    fifo_outlet_valid <= '0';
-                    rd_ena_q          <= '0';
-                else
-                    next_counter := "0" & outlet_counter;
-                    if (wr_ena_q = '1') then
-                        next_counter := next_counter + 1;
-                    end if;
-                    if (rd_ena_i = '1') then
-                        next_counter := next_counter - 1;
-                    end if;
-                    if (next_counter > 0) then
-                        fifo_outlet_valid <= '1';
-                    else
-                        fifo_outlet_valid <= '0';
-                    end if;
-                    outlet_counter <= next_counter(outlet_counter'range);
-                    rd_ena_q       <= rd_ena_i;
-                end if;
-            end if;
-        end process;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK, RST) begin
-            if (RST = '1') then
-                    wr_ptr <= (others => '0');
-            elsif (CLK'event and CLK = '1') then
-                if (CLR = '1') then
-                    wr_ptr <= (others => '0');
-                elsif (wr_ena_i = '1') then
-                    wr_ptr <= wr_ptr + 1;
-                end if;
-            end if;
-        end process;
-        wr_addr <= wr_ptr;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK, RST) begin
-            if (RST = '1') then
-                    rd_ptr <= (others => '0');
-            elsif (CLK'event and CLK = '1') then
-                if (CLR = '1') then
-                    rd_ptr <= (others => '0');
-                else
-                    rd_ptr <= rd_addr;
-                end if;
-            end if;
-        end process;
-        rd_addr <= rd_ptr + 1 when (rd_ena_i = '1') else rd_ptr;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK) begin
-            if (CLK'event and CLK = '1') then
-                if (wr_ena_i = '1') then
-                    mem(to_integer(to_01(wr_addr))) <= fifo_intake_word;
-                end if;
-            end if;
-        end process;
-        ---------------------------------------------------------------------------
-        --
-        ---------------------------------------------------------------------------
-        process (CLK) begin
-            if (CLK'event and CLK = '1') then
-                fifo_outlet_word <= mem(to_integer(to_01(rd_addr)));
-            end if;
-        end process;
+        FIFO: Word_Fifo                              -- 
+            generic map (                            -- 
+                WORD_PARAM  => WORD_PARAM          , -- 
+                WORDS       => WORDS               , -- 
+                INFO_BITS   => 1                   , -- 
+                FIFO_SIZE   => FIFO_SIZE           , -- 
+                LEVEL_SIZE  => LEVEL_SIZE            -- 
+            )                                        -- 
+            port map (                               --
+                CLK         => CLK                 , -- In  :  
+                RST         => RST                 , -- In  :  
+                CLR         => CLR                 , -- In  :  
+                I_ENABLE    => fifo_intake_enable  , -- In  :  
+                I_WORD      => fifo_intake_word    , -- In  :  
+                I_INFO(0)   => fifo_intake_eblk    , -- In  :  
+                I_LAST      => fifo_intake_last    , -- In  :  
+                I_VALID     => fifo_intake_valid   , -- In  :  
+                I_READY     => fifo_intake_ready   , -- Out :
+                I_LEVEL     => fifo_intake_level   , -- Out :
+                O_ENABLE    => fifo_outlet_enable  , -- In  :  
+                O_WORD      => fifo_outlet_word    , -- Out :
+                O_INFO(0)   => fifo_outlet_eblk    , -- Out :
+                O_LAST      => fifo_outlet_last    , -- Out :
+                O_VALID     => fifo_outlet_valid   , -- Out :
+                O_READY     => fifo_outlet_ready     -- In  :  
+            );
     end generate;
 end RTL;

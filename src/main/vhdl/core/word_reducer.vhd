@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    word_reducer.vhd
 --!     @brief   Merge Sorter Word Reducer Module :
---!     @version 0.7.0
---!     @date    2020/11/8
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

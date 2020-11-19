@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    bitonic_sorter.vhd
 --!     @brief   Bitonic Sorter
---!     @version 0.7.0
---!     @date    2020/10/30
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -53,8 +53,8 @@ entity  Bitonic_Sorter is
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
         I_DATA          :  in  std_logic_vector(WORDS*DATA_BITS-1 downto 0);
-        I_ATRB          :  in  std_logic_vector(WORDS*ATRB_BITS-1 downto 0);
-        I_INFO          :  in  std_logic_vector(      INFO_BITS-1 downto 0);
+        I_ATRB          :  in  std_logic_vector(WORDS*ATRB_BITS-1 downto 0) := (others => '0');
+        I_INFO          :  in  std_logic_vector(      INFO_BITS-1 downto 0) := (others => '0');
         I_VALID         :  in  std_logic;
         I_READY         :  out std_logic;
         O_DATA          :  out std_logic_vector(WORDS*DATA_BITS-1 downto 0);

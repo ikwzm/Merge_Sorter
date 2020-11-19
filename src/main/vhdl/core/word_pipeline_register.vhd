@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    word_queue.vhd
---!     @brief   Merge Sorter Word Queue Module :
+--!     @file    word_pipeline_register.vhd
+--!     @brief   Merge Sorter Word Pipeline Register Module :
 --!     @version 0.9.1
 --!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -38,7 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Word_Queue is
+entity  Word_Pipeline_Register is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         WORDS       :  integer :=  1;
@@ -58,19 +58,21 @@ entity  Word_Queue is
         O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
         O_LAST      :  out std_logic;
         O_VALID     :  out std_logic;
-        O_READY     :  in  std_logic
+        O_READY     :  in  std_logic;
+        VALID       :  out std_logic_vector(QUEUE_SIZE downto 0);
+        BUSY        :  out std_logic
     );
-end Word_Queue;
+end Word_Pipeline_Register;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
 library PipeWork;
-use     PipeWork.Components.QUEUE_REGISTER;
+use     PipeWork.Components.PIPELINE_REGISTER;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-architecture RTL of Word_Queue is
+architecture RTL of Word_Pipeline_Register is
     constant  DATA_WORD_BITS    :  integer := WORDS*WORD_PARAM.BITS;
     constant  DATA_WORD_LO_POS  :  integer := 0;
     constant  DATA_WORD_HI_POS  :  integer := DATA_WORD_LO_POS + DATA_WORD_BITS - 1;
@@ -82,25 +84,24 @@ architecture RTL of Word_Queue is
     constant  DATA_BITS         :  integer := DATA_HI_POS - DATA_LO_POS + 1;
     signal    i_data            :  std_logic_vector(DATA_HI_POS downto DATA_LO_POS);
     signal    q_data            :  std_logic_vector(DATA_HI_POS downto DATA_LO_POS);
-    signal    q_valid           :  std_logic_vector(QUEUE_SIZE  downto           0);
 begin
-    Q: QUEUE_REGISTER                    -- 
+    Q: PIPELINE_REGISTER                 -- 
         generic map (                    -- 
             QUEUE_SIZE  => QUEUE_SIZE  , -- 
-            DATA_BITS   => DATA_BITS     --
+            WORD_BITS   => DATA_BITS     --
         )                                -- 
         port map (                       -- 
             CLK         => CLK         , -- In  :
             RST         => RST         , -- In  :
             CLR         => CLR         , -- In  :
-            I_DATA      => i_data      , -- In  :
+            I_WORD      => i_data      , -- In  :
             I_VAL       => I_VALID     , -- In  :
             I_RDY       => I_READY     , -- Out :
-            O_DATA      => open        , -- Out :
-            O_VAL       => open        , -- Out :
-            Q_DATA      => q_data      , -- Out :
-            Q_VAL       => q_valid     , -- Out :
-            Q_RDY       => O_READY       -- In  :
+            Q_WORD      => q_data      , -- Out :
+            Q_VAL       => O_VALID     , -- Out :
+            Q_RDY       => O_READY     , -- In  :
+            VALID       => VALID       , -- Out :
+            BUSY        => BUSY          -- Out :
         );
     i_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS) <= I_WORD;
     i_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS) <= I_INFO;
@@ -108,5 +109,4 @@ begin
     O_WORD <= q_data(DATA_WORD_HI_POS downto DATA_WORD_LO_POS);
     O_INFO <= q_data(DATA_INFO_HI_POS downto DATA_INFO_LO_POS);
     O_LAST <= q_data(DATA_LAST_POS);
-    O_VALID<= q_valid(0);
 end RTL;

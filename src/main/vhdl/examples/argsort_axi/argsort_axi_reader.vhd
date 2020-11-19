@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_reader.vhd
 --!     @brief   Merge Sorter ArgSort AXI Reader Module :
---!     @version 0.8.0
---!     @date    2020/11/14
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 0.9.0                                                           --
---!     @date    2020/11/17                                                      --
+--!     @version 0.9.1                                                           --
+--!     @date    2020/11/19                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -288,6 +288,36 @@ component Word_Compare
     );
 end component;
 -----------------------------------------------------------------------------------
+--! @brief Word_Fifo                                                             --
+-----------------------------------------------------------------------------------
+component Word_Fifo
+    generic (
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=   1;
+        INFO_BITS   :  integer :=   1;
+        FIFO_SIZE   :  integer :=  16;
+        LEVEL_SIZE  :  integer :=  15
+    );
+    port (
+        CLK         :  in  std_logic;
+        RST         :  in  std_logic;
+        CLR         :  in  std_logic;
+        I_ENABLE    :  in  std_logic := '1';
+        I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic := '0';
+        I_VALID     :  in  std_logic;
+        I_READY     :  out std_logic;
+        I_LEVEL     :  out std_logic;
+        O_ENABLE    :  in  std_logic := '1';
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
+        O_LAST      :  out std_logic;
+        O_VALID     :  out std_logic;
+        O_READY     :  in  std_logic
+    );
+end component;
+-----------------------------------------------------------------------------------
 --! @brief Word_Queue                                                            --
 -----------------------------------------------------------------------------------
 component Word_Queue
@@ -302,8 +332,8 @@ component Word_Queue
         RST         :  in  std_logic;
         CLR         :  in  std_logic;
         I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
-        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0);
-        I_LAST      :  in  std_logic;
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic := '0';
         I_VALID     :  in  std_logic;
         I_READY     :  out std_logic;
         O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
@@ -369,9 +399,37 @@ component Word_Reducer
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Drop_None                                                             --
+--! @brief Word_Pipeline_Register                                                --
 -----------------------------------------------------------------------------------
-component Drop_None
+component Word_Pipeline_Register
+    generic (
+        WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
+        WORDS       :  integer :=  1;
+        INFO_BITS   :  integer :=  1;
+        QUEUE_SIZE  :  integer :=  2
+    );
+    port (
+        CLK         :  in  std_logic;
+        RST         :  in  std_logic;
+        CLR         :  in  std_logic;
+        I_WORD      :  in  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        I_INFO      :  in  std_logic_vector(INFO_BITS            -1 downto 0) := (others => '0');
+        I_LAST      :  in  std_logic := '0';
+        I_VALID     :  in  std_logic;
+        I_READY     :  out std_logic;
+        O_WORD      :  out std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+        O_INFO      :  out std_logic_vector(INFO_BITS            -1 downto 0);
+        O_LAST      :  out std_logic;
+        O_VALID     :  out std_logic;
+        O_READY     :  in  std_logic;
+        VALID       :  out std_logic_vector(QUEUE_SIZE downto 0);
+        BUSY        :  out std_logic
+    );
+end component;
+-----------------------------------------------------------------------------------
+--! @brief Word_Drop_None                                                        --
+-----------------------------------------------------------------------------------
+component Word_Drop_None
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         I_WORDS     :  integer :=  1;

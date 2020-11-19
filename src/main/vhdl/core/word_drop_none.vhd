@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    drop_none.vhd
---!     @brief   Merge Sorter Drop None Module :
---!     @version 0.7.0
---!     @date    2020/11/8
+--!     @file    word_drop_none.vhd
+--!     @brief   Merge Sorter Word Drop None Module :
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -38,7 +38,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
-entity  Drop_None is
+entity  Word_Drop_None is
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         I_WORDS     :  integer :=  1;
@@ -61,7 +61,7 @@ entity  Drop_None is
         O_VALID     :  out std_logic;
         O_READY     :  in  std_logic
     );
-end Drop_None;
+end Word_Drop_None;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Reducer;
-architecture RTL of Drop_None is
+architecture RTL of Word_Drop_None is
     signal    i_strb            :  std_logic_vector(I_WORDS-1 downto 0);
     constant  POSTPEND_WORD     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0)
                                 := Word.New_Postpend_Word(WORD_PARAM);

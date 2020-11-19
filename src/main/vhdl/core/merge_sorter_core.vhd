@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_core.vhd
 --!     @brief   Merge Sorter Core Module :
---!     @version 0.9.0
---!     @date    2020/11/17
+--!     @version 0.9.1
+--!     @date    2020/11/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -94,7 +94,7 @@ use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Core_Components.Word_Queue;
-use     Merge_Sorter.Core_Components.Drop_None;
+use     Merge_Sorter.Core_Components.Word_Drop_None;
 use     Merge_Sorter.Core_Components.Core_Intake_Fifo;
 use     Merge_Sorter.Core_Components.Core_Stream_Intake;
 use     Merge_Sorter.Core_Components.Merge_Sorter_Tree;
@@ -659,7 +659,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        QUEUE: Drop_None                                     -- 
+        QUEUE: Word_Drop_None                                -- 
             generic map (                                    -- 
                 WORD_PARAM      => WORD_PARAM              , -- 
                 I_WORDS         => MRG_WORDS               , --
