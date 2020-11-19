@@ -16,8 +16,8 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_read
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_intake_fifo.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_stream_intake.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/drop_none.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_tree.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_drop_none.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_reader.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/interface_controller.vhd

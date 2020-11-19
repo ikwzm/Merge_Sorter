@@ -397,9 +397,9 @@ component Word_Pipeline_Register
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief Drop_None                                                             --
+--! @brief Word_Drop_None                                                        --
 -----------------------------------------------------------------------------------
-component Drop_None
+component Word_Drop_None
     generic (
         WORD_PARAM  :  Word.Param_Type := Word.Default_Param;
         I_WORDS     :  integer :=  1;

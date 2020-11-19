@@ -8,7 +8,7 @@ ENTITY_FILES = merge_sorter_core.vhd      \
                word_queue.vhd             \
                word_reducer.vhd           \
                word_pipeline_register.vhd \
-               drop_none.vhd              \
+               word_drop_none.vhd         \
                ${ENDLIST}
 
 core_components.vhd : ${ENTITY_FILES}
