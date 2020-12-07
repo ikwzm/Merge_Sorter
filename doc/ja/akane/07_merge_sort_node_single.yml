@@ -1,0 +1,48 @@
+---
+input_file  : 07_merge_sort_node_single.akd
+
+output_file : ../07_merge_sort_node_single.md
+
+image_url :
+  "Fig.1 マージソートノードと 4-way マージソートツリー" : "image/07_merge_sort_node_single_1.jpg"
+  "Fig.2 マージソートノードの入出力"                  : "image/07_merge_sort_node_single_2.jpg"
+  "Fig.3 マージソートノードの状態遷移(1)"             : "image/07_merge_sort_node_single_3.jpg"
+  "Fig.4 マージソートノードの状態遷移(2)"             : "image/07_merge_sort_node_single_4.jpg"
+  "Fig.5 マージソートノードの状態遷移(3)"             : "image/07_merge_sort_node_single_5.jpg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "./01_introduction.md"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "./02_word_package.md"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "./03_word_compare.md"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」"
+    url  : "./04_sorting_network.md"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」"
+    url  : "./05_bitonic_sorter.md"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+    url  : "./06_oddeven_sorter.md"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
+    url  : "./07_merge_sort_node_single.md"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
+    url  : "./08_merge_sort_node_multi.md"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」"
+    url  : "./09_merge_sort_tree.md"
+  - id   : "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
+    title: "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
+    url  : "https://www.acri.c.titech.ac.jp/wordpress/archives/132"
+  - id   : "「VALID-then-READY」"
+    title: "「VALID 信号と READY 信号によるハンドシェイクの注意点」"
+    url  : "https://qiita.com/ikwzm/items/9736b5547cb15309af5c"
+    
+---

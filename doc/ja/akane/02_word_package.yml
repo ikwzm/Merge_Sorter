@@ -1,0 +1,45 @@
+---
+input_file  : 02_word_package.akd
+
+output_file : ../02_word_package.md
+
+image_url :
+  "Fig.1 ワードの構成"                      : "image/02_word_package_1.jpg"
+  "Fig.2 BITS Field"                      : "image/02_word_package_2.jpg"
+  "Fig.3 DATA_BITS DATA_LO DATA_HI Field" : "image/02_word_package_3.jpg"
+  "Fig.4 DATA_COMP_HI DATA_COMP_LO Field" : "image/02_word_package_4.jpg"
+  "Fig.5 ATRB_BITS ATRB_LO ATRB_HI Field" : "image/02_word_package_5.jpg"
+  "Fig.6 ATRB_NONE_POS Field"             : "image/02_word_package_6.jpg"
+  "Fig.7 ATRB_PRIORITY_POS Field"         : "image/02_word_package_7.jpg"
+  "Fig.8 ATRB_POSTPEND_POS Field"         : "image/02_word_package_8.jpg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "./01_introduction.md"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "./02_word_package.md"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "./03_word_compare.md"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」"
+    url  : "./04_sorting_network.md"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」"
+    url  : "./05_bitonic_sorter.md"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+    url  : "./06_oddeven_sorter.md"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
+    url  : "./07_merge_sort_node_single.md"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
+    url  : "./08_merge_sort_node_multi.md"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」"
+    url  : "./09_merge_sort_tree.md"
+
+---
