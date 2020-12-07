@@ -1,0 +1,2075 @@
+Fuji Xerox Clear Text Encoding Format Version 3.00
+Creator:Akane
+Encoding:SJISコード
+% OS:WindowsNT 6.2
+
+Profile{NoOfPages=14;
+Comments='マークダウン・テンプレート';
+ExtrTtlRef={
+};
+}
+Sty{
+Name='本文';
+Comments='本文';
+BasicStyBdy={
+PageSty={
+PageSet=SprdPage;
+FstPageType=on;
+RelCharNo=48;
+RelLineNo=41;
+RelHorMgnType=inner;
+RelHorMgn=2500;
+AbsMgn=[2000 2000 2000 2000];
+FFace='メイリオ';
+FSize=10;
+IntrLineH=800;
+Mgn=[0 0 1100 0];
+};
+HdrSty={
+Name='ヘッダー(左)';
+PageType=LPageOnly;
+Loc=TL;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=2;
+};
+HdrSty={
+Name='ヘッダー(右)';
+PageType=RPageOnly;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=3;
+};
+HdrSty={
+Name='ヘッダー';
+PageType=SymmPage;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrPat='DATA SHEET';
+HdrRefCnt=16;
+};
+HdrSty={
+Name='ヘッダー罫線';
+PageType=SymmPage;
+Loc=TL;
+Ofst=[0 700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+HdrSty={
+Name='ページ番号';
+PageType=SymmPage;
+Loc=BL;
+FFace='メイリオ';
+FSize=10;
+PageNoRefLoc=outer;
+};
+HdrSty={
+Name='フッター';
+PageType=SymmPage;
+Loc=BR;
+FFace='メイリオ';
+FSize=10;
+HdrType=PageHdr;
+};
+HdrSty={
+Name='フッター罫線';
+PageType=SymmPage;
+Loc=BL;
+Ofst=[0 -700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+NoteSty={
+ClmW=10;
+Name='注段落スタイル';
+RT=2;
+};
+TtlSty1={
+Area=FullClm;
+Name='レベル１見出し';
+FrmDimType=[max Var];
+FrmDim=[3429 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty2={
+Area=FullClm;
+Name='レベル２見出し';
+FrmDimType=[max Var];
+FrmDim=[4005 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+PreNo=off;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty3={
+Name='レベル３見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+NBH=null;
+SepStr=' ';
+NoType=none;
+};
+TtlSty4={
+Name='レベル４見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+SepStr=' ';
+NoType=none;
+PreNo=off;
+};
+TtlStyTxt={
+Name='テキスト枠見出し';
+SepStr=' ';
+RT=0;
+};
+TtlStyGeo={
+Name='図形枠見出し';
+PrfxStr='Fig.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+TtlStyTbl={
+Name='表組枠見出し';
+ClmAlign=Ctrd;
+PrfxStr='Table.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+};
+ParStyBdy={
+ParSty={
+Name='レベル１見出し';
+FFace='メイリオ';
+FSize=14;
+IntrLineH=500;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル２見出し';
+FFace='メイリオ';
+FSize=12;
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル３見出し';
+FFace='メイリオ';
+FSize=11;
+IntrLineH=800;
+Align=Start;
+MgnUt=Pt;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Pt;
+FstLineOfst=0;
+};
+ParSty={
+Name='段落スタイル';
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='表枠内段落スタイル';
+FFace='メイリオ';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠内段落スタイル';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠見出し';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文箇条書きレベル１';
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='本文箇条書きレベル２';
+FstLineOfstUt=Char;
+FstLineOfst=400;
+IndtUt=Char;
+Indt=500;
+};
+ParSty={
+Name='表組枠内箇条書きレベル１';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+};
+ParSty={
+Name='図形枠見出し';
+FFace='メイリオ';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='コラム内本文段落スタイル';
+FSize=10;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=100;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文段落スタイル';
+MgnUt=Char;
+Mgn=[0 100 1100 0];
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='注段落スタイル';
+FSize=9;
+Align=Just;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=400;
+};
+ParSty={
+Name='レベル４見出し';
+FSize=11;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='図形枠内段落';
+FFace='Meiryo UI';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=0;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='Makefile';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='C';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='VHDL';
+FFace=156;
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='Python';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='devicetree';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='Shell';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='console';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='テキスト枠見出し';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+};
+}
+Root[3]{}
+Comp[3 0]{Type=NoSeg;
+}
+Comp[3 0 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 0 1]{Type=TtlTxt;
+}
+Char[3 0 0 1 0]{CntInfo='VHDL で書くマージソーター(バッチャー奇偶マージソート)';
+CntSty={
+ParSty='レベル１見出し';
+};
+}
+Comp[3 0 1]{Type=NoSeg;
+}
+Comp[3 0 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 1 0 1 0]{CntInfo='はじめに';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 1 1]{Type=Txt;
+}
+Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
+}
+Basic[3 0 1 2]{Type=Txt;
+}
+Char[3 0 1 2 0]{CntInfo='この記事では、前々回説明した[「ソーティングネットワーク」]を使ってバッチャー奇偶マージソート回路を構成する方法を紹介します。';
+}
+Basic[3 0 1 3]{Type=Txt;
+}
+Char[3 0 1 3 0]{CntInfo='';
+}
+Comp[3 0 2]{Type=NoSeg;
+}
+Comp[3 0 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=null;
+};
+ULayedPageNo=1;
+}
+Basic[3 0 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 0 1 0]{CntInfo='バッチャー奇偶マージソートとは';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 2 1]{Type=Txt;
+}
+Char[3 0 2 1 0]{CntInfo='バッチャー奇偶マージソート(Batcher\'s odd-even megesort) は Ken Batche(en: Ken Batcher) によって考案された、要素数ｎに対して、大きさO(n(log n)**2) かつ深さO((log n)**2)のソーティングネットワークです(出典:[Wikipedia/Batcher_odd-even_mergesort])。';
+}
+Basic[3 0 2 2]{Type=Txt;
+}
+Char[3 0 2 2 0]{CntInfo='次図に８入力のバッチャー奇偶マージソートのソーティングネットワークの例を示します。';
+}
+Comp[3 0 2 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12361 7023];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 3 0 0]{}
+Geo[3 0 2 3 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5840 3318);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5840 3318);
+clip on;
+asf all indiv;
+appldata 5 0 0 400 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+linewidth 34;
+line (189 378)(5669 378);
+line (189 756)(5669 756);
+line (189 1134)(5669 1134);
+line (189 1512)(5669 1512);
+line (189 1890)(5669 1890);
+line (189 2268)(5669 2268);
+line (189 2646)(5669 2646);
+line (189 3023)(5669 3023);
+lineendcap 5;
+line (4157 3023)(4157 1512);
+line (3779 2645)(3779 1134);
+line (3402 2267)(3402 756);
+line (3024 1889)(3024 378);
+line (2079 1134)(2079 756);
+line (2079 2646)(2079 2268);
+line (1701 1512)(1701 756);
+line (1323 1134)(1323 378);
+line (1701 3024)(1701 2268);
+line (1323 2646)(1323 1890);
+line (567 756)(567 378);
+line (567 1512)(567 1134);
+line (567 2268)(567 1890);
+line (567 3023)(567 2645);
+edgewidth 9;
+edgetype 3;
+intstyle empty;
+rect (378 189)(756 945)(0 1);
+rect (378 945)(756 1701)(0 1);
+rect (378 1701)(756 2457)(0 1);
+rect (378 2456)(756 3212)(0 1);
+rect (1134 189)(2457 1701)(0 1);
+rect (1134 1700)(2457 3212)(0 1);
+rect (2834 189)(5480 3212)(0 1);
+line (4535 1890)(4535 1134);
+line (4913 2268)(4913 1512);
+line (5291 1134)(5291 756);
+line (5291 1890)(5291 1512);
+line (5291 2646)(5291 2268);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 3 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 3 1 0 0 0]{CntInfo='Fig.1 ';
+}
+Basic[3 0 2 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 3 1 0 1 0]{CntInfo='バッチャー奇偶マージソートのソーティングネットワーク例';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 2 4]{Type=Txt;
+}
+Char[3 0 2 4 0]{CntInfo='';
+}
+Basic[3 0 2 5]{Type=Txt;
+}
+Char[3 0 2 5 0]{CntInfo='以下に再帰呼び出しを使って Python で記述したバッチャー奇偶マージソートの実装例を示します(出典:[Wikipedia/Batcher_odd-even_mergesort])。';
+}
+Comp[3 0 2 6]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13221];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 2 6 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 6 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 0 0 0]{CntInfo='def compare_and_swap(x, a, b):
+    if x[a] > x[b]:
+        x[a], x[b] = x[b], x[a]
+ 
+def oddeven_merge(x, lo, hi, r):
+    step = r * 2
+    if step \< hi - lo:
+        oddeven_merge(x, lo, hi, step)
+        oddeven_merge(x, lo + r, hi, step)
+        for i in range(lo + r, hi - r, step):
+            compare_and_swap(x, i, i + r)
+    else:
+        compare_and_swap(x, lo, lo + r)
+ 
+def oddeven_merge_sort_range(x, lo, hi):
+    if (hi - lo) >= 1:
+        mid = lo + ((hi - lo) / 2)
+        oddeven_merge_sort_range(x, lo, mid)
+        oddeven_merge_sort_range(x, mid + 1, hi)
+        oddeven_merge(x, lo, hi, 1)
+ 
+def oddeven_merge_sort(x):
+    oddeven_merge_sort_range(x, 0, len(x)-1)
+';
+CntSty={
+ParSty='Python';
+};
+}
+Comp[3 0 2 6 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 2 6 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 6 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 6 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 6 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 6 1 0 1 0]{CntInfo='oddeven_sort.py';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3]{Type=NoSeg;
+}
+Comp[3 0 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=3;
+}
+Basic[3 0 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 0 1 0]{CntInfo='バッチャーズ奇偶マージソートの VHDL 記述';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 3 1]{Type=NoSeg;
+}
+Comp[3 0 3 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=3;
+}
+Basic[3 0 3 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 0 1 0]{CntInfo='ソーティングネットワークの VHDL 記述';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Comp[3 0 3 1 1]{Type=NoSeg;
+}
+Comp[3 0 3 1 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=3;
+}
+Basic[3 0 3 1 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 1 0 1 0]{CntInfo='New_OddEven_Sorter_Network 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 1 1]{Type=Txt;
+}
+Char[3 0 3 1 1 1 0]{CntInfo='New_OddEven_Sorter_Network 関数は、バッチャーズ奇偶マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_OddEven_Sorter_Network 関数は Sorting_Network パッケージにて定義しています。';
+}
+Comp[3 0 3 1 1 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 5704];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 1 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 1 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 1 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+package Sorting_Network is
+    -- (前略) --
+    function   New_OddEven_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 1 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 1 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 1 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 1 3]{Type=Txt;
+}
+Char[3 0 3 1 1 3 0]{CntInfo='';
+}
+Comp[3 0 3 1 1 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13333];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 1 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 1 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 1 4 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Sorting_Network is
+    -- (前略) --
+    function   New_OddEven_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    is
+        variable  network  :  Param_Type;
+    begin
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi);
+        reverse_network_stage_list(network);
+        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 1 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 1 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 1 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 1 5]{Type=Txt;
+}
+Char[3 0 3 1 1 5 0]{CntInfo='';
+}
+Comp[3 0 3 1 2]{Type=NoSeg;
+}
+Comp[3 0 3 1 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=5;
+}
+Basic[3 0 3 1 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 2 0 1 0]{CntInfo='New_OddEven_Merger_Network 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 2 1]{Type=Txt;
+}
+Char[3 0 3 1 2 1 0]{CntInfo='New_OddEven_Merger_Network 関数は、バッチャーズ奇偶マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_OddEven_Merger_Network 関数は Sorting_Network パッケージにて定義しています。';
+}
+Comp[3 0 3 1 2 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 5927];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 2 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 2 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+package Sorting_Network is
+    -- (前略) --
+    function   New_OddEven_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 2 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 2 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 2 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 2 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13255];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 2 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 2 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Sorting_Network is
+    -- (前略) --
+    function   New_OddEven_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    is
+        variable  network  :  Param_Type;
+    begin
+        network            := Param_Null;
+        network.Size       := HI - LO + 1;
+        network.Lo         := LO;
+        network.Hi         := HI;
+        network.Sort_Order := ORDER;
+        network.Stage_Lo   := 1;
+        network.Stage_Hi   := 0;
+        oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1);
+        reverse_network_stage_list(network);
+        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 2 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 2 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 2 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 2 3 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 3]{Type=NoSeg;
+}
+Comp[3 0 3 1 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=6;
+}
+Basic[3 0 3 1 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 3 0 1 0]{CntInfo='oddeven_sort 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 3 1]{Type=Txt;
+}
+Char[3 0 3 1 3 1 0]{CntInfo='Sorting_Netowork パッケージボディに定義されたoddeven_sort 関数は、前述の Python による実装でしめした oddeven_merge_sort_range に対応します。oddeven_sort 関数を再帰的に呼び出しています。';
+}
+Comp[3 0 3 1 3 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 12846];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 3 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 3 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 3 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Sorting_Network is
+    -- (前略) --
+    procedure oddeven_sort(
+        variable  NETWORK     :  inout Param_Type;
+                  START_STAGE :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer
+    ) is
+        variable  mid         :        integer;
+    begin
+        if (HI - LO > 0) then
+            mid := LO + ((HI - LO) / 2);
+            oddeven_merge(NETWORK, START_STAGE         , LO   , HI , 1);
+            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, LO   , mid   );
+            oddeven_sort (NETWORK, NETWORK.Stage_HI + 1, mid+1, HI    );
+        end if;
+    end procedure;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 3 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 3 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 3 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 3 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 3 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 3 3]{Type=Txt;
+}
+Char[3 0 3 1 3 3 0]{CntInfo='';
+}
+Comp[3 0 3 1 4]{Type=NoSeg;
+}
+Comp[3 0 3 1 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=7;
+}
+Basic[3 0 3 1 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 4 0 1 0]{CntInfo='oddeven_merge 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 4 1]{Type=Txt;
+}
+Char[3 0 3 1 4 1 0]{CntInfo='Sorting_Netowork パッケージボディに定義されたoddeven_merge 関数は、前述の Python による実装でしめした oddeven_merge に対応します。oddeven_merge 関数を再帰的に呼び出しています。';
+}
+Basic[3 0 3 1 4 2]{Type=Txt;
+}
+Char[3 0 3 1 4 2 0]{CntInfo='また、Python のよる実装では compare_and_swap を呼び出して実際に値を比較して交換していますが、この Sorting_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。';
+}
+Comp[3 0 3 1 4 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 19363];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Sorting_Network is
+    -- (前略) --
+    procedure oddeven_merge(
+        variable  NETWORK     :  inout Param_Type;
+                  START_STAGE :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  R           :  in    integer
+    ) is
+        variable  step        :        integer;
+        variable  index       :        integer;
+    begin
+        step := R * 2;
+        if (HI - LO > step) then
+            oddeven_merge(NETWORK, START_STAGE + 1, LO    , HI, step);
+            oddeven_merge(NETWORK, START_STAGE + 1, LO + r, HI, step);
+            index  := LO + R;
+            while (index \<= HI - R) loop
+                Add_Comparator(NETWORK, START_STAGE, index, index + R, TRUE);
+                index := index + step;
+            end loop;
+        else
+            Add_Comparator(NETWORK, START_STAGE, LO, LO + R, TRUE);
+        end if;
+        if (START_STAGE > NETWORK.Stage_Hi) then
+            NETWORK.Stage_Hi   := START_STAGE;
+            NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
+        end if;
+    end procedure;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 3 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 5]{Type=NoSeg;
+}
+Comp[3 0 3 1 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=8;
+}
+Basic[3 0 3 1 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 5 0 1 0]{CntInfo='Add_Comparator 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 5 1]{Type=Txt;
+}
+Char[3 0 3 1 5 1 0]{CntInfo='Add_Comparator 関数はソーティングネットワークにコンパレーターを追加します。STAGE でコンパレーターを追加するステージを指定します。LO と HI でコンパレーターを挿入する対となるネットワークを指定します。UP でソーティングネットワークの Up/Down の方向を指定します。';
+}
+Comp[3 0 3 1 5 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16870 9349];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 5 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 5 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 5 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+package Sorting_Network is
+    -- (前略) --
+    procedure  Add_Comparator(
+        variable  NETWORK     :  inout Param_Type;
+                  STAGE       :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  UP          :  in    boolean
+    );
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 5 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 5 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 5 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 5 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 5 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 5 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 5 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 17082];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 5 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 5 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 5 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Sorting_Network is
+    -- (前略) --
+    procedure Add_Comparator(
+        variable  NETWORK     :  inout Param_Type;
+                  STAGE       :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  UP          :  in    boolean
+    ) is
+    begin
+        assert (HI - LO > 0)
+            report \"Add_Comparator error\" severity ERROR;
+        assert ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = 0) or
+                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = HI-LO) and
+                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).UP   = UP   )))
+            report \"Add_Comparator error\" severity ERROR;
+        assert ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = 0) or
+                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = LO-HI) and
+                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).UP   = UP   )))
+            report \"Add_Comparator error\" severity ERROR;
+        NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  := HI-LO;
+        NETWORK.Stage_List(STAGE).Comparator_List(LO).UP    := UP;
+        NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  := LO-HI;
+        NETWORK.Stage_List(STAGE).Comparator_List(HI).UP    := UP;
+    end procedure;
+    -- (後略) --
+end Sorting_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 5 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 5 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 5 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 5 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 5 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 5 3 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 5 4]{Type=Txt;
+}
+Char[3 0 3 1 5 4 0]{CntInfo='';
+}
+Basic[3 0 3 1 5 5]{Type=Txt;
+}
+Char[3 0 3 1 5 5 0]{CntInfo='';
+}
+Comp[3 0 3 2]{Type=NoSeg;
+}
+Comp[3 0 3 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=10;
+}
+Basic[3 0 3 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 0 1 0]{CntInfo='バッチャーズ奇偶マージソートの VHDL 記述例';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 2 1]{Type=Txt;
+}
+Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Oddeven_Sorter_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバッチャーズ奇偶ソートマージ回路を構成した例を示します。';
+}
+Comp[3 0 3 2 2]{Type=NoSeg;
+}
+Comp[3 0 3 2 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 3 2 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 2 0 1 0]{CntInfo='Entity ';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Comp[3 0 3 2 2 1]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 18036];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 2 1 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 2 1 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 2 1 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+entity  OddEven_Sorter is
+    generic (
+        WORDS           :  integer :=  4;
+        DATA_BITS       :  integer := 32;
+        COMP_HIGH       :  integer := 32;
+        COMP_LOW        :  integer :=  0;
+        COMP_SIGN       :  boolean := FALSE;
+        SORT_ORDER      :  integer :=  0;
+        ATRB_BITS       :  integer :=  4;
+        INFO_BITS       :  integer :=  1;
+        QUEUE_SIZE      :  integer :=  0
+    );
+    port (
+        CLK             :  in  std_logic;
+        RST             :  in  std_logic;
+        CLR             :  in  std_logic;
+        I_DATA          :  in  std_logic_vector(WORDS*DATA_BITS-1 downto 0);
+        I_ATRB          :  in  std_logic_vector(WORDS*ATRB_BITS-1 downto 0) := (others => \'0\');
+        I_INFO          :  in  std_logic_vector(      INFO_BITS-1 downto 0) := (others => \'0\');
+        I_VALID         :  in  std_logic;
+        I_READY         :  out std_logic;
+        O_DATA          :  out std_logic_vector(WORDS*DATA_BITS-1 downto 0);
+        O_ATRB          :  out std_logic_vector(WORDS*ATRB_BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(      INFO_BITS-1 downto 0);
+        O_VALID         :  out std_logic;
+        O_READY         :  in  std_logic;
+        BUSY            :  out std_logic
+    );
+end OddEven_Sorter;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 2 1 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 2 1 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 2 1 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 2 1 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 2 1 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 2 1 1 0 1 0]{CntInfo='src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 2 3]{Type=NoSeg;
+}
+Comp[3 0 3 2 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=11;
+}
+Basic[3 0 3 2 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 3 0 1 0]{CntInfo='Architecture';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 2 3 1]{Type=Txt;
+}
+Char[3 0 3 2 3 1 0]{CntInfo='[「ワードの定義」]で説明したパラメータを WORD_PARAM 定数に設定します。';
+}
+Comp[3 0 3 2 3 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 7049];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Core_Components.Sorting_Network_Core;
+architecture RTL of OddEven_Sorter is
+    constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
+    signal    i_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+    signal    o_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+begin
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 2 1 0 1 0]{CntInfo='src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 3]{Type=Txt;
+}
+Char[3 0 3 2 3 3 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 4]{Type=Txt;
+}
+Char[3 0 3 2 3 4 0]{CntInfo='入力された I_DATA と I_ATRB を[「ワードの定義」]で指定されたワード形式に変換します。';
+}
+Comp[3 0 3 2 3 5]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 8992];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 5 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 5 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 5 0 0 0]{CntInfo='    process (I_DATA, I_ATRB)
+        variable   data     :  std_logic_vector(DATA_BITS-1 downto 0);
+        variable   atrb     :  std_logic_vector(ATRB_BITS-1 downto 0);
+        variable   word     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    begin
+        for i in 0 to WORDS-1 loop
+            data := I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
+            atrb := I_ATRB((i+1)*ATRB_BITS-1 downto i*ATRB_BITS);
+            word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := data;
+            word(WORD_PARAM.ATRB_NONE_POS    ) := atrb(0);
+            word(WORD_PARAM.ATRB_PRIORITY_POS) := atrb(1);
+            word(WORD_PARAM.ATRB_POSTPEND_POS) := atrb(2);
+            i_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) \<= word;
+        end loop;
+    end process;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 5 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 5 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 5 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 5 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 5 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 5 1 0 1 0]{CntInfo='src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 6]{Type=Txt;
+}
+Char[3 0 3 2 3 6 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 7]{Type=Txt;
+}
+Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した New_Bitonic_Sorter_Network 関数を使ってバッチャーズ奇偶マージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバッチャーズ奇偶マージソートを行うソーティングネットワークが出来ます。';
+}
+Comp[3 0 3 2 3 8]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 14616];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 8 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 8 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 8 0 0 0]{CntInfo='    CORE: Sorting_Network_Core
+        generic map (
+            NETWORK_PARAM   => Sorting_Network.New_OddEven_Sorter_Network(
+                                   LO    => 0,
+                                   HI    => WORDS-1,
+                                   ORDER => SORT_ORDER,
+                                   QUEUE => QUEUE_SIZE
+                               ),
+            WORD_PARAM      => WORD_PARAM      , -- 
+            INFO_BITS       => INFO_BITS         -- 
+        )                                        -- 
+        port map (                               -- 
+            CLK             => CLK             , -- In  :
+            RST             => RST             , -- In  :
+            CLR             => CLR             , -- In  :
+            I_WORD          => i_word          , -- In  :
+            I_INFO          => I_INFO          , -- In  :
+            I_VALID         => I_VALID         , -- In  :
+            I_READY         => I_READY         , -- Out :
+            O_WORD          => o_word          , -- Out :
+            O_INFO          => O_INFO          , -- Out :
+            O_VALID         => O_VALID         , -- Out :
+            O_READY         => O_READY         , -- In  :
+            BUSY            => BUSY              -- Out :
+        );
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 8 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 8 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 8 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 8 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 8 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 8 1 0 1 0]{CntInfo='src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 9]{Type=Txt;
+}
+Char[3 0 3 2 3 9 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 10]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 3 10 0]{CntInfo='最後にソート結果を O_WORD と O_ATRB に変換して出力します。';
+}
+Comp[3 0 3 2 3 11]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 9794];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 11 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 11 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 11 0 0 0]{CntInfo='    process (o_word)
+        variable   data     :  std_logic_vector(DATA_BITS-1 downto 0);
+        variable   atrb     :  std_logic_vector(ATRB_BITS-1 downto 0);
+        variable   word     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    begin
+        for i in 0 to WORDS-1 loop
+            word := o_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+            data := word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+            atrb    := (others => \'0\');
+            atrb(0) := word(WORD_PARAM.ATRB_NONE_POS    );
+            atrb(1) := word(WORD_PARAM.ATRB_PRIORITY_POS);
+            atrb(2) := word(WORD_PARAM.ATRB_POSTPEND_POS);
+            O_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS) \<= data;
+            O_ATRB((i+1)*ATRB_BITS-1 downto i*ATRB_BITS) \<= atrb;
+        end loop;
+    end process;
+end RTL;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 11 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 11 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 11 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 11 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 11 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 11 1 0 1 0]{CntInfo='src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 12]{Type=Txt;
+}
+Char[3 0 3 2 3 12 0]{CntInfo='';
+}
+Comp[3 0 4]{Type=NoSeg;
+}
+Comp[3 0 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=14;
+}
+Basic[3 0 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 0 1 0]{CntInfo='参照';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 4 1]{Type=Txt;
+}
+Char[3 0 4 1 0]{CntInfo='・目次: [「はじめに」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 2]{Type=Txt;
+}
+Char[3 0 4 2 0]{CntInfo='・次回: [「シングルワード マージソート ノード」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 3]{Type=Txt;
+}
+Char[3 0 4 3 0]{CntInfo='・前回: [「バイトニックマージソート」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 4]{Type=Txt;
+}
+Char[3 0 4 4 0]{CntInfo='・ソースコード:
+https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 5]{Type=Txt;
+}
+Char[3 0 4 5 0]{CntInfo='・出典: [Wikipedia/Batcher_odd-even_mergesort]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}

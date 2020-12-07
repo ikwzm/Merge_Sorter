@@ -1,0 +1,46 @@
+---
+input_file  : 04_sorting_network.akd
+
+output_file : ../04_sorting_network.md
+
+image_url :
+  "Fig.1 コンパレーター (昇順)"                             : "image/04_sorting_network_1.jpg"
+  "Fig.2 コンパレーター (降順)"                             : "image/04_sorting_network_2.jpg"
+  "Fig.3 ソーティングネットワークの動作例 (4入力昇順)"          : "image/04_sorting_network_3.jpg"
+  "Fig.4 ソーティングネットワークのステージ"                   : "image/04_sorting_network_4.jpg"
+  "Fig.5 ソーティングネットワーク構成の VHDL 記述例"           : "image/04_sorting_network_5.jpg"
+  "Fig.6 ソーティングネットワーク構成の VHDL 記述例 (Stage 1)" : "image/04_sorting_network_6.jpg"
+  "Fig.7 ソーティングネットワーク構成の VHDL 記述例 (Stage 2)" : "image/04_sorting_network_7.jpg"
+  "Fig.8 ソーティングネットワーク構成の VHDL 記述例 (Stage 3)" : "image/04_sorting_network_8.jpg"
+  "Fig.9 ソーティングネットワークコアの構成"                   : "image/04_sorting_network_9.jpg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "./01_introduction.md"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "./02_word_package.md"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "./03_word_compare.md"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」"
+    url  : "./04_sorting_network.md"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」"
+    url  : "./05_bitonic_sorter.md"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+    url  : "./06_oddeven_sorter.md"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
+    url  : "./07_merge_sort_node_single.md"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
+    url  : "./08_merge_sort_node_multi.md"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」"
+    url  : "./09_merge_sort_tree.md"
+
+---

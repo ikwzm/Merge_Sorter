@@ -1,0 +1,46 @@
+---
+input_file  : ../akane/02_word_package.akd
+
+output_file : 02_word_package.md
+
+image_url :
+  "Fig.1 ワードの構成"                      : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/35e6911d-d654-1426-bd0a-ba5bb52b2642.jpeg"
+  "Fig.2 BITS Field"                      : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/180d510e-2979-9238-84d8-9919b998ea0c.jpeg"
+  "Fig.3 DATA_BITS DATA_LO DATA_HI Field" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/8bbd5209-1990-c7a1-ac1f-b21a71e59403.jpeg"
+  "Fig.4 DATA_COMP_HI DATA_COMP_LO Field" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/13d8b912-5850-623a-440f-e8ec8293e2e8.jpeg"
+  "Fig.5 ATRB_BITS ATRB_LO ATRB_HI Field" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/382ad1e7-8a57-5285-1268-743a583ae5b2.jpeg"
+  "Fig.6 ATRB_NONE_POS Field"             : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/eeda5918-fe2b-ad80-45a9-4a6c1fba162d.jpeg"
+  "Fig.7 ATRB_PRIORITY_POS Field"         : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/dfe820d8-16a1-53e8-5482-ab947064e9c8.jpeg"
+  "Fig.8 ATRB_POSTPEND_POS Field"         : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/6faae68e-b772-78cc-588f-a3c4e1fffccf.jpeg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/6665b2ef44d878a5b85f"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/bdcd8876317b908ff492"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/d5d1dd264b1670f33bd7"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/a1d06e47523759c726ae"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/366eacbf6a877994c955"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/c21a53f21b87408a7805"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/7fd7ef9ffc4d9b314fee"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/ed96b7a44b83bcee4ba5"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/1f76ae5cda95aaf92501"
+
+seg_level : -1
+

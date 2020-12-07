@@ -1,0 +1,43 @@
+---
+input_file  : ../akane/05_bitonic_sorter.akd
+
+output_file : 05_bitonic_sorter.md
+
+image_url :
+  "Fig.1 バイトニックソートのソーティングネットワーク例" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/037a8112-46a3-6c07-c3c8-6ffac1fc4baf.jpeg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/6665b2ef44d878a5b85f"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/bdcd8876317b908ff492"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/d5d1dd264b1670f33bd7"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/a1d06e47523759c726ae"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/366eacbf6a877994c955"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/c21a53f21b87408a7805"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/7fd7ef9ffc4d9b314fee"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/ed96b7a44b83bcee4ba5"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/1f76ae5cda95aaf92501"
+  - id   : "Wikipedia/Bitonic_sorter"
+    title: "Wikipedia/Bitonic_sorter"
+    url  : "https://ja.wikipedia.org/wiki/%E3%83%90%E3%82%A4%E3%83%88%E3%83%8B%E3%83%83%E3%82%AF%E3%82%BD%E3%83%BC%E3%83%88"
+
+seg_level : -1
+
+---
