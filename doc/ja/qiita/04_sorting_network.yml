@@ -1,0 +1,48 @@
+---
+input_file  : ../akane/04_sorting_network.akd
+
+output_file : 04_sorting_network.md
+
+image_url :
+  "Fig.1 コンパレーター (昇順)"                             : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/55ce3859-6d0e-7fa8-979b-d0a9a9d75e76.jpeg"
+  "Fig.2 コンパレーター (降順)"                             : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/81fa2c1c-8ad8-14f2-168c-82a792eee608.jpeg"
+  "Fig.3 ソーティングネットワークの動作例 (4入力昇順)"          : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/56daa7e6-213d-5749-c449-c2dff8ae466b.jpeg"
+  "Fig.4 ソーティングネットワークのステージ"                   : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/3b6647ba-fdd2-6175-9dd3-4e53b3eff008.jpeg"
+  "Fig.5 ソーティングネットワーク構成の VHDL 記述例"           : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/6ceda746-e04c-73b9-fb13-2655a2d73dff.jpeg"
+  "Fig.6 ソーティングネットワーク構成の VHDL 記述例 (Stage 1)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/3508aa47-2064-e816-a77a-382dae6db754.jpeg"
+  "Fig.7 ソーティングネットワーク構成の VHDL 記述例 (Stage 2)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/5ffcd9e0-891c-0d3b-4c0e-4b34d87beb43.jpeg"
+  "Fig.8 ソーティングネットワーク構成の VHDL 記述例 (Stage 3)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/fb97e8a2-ffb2-6cd9-27d4-568b9d6dc51b.jpeg"
+  "Fig.9 ソーティングネットワークコアの構成"                   : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/936cd6bb-b10a-8681-b547-e33e18669f85.jpeg"
+
+link_list :
+  - id   : "「はじめに」"
+    title: "「VHDL で書くマージソーター(はじめに)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/6665b2ef44d878a5b85f"
+  - id   : "「ワードの定義」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/bdcd8876317b908ff492"
+  - id   : "「ワード比較器」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/d5d1dd264b1670f33bd7"
+  - id   : "「ソーティングネットワーク」"
+    title: "「VHDL で書くマージソーター(ソーティングネットワーク)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/a1d06e47523759c726ae"
+  - id   : "「バイトニックマージソート」"
+    title: "「VHDL で書くマージソーター(バイトニックマージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/366eacbf6a877994c955"
+  - id   : "「バッチャー奇偶マージソート」"
+    title: "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/c21a53f21b87408a7805"
+  - id   : "「シングルワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(シングルワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/7fd7ef9ffc4d9b314fee"
+  - id   : "「マルチワード マージソート ノード」"
+    title: "「VHDL で書くマージソーター(マルチワード マージソート ノード)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/ed96b7a44b83bcee4ba5"
+  - id   : "「マージソート ツリー」"
+    title: "「VHDL で書くマージソーター(マージソート ツリー)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/1f76ae5cda95aaf92501"
+
+seg_level : -1
+
+---
