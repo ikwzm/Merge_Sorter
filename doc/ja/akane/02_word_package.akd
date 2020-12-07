@@ -1,0 +1,3436 @@
+Fuji Xerox Clear Text Encoding Format Version 3.00
+Creator:Akane
+Encoding:SJISコード
+% OS:WindowsNT 6.2
+
+Profile{NoOfPages=14;
+Comments='マークダウン・テンプレート';
+ExtrTtlRef={
+};
+}
+Sty{
+Name='本文';
+Comments='本文';
+BasicStyBdy={
+PageSty={
+PageSet=SprdPage;
+FstPageType=on;
+RelCharNo=48;
+RelLineNo=41;
+RelHorMgnType=inner;
+RelHorMgn=2500;
+AbsMgn=[2000 2000 2000 2000];
+FFace='メイリオ';
+FSize=10;
+IntrLineH=800;
+Mgn=[0 0 1100 0];
+};
+HdrSty={
+Name='ヘッダー(左)';
+PageType=LPageOnly;
+Loc=TL;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=2;
+};
+HdrSty={
+Name='ヘッダー(右)';
+PageType=RPageOnly;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=3;
+};
+HdrSty={
+Name='ヘッダー';
+PageType=SymmPage;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrPat='DATA SHEET';
+HdrRefCnt=16;
+};
+HdrSty={
+Name='ヘッダー罫線';
+PageType=SymmPage;
+Loc=TL;
+Ofst=[0 700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+HdrSty={
+Name='ページ番号';
+PageType=SymmPage;
+Loc=BL;
+FFace='メイリオ';
+FSize=10;
+PageNoRefLoc=outer;
+};
+HdrSty={
+Name='フッター';
+PageType=SymmPage;
+Loc=BR;
+FFace='メイリオ';
+FSize=10;
+HdrType=PageHdr;
+};
+HdrSty={
+Name='フッター罫線';
+PageType=SymmPage;
+Loc=BL;
+Ofst=[0 -700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+NoteSty={
+ClmW=10;
+Name='注段落スタイル';
+RT=2;
+};
+TtlSty1={
+Area=FullClm;
+Name='レベル１見出し';
+FrmDimType=[max Var];
+FrmDim=[3429 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty2={
+Area=FullClm;
+Name='レベル２見出し';
+FrmDimType=[max Var];
+FrmDim=[4005 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+PreNo=off;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty3={
+Name='レベル３見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+NBH=null;
+SepStr=' ';
+NoType=none;
+};
+TtlSty4={
+Name='レベル４見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+SepStr=' ';
+NoType=none;
+PreNo=off;
+};
+TtlStyTxt={
+Name='テキスト枠見出し';
+SepStr=' ';
+RT=0;
+};
+TtlStyGeo={
+Name='図形枠見出し';
+PrfxStr='Fig.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+TtlStyTbl={
+Name='表組枠見出し';
+ClmAlign=Ctrd;
+PrfxStr='Table.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+};
+ParStyBdy={
+ParSty={
+Name='レベル１見出し';
+FFace='メイリオ';
+FSize=14;
+IntrLineH=500;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル２見出し';
+FFace='メイリオ';
+FSize=12;
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル３見出し';
+FFace='メイリオ';
+FSize=11;
+IntrLineH=800;
+Align=Start;
+MgnUt=Pt;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Pt;
+FstLineOfst=0;
+};
+ParSty={
+Name='段落スタイル';
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='表枠内段落スタイル';
+FFace='メイリオ';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠内段落スタイル';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠見出し';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文箇条書きレベル１';
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='本文箇条書きレベル２';
+FstLineOfstUt=Char;
+FstLineOfst=400;
+IndtUt=Char;
+Indt=500;
+};
+ParSty={
+Name='表組枠内箇条書きレベル１';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+};
+ParSty={
+Name='図形枠見出し';
+FFace='メイリオ';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='コラム内本文段落スタイル';
+FSize=10;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=100;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文段落スタイル';
+MgnUt=Char;
+Mgn=[0 100 1100 0];
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='注段落スタイル';
+FSize=9;
+Align=Just;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=400;
+};
+ParSty={
+Name='レベル４見出し';
+FSize=11;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='図形枠内段落';
+FFace='HGｺﾞｼｯｸM';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=0;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='Makefile';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='C';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='VHDL';
+FFace=156;
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='devicetree';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='Shell';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='console';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='テキスト枠見出し';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+};
+}
+Root[3]{}
+Comp[3 0]{Type=NoSeg;
+}
+Comp[3 0 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 0 1]{Type=TtlTxt;
+}
+Char[3 0 0 1 0]{CntInfo='VHDL で書くマージソーター(ワードの定義)';
+CntSty={
+ParSty='レベル１見出し';
+};
+}
+Comp[3 0 1]{Type=NoSeg;
+}
+Comp[3 0 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 1 0 1 0]{CntInfo='はじめに';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 1 1]{Type=Txt;
+}
+Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
+}
+Basic[3 0 1 2]{Type=Txt;
+}
+Char[3 0 1 2 0]{CntInfo='この記事では、マージソーター内部で使用する「ワード」の定義について説明します。';
+}
+Basic[3 0 1 3]{Type=Txt;
+}
+Char[3 0 1 3 0]{CntInfo='';
+}
+Comp[3 0 2]{Type=NoSeg;
+}
+Comp[3 0 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=null;
+};
+ULayedPageNo=1;
+}
+Basic[3 0 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 0 1 0]{CntInfo='ワードとは';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 2 1]{Type=Txt;
+}
+Char[3 0 2 1 0]{CntInfo='ここで説明するワードとは、マージソーター内部で使用するデータの内部形式を意味します。';
+}
+Basic[3 0 2 2]{Type=Txt;
+}
+Char[3 0 2 2 0]{CntInfo='ワードはビットの配列で示されます。配列の大きさは可変長です。VHDL では std_logic_vector で表現されます。';
+}
+Basic[3 0 2 3]{Type=Txt;
+}
+Char[3 0 2 3 0]{CntInfo='';
+}
+Basic[3 0 2 4]{Type=Txt;
+}
+Char[3 0 2 4 0]{CntInfo='ワードにはマージソーター外部で定義されるデータ部と、マージソーター内部でのみ使用する属性部で構成されます。属性には、NONE、PRIORITY、POSTPEND があります。属性にかんしては後述します。データ部には、マージソーターがデータを比較するフィールドを含みます。';
+}
+Comp[3 0 2 5]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 4379];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 5 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 5 0 0]{}
+Geo[3 0 2 5 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 2069);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 2069);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+linewidth 17;
+line (1654 472)(1654 945);
+edgewidth 17;
+figpos (236 472);
+figpos (3779 472);
+linewidth 9;
+linetype 3;
+line (236 945)(236 1417);
+edgewidth 34;
+rect (236 1417)(1654 1890)(0 1);
+line (709 1417)(709 1890);
+line (1181 1417)(1181 1890);
+edgewidth 17;
+figpos (1181 1417);
+figpos (708 1417);
+figpos (236 1417);
+figpos (236 -1);
+figpos (7087 -1);
+line (1654 945)(1654 1417);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 5 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 300 300];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 2 0 0]{CntInfo='NONE';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 3 0 0]{CntInfo='PRIO
+RITY';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 4 0 0]{CntInfo='POST
+PEND';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 5 0 0]{CntInfo='MSB';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 2 5 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 0 0 0 6 0 0]{CntInfo='LSB';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 5 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 5 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 5 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 1 0 0 0]{CntInfo='Fig.1 ';
+}
+Basic[3 0 2 5 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 5 1 0 1 0]{CntInfo='ワードの構成';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Comp[3 0 3]{Type=NoSeg;
+}
+Comp[3 0 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=2;
+}
+Basic[3 0 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 0 1 0]{CntInfo='ワードパラメータの定義';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 3 1]{Type=Txt;
+}
+Char[3 0 3 1 0]{CntInfo='  マージソーターでは、ワードの構成をWord.Param_Type という record タイプで保持します。これらの定義は Word パッケージで定義しています。';
+}
+Basic[3 0 3 2]{Type=Txt;
+}
+Char[3 0 3 2 0]{CntInfo='';
+}
+Comp[3 0 3 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16891 17983];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package Word is
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  ATRB_NONE_POS         :  integer := 0;
+    constant  ATRB_PRIORITY_POS     :  integer := 1;
+    constant  ATRB_POSTPEND_POS     :  integer := 2;
+    constant  ATRB_BITS             :  integer := 3;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    type      Param_Type       is record
+                  BITS              :  integer;
+                  DATA_BITS         :  integer;
+                  DATA_LO           :  integer;
+                  DATA_HI           :  integer;
+                  DATA_COMPARE_LO   :  integer;
+                  DATA_COMPARE_HI   :  integer;
+                  DATA_COMPARE_SIGN :  boolean;
+                  ATRB_BITS         :  integer;
+                  ATRB_LO           :  integer;
+                  ATRB_HI           :  integer;
+                  ATRB_NONE_POS     :  integer;
+                  ATRB_PRIORITY_POS :  integer;
+                  ATRB_POSTPEND_POS :  integer;
+    end record;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 3 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 4]{Type=NoSeg;
+}
+Comp[3 0 3 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=3;
+}
+Basic[3 0 3 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 4 0 1 0]{CntInfo='BITS';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 4 1]{Type=Txt;
+}
+Char[3 0 3 4 1 0]{CntInfo='';
+}
+Basic[3 0 3 4 2]{Type=Txt;
+}
+Char[3 0 3 4 2 0]{CntInfo='BITS はワードの全ビット長を示します。';
+}
+Comp[3 0 3 4 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 3421];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 4 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 4 3 0 0]{}
+Geo[3 0 3 4 3 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 1616);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 1616);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+linewidth 17;
+line (236 945)(236 1417);
+line (7559 945)(7559 1417);
+linestartcap 5;
+line (236 1181)(3543 1181);
+intstyle empty;
+edgewidth 17;
+figpos (3542 944);
+linestartcap 1;
+lineendcap 5;
+line (4252 1181)(7559 1181);
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+lineendcap 1;
+line (1654 471)(1654 944);
+figpos (236 472);
+linetype 3;
+linewidth 9;
+line (2126 472)(2126 944);
+line (2598 472)(2598 944);
+line (7087 472)(7087 944);
+line (6614 472)(6614 944);
+markertype 1;
+markersize 83;
+marker (3308 709);
+marker (3544 709);
+marker (3780 709);
+line (6142 472)(6142 944);
+marker (5434 708);
+marker (5670 708);
+marker (5906 708);
+line (3071 473)(3071 945);
+figpos (4015 472);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 4 3 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[1505 1003];
+};
+}
+Basic[3 0 3 4 3 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 4 3 0 0 0 0 0 0]{CntInfo='BITS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 4 3 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 4 3 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 4 3 0 0 0 1 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 4 3 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2504 1003];
+};
+}
+Basic[3 0 3 4 3 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 4 3 0 0 0 2 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 4 3 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 4 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 4 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 4 3 1 0 0 0]{CntInfo='Fig.2 ';
+}
+Basic[3 0 3 4 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 4 3 1 0 1 0]{CntInfo='BITS Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Comp[3 0 3 5]{Type=NoSeg;
+}
+Comp[3 0 3 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=3;
+}
+Basic[3 0 3 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 5 0 1 0]{CntInfo='DATA_BITS  DATA_LO  DATA_HI';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 5 1]{Type=Txt;
+}
+Char[3 0 3 5 1 0]{CntInfo='DATA_BITS はデータ部のビット数、DATA_LO はワード内のデータ部の最下位ビット位置、DATA_HI は最上位ビット位置を示します。';
+}
+Comp[3 0 3 5 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16734 3427];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 5 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 5 2 0 0]{}
+Geo[3 0 3 5 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7906 1619);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7906 1619);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+figpos (2126 -1);
+linewidth 17;
+line (1654 945)(1654 1417);
+line (7559 945)(7559 1417);
+figpos (4015 944);
+lineendcap 5;
+line (5197 1181)(7559 1181);
+line (2126 236)(1890 236)(1890 472);
+figpos (6142 -1);
+line (7087 236)(7323 236)(7323 472);
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+lineendcap 1;
+line (1654 471)(1654 944);
+figpos (236 472);
+figpos (4016 472);
+linetype 3;
+linewidth 9;
+line (2126 472)(2126 944);
+line (2598 472)(2598 944);
+line (7087 472)(7087 944);
+line (6614 472)(6614 944);
+markertype 1;
+markersize 83;
+marker (3308 709);
+marker (3544 709);
+marker (3780 709);
+line (6142 472)(6142 944);
+marker (5434 708);
+marker (5670 708);
+marker (5906 708);
+line (3071 473)(3071 945);
+linetype 1;
+linewidth 17;
+linestartcap 5;
+lineendcap 2;
+line (1654 1181)(4016 1181);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 5 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[2000 1003];
+};
+}
+Basic[3 0 3 5 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 5 2 0 0 0 0 0 0]{CntInfo='DATA_HI';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 5 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2504 1003];
+};
+}
+Basic[3 0 3 5 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 5 2 0 0 0 1 0 0]{CntInfo='DATA_BITS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 5 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[2000 1003];
+};
+}
+Basic[3 0 3 5 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 5 2 0 0 0 2 0 0]{CntInfo='DATA_LO';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 5 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 5 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 5 2 0 0 0 3 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 5 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2502 1003];
+};
+}
+Basic[3 0 3 5 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 5 2 0 0 0 4 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 5 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 5 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 5 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 5 2 1 0 0 0]{CntInfo='Fig.3 ';
+}
+Basic[3 0 3 5 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 5 2 1 0 1 0]{CntInfo='DATA_BITS DATA_LO DATA_HI Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 5 3]{Type=Txt;
+}
+Char[3 0 3 5 3 0]{CntInfo='';
+}
+Comp[3 0 3 6]{Type=NoSeg;
+}
+Comp[3 0 3 6 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=3;
+}
+Basic[3 0 3 6 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 6 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 6 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 6 0 1 0]{CntInfo='DATA_COMP_LO DATA_COMP_HI DATA_COMP_SIGN';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 6 1]{Type=Txt;
+}
+Char[3 0 3 6 1 0]{CntInfo='データ部には、マージソーターがワードどうしを比較する際に使用する部分を含みます。DATA_COMP_LO および DATA_COMP_HI はその比較する部分を示します。また DATA_COMP_SIGN は、比較する際にDATA 比較フィールドを符号付きとして扱うか符号無しとして扱うかを示します。';
+}
+Comp[3 0 3 6 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 2538];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 6 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 6 2 0 0]{}
+Geo[3 0 3 6 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 1199);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 1199);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+figpos (2363 -1);
+linewidth 17;
+lineendcap 5;
+line (2363 236)(2127 236)(2127 472);
+figpos (3780 -1);
+line (5433 236)(5669 236)(5669 472);
+edgewidth 34;
+rect (472 472)(7795 945)(0 1);
+lineendcap 1;
+line (1890 471)(1890 944);
+figpos (472 472);
+linetype 3;
+linewidth 9;
+line (2362 472)(2362 944);
+line (7323 472)(7323 944);
+line (6850 472)(6850 944);
+line (6378 473)(6378 945);
+linetype 1;
+linewidth 17;
+line (5906 473)(5906 945);
+linewidth 9;
+linetype 3;
+line (5433 473)(5433 945);
+figpos (2835 472);
+markertype 1;
+markersize 83;
+marker (2598 709);
+marker (2835 709);
+marker (5197 709);
+marker (4961 709);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 6 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3501 1003];
+};
+}
+Basic[3 0 3 6 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 6 2 0 0 0 0 0 0]{CntInfo='DATA_COMP_HI';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 6 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3501 1003];
+};
+}
+Basic[3 0 3 6 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 6 2 0 0 0 1 0 0]{CntInfo='DATA_COMP_LO';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 6 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 6 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 6 2 0 0 0 2 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 6 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[4502 1003];
+};
+}
+Basic[3 0 3 6 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 6 2 0 0 0 3 0 0]{CntInfo='DATA COMP  FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 6 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 6 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 6 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 6 2 1 0 0 0]{CntInfo='Fig.4 ';
+}
+Basic[3 0 3 6 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 6 2 1 0 1 0]{CntInfo='DATA_COMP_HI DATA_COMP_LO Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Comp[3 0 3 7]{Type=NoSeg;
+}
+Comp[3 0 3 7 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=4;
+}
+Basic[3 0 3 7 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 7 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 7 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 7 0 1 0]{CntInfo='ATRB_BITS  ATRB_LO  ATRB_HI';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 7 1]{Type=Txt;
+}
+Char[3 0 3 7 1 0]{CntInfo='ATRB_BITS は属性部のビット数、ATRB_LO はワード内の属性部の最下位ビット位置、ATRB_HI は最上位ビット位置を示します。';
+}
+Comp[3 0 3 7 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16561 4494];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 7 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 7 2 0 0]{}
+Geo[3 0 3 7 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7824 2123);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7824 2123);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+edgewidth 17;
+intstyle empty;
+figpos (1654 -1);
+linewidth 17;
+line (1654 1417)(1654 1889);
+figpos (1654 472);
+line (236 1418)(236 1890);
+lineendcap 5;
+line (1654 236)(472 236)(472 945);
+edgewidth 34;
+rect (236 945)(7559 1418)(0 1);
+lineendcap 1;
+line (1654 944)(1654 1417);
+figpos (236 945);
+figpos (4016 945);
+linetype 3;
+linewidth 9;
+line (2126 945)(2126 1417);
+line (2598 945)(2598 1417);
+line (7087 945)(7087 1417);
+line (6614 945)(6614 1417);
+markertype 1;
+markersize 83;
+marker (3308 1182);
+marker (3544 1182);
+marker (3780 1182);
+line (6142 945)(6142 1417);
+marker (5434 1181);
+marker (5670 1181);
+marker (5906 1181);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (1653 709)(1417 709)(1417 945);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (3071 946)(3071 1418);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (1417 1654)(1654 1654);
+linestartcap 5;
+lineendcap 2;
+line (236 1654)(473 1654);
+edgewidth 17;
+figpos (235 1654);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 7 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[2000 1003];
+};
+}
+Basic[3 0 3 7 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 7 2 0 0 0 0 0 0]{CntInfo='ATRB_HI';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 7 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[2000 1003];
+};
+}
+Basic[3 0 3 7 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 7 2 0 0 0 1 0 0]{CntInfo='ATRB_LO';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 7 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 7 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 7 2 0 0 0 2 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 7 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2502 1003];
+};
+}
+Basic[3 0 3 7 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 7 2 0 0 0 3 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 7 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[3006 1001];
+};
+}
+Basic[3 0 3 7 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 7 2 0 0 0 4 0 0]{CntInfo='ATRB_BITS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 7 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 7 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 7 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 7 2 1 0 0 0]{CntInfo='Fig.5 ';
+}
+Basic[3 0 3 7 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 7 2 1 0 1 0]{CntInfo='ATRB_BITS ATRB_LO ATRB_HI Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 7 3]{Type=Txt;
+}
+Char[3 0 3 7 3 0]{CntInfo='';
+}
+Comp[3 0 3 8]{Type=NoSeg;
+}
+Comp[3 0 3 8 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=4;
+}
+Basic[3 0 3 8 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 8 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 8 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 8 0 1 0]{CntInfo='ATRB_NONE_POS';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 8 1]{Type=Txt;
+}
+Char[3 0 3 8 1 0]{CntInfo='ATRB_NONE_POS は属性ビットのうちの NONE 属性の位置を示します。NONE 属性は、マージソーター内部で便宜上追加したワードに付加されます。最終的にはこの NONE 属性が付加されたワードは出力されずに捨てられます。NONE 属性は後述するPRIORITY 属性または POSTPEND 属性とともに付加されます。';
+}
+Comp[3 0 3 8 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16764 4409];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 8 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 8 2 0 0]{}
+Geo[3 0 3 8 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7920 2083);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7920 2083);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+linewidth 17;
+line (1654 471)(1654 944);
+edgewidth 17;
+figpos (236 472);
+figpos (4016 472);
+linewidth 9;
+linetype 3;
+line (2126 472)(2126 944);
+line (2598 472)(2598 944);
+line (7087 472)(7087 944);
+line (6614 472)(6614 944);
+markertype 1;
+markersize 83;
+marker (3308 709);
+marker (3544 709);
+marker (3780 709);
+line (6142 472)(6142 944);
+marker (5434 708);
+marker (5670 708);
+marker (5906 708);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (1653 236)(1417 236)(1417 472);
+figpos (1653 -1);
+linewidth 9;
+lineendcap 1;
+linetype 3;
+line (236 944)(236 1416);
+edgewidth 34;
+rect (236 1416)(1654 1889)(0 1);
+line (709 1416)(709 1889);
+line (1181 1416)(1181 1889);
+figpos (1181 1416);
+figpos (708 1416);
+figpos (236 1416);
+line (1654 944)(1654 1416);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (1417 945)(1417 1417);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (3071 473)(3071 945);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 8 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 8 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2502 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 8 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 200 0];
+Dim=[4502 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 2 0 0]{CntInfo='ATRB_NONE_POS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Start;
+};
+}
+Comp[3 0 3 8 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 300 300];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 3 0 0]{CntInfo='NONE';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 8 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 4 0 0]{CntInfo='PRIO
+RITY';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 8 2 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 8 2 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 8 2 0 0 0 5 0 0]{CntInfo='POST
+PEND';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 8 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 8 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 8 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 8 2 1 0 0 0]{CntInfo='Fig.6 ';
+}
+Basic[3 0 3 8 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 8 2 1 0 1 0]{CntInfo='ATRB_NONE_POS Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 8 3]{Type=Txt;
+}
+Char[3 0 3 8 3 0]{CntInfo='';
+}
+Comp[3 0 3 9]{Type=NoSeg;
+}
+Comp[3 0 3 9 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=5;
+}
+Basic[3 0 3 9 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 9 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 9 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 9 0 1 0]{CntInfo='ATRB_PRIORITY_POS';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 9 1]{Type=Txt;
+}
+Char[3 0 3 9 1 0]{CntInfo='ATRB_PRIORITY_POS は属性ビットのうちの PRIORITY 属性の位置を示します。PRIORITY は「優先」を意味します。この属性が付加されたワードは、他のワードとの比較の際に、優先的に選択されます。例えば、AワードとBワードを比較した際に、もし Aワードにこの属性が付加されていた場合は Bワードがどんな値であってもAワードが選択されます。';
+}
+Comp[3 0 3 9 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16764 4409];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 9 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 9 2 0 0]{}
+Geo[3 0 3 9 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7920 2083);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7920 2083);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+linewidth 17;
+line (1654 471)(1654 944);
+edgewidth 17;
+figpos (236 472);
+figpos (4016 472);
+linewidth 9;
+linetype 3;
+line (2126 472)(2126 944);
+line (2598 472)(2598 944);
+line (7087 472)(7087 944);
+line (6614 472)(6614 944);
+markertype 1;
+markersize 83;
+marker (3308 709);
+marker (3544 709);
+marker (3780 709);
+line (6142 472)(6142 944);
+marker (5434 708);
+marker (5670 708);
+marker (5906 708);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (1181 236)(945 236)(945 472);
+figpos (1181 -1);
+linewidth 9;
+lineendcap 1;
+linetype 3;
+line (236 944)(236 1416);
+edgewidth 34;
+rect (236 1416)(1654 1889)(0 1);
+line (709 1416)(709 1889);
+line (1181 1416)(1181 1889);
+figpos (1181 1416);
+figpos (708 1416);
+figpos (236 1416);
+line (1654 944)(1654 1416);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (945 945)(945 1417);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (3071 473)(3071 945);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 9 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 9 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2502 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 9 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 200 0];
+Dim=[4502 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 2 0 0]{CntInfo='ATRB_PRIORITY_POS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Start;
+};
+}
+Comp[3 0 3 9 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 300 300];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 3 0 0]{CntInfo='NONE';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 9 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 4 0 0]{CntInfo='PRIO
+RITY';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 9 2 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 9 2 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 9 2 0 0 0 5 0 0]{CntInfo='POST
+PEND';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 9 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 9 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 9 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 9 2 1 0 0 0]{CntInfo='Fig.7 ';
+}
+Basic[3 0 3 9 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 9 2 1 0 1 0]{CntInfo='ATRB_PRIORITY_POS Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 9 3]{Type=Txt;
+}
+Char[3 0 3 9 3 0]{CntInfo='';
+}
+Comp[3 0 3 10]{Type=NoSeg;
+}
+Comp[3 0 3 10 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=5;
+}
+Basic[3 0 3 10 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 10 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 10 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 10 0 1 0]{CntInfo='ATRB_POSTPEND_POS';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 10 1]{Type=Txt;
+}
+Char[3 0 3 10 1 0]{CntInfo='ATRB_POSTPEND_POS は属性ビットのうちの POSTPEND 属性の位置を示します。POSTPEND は「後回し」を意味します。この属性が付加されたワードは、他のワードとの比較の際に後回しにされて、もう一方のワードが選択されます。例えば、AワードとBワードを比較した際に、もしBワードにこの属性が付加されていた場合はAワードがどんな値であってもAワードが選択されます。';
+}
+Comp[3 0 3 10 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16764 4409];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 10 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 10 2 0 0]{}
+Geo[3 0 3 10 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7920 2083);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7920 2083);
+clip on;
+asf all indiv;
+appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 34;
+rect (236 472)(7559 945)(0 1);
+linewidth 17;
+line (1654 471)(1654 944);
+edgewidth 17;
+figpos (236 472);
+figpos (4016 472);
+linewidth 9;
+linetype 3;
+line (2126 472)(2126 944);
+line (2598 472)(2598 944);
+line (7087 472)(7087 944);
+line (6614 472)(6614 944);
+markertype 1;
+markersize 83;
+marker (3308 709);
+marker (3544 709);
+marker (3780 709);
+line (6142 472)(6142 944);
+marker (5434 708);
+marker (5670 708);
+marker (5906 708);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (708 236)(472 236)(472 472);
+figpos (709 -1);
+linewidth 9;
+lineendcap 1;
+linetype 3;
+line (236 944)(236 1416);
+edgewidth 34;
+rect (236 1416)(1654 1889)(0 1);
+line (709 1416)(709 1889);
+line (1181 1416)(1181 1889);
+figpos (1181 1416);
+figpos (708 1416);
+figpos (236 1416);
+line (1654 944)(1654 1416);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (472 945)(472 1417);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (3071 473)(3071 945);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 10 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 0 0];
+Dim=[3004 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 10 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 140 140];
+Dim=[2502 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Ctrd;
+};
+}
+Comp[3 0 3 10 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[300 140 200 0];
+Dim=[4502 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 2 0 0]{CntInfo='ATRB_POSTPEND_POS';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+Align=Start;
+};
+}
+Comp[3 0 3 10 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 300 300];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 3 0 0]{CntInfo='NONE';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 10 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 4 0 0]{CntInfo='PRIO
+RITY';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 10 2 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+Composition=Ver;
+IMgn=[0 0 0 100];
+Dim=[1003 1003];
+};
+}
+Basic[3 0 3 10 2 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 10 2 0 0 0 5 0 0]{CntInfo='POST
+PEND';
+CntSty={
+ParSty='図形枠内段落';
+FFace='Meiryo UI';
+FSize=8;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 10 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 10 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 10 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 10 2 1 0 0 0]{CntInfo='Fig.8 ';
+}
+Basic[3 0 3 10 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 10 2 1 0 1 0]{CntInfo='ATRB_POSTPEND_POS Field';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Comp[3 0 4]{Type=NoSeg;
+}
+Comp[3 0 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=6;
+}
+Basic[3 0 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 0 1 0]{CntInfo='ワードパラメータの生成';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 4 1]{Type=NoSeg;
+}
+Comp[3 0 4 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=6;
+}
+Basic[3 0 4 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 1 0 1 0]{CntInfo='New_Param 関数';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 1 1]{Type=Txt;
+}
+Char[3 0 4 1 1 0]{CntInfo='ワードパラメータの各々のフィールドをすべて一つ一つ設定するのは面倒なので、フィールドの幾つかの値を指定すると自動的にすべてのフィールドを設定する関数を Word パッケージに用意しています。';
+}
+Comp[3 0 4 1 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 14444];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package Word is
+		-- (前略) --
+    function  New_Param(
+                  DATA_BITS         :  integer;
+                  COMP_LO           :  integer;
+                  COMP_HI           :  integer;
+                  SIGN              :  boolean
+              )   return               Param_Type;
+    function  New_Param(
+                  DATA_BITS         :  integer;
+                  COMP_LO           :  integer;
+                  COMP_HI           :  integer
+              )   return               Param_Type;
+    function  New_Param(
+                  DATA_BITS         :  integer;
+                  SIGN              :  boolean
+              )   return               Param_Type;
+    function  New_Param(
+                  DATA_BITS         :  integer
+              )   return               Param_Type;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 1 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 3]{Type=Txt;
+}
+Char[3 0 4 1 3 0]{CntInfo='';
+}
+Comp[3 0 4 1 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 20657];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 4 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Word is
+    function  New_Param(
+                  DATA_BITS         :  integer;
+                  COMP_LO           :  integer;
+                  COMP_HI           :  integer;
+                  SIGN              :  boolean
+              )   return               Param_Type
+    is
+        variable  pos               :  integer;
+        variable  param             :  Param_Type;
+    begin
+        pos := 0;
+
+        param.DATA_BITS             := DATA_BITS;
+        param.DATA_LO               := pos;
+        param.DATA_HI               := pos + DATA_BITS-1;
+        param.DATA_COMPARE_LO       := COMP_LO;
+        param.DATA_COMPARE_HI       := COMP_HI;
+        param.DATA_COMPARE_SIGN     := SIGN;
+        pos := pos + DATA_BITS;
+        
+        param.ATRB_BITS             := ATRB_BITS;
+        param.ATRB_LO               := pos;
+        param.ATRB_HI               := pos + ATRB_BITS-1;
+        param.ATRB_NONE_POS         := pos + ATRB_NONE_POS;
+        param.ATRB_PRIORITY_POS     := pos + ATRB_PRIORITY_POS;
+        param.ATRB_POSTPEND_POS     := pos + ATRB_POSTPEND_POS;
+        pos := pos + ATRB_BITS;
+
+        param.BITS := pos;
+
+        return param;
+    end New_Param;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 1 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 4 1 5]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 8196];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 5 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 5 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 5 0 0 0]{CntInfo='    function  New_Param(
+                  DATA_BITS         :  integer;
+                  COMP_LO           :  integer;
+                  COMP_HI           :  integer
+              )   return               Param_Type
+    is
+    begin
+        return New_Param(
+                  DATA_BITS         => DATA_BITS  ,
+                  COMP_LO           => COMP_LO    ,
+                  COMP_HI           => COMP_HI    ,
+                  SIGN              => FALSE
+               );
+    end New_Param;
+ ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 1 5 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 5 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 5 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 5 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 5 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 5 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 4 1 6]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 7459];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 6 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 6 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 6 0 0 0]{CntInfo='    function  New_Param(
+                  DATA_BITS         :  integer;
+                  SIGN              :  boolean
+              )   return               Param_Type
+    is
+    begin
+        return New_Param(
+                  DATA_BITS         => DATA_BITS  ,
+                  COMP_LO           => 0          ,
+                  COMP_HI           => DATA_BITS-1,
+                  SIGN              => SIGN
+               );
+    end New_Param; ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 1 6 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 6 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 6 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 6 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 6 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 6 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 4 1 7]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 8473];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 7 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 7 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 7 0 0 0]{CntInfo='    function  New_Param(
+                  DATA_BITS         :  integer
+              )   return               Param_Type
+    is
+    begin
+        return New_Param(
+                  DATA_BITS         => DATA_BITS  ,
+                  COMP_LO           => 0          ,
+                  COMP_HI           => DATA_BITS-1,
+                  SIGN              => FALSE
+               );
+    end New_Param;
+ 		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 1 7 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 7 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 7 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 7 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 7 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 7 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 5]{Type=NoSeg;
+}
+Comp[3 0 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 0 1 0]{CntInfo='ワードの生成';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 5 1]{Type=NoSeg;
+}
+Comp[3 0 5 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 5 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 1 0 1 0]{CntInfo='New_Word 関数';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 5 1 1]{Type=Txt;
+}
+Char[3 0 5 1 1 0]{CntInfo='データからワードを生成するための New_Word 関数を Word パッケージに用意しています。';
+}
+Comp[3 0 5 1 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 10562];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 1 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 1 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 1 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package Word is
+		-- (前略) --
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector;
+                  PRIORITY         :  std_logic;
+                  POSTPEND         :  std_logic;
+                  NONE             :  std_logic
+              )   return              std_logic_vector;
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector
+              )   return              std_logic_vector;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 1 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 1 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 1 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 1 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 1 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 5 1 3]{Type=Txt;
+}
+Char[3 0 5 1 3 0]{CntInfo='';
+}
+Comp[3 0 5 1 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 24202];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 1 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 1 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 1 4 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Word is
+		-- (前略) --
+    function  resize(I: std_logic_vector;LEN: integer) return std_logic_vector
+    is
+    begin
+        return std_logic_vector(resize(unsigned(I), LEN));
+    end function;
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector;
+                  PRIORITY         :  std_logic;
+                  POSTPEND         :  std_logic;
+                  NONE             :  std_logic
+              )   return              std_logic_vector
+    is
+        variable  a_word           :  std_logic_vector(PARAM.BITS-1 downto 0);
+    begin
+        a_word := (others => \'0\');
+        a_word(PARAM.DATA_HI downto PARAM.DATA_LO) := DATA;
+        a_word(PARAM.ATRB_NONE_POS    ) := NONE;
+        a_word(PARAM.ATRB_PRIORITY_POS) := PRIORITY;
+        a_word(PARAM.ATRB_POSTPEND_POS) := POSTPEND;
+        return a_word;
+    end function;
+    function  New_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM,
+                        DATA     => DATA ,
+                        PRIORITY => \'0\'  ,
+                        POSTPEND => \'0\'  ,
+                        NONE     => \'0\'
+               );
+    end function;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 1 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 1 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 1 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 1 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 1 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 5 2]{Type=NoSeg;
+}
+Comp[3 0 5 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=12;
+}
+Basic[3 0 5 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 2 0 1 0]{CntInfo='New_Priority_Word 関数';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 5 2 1]{Type=Txt;
+}
+Char[3 0 5 2 1 0]{CntInfo='PRIORITY 属性を持つワードを生成する New_Priority_Word 関数を Word パッケージに用意しています。';
+}
+Comp[3 0 5 2 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 7118];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 2 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 2 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 2 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package Word is
+		-- (前略) --
+    function  New_Priority_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := \"0\";
+                  NONE             :  std_logic        := \'1\'
+              )   return              std_logic_vector;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 2 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 2 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 2 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 2 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 2 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 5 2 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 12469];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 2 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 2 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 2 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Word is
+		-- (前略) --
+    function  New_Priority_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := \"0\";
+                  NONE             :  std_logic        := \'1\'
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM                       ,
+                        DATA     => resize(DATA,PARAM.DATA_BITS),
+                        PRIORITY => \'1\'                         ,
+                        POSTPEND => \'0\'                         ,
+                        NONE     => NONE
+               );
+    end function;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 2 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 2 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 2 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 2 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 2 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 2 3 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 5 2 4]{Type=Txt;
+}
+Char[3 0 5 2 4 0]{CntInfo='';
+}
+Comp[3 0 5 3]{Type=NoSeg;
+}
+Comp[3 0 5 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=13;
+}
+Basic[3 0 5 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 3 0 1 0]{CntInfo='New_Postpend_Word 関数';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 5 3 1]{Type=Txt;
+}
+Char[3 0 5 3 1 0]{CntInfo='POSTPEND 属性を持つワードを生成する New_Postpend_Word 関数を Word パッケージに用意しています。';
+}
+Comp[3 0 5 3 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 7118];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 3 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 3 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 3 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package Word is
+		-- (前略) --
+    function  New_Postpend_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := \"0\";
+                  NONE             :  std_logic        := \'1\'
+              )   return              std_logic_vector;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 3 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 3 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 3 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 3 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 3 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 5 3 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 12469];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 5 3 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 5 3 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 5 3 3 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+package body Word is
+		-- (前略) --
+    function  New_Postpend_Word(
+                  PARAM            :  Param_Type;
+                  DATA             :  std_logic_vector := \"0\";
+                  NONE             :  std_logic        := \'1\'
+              )   return              std_logic_vector
+    is
+    begin
+        return New_Word(PARAM    => PARAM                       ,
+                        DATA     => resize(DATA,PARAM.DATA_BITS),
+                        PRIORITY => \'0\'                         ,
+                        POSTPEND => \'1\'                         ,
+                        NONE     => NONE
+               );
+    end function;
+		-- (中略) --
+end Word;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 5 3 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 5 3 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 5 3 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 5 3 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 3 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 5 3 3 1 0 1 0]{CntInfo='src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 6]{Type=NoSeg;
+}
+Comp[3 0 6 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=14;
+}
+Basic[3 0 6 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 6 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 6 0 1]{Type=TtlTxt;
+}
+Char[3 0 6 0 1 0]{CntInfo='参照';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 6 1]{Type=Txt;
+}
+Char[3 0 6 1 0]{CntInfo='・目次: [「はじめに」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 6 2]{Type=Txt;
+}
+Char[3 0 6 2 0]{CntInfo='・次回: [「ワード比較器」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 6 3]{Type=Txt;
+}
+Char[3 0 6 3 0]{CntInfo='・ソースコード:　 https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/word.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}

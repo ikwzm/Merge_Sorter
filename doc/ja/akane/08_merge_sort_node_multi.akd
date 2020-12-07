@@ -1,0 +1,9900 @@
+Fuji Xerox Clear Text Encoding Format Version 3.00
+Creator:Akane
+Encoding:SJISコード
+% OS:WindowsNT 6.2
+
+Profile{NoOfPages=15;
+Comments='マークダウン・テンプレート';
+ExtrTtlRef={
+};
+}
+Sty{
+Name='本文';
+Comments='本文';
+BasicStyBdy={
+PageSty={
+PageSet=SprdPage;
+FstPageType=on;
+RelCharNo=48;
+RelLineNo=41;
+RelHorMgnType=inner;
+RelHorMgn=2500;
+AbsMgn=[2000 2000 2000 2000];
+FFace='メイリオ';
+FSize=10;
+IntrLineH=800;
+Mgn=[0 0 1100 0];
+};
+HdrSty={
+Name='ヘッダー(左)';
+PageType=LPageOnly;
+Loc=TL;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=2;
+};
+HdrSty={
+Name='ヘッダー(右)';
+PageType=RPageOnly;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=3;
+};
+HdrSty={
+Name='ヘッダー';
+PageType=SymmPage;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrPat='DATA SHEET';
+HdrRefCnt=16;
+};
+HdrSty={
+Name='ヘッダー罫線';
+PageType=SymmPage;
+Loc=TL;
+Ofst=[0 700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+HdrSty={
+Name='ページ番号';
+PageType=SymmPage;
+Loc=BL;
+FFace='メイリオ';
+FSize=10;
+PageNoRefLoc=outer;
+};
+HdrSty={
+Name='フッター';
+PageType=SymmPage;
+Loc=BR;
+FFace='メイリオ';
+FSize=10;
+HdrType=PageHdr;
+};
+HdrSty={
+Name='フッター罫線';
+PageType=SymmPage;
+Loc=BL;
+Ofst=[0 -700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+NoteSty={
+ClmW=10;
+Name='注段落スタイル';
+RT=2;
+};
+TtlSty1={
+Area=FullClm;
+Name='レベル１見出し';
+FrmDimType=[max Var];
+FrmDim=[3429 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty2={
+Area=FullClm;
+Name='レベル２見出し';
+FrmDimType=[max Var];
+FrmDim=[4005 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+PreNo=off;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty3={
+Name='レベル３見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+NBH=null;
+SepStr=' ';
+NoType=none;
+};
+TtlSty4={
+Name='レベル４見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+SepStr=' ';
+NoType=none;
+PreNo=off;
+};
+TtlStyTxt={
+Name='テキスト枠見出し';
+SepStr=' ';
+RT=0;
+};
+TtlStyGeo={
+Name='図形枠見出し';
+PrfxStr='Fig.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+TtlStyTbl={
+Name='表組枠見出し';
+ClmAlign=Ctrd;
+PrfxStr='Table.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+};
+ParStyBdy={
+ParSty={
+Name='レベル１見出し';
+FFace='メイリオ';
+FSize=14;
+IntrLineH=500;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル２見出し';
+FFace='メイリオ';
+FSize=12;
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル３見出し';
+FFace='メイリオ';
+FSize=11;
+IntrLineH=800;
+Align=Start;
+MgnUt=Pt;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Pt;
+FstLineOfst=0;
+};
+ParSty={
+Name='段落スタイル';
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='表枠内段落スタイル';
+FFace='メイリオ';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠内段落スタイル';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠見出し';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文箇条書きレベル１';
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='本文箇条書きレベル２';
+FstLineOfstUt=Char;
+FstLineOfst=400;
+IndtUt=Char;
+Indt=500;
+};
+ParSty={
+Name='表組枠内箇条書きレベル１';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+};
+ParSty={
+Name='図形枠見出し';
+FFace='メイリオ';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='コラム内本文段落スタイル';
+FSize=10;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=100;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文段落スタイル';
+MgnUt=Char;
+Mgn=[0 100 1100 0];
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='注段落スタイル';
+FSize=9;
+Align=Just;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=400;
+};
+ParSty={
+Name='レベル４見出し';
+FSize=11;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='図形枠内段落';
+FFace='Meiryo UI';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=0;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='Makefile';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='C';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='VHDL';
+FFace=156;
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='Python';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='devicetree';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='Shell';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='console';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='テキスト枠見出し';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+};
+}
+Root[3]{}
+Comp[3 0]{Type=NoSeg;
+}
+Comp[3 0 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 0 1]{Type=TtlTxt;
+}
+Char[3 0 0 1 0]{CntInfo='VHDL で書くマージソーター(マルチワード マージソート ノード)';
+CntSty={
+ParSty='レベル１見出し';
+};
+}
+Comp[3 0 1]{Type=NoSeg;
+}
+Comp[3 0 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 1 0 1 0]{CntInfo='はじめに';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 1 1]{Type=Txt;
+}
+Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
+}
+Basic[3 0 1 2]{Type=Txt;
+}
+Char[3 0 1 2 0]{CntInfo='この記事は、前回の[「シングルワード マージソート ノード」]の続きで、マルチワードに対応したマージソートノードの説明をします。';
+}
+Basic[3 0 1 3]{Type=Txt;
+}
+Char[3 0 1 3 0]{CntInfo='';
+}
+Comp[3 0 2]{Type=NoSeg;
+}
+Comp[3 0 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=null;
+};
+ULayedPageNo=1;
+}
+Basic[3 0 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 0 1 0]{CntInfo='マルチワードマージソートノードとは';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 2 1]{Type=Txt;
+}
+Char[3 0 2 1 0]{CntInfo='前回の記事で説明した[「シングルワード マージソート ノード」]は、同時に１ワードずつの出力しか出来ませんでした。つまりマージソートツリーのノードを増やしてどんなに way 数を増やしても、最終的に出て行くワードは単位時間あたり１ワードしかありません。';
+}
+Basic[3 0 2 2]{Type=Txt;
+}
+Char[3 0 2 2 0]{CntInfo='マルチワードソートノードは、同時に処理するワードを複数ワードにすることで、単位時間あたりに出力するワード数を増やします。その結果、マージソートをワード数倍に高速化することが出来ます。';
+}
+Basic[3 0 2 3]{Type=Txt;
+}
+Char[3 0 2 3 0]{CntInfo='マルチワードノードソートは、[「はじめに」]で紹介した以下の ACRi の記事がとても詳しいです。私はその記事に刺激を受けて VHDL で実装してみたに過ぎません。詳しい内容はそちらを参照してください。';
+}
+Basic[3 0 2 4]{Type=Txt;
+}
+Char[3 0 2 4 0]{CntInfo='・ [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」] ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 5]{Type=Txt;
+}
+Char[3 0 2 5 0]{CntInfo='・ [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」] ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 6]{Type=Txt;
+}
+Char[3 0 2 6 0]{CntInfo='・ [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」] ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 7]{Type=Txt;
+}
+Char[3 0 2 7 0]{CntInfo='・ [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(4)」] ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 8]{Type=Txt;
+}
+Char[3 0 2 8 0]{CntInfo='・ [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」] ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 9]{Type=Txt;
+}
+Char[3 0 2 9 0]{CntInfo='';
+}
+Basic[3 0 2 10]{Type=Txt;
+}
+Char[3 0 2 10 0]{CntInfo='';
+}
+Basic[3 0 2 11]{Type=Txt;
+}
+Char[3 0 2 11 0]{CntInfo='';
+}
+Basic[3 0 2 12]{Type=Txt;
+}
+Char[3 0 2 12 0]{CntInfo='';
+}
+Comp[3 0 3]{Type=NoSeg;
+}
+Comp[3 0 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=2;
+}
+Basic[3 0 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 0 1 0]{CntInfo='マルチワードマージソートノードのアーキテクチャ';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 3 1]{Type=NoSeg;
+}
+Comp[3 0 3 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=2;
+}
+Basic[3 0 3 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 0 1 0]{CntInfo='構成';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 1 1]{Type=Txt;
+}
+Char[3 0 3 1 1 0]{CntInfo='今回実装したマルチワードソートノードは、[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」] で紹介されている MMS(フィードバックデータパスのない HMS) をもとにしています。';
+}
+Comp[3 0 3 1 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 1 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 2 0 0]{}
+Geo[3 0 3 1 2 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 100 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+line (7323 1324)(7749 1324);
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+line (1796 1324)(2315 1324);
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+linewidth 34;
+lineendcap 5;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+line (1087 3213)(1417 3213)(1418 1702)(1607 1702);
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linewidth 34;
+line (1985 1324)(1985 3781)(2315 3781);
+line (1985 2647)(2315 2647);
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+line (284 1324)(615 1324);
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (7748 1205);
+edgewidth 17;
+rect (661 2646)(1039 3780)(0 1);
+edgewidth 34;
+figpos (661 2646);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (661 2929)(1039 2929);
+line (661 3213)(1039 3213);
+line (661 3496)(1039 3496);
+figpos (661 2930);
+figpos (661 3213);
+figpos (661 3497);
+linetype 1;
+line (1039 2646)(1086 2693)(1086 3733)(1039 3780);
+line (661 2646)(614 2693)(614 3732)(661 3780);
+linewidth 34;
+lineendcap 5;
+line (283 3213)(614 3213);
+figpos (-1 3094);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+linewidth 9;
+line (283 2079)(661 2079);
+line (283 3969)(661 3969);
+figpos (519 2219);
+figpos (519 4109);
+edgewidth 34;
+figpos (6898 3071);
+edgewidth 9;
+rect (6898 3071)(7276 3354)(0 1);
+figpos (6709 3353);
+line (7276 3213)(7795 3213);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 1 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 0 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 1 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 2 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 3 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 4 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 5 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 6 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 7 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 8 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 9 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 10 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 11 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 12 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 13 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 14 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 15 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 16 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 17 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 18 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 19 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 1 2 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 21 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 22 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 23 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 24 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 25 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 26 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 27 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 28 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 29 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 30 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 31 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 32 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 33 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 34 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 35 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 36 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 37 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 38 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 39 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 40 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 1 2 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 41 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 1 2 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 42 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 1 2 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 43 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 1 2 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 44 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 1 2 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 45 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 46 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 47 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 48 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 49 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 1 2 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 50 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 51 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 52 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 1 2 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 1 2 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 1 2 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 1 2 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 55 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 1 2 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 1 2 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 1 2 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 1 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 1 0 0 0]{CntInfo='Fig.1 ';
+}
+Basic[3 0 3 1 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 2 1 0 1 0]{CntInfo='マルチワードマージソートのアーキテクチャ';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 1 3]{Type=Txt;
+}
+Char[3 0 3 1 3 0]{CntInfo='マルチワードマージソートノードの入力側は[「シングルワード マージソート ノード」]とほとんど変わりありません。上の図の点線で囲まれた部分がマルチワードに拡張した部分になります。';
+}
+Basic[3 0 3 1 4]{Type=Txt;
+}
+Char[3 0 3 1 4 0]{CntInfo='今回実装したマルチワードソートノードは、[「バッチャー奇偶マージソート」]のマージ部分を使っています。';
+}
+Comp[3 0 3 2]{Type=NoSeg;
+}
+Comp[3 0 3 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=3;
+}
+Basic[3 0 3 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 0 1 0]{CntInfo='動作例';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 2 1]{Type=Txt;
+}
+Char[3 0 3 2 1 0]{CntInfo='以下にマルチワードマージソートノードの動作例を示します。';
+}
+Basic[3 0 3 2 2]{Type=Txt;
+}
+Char[3 0 3 2 2 0]{CntInfo='';
+}
+Basic[3 0 3 2 3]{Type=Txt;
+}
+Char[3 0 3 2 3 0]{CntInfo='まず最初のワード群が A および B から入力されたとします。Aのワード群の最初のワードと、Bのワード群の最初のワードを[「ワード比較器」]で比較します。その際、Aが選択された場合は、レジスタにAのワード群が設定され、もう一つのレジスタには PRIORITY  属性のワードが設定されます。';
+}
+Comp[3 0 3 2 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 2 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 4 0 0]{}
+Geo[3 0 3 2 4 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 100 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+line (7323 1324)(7749 1324);
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+line (1984 1324)(2315 1324);
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (284 1324)(615 1324);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (7748 1205);
+linewidth 34;
+line (1890 3591)(2315 3591);
+line (1795 1323)(1984 1323)(1984 2646)(2315 2646);
+linecolr 0 0 0;
+line (1984 2646)(1984 3780)(2315 3780);
+line (1087 3213)(1417 3213)(1418 1702)(1607 1702);
+edgewidth 17;
+rect (661 2646)(1039 3780)(0 1);
+edgewidth 34;
+figpos (661 2646);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (661 2929)(1039 2929);
+line (661 3213)(1039 3213);
+line (661 3496)(1039 3496);
+figpos (661 2930);
+figpos (661 3213);
+figpos (661 3497);
+linetype 1;
+line (1039 2646)(1086 2693)(1086 3733)(1039 3780);
+line (661 2646)(614 2693)(614 3732)(661 3780);
+linewidth 34;
+linecolr .79779 .25754 .18873;
+lineendcap 5;
+line (283 3213)(614 3213);
+figpos (-1 3094);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+linewidth 9;
+line (283 2079)(661 2079);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+line (283 3969)(661 3969);
+figpos (519 2219);
+figpos (519 4109);
+figpos (6898 3071);
+rect (6898 3071)(7276 3354)(0 1);
+figpos (6709 3353);
+linecolr 0 0 0;
+line (7276 3213)(7795 3213);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 2 4 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 0 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 1 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 2 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 3 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 4 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 5 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 6 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 7 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 8 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 9 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 10 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 11 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 12 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 13 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 14 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 15 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 16 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 17 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 18 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 19 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 4 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 21 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 22 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 23 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 24 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 25 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 26 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 27 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 28 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 29 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 30 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 31 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 32 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 33 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 34 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 35 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 36 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 37 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 38 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 39 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 40 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 2 4 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 41 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 2 4 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 42 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 4 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 43 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 4 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 44 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 4 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 45 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 46 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 47 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 48 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 49 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 4 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 50 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 51 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 52 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 4 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 4 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 4 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 4 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 55 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 4 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 2 4 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 4 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 2 4 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 2 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 4 1 0 0 0]{CntInfo='Fig.2 ';
+}
+Basic[3 0 3 2 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 4 1 0 1 0]{CntInfo='マルチワードマージソートの動作例(1)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 2 5]{Type=Txt;
+}
+Char[3 0 3 2 5 0]{CntInfo='';
+}
+Basic[3 0 3 2 6]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 6 0]{CntInfo='次にAからは次のワード群が入力されます(その際、最後のワード群であることを示すA_LASTが\'1\'だったとします）。そして今度はBのワード群が選択されたとします。';
+}
+Basic[3 0 3 2 7]{Type=Txt;
+}
+Char[3 0 3 2 7 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger) は前回選択されたAワード群と最初に設定されていた PRIRITY属性を持つワード群をソートします。PRIORITY 属性を持つワードは最優先でソートされるので、その結果、前回選択されたAワード群がソートの下位に出力されます。';
+}
+Basic[3 0 3 2 8]{Type=Txt;
+}
+Char[3 0 3 2 8 0]{CntInfo='後段のバッチャーズ奇偶マージャー(Final Merger)は、今回選択された B ワード群と前段のバッチャーズ奇偶マージャー(Loose Merger)がソートした下位のワード群(結果として前回選択されたAワード群)とをソートして上位のワード群を出力します。';
+}
+Comp[3 0 3 2 9]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 2 9 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 9 0 0]{}
+Geo[3 0 3 2 9 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 100 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (7323 1324)(7749 1324);
+linecolr 0 0 0;
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+linecolr 0 0 0;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+edgewidth 17;
+rect (661 2646)(1039 3780)(0 1);
+edgewidth 34;
+figpos (661 2646);
+line (661 2929)(1039 2929);
+line (661 3213)(1039 3213);
+line (661 3496)(1039 3496);
+figpos (661 2930);
+figpos (661 3213);
+figpos (661 3497);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1796 1324)(2315 1324);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+line (1039 2646)(1086 2693)(1086 3733)(1039 3780);
+linewidth 34;
+lineendcap 5;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+linecolr .79779 .25754 .18873;
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linewidth 34;
+line (1985 1324)(1985 3781)(2315 3781);
+linecolr 0 0 0;
+line (1985 2647)(2315 2647);
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (284 1324)(615 1324);
+linecolr 0 0 0;
+line (283 3213)(614 3213);
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+line (661 2646)(614 2693)(614 3732)(661 3780);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (-1 3094);
+figpos (7748 1205);
+linewidth 34;
+line (3213 3024)(3780 3024);
+line (5858 1701)(6425 1701);
+line (1086 3212)(1416 3212)(1417 1701)(1606 1701);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+linewidth 9;
+line (283 2079)(661 2079);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+linecolr 0 0 0;
+line (283 3969)(661 3969);
+figpos (519 2219);
+figpos (519 4109);
+figpos (6898 3071);
+rect (6898 3071)(7276 3354)(0 1);
+figpos (6709 3353);
+line (7276 3213)(7795 3213);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 2 9 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 0 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 1 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 2 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 3 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 4 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 5 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 6 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 7 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 8 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 9 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 10 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 11 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 12 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 13 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 14 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 15 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 16 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 17 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 18 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 19 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 9 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 21 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 22 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 23 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 24 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 25 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 26 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 27 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 28 0 0]{CntInfo='Pri';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 29 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 30 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 31 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 32 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 33 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 34 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 35 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 36 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 37 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 38 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 39 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 40 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 41 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 42 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 43 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 44 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 2 9 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 45 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 2 9 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 46 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 9 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 47 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 9 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 48 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 9 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 49 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 9 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 50 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 51 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 52 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 9 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 9 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 9 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 9 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 55 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 9 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 2 9 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 9 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 2 9 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 2 9 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 9 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 9 1 0 0 0]{CntInfo='Fig.3 ';
+}
+Basic[3 0 3 2 9 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 9 1 0 1 0]{CntInfo='マルチワードマージソートの動作例(2)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 2 10]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 10 0]{CntInfo='次にBからは次のワード群が入力されます(その際、最後のワード群であることを示すA_LASTが\'1\'だったとします）。そして今度はAのワード群が選択されたとします。';
+}
+Basic[3 0 3 2 11]{Type=Txt;
+}
+Char[3 0 3 2 11 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger) は前回選択されたBワード群と前々回選択された A ワード群をソートします。';
+}
+Basic[3 0 3 2 12]{Type=Txt;
+}
+Char[3 0 3 2 12 0]{CntInfo='';
+}
+Basic[3 0 3 2 13]{Type=Txt;
+}
+Char[3 0 3 2 13 0]{CntInfo='<FFace "メイリオ" Bld>実は前段のバッチャーズ奇偶マージャー(Loose Merger)のソートの結果の下位ワード群は、前の図(Fig.3 マルチワードマージソートの動作例(2))の後段のバッチャーズ奇偶マージャー(Final Merger)の下位ワード群と同じであることに注目してください。これがこのアルゴリズムの秀逸なところです（これみつけた人はすごい）。<FFace>';
+}
+Basic[3 0 3 2 14]{Type=Txt;
+}
+Char[3 0 3 2 14 0]{CntInfo='';
+}
+Basic[3 0 3 2 15]{Type=Txt;
+}
+Char[3 0 3 2 15 0]{CntInfo='つまり前段のバッチャーズ奇偶マージャー(Loose Merger)の下位のワード群は前回のソート結果の負けたほう(出力されなかったほう)を後段のバッチャーズ奇偶マージャー(Final Merger)に入力するためのものです。このようにフィードバックパスを無くしてパイプライン処理を可能にすることで高い周波数で動作する回路にすることができます。';
+}
+Comp[3 0 3 2 16]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 2 16 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 16 0 0]{}
+Geo[3 0 3 2 16 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 400 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle solid;
+fillcolr 1 1 1;
+edgecolr .79608 .25882 .18824;
+edgewidth 34;
+polygon (4724 3591)(5102 3402)(5102 3213)(6614 3213)(6614 4346)(5102 4346)(5102 3591);
+edgecolr 0 0 0;
+intstyle empty;
+fillcolr 0 0 0;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (7323 1324)(7749 1324);
+linecolr 0 0 0;
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+linecolr 0 0 0;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+edgewidth 17;
+rect (662 2647)(1040 3781)(0 1);
+edgewidth 34;
+figpos (662 2647);
+line (662 2930)(1040 2930);
+line (662 3214)(1040 3214);
+line (662 3497)(1040 3497);
+figpos (662 2931);
+figpos (662 3214);
+figpos (662 3498);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1796 1324)(2315 1324);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+line (1040 2647)(1087 2694)(1087 3734)(1040 3781);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linewidth 34;
+linecolr 0 0 0;
+line (1985 1324)(1985 3781)(2315 3781);
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+line (284 1324)(615 1324);
+linecolr .79779 .25754 .18873;
+line (284 3214)(615 3214);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+line (662 2647)(615 2694)(615 3733)(662 3781);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (0 3095);
+figpos (7748 1205);
+linewidth 34;
+line (3213 3024)(3780 3024);
+line (5858 1701)(6425 1701);
+line (1984 1323)(1984 2646)(2314 2646);
+linecolr 0 0 0;
+line (1086 3212)(1416 3212)(1417 1701)(1606 1701);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+linewidth 9;
+line (283 2079)(661 2079);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+linecolr .79779 .25754 .18873;
+line (283 3969)(661 3969);
+edgewidth 34;
+figpos (519 2219);
+figpos (519 4109);
+figpos (6898 3072);
+edgewidth 9;
+rect (6898 3072)(7276 3355)(0 1);
+figpos (6709 3354);
+linecolr 0 0 0;
+line (7276 3214)(7795 3214);
+edgewidth 34;
+figpos (5102 3213);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 2 16 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 0 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 1 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 2 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 3 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 4 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 5 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 6 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 7 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 8 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 9 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 10 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 11 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 12 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 13 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 14 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 15 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 16 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 17 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 18 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 19 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 16 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 21 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 22 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 23 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 24 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 25 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 26 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 27 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 28 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 29 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 30 0 0]{CntInfo='3';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 31 0 0]{CntInfo='5';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 32 0 0]{CntInfo='7';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 33 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 34 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 35 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 36 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 37 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 38 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 39 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 40 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 41 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 42 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 43 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 44 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 2 16 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 45 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 2 16 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 46 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 16 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 47 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 16 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 48 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 16 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 49 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 16 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 50 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 51 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 52 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 16 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 16 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 16 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 16 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 55 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 16 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 2 16 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 2 16 0 0 0 57]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 200 0];
+Dim=[3203 2400];
+};
+}
+Basic[3 0 3 2 16 0 0 0 57 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 16 0 0 0 57 0 0]{CntInfo='このワード群が Fig3 のFinal Merger が出力した下位ワード群(負け組)と同じであることに注目';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+IntrLineH=200;
+FColr=[.79779 .25754 .18873];
+};
+}
+Comp[3 0 3 2 16 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 2 16 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 16 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 16 1 0 0 0]{CntInfo='Fig.4 ';
+}
+Basic[3 0 3 2 16 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 16 1 0 1 0]{CntInfo='マルチワードマージソートの動作例(3)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 2 17]{Type=Txt;
+}
+Char[3 0 3 2 17 0]{CntInfo='';
+}
+Basic[3 0 3 2 18]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 18 0]{CntInfo='前回Aから入力されたワード群には A_LAST=\'1\' だったのでこれ以上Aからは入力されません。そのため今回はBから入力されたワード群が選択されます。';
+}
+Basic[3 0 3 2 19]{Type=Txt;
+}
+Char[3 0 3 2 19 0]{CntInfo='ここでも、前の図(Fig.4 マルチワードマージソートの動作例(3))の後段のバッチャーズ奇偶マージャー(Final Merger)のソート結果で負けたほう(出力されなかったほう)のワード群が、前段のバッチャーズ奇偶マージャー(Loose Merger)の下位のワード群から出力されています。';
+}
+Comp[3 0 3 2 20]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 2 20 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 20 0 0]{}
+Geo[3 0 3 2 20 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 100 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (7323 1324)(7749 1324);
+linecolr 0 0 0;
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+linecolr 0 0 0;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+edgewidth 17;
+rect (662 2647)(1040 3781)(0 1);
+edgewidth 34;
+figpos (662 2647);
+line (662 2930)(1040 2930);
+line (662 3214)(1040 3214);
+line (662 3497)(1040 3497);
+figpos (662 2931);
+figpos (662 3214);
+figpos (662 3498);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (1796 1324)(2315 1324);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+line (1040 2647)(1087 2694)(1087 3734)(1040 3781);
+linewidth 34;
+lineendcap 5;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (1985 1324)(1985 3781)(2315 3781);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+line (284 1324)(615 1324);
+line (284 3214)(615 3214);
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+line (662 2647)(615 2694)(615 3733)(662 3781);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (0 3095);
+figpos (7748 1205);
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (3213 3024)(3780 3024);
+line (5858 1701)(6425 1701);
+line (1086 3212)(1416 3212)(1417 1701)(1606 1701);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+linewidth 9;
+linecolr 0 0 0;
+line (283 2079)(661 2079);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+line (283 3969)(661 3969);
+edgewidth 34;
+figpos (519 2219);
+figpos (519 4109);
+linewidth 34;
+line (1984 2646)(2315 2646);
+figpos (6898 3072);
+edgewidth 9;
+rect (6898 3072)(7276 3355)(0 1);
+figpos (6709 3354);
+linewidth 9;
+line (7276 3214)(7795 3214);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 2 20 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 0 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 1 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 2 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 3 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 4 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 5 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 6 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 7 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 8 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 9 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 10 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 11 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 12 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 13 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 14 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 15 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 16 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 17 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 18 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 19 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 20 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 21 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 22 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 23 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 24 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 25 0 0]{CntInfo='2';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 26 0 0]{CntInfo='4';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 27 0 0]{CntInfo='6';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 28 0 0]{CntInfo='8';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 29 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 30 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 31 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 32 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 33 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 34 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 35 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 36 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 37 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 38 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 39 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 40 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 41 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 42 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 43 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 44 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 2 20 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 45 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 2 20 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 46 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 20 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 47 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 20 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 48 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 20 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 49 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 20 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 50 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 51 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 52 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 20 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 20 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 20 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 20 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 55 0 0]{CntInfo='0';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 20 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 2 20 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 20 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 2 20 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 2 20 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 20 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 20 1 0 0 0]{CntInfo='Fig.5 ';
+}
+Basic[3 0 3 2 20 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 20 1 0 1 0]{CntInfo='マルチワードマージソートの動作例(4)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 2 21]{Type=Txt;
+}
+Char[3 0 3 2 21 0]{CntInfo='';
+}
+Basic[3 0 3 2 22]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 22 0]{CntInfo='前回Bから入力されたワード群には B_LAST=\'1\' だったのでこれ以上AからもBからも入力されません。したがってこれが最後のフェーズになります。後段のバッチャーズ奇偶マージャー(Final Merger)の上位ワード群には POSTPEND 属性を付加したワードを入力します。POSTPEND 属性をもつワードはソートの際に常に他のワードよりも後回しにされるので、その結果、レジスタ内に残された最後のワード群が出力されます(と同時にO_LAST=\'1\'を出力します)。';
+}
+Comp[3 0 3 2 23]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[16916 9950];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 3 2 23 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 23 0 0]{}
+Geo[3 0 3 2 23 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(7992 4701);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(7992 4701);
+clip on;
+asf all indiv;
+appldata 5 0 0 100 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle empty;
+edgewidth 17;
+rect (6898 757)(7276 1891)(0 1);
+edgewidth 34;
+figpos (6898 757);
+linetype 3;
+linewidth 9;
+line (6898 1040)(7276 1040);
+line (6898 1324)(7276 1324);
+line (6898 1607)(7276 1607);
+figpos (6898 1041);
+figpos (6898 1324);
+figpos (6898 1608);
+rect (5575 379)(6709 3025)(0 1);
+edgewidth 17;
+rect (5008 757)(5386 1891)(0 1);
+edgewidth 34;
+figpos (5008 757);
+line (5008 1040)(5386 1040);
+line (5008 1324)(5386 1324);
+line (5008 1607)(5386 1607);
+figpos (5008 1041);
+figpos (5008 1324);
+figpos (5008 1608);
+edgewidth 17;
+rect (5008 1891)(5386 3025)(0 1);
+edgewidth 34;
+figpos (5008 1891);
+line (5008 2174)(5386 2174);
+line (5008 2458)(5386 2458);
+line (5008 2741)(5386 2741);
+figpos (5008 2175);
+figpos (5008 2458);
+figpos (5008 2742);
+edgewidth 17;
+rect (4252 3213)(4630 4347)(0 1);
+edgewidth 34;
+figpos (4252 3213);
+line (4252 3496)(4630 3496);
+line (4252 3780)(4630 3780);
+line (4252 4063)(4630 4063);
+figpos (4252 3497);
+figpos (4252 3780);
+figpos (4252 4064);
+edgewidth 17;
+rect (4252 2080)(4630 3214)(0 1);
+edgewidth 34;
+figpos (4252 2080);
+line (4252 2363)(4630 2363);
+line (4252 2647)(4630 2647);
+line (4252 2930)(4630 2930);
+figpos (4252 2364);
+figpos (4252 2647);
+figpos (4252 2931);
+figpos (2929 1701);
+rect (2929 1701)(4063 4347)(0 1);
+linetype 1;
+line (4630 3214)(4678 3261)(4678 4300)(4630 4347)(4630 4347);
+line (5008 1891)(4961 1938)(4961 2977)(5008 3025);
+lineendcap 5;
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (4677 3780)(4772 3780)(4772 2457)(4961 2457);
+linecolr 0 0 0;
+linewidth 9;
+lineendcap 1;
+line (7276 757)(7323 804)(7323 1844)(7276 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (7323 1324)(7749 1324);
+linecolr 0 0 0;
+linewidth 17;
+line (5386 2033)(5575 2033);
+line (5386 2316)(5575 2316);
+line (5386 2599)(5575 2599);
+line (5386 2883)(5575 2883);
+line (5386 899)(5575 899);
+line (5386 1182)(5575 1182);
+line (5386 1465)(5575 1465);
+line (5386 1749)(5575 1749);
+line (6709 899)(6898 899);
+line (6709 1182)(6898 1182);
+line (6709 1465)(6898 1465);
+line (6709 1749)(6898 1749);
+edgewidth 17;
+rect (6898 1891)(7276 3025)(0 1);
+edgewidth 34;
+figpos (6898 1891);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (6898 2174)(7276 2174);
+line (6898 2458)(7276 2458);
+line (6898 2741)(7276 2741);
+figpos (6898 2175);
+figpos (6898 2458);
+figpos (6898 2742);
+linetype 1;
+linewidth 17;
+lineendcap 5;
+line (6709 2033)(6898 2033);
+line (6709 2316)(6898 2316);
+line (6709 2599)(6898 2599);
+line (6709 2883)(6898 2883);
+line (4063 3356)(4252 3356);
+line (4063 3639)(4252 3639);
+line (4063 3922)(4252 3922);
+line (4063 4206)(4252 4206);
+line (4063 2222)(4252 2222);
+line (4063 2505)(4252 2505);
+line (4063 2788)(4252 2788);
+line (4063 3072)(4252 3072);
+line (2741 3356)(2930 3356);
+line (2741 3639)(2930 3639);
+line (2741 3922)(2930 3922);
+line (2741 4206)(2930 4206);
+line (2741 2222)(2930 2222);
+line (2741 2505)(2930 2505);
+line (2741 2788)(2930 2788);
+line (2741 3072)(2930 3072);
+edgewidth 17;
+rect (2363 3213)(2741 4347)(0 1);
+edgewidth 34;
+figpos (2363 3213);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+line (2363 3496)(2741 3496);
+line (2363 3780)(2741 3780);
+line (2363 4063)(2741 4063);
+figpos (2363 3497);
+figpos (2363 3780);
+figpos (2363 4064);
+edgewidth 17;
+rect (2363 2080)(2741 3214)(0 1);
+edgewidth 34;
+figpos (2363 2080);
+line (2363 2363)(2741 2363);
+line (2363 2647)(2741 2647);
+line (2363 2930)(2741 2930);
+figpos (2363 2364);
+figpos (2363 2647);
+figpos (2363 2931);
+edgewidth 17;
+rect (2363 757)(2741 1891)(0 1);
+edgewidth 34;
+figpos (2363 757);
+line (2363 1040)(2741 1040);
+line (2363 1324)(2741 1324);
+line (2363 1607)(2741 1607);
+figpos (2363 1041);
+figpos (2363 1324);
+figpos (2363 1608);
+linetype 1;
+line (5008 757)(4961 804)(4961 1843)(5008 1891);
+line (2741 757)(2788 804)(2788 1844)(2741 1891);
+linewidth 34;
+lineendcap 5;
+linecolr .79779 .25754 .18873;
+line (2787 1324)(4961 1324);
+edgewidth 17;
+rect (662 757)(1040 1891)(0 1);
+edgewidth 34;
+figpos (662 757);
+linetype 3;
+linewidth 9;
+lineendcap 1;
+linecolr 0 0 0;
+line (662 1040)(1040 1040);
+line (662 1324)(1040 1324);
+line (662 1607)(1040 1607);
+figpos (662 1041);
+figpos (662 1324);
+figpos (662 1608);
+edgewidth 17;
+rect (662 2647)(1040 3781)(0 1);
+edgewidth 34;
+figpos (662 2647);
+line (662 2930)(1040 2930);
+line (662 3214)(1040 3214);
+line (662 3497)(1040 3497);
+figpos (662 2931);
+figpos (662 3214);
+figpos (662 3498);
+polygon (1607 804)(1607 1938)(1796 1749)(1796 993);
+linetype 1;
+line (2363 757)(2316 804)(2316 1843)(2363 1891);
+linewidth 34;
+lineendcap 5;
+line (1796 1324)(2315 1324);
+linewidth 9;
+lineendcap 1;
+line (1040 757)(1087 804)(1087 1844)(1040 1891);
+line (1040 2647)(1087 2694)(1087 3734)(1040 3781);
+linewidth 34;
+lineendcap 5;
+line (1087 1324)(1418 1324)(1418 993)(1607 993);
+linewidth 17;
+line (1040 899)(1182 899)(1182 332)(1418 332);
+line (1039 2787)(1276 2787)(1276 568)(1418 568);
+rect (1418 237)(2079 662)(0 1);
+figpos (1417 237);
+linewidth 34;
+line (1985 1324)(1985 3781)(2315 3781);
+linewidth 9;
+lineendcap 1;
+line (2362 2080)(2315 2127)(2315 3166)(2362 3214);
+line (2362 3214)(2315 3261)(2315 4300)(2362 4348);
+linewidth 34;
+lineendcap 5;
+line (284 1324)(615 1324);
+line (284 3214)(615 3214);
+linewidth 9;
+lineendcap 1;
+line (662 757)(615 804)(615 1843)(662 1891);
+line (662 2647)(615 2694)(615 3733)(662 3781);
+edgetype 3;
+edgewidth 17;
+rect (2174 283)(7371 4441)(0 1);
+linewidth 17;
+lineendcap 5;
+line (1748 662)(1748 946);
+edgetype 1;
+edgewidth 34;
+rect (378 94)(7560 4630)(0 1);
+figpos (378 94);
+figpos (5575 379);
+line (1748 804)(2174 804);
+figpos (0 1205);
+figpos (0 3095);
+figpos (7748 1205);
+linewidth 34;
+linecolr .79779 .25754 .18873;
+line (3213 3024)(3780 3024);
+line (5858 1701)(6425 1701);
+linecolr 0 0 0;
+line (1086 3212)(1416 3212)(1417 1701)(1606 1701);
+figpos (661 1937);
+edgewidth 9;
+rect (661 1937)(1039 2220)(0 1);
+linewidth 9;
+line (283 2079)(661 2079);
+edgewidth 34;
+figpos (661 3827);
+edgewidth 9;
+rect (661 3827)(1039 4110)(0 1);
+linecolr .79779 .25754 .18873;
+line (283 3969)(661 3969);
+edgewidth 34;
+figpos (519 2219);
+figpos (519 4109);
+linewidth 34;
+linecolr 0 0 0;
+line (1984 2646)(2315 2646);
+figpos (6898 3072);
+edgewidth 9;
+rect (6898 3072)(7276 3355)(0 1);
+figpos (6709 3354);
+linewidth 9;
+line (7276 3214)(7795 3214);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 3 2 23 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 0 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 1 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 2 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 3 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 4 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 5 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 6 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 7 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 8 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 9 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 10 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 11 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 12 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 13 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 14 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 15 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 16 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 17 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 18 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 19 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 23 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 20 0 0]{CntInfo='Loose
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 21 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 22 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 23 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 24 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 25 0 0]{CntInfo='10';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 26 0 0]{CntInfo='12';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 27 0 0]{CntInfo='14';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 28 0 0]{CntInfo='16';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 29 0 0]{CntInfo='9';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 30 0 0]{CntInfo='11';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 31 0 0]{CntInfo='13';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 32 0 0]{CntInfo='15';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 33 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 34 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 35 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 36 0 0]{CntInfo='PP';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 37 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 38 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 39 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 40 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 41 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 42 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 43 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 44 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 100 0];
+Dim=[1403 902];
+};
+}
+Basic[3 0 3 2 23 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 45 0 0]{CntInfo='Word
+Compare';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[50 0 200 0];
+Dim=[1503 1202];
+};
+}
+Basic[3 0 3 2 23 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 46 0 0]{CntInfo='Merge
+Sorter
+Node';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+FrmLineVis=[on on on on];
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[1903 902];
+};
+}
+Basic[3 0 3 2 23 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 47 0 0]{CntInfo='Final
+Merger';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 23 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 48 0 0]{CntInfo='A';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 23 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 49 0 0]{CntInfo='B';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 200 0];
+Dim=[603 504];
+};
+}
+Basic[3 0 3 2 23 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 50 0 0]{CntInfo='O';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 51 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 52 0 0]{CntInfo='';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 23 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 53 0 0]{CntInfo='A_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1103 404];
+};
+}
+Basic[3 0 3 2 23 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 54 0 0]{CntInfo='B_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=Start;
+};
+}
+Comp[3 0 3 2 23 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 0];
+Dim=[802 601];
+};
+}
+Basic[3 0 3 2 23 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 55 0 0]{CntInfo='1';
+CntSty={
+ParSty='図形枠内段落';
+FSize=10;
+Align=Ctrd;
+};
+}
+Comp[3 0 3 2 23 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[100 0 0 0];
+Dim=[1202 404];
+};
+}
+Basic[3 0 3 2 23 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 23 0 0 0 56 0 0]{CntInfo='O_LAST';
+CntSty={
+ParSty='図形枠内段落';
+FSize=8;
+Align=End;
+};
+}
+Comp[3 0 3 2 23 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 3 2 23 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 23 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 23 1 0 0 0]{CntInfo='Fig.6 ';
+}
+Basic[3 0 3 2 23 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 23 1 0 1 0]{CntInfo='マルチワードマージソートの動作例(5)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 3 2 24]{Type=Txt;
+}
+Char[3 0 3 2 24 0]{CntInfo='';
+}
+Basic[3 0 3 2 25]{Type=Txt;
+}
+Char[3 0 3 2 25 0]{CntInfo='';
+}
+Basic[3 0 3 2 26]{Type=Txt;
+}
+Char[3 0 3 2 26 0]{CntInfo='';
+}
+Basic[3 0 3 2 27]{Type=Txt;
+}
+Char[3 0 3 2 27 0]{CntInfo='';
+}
+Comp[3 0 4]{Type=NoSeg;
+}
+Comp[3 0 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=8;
+}
+Basic[3 0 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 0 1 0]{CntInfo='マルチワードマージソートノードの VHDL 記述';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 4 1]{Type=NoSeg;
+}
+Comp[3 0 4 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=8;
+}
+Basic[3 0 4 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 1 0 1 0]{CntInfo='Architecture';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 1 1]{Type=Txt;
+}
+Char[3 0 4 1 1 0]{CntInfo='入力側の[ワード比較器]まわりは前回の[「シングルワード マージソート ノード」]と同じです。この記事ではマルチワード時(WORDS > 1) の場合のみ説明します。';
+}
+Basic[3 0 4 1 2]{Type=Txt;
+}
+Char[3 0 4 1 2 0]{CntInfo='';
+}
+Basic[3 0 4 1 3]{Type=Txt;
+}
+Char[3 0 4 1 3 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger) と後段のバッチャーズ奇偶マージャー(Final Merger)を [「ソーティングネットワーク」]で構築するために [「バッチャー奇偶マージソート」]で説明した関数(Sorting_Network.New_OddEven_Merge_Network)を用いてパラメータを生成します。';
+}
+Comp[3 0 4 1 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13272];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 4 0 0 0]{CntInfo='    MULTI_WORD: if (WORDS > 1) generate
+        type      PARAM_TYPE        is record
+                  INTAKE_QUEUE_SIZE :  integer;
+                  LOSER_MERGE       :  Sorting_Network.Param_Type;
+                  FINAL_MERGE       :  Sorting_Network.Param_Type;
+        end record;
+        function  GEN_PARAM return PARAM_TYPE is
+            variable param          :  PARAM_TYPE;
+        begin
+            param.INTAKE_QUEUE_SIZE := 2;
+            param.LOSER_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+                                           LO     => 0         ,
+                                           HI     => 2*WORDS-1 ,
+                                           ORDER  => SORT_ORDER,
+                                           QUEUE  => 1
+                                       );
+            param.FINAL_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+                                           LO     => 0         ,
+                                           HI     => 2*WORDS-1 ,
+                                           ORDER  => SORT_ORDER,
+                                           QUEUE  => 1
+                                       );
+            param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
+            return param;
+        end function;
+        constant  PARAM             :  PARAM_TYPE := GEN_PARAM;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 5]{Type=Txt;
+}
+Char[3 0 4 1 5 0]{CntInfo='';
+}
+Basic[3 0 4 1 6]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 4 1 6 0]{CntInfo='ワード群を示すタイプを定義します。ここではワード群は TEAM という名前にしています。';
+}
+Comp[3 0 4 1 7]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16768 10793];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 7 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 7 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 7 0 0 0]{CntInfo='        constant  WORD_BITS         :  integer := WORD_PARAM.BITS;
+        constant  TEAM_BITS         :  integer := WORDS*WORD_BITS;
+        subtype   WORD_TYPE         is std_logic_vector(WORD_BITS-1 downto 0);
+        type      TEAM_TYPE         is array(WORDS-1 downto 0) of WORD_TYPE;
+        function  TO_STD_LOGIC_VECTOR(TEAM: TEAM_TYPE) return std_logic_vector is
+            variable   value        :  std_logic_vector(TEAM_BITS-1 downto 0);
+        begin
+            for i in 0 to WORDS-1 loop
+                value((i+1)*WORD_BITS-1 downto i*WORD_BITS) := TEAM(i);
+            end loop;
+            return value;
+        end function;
+        function  TO_TEAM(SV: std_logic_vector) return TEAM_TYPE is
+            alias      value        :  std_logic_vector(SV\'length-1 downto 0) is SV;
+            variable   team         :  TEAM_TYPE;
+        begin
+            for i in 0 to WORDS-1 loop
+                team(i) := value((i+1)*WORD_BITS-1 downto i*WORD_BITS);
+            end loop;
+            return team;
+        end function;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 7 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 7 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 7 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 7 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 7 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 7 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 8]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 4 1 8 0]{CntInfo='マルチワードマージソートノード内部で使用する定数と信号を定義します。';
+}
+Comp[3 0 4 1 9]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13682];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 9 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 9 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 9 0 0 0]{CntInfo='        constant  PRIORITY_WORD     :  WORD_TYPE := Word.New_Priority_Word(WORD_PARAM);
+        constant  POSTPEND_WORD     :  WORD_TYPE := Word.New_Postpend_Word(WORD_PARAM);
+        constant  PRIORITY_TEAM     :  TEAM_TYPE := (others => PRIORITY_WORD);
+        constant  POSTPEND_TEAM     :  TEAM_TYPE := (others => POSTPEND_WORD);
+        signal    intake_team       :  TEAM_TYPE;
+        signal    intake_info       :  std_logic_vector(INFO_BITS-1 downto 0);
+        signal    intake_sel_a      :  std_logic;
+        signal    intake_last       :  std_logic;
+        signal    intake_valid      :  std_logic;
+        signal    intake_ready      :  std_logic;
+        signal    seeded_team       :  TEAM_TYPE;
+        signal    last_a_team       :  TEAM_TYPE;
+        signal    last_b_team       :  TEAM_TYPE;
+        signal    merge_info        :  std_logic_vector(INFO_BITS-1 downto 0);
+        signal    merge_last        :  std_logic;
+        signal    merge_valid       :  std_logic;
+        signal    merge_ready       :  std_logic;
+        signal    last_winner_team  :  TEAM_TYPE;
+        signal    last_loser_team   :  TEAM_TYPE;
+        signal    challenger_team   :  TEAM_TYPE;
+        signal    challenger_info   :  std_logic_vector(INFO_BITS-1 downto 0);
+        signal    challenger_last   :  std_logic;
+        signal    challenger_valid  :  std_logic;
+        signal    challenger_ready  :  std_logic;
+        signal    final_winner_team :  TEAM_TYPE;
+        signal    final_loser_team  :  TEAM_TYPE;
+    begin
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 9 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 9 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 9 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 9 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 9 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 9 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 10]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 4 1 10 0]{CntInfo='前段の[「ワード比較器」]によって選択されたワード群(i_word 信号)はどちらから選択されたかを示す信号(i_sel_a信号)とその他の情報(i_info信号)とともに一旦キューに格納します。キューの出力は intake_xxx という信号名で後段に渡します。';
+}
+Comp[3 0 4 1 11]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16616 18542];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 11 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 11 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 11 0 0 0]{CntInfo='        INTAKE: block
+            constant  INFO_INFO_LO      :  integer := 0;
+            constant  INFO_INFO_HI      :  integer := INFO_INFO_LO + INFO_BITS - 1;
+            constant  INFO_SEL_POS      :  integer := INFO_INFO_HI + 1;
+            constant  THIS_INFO_BITS    :  integer := INFO_SEL_POS - INFO_INFO_LO + 1;
+            signal    ii_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+            signal    oo_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+            signal    oo_word           :  std_logic_vector(TEAM_BITS     -1 downto 0);
+        begin
+            ii_info(INFO_INFO_HI downto INFO_INFO_LO) \<= i_info;
+            ii_info(INFO_SEL_POS                    ) \<= i_sel_a;
+            QUEUE: Word_Queue                                           -- 
+                generic map (                                           -- 
+                    WORD_PARAM  => WORD_PARAM                         , -- 
+                    WORDS       => WORDS                              , --
+                    INFO_BITS   => THIS_INFO_BITS                     , -- 
+                    QUEUE_SIZE  => PARAM.INTAKE_QUEUE_SIZE              -- 
+                )                                                       -- 
+                port map (                                              -- 
+                    CLK         => CLK                                , -- In  :
+                    RST         => RST                                , -- In  :
+                    CLR         => CLR                                , -- In  :
+                    I_WORD      => i_word                             , -- In  :
+                    I_INFO      => ii_info                            , -- In  :
+                    I_LAST      => i_last                             , -- In  :
+                    I_VALID     => i_valid                            , -- In  :
+                    I_READY     => i_ready                            , -- Out :
+                    O_WORD      => oo_word                            , -- Out :
+                    O_INFO      => oo_info                            , -- Out :
+                    O_LAST      => intake_last                        , -- Out :
+                    O_VALID     => intake_valid                       , -- Out :
+                    O_READY     => intake_ready                         -- In  :
+                );                                                       --
+            intake_team  \<= TO_TEAM(oo_word);
+            intake_info  \<= oo_info(INFO_INFO_HI downto INFO_INFO_LO);
+            intake_sel_a \<= oo_info(INFO_SEL_POS                    );
+        end block;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 11 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 11 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 11 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 11 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 11 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 11 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 12]{Type=Txt;
+}
+Char[3 0 4 1 12 0]{CntInfo='';
+}
+Basic[3 0 4 1 13]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 4 1 13 0]{CntInfo='前回入力したワード群を保持するレジスタと状態遷移を行います。';
+}
+Comp[3 0 4 1 14]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 23387];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 14 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 14 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 14 0 0 0]{CntInfo='        PREPARE_TERM : block
+            type      STATE_TYPE        is (IDLE_STATE, XFER_STATE, LAST_STATE);
+            signal    curr_state        :  STATE_TYPE;
+            signal    last_info         :  std_logic_vector(INFO_BITS-1 downto 0);
+        begin
+            process (CLK, RST) begin
+                if (RST = \'1\') then
+                        curr_state  \<= IDLE_STATE;
+                        last_a_team \<= PRIORITY_TEAM;
+                        last_b_team \<= PRIORITY_TEAM;
+                        last_info   \<= (others => \'0\');
+                elsif (CLK\'event and CLK = \'1\') then
+                    if (CLR = \'1\') then
+                        curr_state  \<= IDLE_STATE;
+                        last_a_team \<= PRIORITY_TEAM;
+                        last_b_team \<= PRIORITY_TEAM;
+                        last_info   \<= (others => \'0\');
+                    else
+                        case curr_state is
+                            when IDLE_STATE =>
+                                if (intake_valid = \'1\' and intake_ready = \'1\') then
+                                    if (intake_last = \'1\') then
+                                        curr_state \<= LAST_STATE;
+                                    else
+                                        curr_state \<= XFER_STATE;
+                                    end if;
+                                    if (intake_sel_a = \'1\') then
+                                        last_a_team \<= intake_team;
+                                        last_b_team \<= PRIORITY_TEAM;
+                                    else
+                                        last_a_team \<= PRIORITY_TEAM;
+                                        last_b_team \<= intake_team;
+                                    end if;
+                                    last_info  \<= intake_info;
+                                else
+                                    curr_state \<= IDLE_STATE;
+                                end if;
+                            when XFER_STATE =>
+                                if (intake_valid = \'1\' and intake_ready = \'1\') then
+                                    if (intake_last = \'1\') then
+                                        curr_state \<= LAST_STATE;
+                                    else
+                                        curr_state \<= XFER_STATE;
+                                    end if;
+                                    if (intake_sel_a = \'1\') then
+                                        last_a_team \<= intake_team;
+                                    else
+                                        last_b_team \<= intake_team;
+                                    end if;
+                                    last_info  \<= intake_info;
+                                else
+                                    curr_state \<= XFER_STATE;
+                                end if;
+                            when LAST_STATE =>
+                                if (merge_ready = \'1\') then
+                                    curr_state \<= IDLE_STATE;
+                                else
+                                    curr_state \<= LAST_STATE;
+                                end if;
+                            when others =>
+                                    curr_state \<= IDLE_STATE;
+                        end case;
+                    end if;
+                end if;
+            end process;
+            merge_info   \<= last_info     when (curr_state = LAST_STATE) else intake_info;
+            seeded_team  \<= POSTPEND_TEAM when (curr_state = LAST_STATE) else intake_team;
+            merge_valid  \<= \'1\' when (curr_state = XFER_STATE and intake_valid = \'1\') or
+                                     (curr_state = LAST_STATE                       ) else \'0\';
+            merge_last   \<= \'1\' when (curr_state = LAST_STATE                       ) else \'0\';
+            intake_ready \<= \'1\' when (curr_state = IDLE_STATE                       ) or
+                                     (curr_state = XFER_STATE and merge_ready  = \'1\') else \'0\';
+        end block;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=0;
+};
+}
+Comp[3 0 4 1 14 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 14 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 14 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 14 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 14 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 14 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 15]{Type=Txt;
+}
+Char[3 0 4 1 15 0]{CntInfo='';
+}
+Basic[3 0 4 1 16]{Type=Txt;
+}
+Char[3 0 4 1 16 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger)を定義します。';
+}
+Comp[3 0 4 1 17]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 24469];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 17 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 17 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 17 0 0 0]{CntInfo='        LOSER_MERGE: block
+            constant  WORD_TEAM0_LO     :  integer := 0;
+            constant  WORD_TEAM0_HI     :  integer := WORD_TEAM0_LO + TEAM_BITS - 1;
+            constant  WORD_TEAM1_LO     :  integer := WORD_TEAM0_HI + 1;
+            constant  WORD_TEAM1_HI     :  integer := WORD_TEAM1_LO + TEAM_BITS - 1;
+            constant  THIS_WORD_BITS    :  integer := WORD_TEAM1_HI - WORD_TEAM0_LO + 1;
+            constant  INFO_TEAM_LO      :  integer := 0;
+            constant  INFO_TEAM_HI      :  integer := INFO_TEAM_LO  + TEAM_BITS - 1;
+            constant  INFO_INFO_LO      :  integer := INFO_TEAM_HI  + 1;
+            constant  INFO_INFO_HI      :  integer := INFO_INFO_LO  + INFO_BITS - 1;
+            constant  INFO_LAST_POS     :  integer := INFO_INFO_HI  + 1;
+            constant  THIS_INFO_BITS    :  integer := INFO_LAST_POS - INFO_TEAM_LO  + 1;
+            signal    ii_word           :  std_logic_vector(THIS_WORD_BITS-1 downto 0);
+            signal    ii_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+            signal    oo_word           :  std_logic_vector(THIS_WORD_BITS-1 downto 0);
+            signal    oo_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+        begin
+            ii_word(WORD_TEAM0_HI downto WORD_TEAM0_LO) \<= TO_STD_LOGIC_VECTOR(last_a_team);
+            ii_word(WORD_TEAM1_HI downto WORD_TEAM1_LO) \<= TO_STD_LOGIC_VECTOR(last_b_team);
+            ii_info(INFO_TEAM_HI  downto INFO_TEAM_LO ) \<= TO_STD_LOGIC_VECTOR(seeded_team);
+            ii_info(INFO_INFO_HI  downto INFO_INFO_LO ) \<= merge_info;
+            ii_info(INFO_LAST_POS                     ) \<= merge_last;
+            CORE: Sorting_Network_Core                         -- 
+                generic map (                                  -- 
+                    NETWORK_PARAM       => PARAM.LOSER_MERGE , --
+                    WORD_PARAM          => WORD_PARAM        , -- 
+                    INFO_BITS           => THIS_INFO_BITS      -- 
+                )                                              -- 
+                port map (                                     -- 
+                    CLK                 => CLK               , -- In  :
+                    RST                 => RST               , -- In  :
+                    CLR                 => CLR               , -- In  :
+                    I_WORD              => ii_word           , -- In  :
+                    I_INFO              => ii_info           , -- In  :
+                    I_VALID             => merge_valid       , -- In  :
+                    I_READY             => merge_ready       , -- Out :
+                    O_WORD              => oo_word           , -- Out :
+                    O_INFO              => oo_info           , -- Out :
+                    O_VALID             => challenger_valid  , -- Out :
+                    O_READY             => challenger_ready  , -- In  :
+                    BUSY                => open                -- Out :
+                );
+            last_winner_team \<= TO_TEAM(oo_word(WORD_TEAM0_HI downto WORD_TEAM0_LO));
+            last_loser_team  \<= TO_TEAM(oo_word(WORD_TEAM1_HI downto WORD_TEAM1_LO));
+            challenger_team  \<= TO_TEAM(oo_info(INFO_TEAM_HI  downto INFO_TEAM_LO ));
+            challenger_info  \<=         oo_info(INFO_INFO_HI  downto INFO_INFO_LO ) ;
+            challenger_last  \<=         oo_info(INFO_LAST_POS                     ) ;
+        end block;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 17 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 17 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 17 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 17 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 17 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 17 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 1 18]{Type=Txt;
+}
+Char[3 0 4 1 18 0]{CntInfo='後段のバッチャーズ奇偶マージャー(Final Merger)を定義します。';
+}
+Comp[3 0 4 1 19]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 24469];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 1 19 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 1 19 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 1 19 0 0 0]{CntInfo='        FINAL_MERGE: block
+            constant  WORD_TEAM0_LO     :  integer := 0;
+            constant  WORD_TEAM0_HI     :  integer := WORD_TEAM0_LO + TEAM_BITS - 1;
+            constant  WORD_TEAM1_LO     :  integer := WORD_TEAM0_HI + 1;
+            constant  WORD_TEAM1_HI     :  integer := WORD_TEAM1_LO + TEAM_BITS - 1;
+            constant  THIS_WORD_BITS    :  integer := WORD_TEAM1_HI - WORD_TEAM0_LO + 1;
+            constant  INFO_INFO_LO      :  integer := 0;
+            constant  INFO_INFO_HI      :  integer := INFO_INFO_LO  + INFO_BITS - 1;
+            constant  INFO_LAST_POS     :  integer := INFO_INFO_HI  + 1;
+            constant  THIS_INFO_BITS    :  integer := INFO_LAST_POS - INFO_INFO_LO + 1;
+            signal    ii_word           :  std_logic_vector(THIS_WORD_BITS-1 downto 0);
+            signal    ii_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+            signal    oo_word           :  std_logic_vector(THIS_WORD_BITS-1 downto 0);
+            signal    oo_info           :  std_logic_vector(THIS_INFO_BITS-1 downto 0);
+        begin
+            ii_word(WORD_TEAM0_HI downto WORD_TEAM0_LO) \<= TO_STD_LOGIC_VECTOR(challenger_team);
+            ii_word(WORD_TEAM1_HI downto WORD_TEAM1_LO) \<= TO_STD_LOGIC_VECTOR(last_loser_team);
+            ii_info(INFO_INFO_HI  downto INFO_INFO_LO ) \<= challenger_info;
+            ii_info(INFO_LAST_POS                     ) \<= challenger_last;
+            CORE: Sorting_Network_Core                         -- 
+                generic map (                                  -- 
+                    NETWORK_PARAM       => PARAM.FINAL_MERGE , --
+                    WORD_PARAM          => WORD_PARAM        , -- 
+                    INFO_BITS           => THIS_INFO_BITS      -- 
+                )                                              -- 
+                port map (                                     -- 
+                    CLK                 => CLK               , -- In  :
+                    RST                 => RST               , -- In  :
+                    CLR                 => CLR               , -- In  :
+                    I_WORD              => ii_word           , -- In  :
+                    I_INFO              => ii_info           , -- In  :
+                    I_VALID             => challenger_valid  , -- In  :
+                    I_READY             => challenger_ready  , -- Out :
+                    O_WORD              => oo_word           , -- Out :
+                    O_INFO              => oo_info           , -- Out :
+                    O_VALID             => O_VALID           , -- Out :
+                    O_READY             => O_READY           , -- In  :
+                    BUSY                => open                -- Out :
+                );
+            final_winner_team \<= TO_TEAM(oo_word(WORD_TEAM0_HI downto WORD_TEAM0_LO));
+            final_loser_team  \<= TO_TEAM(oo_word(WORD_TEAM1_HI downto WORD_TEAM1_LO));
+            O_WORD \<= oo_word(WORD_TEAM0_HI downto WORD_TEAM0_LO);
+            O_INFO \<= oo_info(INFO_INFO_HI  downto INFO_INFO_LO );
+            O_LAST \<= oo_info(INFO_LAST_POS);
+        end block;
+    end generate;
+end RTL;
+';
+CntSty={
+ParSty='VHDL';
+IntrLineH=400;
+};
+}
+Comp[3 0 4 1 19 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 1 19 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 1 19 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 19 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 19 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 1 19 1 0 1 0]{CntInfo='src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 5]{Type=NoSeg;
+}
+Comp[3 0 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=15;
+}
+Basic[3 0 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 0 1 0]{CntInfo='参照';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 5 1]{Type=Txt;
+}
+Char[3 0 5 1 0]{CntInfo='・目次: [「はじめに」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 5 2]{Type=Txt;
+}
+Char[3 0 5 2 0]{CntInfo='・次回: [「マージソート ツリー」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 5 3]{Type=Txt;
+}
+Char[3 0 5 3 0]{CntInfo='・前回: [「シングルワード マージソート ノード」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 5 4]{Type=Txt;
+}
+Char[3 0 5 4 0]{CntInfo='・ソースコード:
+https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_node.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 5 5]{Type=Txt;
+}
+Char[3 0 5 5 0]{CntInfo='・[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 5 6]{Type=Txt;
+}
+Char[3 0 5 6 0]{CntInfo='';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
