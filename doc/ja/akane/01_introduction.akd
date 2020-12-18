@@ -3,7 +3,7 @@ Creator:Akane
 Encoding:SJISコード
 % OS:WindowsNT 6.2
 
-Profile{NoOfPages=2;
+Profile{NoOfPages=3;
 Comments='マークダウン・テンプレート';
 ExtrTtlRef={
 };
@@ -781,10 +781,7 @@ Comp[3 0 2]{Type=NoSeg;
 }
 Comp[3 0 2 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-LaySty={
-NLO=null;
-};
-ULayedPageNo=1;
+ULayedPageNo=2;
 }
 Basic[3 0 2 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -863,21 +860,35 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 2 10]{Type=Txt;
 }
-Char[3 0 2 10 0]{CntInfo='10. マージソートコア (執筆するかも？)';
+Char[3 0 2 10 0]{CntInfo='10. [端数ワード処理]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
 Basic[3 0 2 11]{Type=Txt;
 }
-Char[3 0 2 11 0]{CntInfo='10. ストリームフィードバック (執筆するかも？)';
+Char[3 0 2 11 0]{CntInfo='11. [ストリーム入力]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
 Basic[3 0 2 12]{Type=Txt;
 }
-Char[3 0 2 12 0]{CntInfo='11. Ultra96-V2 への実装結果 (執筆するかも？)';
+Char[3 0 2 12 0]{CntInfo='12. [ストリームフィードバック]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 13]{Type=Txt;
+}
+Char[3 0 2 13 0]{CntInfo='13. ArgSort (執筆するかも？) ';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 14]{Type=Txt;
+}
+Char[3 0 2 14 0]{CntInfo='14. Ultra96-V2 への実装結果 (執筆するかも？)';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
@@ -886,7 +897,7 @@ Comp[3 0 3]{Type=NoSeg;
 }
 Comp[3 0 3 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=2;
+ULayedPageNo=3;
 }
 Basic[3 0 3 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -904,7 +915,7 @@ Comp[3 0 3 1]{Type=NoSeg;
 }
 Comp[3 0 3 1 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=2;
+ULayedPageNo=3;
 }
 Basic[3 0 3 1 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -964,7 +975,7 @@ Comp[3 0 3 2]{Type=NoSeg;
 }
 Comp[3 0 3 2 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=2;
+ULayedPageNo=3;
 }
 Basic[3 0 3 2 0 0]{Type=TtlNo;
 Ctgry=Discard;

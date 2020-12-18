@@ -34,6 +34,15 @@ link_list :
   - id   : "「マージソート ツリー」"
     title: "「VHDL で書くマージソーター(マージソート ツリー)」@Qiita"
     url  : "https://qiita.com/ikwzm/items/1f76ae5cda95aaf92501"
+  - id   : "「端数ワード処理」"
+    title: "「VHDL で書くマージソーター(端数ワード処理)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/6b15340f1e05ef03f8d0"
+  - id   : "「ストリーム入力」"
+    title: "「VHDL で書くマージソーター(ストリーム入力)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/56e22511021a082a2ccd"
+  - id   : "「ストリームフィードバック」"
+    title: "「VHDL で書くマージソーター(ストリームフィードバック)」@Qiita"
+    url  : "https://qiita.com/ikwzm/items/e8c59c0ec92956c9355f"
 
 seg_level : -1
 
