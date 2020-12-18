@@ -1881,7 +1881,11 @@ Basic[3 0 3 8 1]{Type=Txt;
 }
 Char[3 0 3 8 1 0]{CntInfo='ATRB_NONE_POS は属性ビットのうちの NONE 属性の位置を示します。NONE 属性は、マージソーター内部で便宜上追加したワードに付加されます。最終的にはこの NONE 属性が付加されたワードは出力されずに捨てられます。NONE 属性は後述するPRIORITY 属性または POSTPEND 属性とともに付加されます。';
 }
-Comp[3 0 3 8 2]{Type=Fig;
+Basic[3 0 3 8 2]{Type=Txt;
+}
+Char[3 0 3 8 2 0]{CntInfo='NONE 属性の用途に関しては[「端数ワード処理」]を参照してください。';
+}
+Comp[3 0 3 8 3]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 DimType=[on on];
@@ -1892,11 +1896,11 @@ Dim=[16764 4409];
 TxtAreaSize=[0 353 0 0];
 };
 }
-Comp[3 0 3 8 2 0]{Type=Art;
+Comp[3 0 3 8 3 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 8 2 0 0]{}
-Geo[3 0 3 8 2 0 0 0]{CntInfo={
+Basic[3 0 3 8 3 0 0]{}
+Geo[3 0 3 8 3 0 0 0]{CntInfo={
 BEGMF 'interchangeV2';
 mfversion 1;
 mfdesc 'Akane V2.0';
@@ -1971,7 +1975,7 @@ ENDPIC;
 ENDMF;
 };
 }
-Comp[3 0 3 8 2 0 0 0 0]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 0]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -1980,16 +1984,16 @@ IMgn=[300 140 0 0];
 Dim=[3004 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 0 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+Char[3 0 3 8 3 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 8 2 0 0 0 1]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 1]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -1998,16 +2002,16 @@ IMgn=[300 140 140 140];
 Dim=[2502 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 1 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+Char[3 0 3 8 3 0 0 0 1 0 0]{CntInfo='DATA FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 8 2 0 0 0 2]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 2]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2016,16 +2020,16 @@ IMgn=[300 140 200 0];
 Dim=[4502 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 2 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 2 0 0]{CntInfo='ATRB_NONE_POS';
+Char[3 0 3 8 3 0 0 0 2 0 0]{CntInfo='ATRB_NONE_POS';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Start;
 };
 }
-Comp[3 0 3 8 2 0 0 0 3]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 3]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2035,9 +2039,9 @@ IMgn=[0 0 300 300];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 3 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 3 0 0]{CntInfo='NONE';
+Char[3 0 3 8 3 0 0 0 3 0 0]{CntInfo='NONE';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
@@ -2045,7 +2049,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 8 2 0 0 0 4]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 4]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2055,9 +2059,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 4 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 4 0 0]{CntInfo='PRIO
+Char[3 0 3 8 3 0 0 0 4 0 0]{CntInfo='PRIO
 RITY';
 CntSty={
 ParSty='図形枠内段落';
@@ -2066,7 +2070,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 8 2 0 0 0 5]{Type=Fig;
+Comp[3 0 3 8 3 0 0 0 5]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2076,9 +2080,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 8 2 0 0 0 5 0]{Type=ArtTxt;
+Basic[3 0 3 8 3 0 0 0 5 0]{Type=ArtTxt;
 }
-Char[3 0 3 8 2 0 0 0 5 0 0]{CntInfo='POST
+Char[3 0 3 8 3 0 0 0 5 0 0]{CntInfo='POST
 PEND';
 CntSty={
 ParSty='図形枠内段落';
@@ -2087,27 +2091,27 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 8 2 1]{Type=Desc;
+Comp[3 0 3 8 3 1]{Type=Desc;
 Ctgry=StdInBCap;
 }
-Comp[3 0 3 8 2 1 0]{Type=Cap;
+Comp[3 0 3 8 3 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 8 2 1 0 0]{Type=CapNo;
+Basic[3 0 3 8 3 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 8 2 1 0 0 0]{CntInfo='Fig.6 ';
+Char[3 0 3 8 3 1 0 0 0]{CntInfo='Fig.6 ';
 }
-Basic[3 0 3 8 2 1 0 1]{Type=CapTxt;
+Basic[3 0 3 8 3 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 8 2 1 0 1 0]{CntInfo='ATRB_NONE_POS Field';
+Char[3 0 3 8 3 1 0 1 0]{CntInfo='ATRB_NONE_POS Field';
 CntSty={
 ParSty='図形枠見出し';
 };
 }
-Basic[3 0 3 8 3]{Type=Txt;
+Basic[3 0 3 8 4]{Type=Txt;
 }
-Char[3 0 3 8 3 0]{CntInfo='';
+Char[3 0 3 8 4 0]{CntInfo='';
 }
 Comp[3 0 3 9]{Type=NoSeg;
 }
@@ -2134,7 +2138,11 @@ Basic[3 0 3 9 1]{Type=Txt;
 }
 Char[3 0 3 9 1 0]{CntInfo='ATRB_PRIORITY_POS は属性ビットのうちの PRIORITY 属性の位置を示します。PRIORITY は「優先」を意味します。この属性が付加されたワードは、他のワードとの比較の際に、優先的に選択されます。例えば、AワードとBワードを比較した際に、もし Aワードにこの属性が付加されていた場合は Bワードがどんな値であってもAワードが選択されます。';
 }
-Comp[3 0 3 9 2]{Type=Fig;
+Basic[3 0 3 9 2]{Type=Txt;
+}
+Char[3 0 3 9 2 0]{CntInfo='PRIORITY 属性の用途に関しては[「マルチワード マージソート ノード」]を参照してください。';
+}
+Comp[3 0 3 9 3]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 DimType=[on on];
@@ -2145,11 +2153,11 @@ Dim=[16764 4409];
 TxtAreaSize=[0 353 0 0];
 };
 }
-Comp[3 0 3 9 2 0]{Type=Art;
+Comp[3 0 3 9 3 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 9 2 0 0]{}
-Geo[3 0 3 9 2 0 0 0]{CntInfo={
+Basic[3 0 3 9 3 0 0]{}
+Geo[3 0 3 9 3 0 0 0]{CntInfo={
 BEGMF 'interchangeV2';
 mfversion 1;
 mfdesc 'Akane V2.0';
@@ -2224,7 +2232,7 @@ ENDPIC;
 ENDMF;
 };
 }
-Comp[3 0 3 9 2 0 0 0 0]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 0]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2233,16 +2241,16 @@ IMgn=[300 140 0 0];
 Dim=[3004 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 0 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+Char[3 0 3 9 3 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 9 2 0 0 0 1]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 1]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2251,16 +2259,16 @@ IMgn=[300 140 140 140];
 Dim=[2502 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 1 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+Char[3 0 3 9 3 0 0 0 1 0 0]{CntInfo='DATA FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 9 2 0 0 0 2]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 2]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2269,16 +2277,16 @@ IMgn=[300 140 200 0];
 Dim=[4502 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 2 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 2 0 0]{CntInfo='ATRB_PRIORITY_POS';
+Char[3 0 3 9 3 0 0 0 2 0 0]{CntInfo='ATRB_PRIORITY_POS';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Start;
 };
 }
-Comp[3 0 3 9 2 0 0 0 3]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 3]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2288,9 +2296,9 @@ IMgn=[0 0 300 300];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 3 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 3 0 0]{CntInfo='NONE';
+Char[3 0 3 9 3 0 0 0 3 0 0]{CntInfo='NONE';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
@@ -2298,7 +2306,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 9 2 0 0 0 4]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 4]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2308,9 +2316,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 4 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 4 0 0]{CntInfo='PRIO
+Char[3 0 3 9 3 0 0 0 4 0 0]{CntInfo='PRIO
 RITY';
 CntSty={
 ParSty='図形枠内段落';
@@ -2319,7 +2327,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 9 2 0 0 0 5]{Type=Fig;
+Comp[3 0 3 9 3 0 0 0 5]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2329,9 +2337,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 9 2 0 0 0 5 0]{Type=ArtTxt;
+Basic[3 0 3 9 3 0 0 0 5 0]{Type=ArtTxt;
 }
-Char[3 0 3 9 2 0 0 0 5 0 0]{CntInfo='POST
+Char[3 0 3 9 3 0 0 0 5 0 0]{CntInfo='POST
 PEND';
 CntSty={
 ParSty='図形枠内段落';
@@ -2340,27 +2348,27 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 9 2 1]{Type=Desc;
+Comp[3 0 3 9 3 1]{Type=Desc;
 Ctgry=StdInBCap;
 }
-Comp[3 0 3 9 2 1 0]{Type=Cap;
+Comp[3 0 3 9 3 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 9 2 1 0 0]{Type=CapNo;
+Basic[3 0 3 9 3 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 9 2 1 0 0 0]{CntInfo='Fig.7 ';
+Char[3 0 3 9 3 1 0 0 0]{CntInfo='Fig.7 ';
 }
-Basic[3 0 3 9 2 1 0 1]{Type=CapTxt;
+Basic[3 0 3 9 3 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 9 2 1 0 1 0]{CntInfo='ATRB_PRIORITY_POS Field';
+Char[3 0 3 9 3 1 0 1 0]{CntInfo='ATRB_PRIORITY_POS Field';
 CntSty={
 ParSty='図形枠見出し';
 };
 }
-Basic[3 0 3 9 3]{Type=Txt;
+Basic[3 0 3 9 4]{Type=Txt;
 }
-Char[3 0 3 9 3 0]{CntInfo='';
+Char[3 0 3 9 4 0]{CntInfo='';
 }
 Comp[3 0 3 10]{Type=NoSeg;
 }
@@ -2384,7 +2392,11 @@ Basic[3 0 3 10 1]{Type=Txt;
 }
 Char[3 0 3 10 1 0]{CntInfo='ATRB_POSTPEND_POS は属性ビットのうちの POSTPEND 属性の位置を示します。POSTPEND は「後回し」を意味します。この属性が付加されたワードは、他のワードとの比較の際に後回しにされて、もう一方のワードが選択されます。例えば、AワードとBワードを比較した際に、もしBワードにこの属性が付加されていた場合はAワードがどんな値であってもAワードが選択されます。';
 }
-Comp[3 0 3 10 2]{Type=Fig;
+Basic[3 0 3 10 2]{Type=Txt;
+}
+Char[3 0 3 10 2 0]{CntInfo='POSTPEND 属性の用途に関しては[「マルチワード マージソート ノード」]および[「端数ワード処理」]を参照してください。';
+}
+Comp[3 0 3 10 3]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 DimType=[on on];
@@ -2395,11 +2407,11 @@ Dim=[16764 4409];
 TxtAreaSize=[0 353 0 0];
 };
 }
-Comp[3 0 3 10 2 0]{Type=Art;
+Comp[3 0 3 10 3 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 10 2 0 0]{}
-Geo[3 0 3 10 2 0 0 0]{CntInfo={
+Basic[3 0 3 10 3 0 0]{}
+Geo[3 0 3 10 3 0 0 0]{CntInfo={
 BEGMF 'interchangeV2';
 mfversion 1;
 mfdesc 'Akane V2.0';
@@ -2474,7 +2486,7 @@ ENDPIC;
 ENDMF;
 };
 }
-Comp[3 0 3 10 2 0 0 0 0]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 0]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2483,16 +2495,16 @@ IMgn=[300 140 0 0];
 Dim=[3004 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 0 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
+Char[3 0 3 10 3 0 0 0 0 0 0]{CntInfo='ATRB FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 10 2 0 0 0 1]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 1]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2501,16 +2513,16 @@ IMgn=[300 140 140 140];
 Dim=[2502 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 1 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 1 0 0]{CntInfo='DATA FIELD';
+Char[3 0 3 10 3 0 0 0 1 0 0]{CntInfo='DATA FIELD';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Ctrd;
 };
 }
-Comp[3 0 3 10 2 0 0 0 2]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 2]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2519,16 +2531,16 @@ IMgn=[300 140 200 0];
 Dim=[4502 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 2 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 2 0 0]{CntInfo='ATRB_POSTPEND_POS';
+Char[3 0 3 10 3 0 0 0 2 0 0]{CntInfo='ATRB_POSTPEND_POS';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
 Align=Start;
 };
 }
-Comp[3 0 3 10 2 0 0 0 3]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 3]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2538,9 +2550,9 @@ IMgn=[0 0 300 300];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 3 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 3 0 0]{CntInfo='NONE';
+Char[3 0 3 10 3 0 0 0 3 0 0]{CntInfo='NONE';
 CntSty={
 ParSty='図形枠内段落';
 FFace='Meiryo UI';
@@ -2548,7 +2560,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 10 2 0 0 0 4]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 4]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2558,9 +2570,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 4 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 4 0 0]{CntInfo='PRIO
+Char[3 0 3 10 3 0 0 0 4 0 0]{CntInfo='PRIO
 RITY';
 CntSty={
 ParSty='図形枠内段落';
@@ -2569,7 +2581,7 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 10 2 0 0 0 5]{Type=Fig;
+Comp[3 0 3 10 3 0 0 0 5]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -2579,9 +2591,9 @@ IMgn=[0 0 0 100];
 Dim=[1003 1003];
 };
 }
-Basic[3 0 3 10 2 0 0 0 5 0]{Type=ArtTxt;
+Basic[3 0 3 10 3 0 0 0 5 0]{Type=ArtTxt;
 }
-Char[3 0 3 10 2 0 0 0 5 0 0]{CntInfo='POST
+Char[3 0 3 10 3 0 0 0 5 0 0]{CntInfo='POST
 PEND';
 CntSty={
 ParSty='図形枠内段落';
@@ -2590,20 +2602,20 @@ FSize=8;
 Align=Ctrd;
 };
 }
-Comp[3 0 3 10 2 1]{Type=Desc;
+Comp[3 0 3 10 3 1]{Type=Desc;
 Ctgry=StdInBCap;
 }
-Comp[3 0 3 10 2 1 0]{Type=Cap;
+Comp[3 0 3 10 3 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 10 2 1 0 0]{Type=CapNo;
+Basic[3 0 3 10 3 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 10 2 1 0 0 0]{CntInfo='Fig.8 ';
+Char[3 0 3 10 3 1 0 0 0]{CntInfo='Fig.8 ';
 }
-Basic[3 0 3 10 2 1 0 1]{Type=CapTxt;
+Basic[3 0 3 10 3 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 10 2 1 0 1 0]{CntInfo='ATRB_POSTPEND_POS Field';
+Char[3 0 3 10 3 1 0 1 0]{CntInfo='ATRB_POSTPEND_POS Field';
 CntSty={
 ParSty='図形枠見出し';
 };

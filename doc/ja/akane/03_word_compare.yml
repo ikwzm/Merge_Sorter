@@ -34,5 +34,14 @@ link_list :
   - id   : "「マージソート ツリー」"
     title: "「VHDL で書くマージソーター(マージソート ツリー)」"
     url  : "./09_merge_sort_tree.md"
+  - id   : "「端数ワード処理」"
+    title: "「VHDL で書くマージソーター(端数ワード処理)」"
+    url  : "./10_merge_sort_core_1.md"
+  - id   : "「ストリーム入力」"
+    title: "「VHDL で書くマージソーター(ストリーム入力)」"
+    url  : "./11_merge_sort_core_2.md"
+  - id   : "「ストリームフィードバック」"
+    title: "「VHDL で書くマージソーター(ストリームフィードバック)」"
+    url  : "./12_merge_sort_core_3.md"
 
 ---
