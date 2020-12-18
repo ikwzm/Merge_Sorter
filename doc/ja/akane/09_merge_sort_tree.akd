@@ -2627,7 +2627,7 @@ Align=Start;
 }
 Basic[3 0 4 2]{Type=Txt;
 }
-Char[3 0 4 2 0]{CntInfo='・次回: マージソート コア (執筆するかも？)';
+Char[3 0 4 2 0]{CntInfo='・次回: [「端数ワード処理」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

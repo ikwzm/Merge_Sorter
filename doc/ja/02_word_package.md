@@ -139,6 +139,8 @@ Fig.5 ATRB_BITS ATRB_LO ATRB_HI Field
 
 ATRB_NONE_POS は属性ビットのうちの NONE 属性の位置を示します。NONE 属性は、マージソーター内部で便宜上追加したワードに付加されます。最終的にはこの NONE 属性が付加されたワードは出力されずに捨てられます。NONE 属性は後述するPRIORITY 属性または POSTPEND 属性とともに付加されます。
 
+NONE 属性の用途に関しては[「端数ワード処理」]を参照してください。
+
 
 ![Fig.6 ATRB_NONE_POS Field](image/02_word_package_6.jpg "Fig.6 ATRB_NONE_POS Field")
 
@@ -154,6 +156,8 @@ Fig.6 ATRB_NONE_POS Field
 
 ATRB_PRIORITY_POS は属性ビットのうちの PRIORITY 属性の位置を示します。PRIORITY は「優先」を意味します。この属性が付加されたワードは、他のワードとの比較の際に、優先的に選択されます。例えば、AワードとBワードを比較した際に、もし Aワードにこの属性が付加されていた場合は Bワードがどんな値であってもAワードが選択されます。
 
+PRIORITY 属性の用途に関しては[「マルチワード マージソート ノード」]を参照してください。
+
 
 ![Fig.7 ATRB_PRIORITY_POS Field](image/02_word_package_7.jpg "Fig.7 ATRB_PRIORITY_POS Field")
 
@@ -168,6 +172,8 @@ Fig.7 ATRB_PRIORITY_POS Field
 
 
 ATRB_POSTPEND_POS は属性ビットのうちの POSTPEND 属性の位置を示します。POSTPEND は「後回し」を意味します。この属性が付加されたワードは、他のワードとの比較の際に後回しにされて、もう一方のワードが選択されます。例えば、AワードとBワードを比較した際に、もしBワードにこの属性が付加されていた場合はAワードがどんな値であってもAワードが選択されます。
+
+POSTPEND 属性の用途に関しては[「マルチワード マージソート ノード」]および[「端数ワード処理」]を参照してください。
 
 
 ![Fig.8 ATRB_POSTPEND_POS Field](image/02_word_package_8.jpg "Fig.8 ATRB_POSTPEND_POS Field")
@@ -514,3 +520,6 @@ end Word;
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"
+[「端数ワード処理」]: ./10_merge_sort_core_1.md "「VHDL で書くマージソーター(端数ワード処理)」"
+[「ストリーム入力」]: ./11_merge_sort_core_2.md "「VHDL で書くマージソーター(ストリーム入力)」"
+[「ストリームフィードバック」]: ./12_merge_sort_core_3.md "「VHDL で書くマージソーター(ストリームフィードバック)」"
