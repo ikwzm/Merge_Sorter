@@ -8,7 +8,7 @@ image_url :
   "Fig.2 マージソートツリーのワード未入力によるフリーズ"    : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/f9b7f6d1-7f6c-2e32-40a6-3ea1c99eed9f.jpeg"
   "Fig.3 マージソートツリーのダミーワード入力による端数処理" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/e028921c-e7d5-2ebc-41b9-70a0256f70b8.jpeg"
   "Fig.4 マルチワードマージソートの端数ワード処理の動作例(1)": "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/aedcfad5-ae90-2def-9af3-4da045b09ef7.jpeg"
-  "Fig.5 マルチワードマージソートの端数ワード処理の動作例(2)": "(https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/d70a1b0a-24df-1906-c6e7-4b3915dc3a65.jpeg"
+  "Fig.5 マルチワードマージソートの端数ワード処理の動作例(2)": "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/d70a1b0a-24df-1906-c6e7-4b3915dc3a65.jpeg"
   "Fig.6 マルチワードマージソートの端数ワード処理の動作例(3)": "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/3466330a-26fb-97f4-3eb9-47746ad098f0.jpeg"
   "Fig.7 Word_Drop_None の役割"                      : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/9121f0ce-0f70-b6ab-71dc-743a4fb89731.jpeg"
 
