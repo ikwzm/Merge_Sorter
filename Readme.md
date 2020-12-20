@@ -19,8 +19,8 @@ This repository provides the VHDL code for merge sorter.
   8.  [merge sort node(multi  word)](./doc/ja/08_merge_sort_node_multi.md)
   9.  [merge sort tree](./doc/ja/09_merge_sort_tree.md)
   10. [merge sort core 1](./doc/ja/10_merge_sort_core_1.md)
-  11. [merge sort core 2](./doc/ja/10_merge_sort_core_2.md)
-  12. [merge sort core 3](./doc/ja/10_merge_sort_core_3.md)
+  11. [merge sort core 2](./doc/ja/11_merge_sort_core_2.md)
+  12. [merge sort core 3](./doc/ja/12_merge_sort_core_3.md)
 
 ## Licensing
 
