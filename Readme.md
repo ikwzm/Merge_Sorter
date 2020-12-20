@@ -9,15 +9,18 @@ This repository provides the VHDL code for merge sorter.
 
 ## Documents (Japanese Language)
 
-  1. [introduction](./doc/ja/01_introduction.md)
-  2. [word package](./doc/ja/02_word_package.md)
-  3. [word compare](./doc/ja/03_word_compare.md)
-  4. [sorting network](./doc/ja/04_sorting_network.md)
-  5. [bitonic sorter](./doc/ja/05_bitonic_sorter.md)
-  6. [oddeven sorter](./doc/ja/06_oddeven_sorter.md)
-  7. [merge sort node(single word)](./doc/ja/07_merge_sort_node_single.md)
-  8. [merge sort node(multi  word)](./doc/ja/08_merge_sort_node_multi.md)
-  9. [merge sort tree](./doc/ja/09_merge_sort_tree.md)
+  1.  [introduction](./doc/ja/01_introduction.md)
+  2.  [word package](./doc/ja/02_word_package.md)
+  3.  [word compare](./doc/ja/03_word_compare.md)
+  4.  [sorting network](./doc/ja/04_sorting_network.md)
+  5.  [bitonic sorter](./doc/ja/05_bitonic_sorter.md)
+  6.  [oddeven sorter](./doc/ja/06_oddeven_sorter.md)
+  7.  [merge sort node(single word)](./doc/ja/07_merge_sort_node_single.md)
+  8.  [merge sort node(multi  word)](./doc/ja/08_merge_sort_node_multi.md)
+  9.  [merge sort tree](./doc/ja/09_merge_sort_tree.md)
+  10. [merge sort core 1](./doc/ja/10_merge_sort_core_1.md)
+  11. [merge sort core 2](./doc/ja/10_merge_sort_core_2.md)
+  12. [merge sort core 3](./doc/ja/10_merge_sort_core_3.md)
 
 ## Licensing
 
