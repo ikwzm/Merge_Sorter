@@ -2,7 +2,7 @@
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
 --!     @version 1.0.0
---!     @date    2021/6/3
+--!     @date    2021/6/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -51,6 +51,7 @@ entity  Interface_Controller is
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   16;
         REG_STAT_BITS       :  integer :=    6;
+        REG_COUNT_BITS      :  integer :=   32;
         MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
@@ -123,6 +124,9 @@ entity  Interface_Controller is
         REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
         REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
         REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_Q         :  out std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Sorter Core Control Interface
     -------------------------------------------------------------------------------
@@ -250,9 +254,10 @@ architecture RTL of Interface_Controller is
     signal   done_bit            :  std_logic;
     signal   error_bit           :  std_logic;
     signal   reset_bit           :  std_logic;
-    signal   size_regs           :  std_logic_vector(REG_SIZE_BITS-1 downto 0);
-    signal   mode_regs           :  std_logic_vector(REG_MODE_BITS-1 downto 0);
-    signal   stat_regs           :  std_logic_vector(REG_STAT_BITS-1 downto 0);
+    signal   size_regs           :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+    signal   mode_regs           :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
+    signal   stat_regs           :  std_logic_vector(REG_STAT_BITS   -1 downto 0);
+    signal   count_regs          :  std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -371,6 +376,7 @@ begin
     REG_ERR_ST_Q  <= '0';
     REG_MODE_Q    <= mode_regs;
     REG_STAT_Q    <= stat_regs;
+    REG_COUNT_Q   <= count_regs;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -386,6 +392,7 @@ begin
     begin 
         process (CLK, RST)
             variable  next_state     :  MAIN_STATE_TYPE;
+            variable  next_count     :  std_logic_vector(count_regs'range);
         begin
             if (RST = '1') then
                     curr_state       <= IDLE_STATE;
@@ -400,6 +407,7 @@ begin
                     mrg_writer_addr  <= (others => '0');
                     mrg_writer_mode  <= (others => '0');
                     stat_regs        <= (others => '0');
+                    count_regs       <= (others => '0');
                     done_en_bit      <= '0';
                     done_bit         <= '0';
                     error_bit        <= '0';
@@ -418,6 +426,7 @@ begin
                     mrg_writer_addr  <= (others => '0');
                     mrg_writer_mode  <= (others => '0');
                     stat_regs        <= (others => '0');
+                    count_regs       <= (others => '0');
                     done_en_bit      <= '0';
                     done_bit         <= '0';
                     error_bit        <= '0';
@@ -536,6 +545,19 @@ begin
                             end if;
                         end loop;
                     end if;
+                    if (curr_state = STM_RD_END_STATE or
+                        curr_state = MRG_RD_END_STATE) then
+                        next_count := std_logic_vector(unsigned(count_regs) + 1);
+                    else
+                        next_count := count_regs;
+                    end if;
+                    for i in count_regs'range loop
+                        if (REG_COUNT_L(i) = '1') then
+                            count_regs(i) <= REG_COUNT_D(i);
+                        else
+                            count_regs(i) <= next_count(i);
+                        end if;
+                    end loop;
                 end if;
             end if;
         end process;
