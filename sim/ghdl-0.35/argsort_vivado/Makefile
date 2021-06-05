@@ -33,15 +33,15 @@ dut         : argsort_vivado
 test_bench  : argsort_vivado_test_bench
 
 define RUN
-$(1): $(2) test_bench dut 
+$(1): $(2) test_bench dut
 	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Vivado_Test_Bench_,$(1))
 	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Vivado_Test_Bench_,$(1))
 
-$(2): $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr
-	$(CAT) $(SCENARIO_PATH)/test_1.snr $(SCENARIO_PATH)/test_2.snr $(SCENARIO_PATH)/test_3.snr > $(2)
+$(2): $(SCENARIO_PATH)/$(1)_1.snr $(SCENARIO_PATH)/$(1)_2.snr $(SCENARIO_PATH)/$(1)_3.snr
+	$(CAT) $(SCENARIO_PATH)/$(1)_1.snr $(SCENARIO_PATH)/$(1)_2.snr $(SCENARIO_PATH)/$(1)_3.snr > $(2)
 endef
 
-$(foreach ENTITY, $(TEST), $(eval $(call RUN, $(ENTITY), $(addsuffix .snr,$(ENTITY)))))
+$(foreach ENTITY, $(TEST), $(eval $(call RUN,$(ENTITY),$(addsuffix .snr,$(ENTITY)))))
 
 sources.mk   : sources.yml
 	$(PIPEWORK_TOOL_PATH)/vhdl-archiver.rb -v --config sources.yml > sources.mk
