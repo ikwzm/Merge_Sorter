@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.0.0
+--!     @date    2021/6/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2021 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,10 @@ entity  Interface_Controller is
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_RD_ADDR_VALID   :  boolean := TRUE;
+        STM_RD_MODE_VALID   :  boolean := TRUE;
+        STM_WR_ADDR_VALID   :  boolean := TRUE;
+        STM_WR_MODE_VALID   :  boolean := TRUE;
         DEBUG_ENABLE        :  integer :=    0;
         DEBUG_SIZE          :  integer :=    1;
         DEBUG_BITS          :  integer range 64 to 64 := 64;
@@ -70,11 +74,11 @@ entity  Interface_Controller is
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
@@ -82,11 +86,11 @@ entity  Interface_Controller is
         REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
@@ -429,10 +433,17 @@ begin
                             last_proc       <= FALSE;
                             stm_writer_on   <= FALSE;
                             mrg_writer_on   <= FALSE;
-                            mrg_reader_addr <= tmp_1_base_addr;
-                            mrg_reader_mode <= tmp_1_xfer_mode;
-                            mrg_writer_addr <= tmp_0_base_addr;
-                            mrg_writer_mode <= tmp_0_xfer_mode;
+                            if (STM_RD_ADDR_VALID) then
+                                mrg_reader_addr <= tmp_1_base_addr;
+                                mrg_reader_mode <= tmp_1_xfer_mode;
+                                mrg_writer_addr <= tmp_0_base_addr;
+                                mrg_writer_mode <= tmp_0_xfer_mode;
+                            else
+                                mrg_reader_addr <= tmp_0_base_addr;
+                                mrg_reader_mode <= tmp_0_xfer_mode;
+                                mrg_writer_addr <= tmp_1_base_addr;
+                                mrg_writer_mode <= tmp_1_xfer_mode;
+                            end if;
                             sort_total_size <= resize     (unsigned(size_regs)           , sort_total_size'length);
                             sort_block_size <= to_unsigned(WORDS*(WAYS**(STM_FEEDBACK+1)), sort_block_size'length);
                         when STM_RD_CHK_STATE =>
@@ -674,6 +685,7 @@ begin
         type     STATE_TYPE     is (IDLE_STATE, REQ_STATE, RUN0_STATE, RUN1_STATE, DONE_STATE);
         signal   curr_state     :  STATE_TYPE;
         signal   read_addr      :  unsigned(STM_RD_REG_PARAM.ADDR_BITS-1 downto 0);
+        signal   xfer_mode      :  unsigned(STM_RD_REG_PARAM.MODE_BITS-1 downto 0);
         signal   read_bytes     :  unsigned(STM_RD_REG_PARAM.SIZE_BITS-1 downto 0);
         signal   reg_data       :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
         signal   reg_load       :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
@@ -699,7 +711,11 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            read_addr  <= resize(unsigned(stm_reader_addr)        , read_addr 'length);
+                            if (STM_RD_ADDR_VALID) then
+                                read_addr <= resize(unsigned(stm_reader_addr), read_addr'length);
+                            else
+                                read_addr <= resize(unsigned(mrg_reader_addr), read_addr'length);
+                            end if;
                             read_bytes <= resize(sort_total_size*STM_RD_DATA_BYTES, read_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
@@ -732,13 +748,22 @@ begin
                                (curr_state = RUN0_STATE) or
                                (curr_state = RUN1_STATE));
         ---------------------------------------------------------------------------
+        -- xfer_mode
+        ---------------------------------------------------------------------------
+        STM_RD_MODE: if (STM_RD_MODE_VALID = TRUE ) generate
+            xfer_mode <= resize(unsigned(stm_reader_mode), STM_RD_REG_PARAM.MODE_BITS);
+        end generate;
+        MRG_RD_MODE: if (STM_RD_MODE_VALID = FALSE) generate
+            xfer_mode <= resize(unsigned(mrg_reader_mode), STM_RD_REG_PARAM.MODE_BITS);
+        end generate;
+        ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (reset_bit, read_addr, read_bytes, stm_reader_mode) begin
+        process (reset_bit, read_addr, read_bytes, xfer_mode) begin
             reg_data <= (others => '0');
             reg_data(STM_RD_REG_PARAM.ADDR_HI downto STM_RD_REG_PARAM.ADDR_LO) <= std_logic_vector(read_addr);
             reg_data(STM_RD_REG_PARAM.SIZE_HI downto STM_RD_REG_PARAM.SIZE_LO) <= std_logic_vector(read_bytes);
-            reg_data(STM_RD_REG_PARAM.MODE_HI downto STM_RD_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(stm_reader_mode), STM_RD_REG_PARAM.MODE_BITS));
+            reg_data(STM_RD_REG_PARAM.MODE_HI downto STM_RD_REG_PARAM.MODE_LO) <= std_logic_vector(xfer_mode);
             reg_data(STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO) <= (STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO => '0');
             reg_data(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(STM_RD_REG_PARAM.CTRL_PAUSE_POS) <= '0';
@@ -967,6 +992,7 @@ begin
         signal   curr_state     :  STATE_TYPE;
         signal   write_addr     :  unsigned(STM_WR_REG_PARAM.ADDR_BITS-1 downto 0);
         signal   write_bytes    :  unsigned(STM_WR_REG_PARAM.SIZE_BITS-1 downto 0);
+        signal   xfer_mode      :  unsigned(STM_WR_REG_PARAM.MODE_BITS-1 downto 0);
         signal   reg_data       :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
         signal   reg_load       :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
     begin
@@ -991,7 +1017,11 @@ begin
                             else
                                 curr_state <= IDLE_STATE;
                             end if;
-                            write_addr  <= resize(unsigned(stm_writer_addr)        , write_addr 'length);
+                            if (STM_WR_ADDR_VALID) then
+                                write_addr <= resize(unsigned(stm_writer_addr), write_addr'length);
+                            else
+                                write_addr <= resize(unsigned(mrg_writer_addr), write_addr'length);
+                            end if;
                             write_bytes <= resize(sort_total_size*STM_WR_DATA_BYTES, write_bytes'length);
                         when REQ_STATE =>
                                 curr_state <= RUN0_STATE;
@@ -1024,13 +1054,22 @@ begin
                                (curr_state = RUN0_STATE) or
                                (curr_state = RUN1_STATE));
         ---------------------------------------------------------------------------
+        -- xfer_mode
+        ---------------------------------------------------------------------------
+        STM_WR_MODE: if (STM_WR_MODE_VALID = TRUE ) generate
+            xfer_mode <= resize(unsigned(stm_writer_mode), STM_WR_REG_PARAM.MODE_BITS);
+        end generate;
+        MRG_WR_MODE: if (STM_WR_MODE_VALID = FALSE) generate
+            xfer_mode <= resize(unsigned(mrg_writer_mode), STM_WR_REG_PARAM.MODE_BITS);
+        end generate;
+        ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
-        process (reset_bit, write_addr, write_bytes, stm_writer_mode) begin
+        process (reset_bit, write_addr, write_bytes, xfer_mode) begin
             reg_data <= (others => '0');
             reg_data(STM_WR_REG_PARAM.ADDR_HI downto STM_WR_REG_PARAM.ADDR_LO) <= std_logic_vector(write_addr);
             reg_data(STM_WR_REG_PARAM.SIZE_HI downto STM_WR_REG_PARAM.SIZE_LO) <= std_logic_vector(write_bytes);
-            reg_data(STM_WR_REG_PARAM.MODE_HI downto STM_WR_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(stm_writer_mode), STM_WR_REG_PARAM.MODE_BITS));
+            reg_data(STM_WR_REG_PARAM.MODE_HI downto STM_WR_REG_PARAM.MODE_LO) <= std_logic_vector(xfer_mode);
             reg_data(STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO) <= (STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO => '0');
             reg_data(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
             reg_data(STM_WR_REG_PARAM.CTRL_PAUSE_POS) <= '0';
