@@ -2,11 +2,15 @@
 class ArgSort_Vivado_Test_Bench
 
   attr_reader   :name, :csr, :merchal
+  attr_reader   :ways, :words, :feedback
   attr_reader   :stm_mem, :stm_mem_addr, :stm_mem_size
   attr_reader   :mrg_mem, :mrg_mem_addr, :mrg_mem_size
 
-  def initialize(file)
+  def initialize(file,ways,words,feedback)
     @sort_order   = 0
+    @ways         = ways
+    @words        = words
+    @feedback     = feedback
     @stm_mem_addr = 0x81000000
     @stm_mem_size = 32*1024
     @rd_offset    = 0x0000
@@ -42,6 +46,16 @@ class ArgSort_Vivado_Test_Bench
     @merchal.sync
   end
 
+  def sort_loop_count(size)
+    loop_count = 1
+    block_size = @words*(@ways**(@feedback+1))
+    while(block_size < size)
+      loop_count = loop_count + 1
+      block_size = block_size*@ways
+    end
+    return loop_count
+  end
+
   def run(data, args, title, params=nil)
     if ((data.length * 4) > @rd_size) then
       abort "#{title} data size overflow"
@@ -56,8 +70,6 @@ class ArgSort_Vivado_Test_Bench
       abort "#{title} data size overflow"
     end
     csr_params = (params.nil?)? Hash.new : params.dup
-    csr_params[:rd_addr  ] = @stm_mem_addr + @rd_offset
-    csr_params[:wr_addr  ] = @stm_mem_addr + @wr_offset
     csr_params[:t0_addr  ] = @mrg_mem_addr + @t0_offset
     csr_params[:t1_addr  ] = @mrg_mem_addr + @t1_offset
     csr_params[:rd_cache ] = @stm_mem.cache if not @stm_mem.cache.nil?
@@ -69,14 +81,16 @@ class ArgSort_Vivado_Test_Bench
     csr_params[:t1_cache ] = @mrg_mem.cache if not @mrg_mem.cache.nil?
     csr_params[:t1_prot  ] = @mrg_mem.prot  if not @mrg_mem.prot.nil?
     csr_params[:size     ] = data.length
+    csr_params[:result   ] = sort_loop_count(data.length)
     csr_params[:interrupt] = true
     @merchal.sync
     @merchal.say "#{@tag} #{title} Start."
     @merchal.sync
     @csr.run(csr_params)
-    @stm_mem.set_word_data(  data, @rd_offset)
+    @stm_mem.set_word_data(  data, @t0_offset)
     @stm_mem.run
-    @stm_mem.check_word_data(args, @wr_offset)
+    result = csr_params[:result]
+    @stm_mem.check_word_data(args, ((result % 2 == 0)? @t0_offset : @t1_offset))
     @mrg_mem.run
     @merchal.sync
     @merchal.say "#{@tag} #{title} Done."
@@ -107,15 +121,16 @@ class ArgSort_Vivado_Test_Bench
       @girq_regs_addr    = regs_addr + 0x04;
       @irq_ena_regs_addr = regs_addr + 0x08;
       @irq_sta_regs_addr = regs_addr + 0x0C;
-      @rd_addr_regs_addr = regs_addr + 0x10;
-      @wr_addr_regs_addr = regs_addr + 0x18;
+      @command_regs_addr = regs_addr + 0x10;
+      @size_regs_addr    = regs_addr + 0x18;
       @t0_addr_regs_addr = regs_addr + 0x20;
       @t1_addr_regs_addr = regs_addr + 0x28;
-      @rd_mode_regs_addr = regs_addr + 0x30;
-      @wr_mode_regs_addr = regs_addr + 0x32;
-      @t0_mode_regs_addr = regs_addr + 0x34;
-      @t1_mode_regs_addr = regs_addr + 0x36;
-      @size_regs_addr    = regs_addr + 0x38;
+      @rw_mode_regs_addr = regs_addr + 0x30;
+      @t0_mode_regs_addr = @rw_mode_regs_addr + 0x00
+      @t1_mode_regs_addr = @rw_mode_regs_addr + 0x02
+      @rd_mode_regs_addr = @rw_mode_regs_addr + 0x04
+      @wr_mode_regs_addr = @rw_mode_regs_addr + 0x06
+      @result_regs_addr  = regs_addr + 0x38;
     end
 
     def init
@@ -140,42 +155,17 @@ class ArgSort_Vivado_Test_Bench
     end
 
     def setup(params)
-      if (params.key?(:rd_addr))
-        write_64bit(@rd_addr_regs_addr, params[:rd_addr], "RD_ADDR")
-      end
-      if (params.key?(:wr_addr))
-        write_64bit(@wr_addr_regs_addr, params[:wr_addr], "WR_ADDR")
-      end
-      if (params.key?(:t0_addr))
-        write_64bit(@t0_addr_regs_addr, params[:t0_addr], "T0_ADDR")
-      end
-      if (params.key?(:t1_addr))
-        write_64bit(@t1_addr_regs_addr, params[:t1_addr], "T1_ADDR")
-      end
-
-      rd_mode = params.fetch(:rd_mode, 0x00000000)
-      rd_mode = rd_mode | ((params[:rd_cache] & 0xF) <<  4) if params.key?(:rd_cache)
-      rd_mode = rd_mode | ((params[:rd_prot ] & 0x7) <<  8) if params.key?(:rd_prot )
-      rd_mode = rd_mode | ((params[:rd_user ] & 0x1) << 11) if params.key?(:rd_user )
-      rd_mode = rd_mode | (1                         << 14) if params.fetch(:rd_speculative, false)
-      rd_mode = rd_mode | (1                         << 15) if params.fetch(:rd_safety, false)
-      rw_mode = rd_mode
-      
-      wr_mode = params.fetch(:wr_mode, 0x00000000)
-      wr_mode = wr_mode | ((params[:wr_cache] & 0xF) <<  4) if params.key?(:wr_cache)
-      wr_mode = wr_mode | ((params[:wr_prot ] & 0x7) <<  8) if params.key?(:wr_prot )
-      wr_mode = wr_mode | ((params[:wr_user ] & 0x1) << 11) if params.key?(:wr_user )
-      wr_mode = wr_mode | (1                         << 14) if params.fetch(:wr_speculative, false)
-      wr_mode = wr_mode | (1                         << 15) if params.fetch(:wr_safety, false)
-      rw_mode = (wr_mode << 16) | rw_mode
-      
+      write_32bit(@girq_regs_addr   , 0x00000000, "GIRQ   ")
+      write_32bit(@irq_ena_regs_addr, 0x00000000, "IRQ_ENA")
       t0_mode = params.fetch(:t0_mode, 0x00000000)
       t0_mode = t0_mode | ((params[:t0_cache] & 0xF) <<  4) if params.key?(:t0_cache)
       t0_mode = t0_mode | ((params[:t0_prot ] & 0x7) <<  8) if params.key?(:t0_prot )
       t0_mode = t0_mode | ((params[:t0_user ] & 0x1) << 11) if params.key?(:t0_user )
       t0_mode = t0_mode | (1                         << 14) if params.fetch(:t0_speculative, false)
       t0_mode = t0_mode | (1                         << 15) if params.fetch(:t0_safety, false)
-      rw_mode = (t0_mode << 32) | rw_mode
+      write_32bit(@command_regs_addr  , t0_mode | 0x20000000, "COMMAND")
+      write_32bit(@ctrl_regs_addr     , 0x00000001          , "CONTROL")
+      check_32bit(@result_regs_addr   , t0_mode             , "RESULT ")
       
       t1_mode = params.fetch(:t1_mode, 0x00000000)
       t1_mode = t1_mode | ((params[:t1_cache] & 0xF) <<  4) if params.key?(:t1_cache)
@@ -183,10 +173,36 @@ class ArgSort_Vivado_Test_Bench
       t1_mode = t1_mode | ((params[:t1_user ] & 0x1) << 11) if params.key?(:t1_user )
       t1_mode = t1_mode | (1                         << 14) if params.fetch(:t1_speculative, false)
       t1_mode = t1_mode | (1                         << 15) if params.fetch(:t1_safety, false)
-      rw_mode = (t1_mode << 48) | rw_mode
+      write_32bit(@command_regs_addr  , t1_mode | 0x21000000, "COMMAND")
+      write_32bit(@ctrl_regs_addr     , 0x00000001          , "CONTROL")
+      check_32bit(@result_regs_addr   , t1_mode             , "RESULT ")
       
-      write_64bit(@rd_mode_regs_addr, rw_mode, "RW_MODE")
+      rd_mode = params.fetch(:rd_mode, 0x00000000)
+      rd_mode = rd_mode | ((params[:rd_cache] & 0xF) <<  4) if params.key?(:rd_cache)
+      rd_mode = rd_mode | ((params[:rd_prot ] & 0x7) <<  8) if params.key?(:rd_prot )
+      rd_mode = rd_mode | ((params[:rd_user ] & 0x1) << 11) if params.key?(:rd_user )
+      rd_mode = rd_mode | (1                         << 14) if params.fetch(:rd_speculative, false)
+      rd_mode = rd_mode | (1                         << 15) if params.fetch(:rd_safety, false)
+      write_32bit(@command_regs_addr  , rd_mode | 0x22000000, "COMMAND")
+      write_32bit(@ctrl_regs_addr     , 0x00000001          , "CONTROL")
+      check_32bit(@result_regs_addr   , rd_mode             , "RESULT ")
+      
+      wr_mode = params.fetch(:wr_mode, 0x00000000)
+      wr_mode = wr_mode | ((params[:wr_cache] & 0xF) <<  4) if params.key?(:wr_cache)
+      wr_mode = wr_mode | ((params[:wr_prot ] & 0x7) <<  8) if params.key?(:wr_prot )
+      wr_mode = wr_mode | ((params[:wr_user ] & 0x1) << 11) if params.key?(:wr_user )
+      wr_mode = wr_mode | (1                         << 14) if params.fetch(:wr_speculative, false)
+      wr_mode = wr_mode | (1                         << 15) if params.fetch(:wr_safety, false)
+      write_32bit(@command_regs_addr  , wr_mode | 0x23000000, "COMMAND")
+      write_32bit(@ctrl_regs_addr     , 0x00000001          , "CONTROL")
+      check_32bit(@result_regs_addr   , wr_mode             , "RESULT ")
 
+      if (params.key?(:t0_addr))
+        write_64bit(@t0_addr_regs_addr, params[:t0_addr], "T0_ADDR")
+      end
+      if (params.key?(:t1_addr))
+        write_64bit(@t1_addr_regs_addr, params[:t1_addr], "T1_ADDR")
+      end
       if (params.key?(:size))
         write_32bit(@size_regs_addr   , params[:size   ], "SIZE   ")
       end
@@ -198,7 +214,8 @@ class ArgSort_Vivado_Test_Bench
         write_32bit(@girq_regs_addr   , 0x00000000, "GIRQ   ")
         write_32bit(@irq_ena_regs_addr, 0x00000000, "IRQ_ENA")
       end
-      write_32bit(@ctrl_regs_addr, 0x00000001, "CONTROL")
+      write_32bit(@command_regs_addr  , 0x00000000, "COMMAND")
+      write_32bit(@ctrl_regs_addr     , 0x00000001, "CONTROL")
     end
 
     def mem_start
@@ -227,6 +244,8 @@ class ArgSort_Vivado_Test_Bench
         wait_interrupt(0)
         check_32bit(@irq_sta_regs_addr, 0x00000000, "IRQ_STA")
         check_32bit(@ctrl_regs_addr   , 0x00000004, "CSR    ")
+        result = new_params[:result]
+        check_32bit(@result_regs_addr , result    , "RESULT ")
       end
       mem_stop
     end
