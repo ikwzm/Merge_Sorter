@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_vivado.vhd
 --!     @brief   Merge Sorter ArgSort for Xilinx Vivado
---!     @version 0.9.2
---!     @date    2021/6/2
+--!     @version 1.0.0
+--!     @date    2021/6/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -351,6 +351,7 @@ architecture RTL of ArgSort_Vivado is
     constant  RW_ADDR_BITS      :  integer := 64;
     constant  RW_SIZE_BITS      :  integer := 32;
     constant  RW_MODE_BITS      :  integer := 16;
+    constant  SORT_COUNT_BITS   :  integer := 16;
     -------------------------------------------------------------------------------
     -- Vivado-HLS Method Interface
     -------------------------------------------------------------------------------
@@ -360,7 +361,19 @@ architecture RTL of ArgSort_Vivado is
     signal    ap_ready          :  std_logic;
     signal    ap_idle           :  std_logic;
     -------------------------------------------------------------------------------
-    -- CTRL_REGS : Control signals
+    -- 
+    -------------------------------------------------------------------------------
+    signal    sort_start        :  std_logic;
+    signal    sort_busy         :  std_logic;
+    signal    sort_done         :  std_logic;
+    signal    sort_size_load    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
+    signal    sort_size_wbit    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
+    signal    sort_size_data    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
+    signal    sort_count_load   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
+    signal    sort_count_wbit   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
+    signal    sort_count_regs   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- CTRL_REGS    : Control signals
     -------------------------------------------------------------------------------
     -- 0x00 : bit 0  - ap_start (Read/Write/COH)
     --        bit 1  - ap_done (Read/COR)
@@ -385,22 +398,29 @@ architecture RTL of ArgSort_Vivado is
     signal    ctrl_regs         :  std_logic_vector(CTRL_REGS_BITS   -1 downto 0);
     signal    ctrl_start        :  std_logic;
     signal    ctrl_done         :  std_logic;
+    type      CTRL_STETE_TYPE   is (IDLE_STATE,
+                                    SORT_STATE,
+                                    MISC_STATE,
+                                    GET_DEBUG_STATE,
+                                    GET_MODE_STATE,
+                                    SET_MODE_STATE);
+    signal    ctrl_state        :  CTRL_STETE_TYPE;
     -------------------------------------------------------------------------------
-    -- GIRQ_REGS : Global Interrupt Enable Register
+    -- GIRQ_ENA_REGS: Global Interrupt Enable Register
     -------------------------------------------------------------------------------
     -- 0x04 : bit 0  - Global Interrupt Enable (Read/Write)
     --        others - reserved
     -------------------------------------------------------------------------------
-    constant  GIRQ_REGS_ADDR    :  integer := 16#04#;
-    constant  GIRQ_REGS_BITS    :  integer := 32;
-    constant  GIRQ_REGS_LO      :  integer := 8*GIRQ_REGS_ADDR;
-    constant  GIRQ_REGS_HI      :  integer := 8*GIRQ_REGS_ADDR + GIRQ_REGS_BITS - 1;
-    constant  GIRQ_ENABLE_POS   :  integer :=  0;
-    constant  GIRQ_RESV_LO      :  integer :=  1;
-    constant  GIRQ_RESV_HI      :  integer := GIRQ_REGS_BITS - 1;
-    signal    girq_load         :  std_logic_vector(GIRQ_REGS_BITS   -1 downto 0);
-    signal    girq_wbit         :  std_logic_vector(GIRQ_REGS_BITS   -1 downto 0);
-    signal    girq_regs         :  std_logic_vector(GIRQ_REGS_BITS   -1 downto 0);
+    constant  GIER_REGS_ADDR    :  integer := 16#04#;
+    constant  GIER_REGS_BITS    :  integer := 32;
+    constant  GIER_REGS_LO      :  integer := 8*GIER_REGS_ADDR;
+    constant  GIER_REGS_HI      :  integer := 8*GIER_REGS_ADDR + GIER_REGS_BITS - 1;
+    constant  GIER_ENABLE_POS   :  integer :=  0;
+    constant  GIER_RESV_LO      :  integer :=  1;
+    constant  GIER_RESV_HI      :  integer := GIER_REGS_BITS - 1;
+    signal    gier_load         :  std_logic_vector(GIER_REGS_BITS   -1 downto 0);
+    signal    gier_wbit         :  std_logic_vector(GIER_REGS_BITS   -1 downto 0);
+    signal    gier_regs         :  std_logic_vector(GIER_REGS_BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- IRQ_ENA_REGS : IP Interrupt Enable Register (Read/Write)
     -------------------------------------------------------------------------------
@@ -437,27 +457,64 @@ architecture RTL of ArgSort_Vivado is
     signal    irq_sta_load      :  std_logic_vector(IRQ_STA_REGS_BITS-1 downto 0);
     signal    irq_sta_wbit      :  std_logic_vector(IRQ_STA_REGS_BITS-1 downto 0);
     signal    irq_sta_regs      :  std_logic_vector(IRQ_STA_REGS_BITS-1 downto 0);
+    ------------------------------------------------------------------------------
+    -- COMMAND_REGS : Command Register
     -------------------------------------------------------------------------------
-    -- RD_ADDR_REGS : Read  Buffer Address Register
+    constant  COMMAND_REGS_ADDR :  integer := 16#10#;
+    constant  COMMAND_REGS_BITS :  integer := 32;
+    constant  COMMAND_REGS_LO   :  integer := 8*COMMAND_REGS_ADDR;
+    constant  COMMAND_REGS_HI   :  integer := 8*COMMAND_REGS_ADDR + COMMAND_REGS_BITS - 1;
+    constant  COMMAND_TYPE_HI   :  integer := 31;
+    constant  COMMAND_TYPE_LO   :  integer := 28;
+    constant  COMMAND_MODE_HI   :  integer := 27;
+    constant  COMMAND_MODE_LO   :  integer := 24;
+    constant  COMMAND_ARG2_HI   :  integer := 23;
+    constant  COMMAND_ARG2_LO   :  integer := 16;
+    constant  COMMAND_ARG1_HI   :  integer := 15;
+    constant  COMMAND_ARG1_LO   :  integer :=  8;
+    constant  COMMAND_ARG0_HI   :  integer :=  7;
+    constant  COMMAND_ARG0_LO   :  integer :=  0;
+    constant  COMMAND_SORT_TYPE :  integer :=  0;
+    constant  COMMAND_GET_DEBUG :  integer :=  1;
+    constant  COMMAND_SET_MODE  :  integer :=  2;
+    constant  COMMAND_GET_MODE  :  integer :=  3;
+    signal    command_load      :  std_logic_vector(COMMAND_REGS_BITS-1 downto 0);
+    signal    command_wbit      :  std_logic_vector(COMMAND_REGS_BITS-1 downto 0);
+    signal    command_regs      :  std_logic_vector(COMMAND_REGS_BITS-1 downto 0);
+    signal    command_mode      :  std_logic_vector(COMMAND_MODE_HI downto COMMAND_MODE_LO);
+    signal    command_type      :  std_logic_vector(COMMAND_TYPE_HI downto COMMAND_TYPE_LO);
+    signal    get_debug_start   :  std_logic;
+    signal    get_mode_start    :  std_logic;
+    signal    set_mode_start    :  std_logic;
+    signal    set_t0_mode       :  boolean;
+    signal    set_t1_mode       :  boolean;
+    signal    set_rd_mode       :  boolean;
+    signal    set_wr_mode       :  boolean;
+    constant  set_mode_load     :  std_logic_vector(RW_MODE_BITS-1 downto 0) := (others => '1');
+    signal    set_mode_wbit     :  std_logic_vector(RW_MODE_BITS-1 downto 0);
+    ------------------------------------------------------------------------------
+    -- RESV_REGS    : Reserved Register
     -------------------------------------------------------------------------------
-    constant  RD_ADDR_REGS_ADDR :  integer := 16#10#;
-    constant  RD_ADDR_REGS_BITS :  integer := RW_ADDR_BITS;
-    constant  RD_ADDR_REGS_LO   :  integer := 8*RD_ADDR_REGS_ADDR;
-    constant  RD_ADDR_REGS_HI   :  integer := 8*RD_ADDR_REGS_ADDR + RD_ADDR_REGS_BITS - 1;
-    signal    rd_addr_load      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
-    signal    rd_addr_wbit      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
-    signal    rd_addr_regs      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
+    constant  RESV_REGS_ADDR    :  integer := 16#14#;
+    constant  RESV_REGS_BITS    :  integer := 32;
+    constant  RESV_REGS_LO      :  integer := 8*RESV_REGS_ADDR;
+    constant  RESV_REGS_HI      :  integer := 8*RESV_REGS_ADDR    + RESV_REGS_BITS    - 1;
+    constant  resv_regs         :  std_logic_vector(RESV_REGS_BITS-1 downto 0) := (others => '0');
     -------------------------------------------------------------------------------
-    -- WR_ADDR_REGS : Write Buffer Address Register
+    -- SIZE_REGS    : Size Register
     -------------------------------------------------------------------------------
-    constant  WR_ADDR_REGS_ADDR :  integer := 16#18#;
-    constant  WR_ADDR_REGS_BITS :  integer := RW_ADDR_BITS;
-    constant  WR_ADDR_REGS_LO   :  integer := 8*WR_ADDR_REGS_ADDR;
-    constant  WR_ADDR_REGS_HI   :  integer := 8*WR_ADDR_REGS_ADDR + WR_ADDR_REGS_BITS - 1;
-    signal    wr_addr_load      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
-    signal    wr_addr_wbit      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
-    signal    wr_addr_regs      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
-    -------------------------------------------------------------------------------
+    constant  SIZE_REGS_ADDR    :  integer := 16#18#;
+    constant  SIZE_REGS_BITS    :  integer := 64;
+    constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
+    constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + SIZE_REGS_BITS    - 1;
+    constant  SIZE_SIZE_LO      :  integer := 0;
+    constant  SIZE_SIZE_HI      :  integer := RW_SIZE_BITS  - 1;
+    constant  SIZE_RESV_LO      :  integer := RW_SIZE_BITS;
+    constant  SIZE_RESV_HI      :  integer := SIZE_REGS_BITS - 1;
+    signal    size_load         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
+    signal    size_wbit         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
+    signal    size_regs         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
+    ------------------------------------------------------------------------------
     -- T0_ADDR_REGS : Tempolary Buffer[0] Address Register
     -------------------------------------------------------------------------------
     constant  T0_ADDR_REGS_ADDR :  integer := 16#20#;
@@ -478,29 +535,9 @@ architecture RTL of ArgSort_Vivado is
     signal    t1_addr_wbit      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
     signal    t1_addr_regs      :  std_logic_vector(RW_ADDR_BITS     -1 downto 0);
     -------------------------------------------------------------------------------
-    -- RD_MODE_REGS : Read  Buffer Mode Register
-    -------------------------------------------------------------------------------
-    constant  RD_MODE_REGS_ADDR :  integer := 16#30#;
-    constant  RD_MODE_REGS_BITS :  integer := RW_MODE_BITS;
-    constant  RD_MODE_REGS_LO   :  integer := 8*RD_MODE_REGS_ADDR;
-    constant  RD_MODE_REGS_HI   :  integer := 8*RD_MODE_REGS_ADDR + RD_MODE_REGS_BITS - 1;
-    signal    rd_mode_load      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    signal    rd_mode_wbit      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    signal    rd_mode_regs      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    -------------------------------------------------------------------------------
-    -- WR_MODE_REGS : Write Buffer Mode Register
-    -------------------------------------------------------------------------------
-    constant  WR_MODE_REGS_ADDR :  integer := 16#32#;
-    constant  WR_MODE_REGS_BITS :  integer := RW_MODE_BITS;
-    constant  WR_MODE_REGS_LO   :  integer := 8*WR_MODE_REGS_ADDR;
-    constant  WR_MODE_REGS_HI   :  integer := 8*WR_MODE_REGS_ADDR + WR_MODE_REGS_BITS - 1;
-    signal    wr_mode_load      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    signal    wr_mode_wbit      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    signal    wr_mode_regs      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
-    -------------------------------------------------------------------------------
     -- T0_MODE_REGS : Tempolary Buffer[0] Mode Register
     -------------------------------------------------------------------------------
-    constant  T0_MODE_REGS_ADDR :  integer := 16#34#;
+    constant  T0_MODE_REGS_ADDR :  integer := 16#30#;
     constant  T0_MODE_REGS_BITS :  integer := RW_MODE_BITS;
     constant  T0_MODE_REGS_LO   :  integer := 8*T0_MODE_REGS_ADDR;
     constant  T0_MODE_REGS_HI   :  integer := 8*T0_MODE_REGS_ADDR + T0_MODE_REGS_BITS - 1;
@@ -510,7 +547,7 @@ architecture RTL of ArgSort_Vivado is
     -------------------------------------------------------------------------------
     -- T1_MODE_REGS : Tempolary Buffer[1] Mode Register
     -------------------------------------------------------------------------------
-    constant  T1_MODE_REGS_ADDR :  integer := 16#36#;
+    constant  T1_MODE_REGS_ADDR :  integer := 16#32#;
     constant  T1_MODE_REGS_BITS :  integer := RW_MODE_BITS;
     constant  T1_MODE_REGS_LO   :  integer := 8*T1_MODE_REGS_ADDR;
     constant  T1_MODE_REGS_HI   :  integer := 8*T1_MODE_REGS_ADDR + T1_MODE_REGS_BITS - 1;
@@ -518,31 +555,66 @@ architecture RTL of ArgSort_Vivado is
     signal    t1_mode_wbit      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
     signal    t1_mode_regs      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
     -------------------------------------------------------------------------------
-    -- SIZE_REGS : Size Register
+    -- RD_MODE_REGS : Stream Reader Mode Register
     -------------------------------------------------------------------------------
-    constant  SIZE_REGS_ADDR    :  integer := 16#38#;
-    constant  SIZE_REGS_BITS    :  integer := 64;
-    constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
-    constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + SIZE_REGS_BITS   - 1;
-    constant  SIZE_SIZE_LO      :  integer := 0;
-    constant  SIZE_SIZE_HI      :  integer := RW_SIZE_BITS  - 1;
-    constant  SIZE_RESV_LO      :  integer := RW_SIZE_BITS;
-    constant  SIZE_RESV_HI      :  integer := SIZE_REGS_BITS - 1;
-    signal    size_load         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
-    signal    size_wbit         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
-    signal    size_regs         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
-    signal    ctrl_size_load    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
-    signal    ctrl_size_wbit    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
-    signal    ctrl_size_data    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
+    constant  RD_MODE_REGS_ADDR :  integer := 16#34#;
+    constant  RD_MODE_REGS_BITS :  integer := RW_MODE_BITS;
+    constant  RD_MODE_REGS_LO   :  integer := 8*RD_MODE_REGS_ADDR;
+    constant  RD_MODE_REGS_HI   :  integer := 8*RD_MODE_REGS_ADDR + RD_MODE_REGS_BITS - 1;
+    signal    rd_mode_load      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    signal    rd_mode_wbit      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    signal    rd_mode_regs      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- WR_MODE_REGS : Stream Writer Mode Register
+    -------------------------------------------------------------------------------
+    constant  WR_MODE_REGS_ADDR :  integer := 16#36#;
+    constant  WR_MODE_REGS_BITS :  integer := RW_MODE_BITS;
+    constant  WR_MODE_REGS_LO   :  integer := 8*WR_MODE_REGS_ADDR;
+    constant  WR_MODE_REGS_HI   :  integer := 8*WR_MODE_REGS_ADDR + WR_MODE_REGS_BITS - 1;
+    signal    wr_mode_load      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    signal    wr_mode_wbit      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    signal    wr_mode_regs      :  std_logic_vector(RW_MODE_BITS     -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- RESULT_REGS : Result Register
+    -------------------------------------------------------------------------------
+    constant  RESULT_REGS_ADDR  :  integer := 16#38#;
+    constant  RESULT_REGS_BITS  :  integer := 64;
+    constant  RESULT_REGS_LO    :  integer := 8*RESULT_REGS_ADDR;
+    constant  RESULT_REGS_HI    :  integer := 8*RESULT_REGS_ADDR  + RESULT_REGS_BITS  - 1;
+    signal    result_regs       :  std_logic_vector(RESULT_REGS_BITS -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function  to_unsigned(I: boolean; LEN: integer) return unsigned is
+    begin
+        if (I = TRUE) then return to_unsigned(1, LEN);
+        else               return to_unsigned(0, LEN);
+        end if;
+    end function;
+    -------------------------------------------------------------------------------
+    -- VERSION_REGS
+    -------------------------------------------------------------------------------
+    constant  VERSION_REGS_BITS :  integer := 64;
+    constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 0;
+    constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
+                                := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
+                                   std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
+                                   std_logic_vector(to_unsigned(MRG_WAYS     ,10)) &
+                                   std_logic_vector(to_unsigned(MRG_WORDS    ,10)) &
+                                   std_logic_vector(to_unsigned(STM_FEEDBACK , 4)) &
+                                   std_logic_vector(to_unsigned(WORD_BITS    ,12)) &
+                                   std_logic_vector(to_unsigned(INDEX_BITS   ,12)) &
+                                   std_logic_vector(to_unsigned(SORT_ORDER   , 1)) &
+                                   std_logic_vector(to_unsigned(COMP_SIGN    , 1)) &
+                                   std_logic_vector(to_unsigned(DEBUG_ENABLE , 1)) &
+                                   std_logic_vector(to_unsigned(0            , 5));
     -------------------------------------------------------------------------------
     -- DEBUG_REGS
     -------------------------------------------------------------------------------
-    constant  DEBUG_REGS_ADDR   :  integer := 16#40#;
     constant  DEBUG_BITS        :  integer := 64;
     constant  DEBUG_SIZE        :  integer :=  8;
     constant  DEBUG_COUNT_BITS  :  integer := 32;
-    constant  DEBUG_REGS_LO     :  integer := 8*DEBUG_REGS_ADDR;
-    constant  DEBUG_REGS_HI     :  integer := 8*DEBUG_REGS_ADDR + DEBUG_SIZE*DEBUG_BITS - 1;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -610,7 +682,7 @@ begin
         ---------------------------------------------------------------------------
         --
         ---------------------------------------------------------------------------
-        constant  REGS_ADDR_WIDTH   :  integer := 6 + DEBUG_ENABLE;
+        constant  REGS_ADDR_WIDTH   :  integer := 6;  -- 0x00 - 0x3F
         constant  REGS_DATA_WIDTH   :  integer := CSR_AXI_DATA_WIDTH;
         constant  REGS_DATA_BITS    :  integer := (2**REGS_ADDR_WIDTH)*8;
         signal    regs_load         :  std_logic_vector(REGS_DATA_BITS   -1 downto 0);
@@ -752,25 +824,99 @@ begin
         ctrl_regs(CTRL_READY_POS) <= ap_ready;
         ctrl_regs(CTRL_RESV_HI downto CTRL_RESV_LO) <= (CTRL_RESV_HI downto CTRL_RESV_LO => '0');
 
-        process(ACLK, RESET) begin
+        ctrl_start      <= '1' when (ctrl_state = IDLE_STATE         and
+                                     ctrl_load(CTRL_START_POS) = '1' and
+                                     ctrl_wbit(CTRL_START_POS) = '1') else '0';
+        sort_start      <= '1' when (ctrl_start = '1' and
+                                     to_01(unsigned(command_type)) = COMMAND_SORT_TYPE) else '0';
+        get_debug_start <= '1' when (ctrl_start = '1' and
+                                     to_01(unsigned(command_type)) = COMMAND_GET_DEBUG) else '0';
+        get_mode_start  <= '1' when (ctrl_start = '1' and
+                                     to_01(unsigned(command_type)) = COMMAND_GET_MODE ) else '0';
+        set_mode_start  <= '1' when (ctrl_start = '1' and
+                                     to_01(unsigned(command_type)) = COMMAND_SET_MODE ) else '0';
+        process(ACLK, RESET)
+            variable debug_regs   :  std_logic_vector(DEBUG_BITS  -1 downto 0);
+            variable mode_regs    :  std_logic_vector(RW_MODE_BITS-1 downto 0);
+        begin
             if (RESET = '1') then
-                    ctrl_done <= '0';
+                    ctrl_state  <= IDLE_STATE;
+                    ctrl_done   <= '0';
+                    result_regs <= (others => '0');
             elsif (ACLK'event and ACLK = '1') then
                 if (CLEAR = '1') then
-                    ctrl_done <= '0';
-                elsif (ap_done = '1') then
-                    ctrl_done <= '1';
-                elsif (ctrl_read(CTRL_DONE_POS) = '1') then
-                    ctrl_done <= '0';
+                    ctrl_state  <= IDLE_STATE;
+                    ctrl_done   <= '0';
+                    result_regs <= (others => '0');
+                else
+                    case ctrl_state is
+                        when IDLE_STATE =>
+                            if (ctrl_start = '1') then
+                                if    (sort_start  = '1') then
+                                    ctrl_state <= SORT_STATE;
+                                elsif (get_debug_start = '1') then
+                                    ctrl_state <= GET_DEBUG_STATE;
+                                elsif (set_mode_start  = '1') then
+                                    ctrl_state <= SET_MODE_STATE;
+                                elsif (get_mode_start  = '1') then
+                                    ctrl_state <= GET_MODE_STATE;
+                                else
+                                    ctrl_state <= MISC_STATE;
+                                end if;
+                            else
+                                    ctrl_state <= IDLE_STATE;
+                            end if;
+                        when SORT_STATE =>
+                            if (sort_done = '1') then
+                                ctrl_state  <= IDLE_STATE;
+                            else
+                                ctrl_state  <= SORT_STATE;
+                            end if;
+                            result_regs <= std_logic_vector(resize(unsigned(sort_count_regs), RESULT_REGS_BITS));
+                        when GET_DEBUG_STATE =>
+                            ctrl_state  <= IDLE_STATE;
+                            debug_regs  := (others => '0');
+                            for i in 0 to DEBUG_SIZE loop
+                                if (i = to_integer(unsigned(command_mode)) and i < DEBUG_SIZE) then
+                                    debug_regs := debug_regs or
+                                                  debug_data(DEBUG_BITS*(i+1)-1 downto DEBUG_BITS*i);
+                                end if;
+                            end loop;
+                            result_regs <= debug_regs;
+                        when SET_MODE_STATE =>
+                            ctrl_state  <= GET_MODE_STATE;
+                        when GET_MODE_STATE =>
+                            ctrl_state  <= IDLE_STATE;
+                            case to_integer(unsigned(command_mode)) is
+                                when 0      => mode_regs := t0_mode_regs;
+                                when 1      => mode_regs := t1_mode_regs;
+                                when 2      => mode_regs := rd_mode_regs;
+                                when 3      => mode_regs := wr_mode_regs;
+                                when others => mode_regs := (others => '0');
+                            end case;
+                            result_regs <= std_logic_vector(resize(unsigned(mode_regs), RESULT_REGS_BITS));
+                        when MISC_STATE =>
+                            ctrl_state  <= IDLE_STATE;
+                            result_regs <= VERSION_REGS_DATA;
+                        when others =>
+                            ctrl_state  <= IDLE_STATE;
+                    end case;
+                    if (ap_done = '1') then
+                        ctrl_done <= '1';
+                    elsif (ctrl_read(CTRL_DONE_POS) = '1') then
+                        ctrl_done <= '0';
+                    end if;
                 end if;
             end if;
         end process;
-
-        ctrl_start <= '1' when (ctrl_load(CTRL_START_POS) = '1' and
-                                ctrl_wbit(CTRL_START_POS) = '1') else '0';
-        ap_start   <= '1' when (ap_busy = '1' or ctrl_start = '1') else '0';
-        ap_idle    <= '1' when (ap_busy = '0') else '0';
-        ap_ready   <= '1' when (ap_done = '1') else '0';
+        ap_done  <= '1' when (ctrl_state  = SORT_STATE and sort_done = '1') or
+                             (ctrl_state  = GET_DEBUG_STATE) or
+                             (ctrl_state  = GET_MODE_STATE ) or
+                             (ctrl_state  = MISC_STATE     ) else '0';
+        ap_busy  <= '1' when (ctrl_state /= IDLE_STATE ) else '0';
+        ap_start <= '1' when (ap_busy = '1' or ctrl_start = '1') else '0';
+        ap_idle  <= '1' when (ap_busy = '0') else '0';
+        ap_ready <= '1' when (ap_done = '1') else '0';
         ---------------------------------------------------------------------------
         -- irq_ena_regs
         ---------------------------------------------------------------------------
@@ -822,17 +968,28 @@ begin
             end if;
         end process;
         ---------------------------------------------------------------------------
-        -- rd_addr_regs
+        -- command_regs
         ---------------------------------------------------------------------------
-        rd_addr_load <= regs_load(RD_ADDR_REGS_HI downto RD_ADDR_REGS_LO);
-        rd_addr_wbit <= regs_wbit(RD_ADDR_REGS_HI downto RD_ADDR_REGS_LO);
-        regs_rbit(RD_ADDR_REGS_HI downto RD_ADDR_REGS_LO) <= rd_addr_regs;
+        command_load <= regs_load(COMMAND_REGS_HI downto COMMAND_REGS_LO);
+        command_wbit <= regs_wbit(COMMAND_REGS_HI downto COMMAND_REGS_LO);
+        regs_rbit(COMMAND_REGS_HI downto COMMAND_REGS_LO) <= command_regs;
+        command_type  <= command_regs(COMMAND_TYPE_HI downto COMMAND_TYPE_LO);
+        command_mode  <= command_regs(COMMAND_MODE_HI downto COMMAND_MODE_LO);
+        set_t0_mode   <= (ctrl_state = SET_MODE_STATE and to_integer(to_01(unsigned(command_mode))) = 0);
+        set_t1_mode   <= (ctrl_state = SET_MODE_STATE and to_integer(to_01(unsigned(command_mode))) = 1);
+        set_rd_mode   <= (ctrl_state = SET_MODE_STATE and to_integer(to_01(unsigned(command_mode))) = 2);
+        set_wr_mode   <= (ctrl_state = SET_MODE_STATE and to_integer(to_01(unsigned(command_mode))) = 3);
+        set_mode_wbit <= command_regs(COMMAND_ARG1_HI downto COMMAND_ARG0_LO);
         ---------------------------------------------------------------------------
-        -- wr_addr_regs
+        -- resv_regs
         ---------------------------------------------------------------------------
-        wr_addr_load <= regs_load(WR_ADDR_REGS_HI downto WR_ADDR_REGS_LO);
-        wr_addr_wbit <= regs_wbit(WR_ADDR_REGS_HI downto WR_ADDR_REGS_LO);
-        regs_rbit(WR_ADDR_REGS_HI downto WR_ADDR_REGS_LO) <= wr_addr_regs;
+        regs_rbit(RESV_REGS_HI downto RESV_REGS_LO) <= resv_regs;
+        ---------------------------------------------------------------------------
+        -- size_regs
+        ---------------------------------------------------------------------------
+        size_load    <= regs_load(SIZE_REGS_HI downto SIZE_REGS_LO);
+        size_wbit    <= regs_wbit(SIZE_REGS_HI downto SIZE_REGS_LO);
+        regs_rbit(SIZE_REGS_HI downto SIZE_REGS_LO) <= size_regs;
         ---------------------------------------------------------------------------
         -- t0_addr_regs
         ---------------------------------------------------------------------------
@@ -846,67 +1003,75 @@ begin
         t1_addr_wbit <= regs_wbit(T1_ADDR_REGS_HI downto T1_ADDR_REGS_LO);
         regs_rbit(T1_ADDR_REGS_HI downto T1_ADDR_REGS_LO) <= t1_addr_regs;
         ---------------------------------------------------------------------------
-        -- rd_mode_regs
-        ---------------------------------------------------------------------------
-        rd_mode_load <= regs_load(RD_MODE_REGS_HI downto RD_MODE_REGS_LO);
-        rd_mode_wbit <= regs_wbit(RD_MODE_REGS_HI downto RD_MODE_REGS_LO);
-        regs_rbit(RD_MODE_REGS_HI downto RD_MODE_REGS_LO) <= rd_mode_regs;
-        ---------------------------------------------------------------------------
-        -- wr_mode_regs
-        ---------------------------------------------------------------------------
-        wr_mode_load <= regs_load(WR_MODE_REGS_HI downto WR_MODE_REGS_LO);
-        wr_mode_wbit <= regs_wbit(WR_MODE_REGS_HI downto WR_MODE_REGS_LO);
-        regs_rbit(WR_MODE_REGS_HI downto WR_MODE_REGS_LO) <= wr_mode_regs;
-        ---------------------------------------------------------------------------
         -- t0_mode_regs
         ---------------------------------------------------------------------------
-        t0_mode_load <= regs_load(T0_MODE_REGS_HI downto T0_MODE_REGS_LO);
-        t0_mode_wbit <= regs_wbit(T0_MODE_REGS_HI downto T0_MODE_REGS_LO);
+        t0_mode_load <= set_mode_load when (set_t0_mode) else
+                        regs_load(T0_MODE_REGS_HI downto T0_MODE_REGS_LO);
+        t0_mode_wbit <= set_mode_wbit when (set_t0_mode) else
+                        regs_wbit(T0_MODE_REGS_HI downto T0_MODE_REGS_LO);
         regs_rbit(T0_MODE_REGS_HI downto T0_MODE_REGS_LO) <= t0_mode_regs;
         ---------------------------------------------------------------------------
         -- t1_mode_regs
         ---------------------------------------------------------------------------
-        t1_mode_load <= regs_load(T1_MODE_REGS_HI downto T1_MODE_REGS_LO);
-        t1_mode_wbit <= regs_wbit(T1_MODE_REGS_HI downto T1_MODE_REGS_LO);
+        t1_mode_load <= set_mode_load when (set_t1_mode) else
+                        regs_load(T1_MODE_REGS_HI downto T1_MODE_REGS_LO);
+        t1_mode_wbit <= set_mode_wbit when (set_t1_mode) else
+                        regs_wbit(T1_MODE_REGS_HI downto T1_MODE_REGS_LO);
         regs_rbit(T1_MODE_REGS_HI downto T1_MODE_REGS_LO) <= t1_mode_regs;
         ---------------------------------------------------------------------------
-        -- size_regs
+        -- rd_mode_regs
         ---------------------------------------------------------------------------
-        size_load <= regs_load(SIZE_REGS_HI downto SIZE_REGS_LO);
-        size_wbit <= regs_wbit(SIZE_REGS_HI downto SIZE_REGS_LO);
-        regs_rbit(SIZE_REGS_HI downto SIZE_REGS_LO) <= size_regs;
+        rd_mode_load <= set_mode_load when (set_rd_mode) else
+                        regs_load(RD_MODE_REGS_HI downto RD_MODE_REGS_LO);
+        rd_mode_wbit <= set_mode_wbit when (set_rd_mode) else
+                        regs_wbit(RD_MODE_REGS_HI downto RD_MODE_REGS_LO);
+        regs_rbit(RD_MODE_REGS_HI downto RD_MODE_REGS_LO) <= rd_mode_regs;
         ---------------------------------------------------------------------------
-        -- ctrl_size
+        -- wr_mode_regs
         ---------------------------------------------------------------------------
-        ctrl_size_load <= size_load(SIZE_SIZE_HI downto SIZE_SIZE_LO);
-        ctrl_size_wbit <= size_wbit(SIZE_SIZE_HI downto SIZE_SIZE_LO);
-        size_regs <= std_logic_vector(resize(to_01(unsigned(ctrl_size_data)), SIZE_REGS_BITS));
+        wr_mode_load <= set_mode_load when (set_wr_mode) else
+                        regs_load(WR_MODE_REGS_HI downto WR_MODE_REGS_LO);
+        wr_mode_wbit <= set_mode_wbit when (set_wr_mode) else
+                        regs_wbit(WR_MODE_REGS_HI downto WR_MODE_REGS_LO);
+        regs_rbit(WR_MODE_REGS_HI downto WR_MODE_REGS_LO) <= wr_mode_regs;
         ---------------------------------------------------------------------------
-        -- debug_data/debug_mode
+        -- sort_size
         ---------------------------------------------------------------------------
-        DEBUG_ON: if (DEBUG_ENABLE /= 0) generate
-            regs_rbit(DEBUG_REGS_HI downto DEBUG_REGS_LO) <= debug_data;
-        end generate;
-        debug_mode <= (others => '0');
+        sort_size_load <= size_load(SIZE_SIZE_HI downto SIZE_SIZE_LO);
+        sort_size_wbit <= size_wbit(SIZE_SIZE_HI downto SIZE_SIZE_LO);
+        size_regs <= std_logic_vector(resize(to_01(unsigned(sort_size_data)), SIZE_REGS_BITS));
         ---------------------------------------------------------------------------
-        -- girq_regs / INTERRUPT
+        -- sort_count_load/sort_count_wbit
         ---------------------------------------------------------------------------
-        girq_load <= regs_load(GIRQ_REGS_HI downto GIRQ_REGS_LO);
-        girq_wbit <= regs_wbit(GIRQ_REGS_HI downto GIRQ_REGS_LO);
-        regs_rbit(GIRQ_REGS_HI downto GIRQ_REGS_LO) <= girq_regs;
+        sort_count_load <= (others => '1') when (sort_start = '1') else (others => '0');
+        sort_count_wbit <= (others => '0');
+        ---------------------------------------------------------------------------
+        -- result_regs
+        ---------------------------------------------------------------------------
+        regs_rbit(RESULT_REGS_HI downto RESULT_REGS_LO) <= result_regs;
+        ---------------------------------------------------------------------------
+        -- debug_mode
+        ---------------------------------------------------------------------------
+        debug_mode <= command_mode;
+        ---------------------------------------------------------------------------
+        -- gier_regs / INTERRUPT
+        ---------------------------------------------------------------------------
+        gier_load <= regs_load(GIER_REGS_HI downto GIER_REGS_LO);
+        gier_wbit <= regs_wbit(GIER_REGS_HI downto GIER_REGS_LO);
+        regs_rbit(GIER_REGS_HI downto GIER_REGS_LO) <= gier_regs;
         process(ACLK, RESET) begin
             if (RESET = '1') then
-                    girq_regs <= (others => '0');
+                    gier_regs <= (others => '0');
                     INTERRUPT <= '0';
             elsif (ACLK'event and ACLK = '1') then
                 if (CLEAR = '1') then
-                    girq_regs <= (others => '0');
+                    gier_regs <= (others => '0');
                     INTERRUPT <= '0';
                 else
-                    if (girq_load(GIRQ_ENABLE_POS) = '1') then
-                        girq_regs(GIRQ_ENABLE_POS) <= girq_wbit(GIRQ_ENABLE_POS);
+                    if (gier_load(GIER_ENABLE_POS) = '1') then
+                        gier_regs(GIER_ENABLE_POS) <= gier_wbit(GIER_ENABLE_POS);
                     end if;
-                    if (girq_regs(GIRQ_ENABLE_POS) = '1') and
+                    if (gier_regs(GIER_ENABLE_POS) = '1') and
                         (irq_sta_regs(IRQ_STA_DONE_POS ) = '1' or
                          irq_sta_regs(IRQ_STA_READY_POS) = '1') then
                         INTERRUPT <= '1';
@@ -967,10 +1132,14 @@ begin
             STM_WR_AXI_REQ_REGS => STM_WR_AXI_REQ_REGS , --
             STM_WR_AXI_ACK_REGS => STM_WR_AXI_ACK_REGS , --
             STM_WR_AXI_RESP_REGS=> STM_WR_AXI_RESP_REGS, -- 
-            STM_FEEDBACK        => STM_FEEDBACK        , --   
+            STM_FEEDBACK        => STM_FEEDBACK        , --
+            STM_RD_ADDR_VALID   => FALSE               , --
+            STM_WR_ADDR_VALID   => FALSE               , --
             REG_RW_ADDR_BITS    => RW_ADDR_BITS        , --   
             REG_RW_MODE_BITS    => RW_MODE_BITS        , --   
             REG_SIZE_BITS       => RW_SIZE_BITS        , --   
+            REG_MODE_BITS       => COMMAND_REGS_BITS   , --   
+            REG_COUNT_BITS      => SORT_COUNT_BITS     , --   
             DEBUG_ENABLE        => DEBUG_ENABLE        , --   
             DEBUG_SIZE          => DEBUG_SIZE          , --
             DEBUG_BITS          => DEBUG_BITS          , --
@@ -986,42 +1155,42 @@ begin
         ---------------------------------------------------------------------------
         -- Register Interface
         ---------------------------------------------------------------------------
-            REG_RD_ADDR_L       => rd_addr_load        , -- In  :
-            REG_RD_ADDR_D       => rd_addr_wbit        , -- In  :
-            REG_RD_ADDR_Q       => rd_addr_regs        , -- Out :
-            REG_WR_ADDR_L       => wr_addr_load        , -- In  :
-            REG_WR_ADDR_D       => wr_addr_wbit        , -- In  :
-            REG_WR_ADDR_Q       => wr_addr_regs        , -- Out :
             REG_T0_ADDR_L       => t0_addr_load        , -- In  :
             REG_T0_ADDR_D       => t0_addr_wbit        , -- In  :
             REG_T0_ADDR_Q       => t0_addr_regs        , -- Out :
             REG_T1_ADDR_L       => t1_addr_load        , -- In  :
             REG_T1_ADDR_D       => t1_addr_wbit        , -- In  :
             REG_T1_ADDR_Q       => t1_addr_regs        , -- Out :
-            REG_RD_MODE_L       => rd_mode_load        , -- In  :
-            REG_RD_MODE_D       => rd_mode_wbit        , -- In  :
-            REG_RD_MODE_Q       => rd_mode_regs        , -- Out :
-            REG_WR_MODE_L       => wr_mode_load        , -- In  :
-            REG_WR_MODE_D       => wr_mode_wbit        , -- In  :
-            REG_WR_MODE_Q       => wr_mode_regs        , -- Out :
             REG_T0_MODE_L       => t0_mode_load        , -- In  :
             REG_T0_MODE_D       => t0_mode_wbit        , -- In  :
             REG_T0_MODE_Q       => t0_mode_regs        , -- Out :
             REG_T1_MODE_L       => t1_mode_load        , -- In  :
             REG_T1_MODE_D       => t1_mode_wbit        , -- In  :
             REG_T1_MODE_Q       => t1_mode_regs        , -- Out :
-            REG_SIZE_L          => ctrl_size_load      , -- In  :
-            REG_SIZE_D          => ctrl_size_wbit      , -- In  :
-            REG_SIZE_Q          => ctrl_size_data      , -- Out :
-            REG_START_L         => ctrl_start          , -- In  :
+            REG_RD_MODE_L       => rd_mode_load        , -- In  :
+            REG_RD_MODE_D       => rd_mode_wbit        , -- In  :
+            REG_RD_MODE_Q       => rd_mode_regs        , -- Out :
+            REG_WR_MODE_L       => wr_mode_load        , -- In  :
+            REG_WR_MODE_D       => wr_mode_wbit        , -- In  :
+            REG_WR_MODE_Q       => wr_mode_regs        , -- Out :
+            REG_SIZE_L          => sort_size_load      , -- In  :
+            REG_SIZE_D          => sort_size_wbit      , -- In  :
+            REG_SIZE_Q          => sort_size_data      , -- Out :
+            REG_START_L         => sort_start          , -- In  :
             REG_START_D         => '1'                 , -- In  :
-            REG_START_Q         => ap_busy             , -- Out :
-            REG_DONE_EN_L       => ctrl_start          , -- In  :
+            REG_START_Q         => sort_busy           , -- Out :
+            REG_DONE_EN_L       => sort_start          , -- In  :
             REG_DONE_EN_D       => '1'                 , -- In  :
             REG_DONE_EN_Q       => open                , -- Out :
-            REG_DONE_ST_L       => ap_done             , -- In  :
+            REG_DONE_ST_L       => sort_done           , -- In  :
             REG_DONE_ST_D       => '0'                 , -- In  :
-            REG_DONE_ST_Q       => ap_done             , -- Out :
+            REG_DONE_ST_Q       => sort_done           , -- Out :
+            REG_MODE_L          => command_load        , -- In  :
+            REG_MODE_D          => command_wbit        , -- In  :
+            REG_MODE_Q          => command_regs        , -- Out :
+            REG_COUNT_L         => sort_count_load     , -- In  :
+            REG_COUNT_D         => sort_count_wbit     , -- In  :
+            REG_COUNT_Q         => sort_count_regs     , -- Out :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
