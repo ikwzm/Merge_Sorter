@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 1.0.0                                                           --
---!     @date    2021/06/05                                                      --
+--!     @date    2021/06/07                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -166,8 +166,8 @@ component ArgSort_AXI_Interface
         REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
         REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
         REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
-        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0);
-        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0);
+        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
         REG_COUNT_Q         :  out std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Address Channel Signals.
@@ -538,7 +538,6 @@ component ArgSort_AXI_Reader
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -548,7 +547,8 @@ component ArgSort_AXI_Reader
         AXI_BUF_DEPTH   :  integer := 11;
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_RDATA_REGS  :  integer :=  2;
-        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -557,12 +557,6 @@ component ArgSort_AXI_Reader
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -589,6 +583,12 @@ component ArgSort_AXI_Reader
         AXI_RVALID      :  in  std_logic;
         AXI_RREADY      :  out std_logic;
     -------------------------------------------------------------------------------
+    -- Stream Reader Control Register Interface.
+    -------------------------------------------------------------------------------
+        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+    -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
@@ -614,7 +614,6 @@ component ArgSort_AXI_Writer
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -627,7 +626,8 @@ component ArgSort_AXI_Writer
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
-        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1;
+        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -636,12 +636,6 @@ component ArgSort_AXI_Writer
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -677,7 +671,13 @@ component ArgSort_AXI_Writer
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
-    -- Merge Outlet Signals.
+    -- Stream Writer Control Register Interface.
+    -------------------------------------------------------------------------------
+        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- Stream Intake Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
         STM_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);

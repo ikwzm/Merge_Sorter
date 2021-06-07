@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
 --!     @version 1.0.0
---!     @date    2021/6/5
+--!     @date    2021/6/7
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -156,8 +156,8 @@ entity  ArgSort_AXI_Interface is
         REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
         REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
         REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
-        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0);
-        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0);
+        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
         REG_COUNT_Q         :  out std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Address Channel Signals.
@@ -389,7 +389,6 @@ begin
             WORD_INDEX_HI       => WORD_INDEX_HI       , --
             WORD_COMP_LO        => WORD_COMP_LO        , --
             WORD_COMP_HI        => WORD_COMP_HI        , --
-            REG_PARAM           => STM_RD_REG_PARAM    , --
             AXI_ID_BASE         => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => STM_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH     => STM_AXI_AUSER_WIDTH , --
@@ -399,7 +398,8 @@ begin
             AXI_BUF_DEPTH       => STM_RD_AXI_BUF_DEPTH, --
             AXI_QUEUE_SIZE      => STM_RD_AXI_QUEUE    , --
             AXI_RDATA_REGS      => STM_RD_AXI_DATA_REGS, --
-            AXI_ACK_REGS        => STM_RD_AXI_ACK_REGS   -- 
+            AXI_ACK_REGS        => STM_RD_AXI_ACK_REGS , -- 
+            STM_REG_PARAM       => STM_RD_REG_PARAM      --
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -408,12 +408,6 @@ begin
             CLK                 => CLK                 , -- In  :
             RST                 => RST                 , -- In  :
             CLR                 => CLR                 , -- In  :
-        ---------------------------------------------------------------------------
-        -- Register Interface
-        -------------------------------------------------------------------------------
-            REG_L               => stm_rd_reg_load     , -- In  :
-            REG_D               => stm_rd_reg_wbit     , -- In  :
-            REG_Q               => stm_rd_reg_rbit     , -- Out :
         ---------------------------------------------------------------------------
         -- AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -440,6 +434,12 @@ begin
             AXI_RVALID          => STM_AXI_RVALID      , -- In  :
             AXI_RREADY          => STM_AXI_RREADY      , -- Out :
         ---------------------------------------------------------------------------
+        -- Stream Reader Control Register Interface.
+        -------------------------------------------------------------------------------
+            STM_REG_L           => stm_rd_reg_load     , -- In  :
+            STM_REG_D           => stm_rd_reg_wbit     , -- In  :
+            STM_REG_Q           => stm_rd_reg_rbit     , -- Out :
+        ---------------------------------------------------------------------------
         -- Stream Outlet Signals.
         ---------------------------------------------------------------------------
             STM_DATA            => STM_RD_DATA         , -- Out :
@@ -464,7 +464,6 @@ begin
             WORD_INDEX_HI       => WORD_INDEX_HI       , --
             WORD_COMP_LO        => WORD_COMP_LO        , --
             WORD_COMP_HI        => WORD_COMP_HI        , --
-            REG_PARAM           => STM_WR_REG_PARAM    , --
             AXI_ID_BASE         => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => STM_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH     => STM_AXI_AUSER_WIDTH , --
@@ -477,7 +476,8 @@ begin
             AXI_QUEUE_SIZE      => STM_WR_AXI_QUEUE    , --
             AXI_REQ_REGS        => STM_WR_AXI_REQ_REGS , --
             AXI_ACK_REGS        => STM_WR_AXI_ACK_REGS , --
-            AXI_RESP_REGS       => STM_WR_AXI_RESP_REGS  -- 
+            AXI_RESP_REGS       => STM_WR_AXI_RESP_REGS, -- 
+            STM_REG_PARAM       => STM_WR_REG_PARAM      --
         )                                                --
         port map (                                       --
         ---------------------------------------------------------------------------
@@ -486,12 +486,6 @@ begin
             CLK                 => CLK                 , -- In  :
             RST                 => RST                 , -- In  :
             CLR                 => CLR                 , -- In  :
-        ---------------------------------------------------------------------------
-        -- Register Interface
-        ---------------------------------------------------------------------------
-            REG_L               => stm_wr_reg_load     , -- In  :
-            REG_D               => stm_wr_reg_wbit     , -- In  :
-            REG_Q               => stm_wr_reg_rbit     , -- Out :
         ---------------------------------------------------------------------------
         -- AXI Master Writer Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -526,8 +520,14 @@ begin
             AXI_BUSER           => STM_AXI_BUSER       , -- In  :
             AXI_BVALID          => STM_AXI_BVALID      , -- In  :
             AXI_BREADY          => STM_AXI_BREADY      , -- Out :
+        ---------------------------------------------------------------------------
+        -- Stream Writer Control Register Interface.
+        ---------------------------------------------------------------------------
+            STM_REG_L           => stm_wr_reg_load     , -- In  :
+            STM_REG_D           => stm_wr_reg_wbit     , -- In  :
+            STM_REG_Q           => stm_wr_reg_rbit     , -- Out :
         --------------------------------------------------------------------------
-        -- Merge Outlet Signals.
+        -- Stream Intake Signals.
         --------------------------------------------------------------------------
             STM_DATA            => MERGED_DATA         , -- In  :
             STM_STRB            => MERGED_STRB         , -- In  :
@@ -548,7 +548,6 @@ begin
             WAYS                => WAYS                , --
             WORDS               => WORDS               , --
             WORD_BITS           => WORD_BITS           , --
-            REG_PARAM           => MRG_RD_REG_PARAM    , --
             AXI_ID_BASE         => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => MRG_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH     => MRG_AXI_AUSER_WIDTH , --
@@ -560,7 +559,8 @@ begin
             AXI_RDATA_REGS      => MRG_RD_AXI_DATA_REGS, -- 
             AXI_ACK_REGS        => MRG_RD_AXI_ACK_REGS , -- 
             ARB_NODE_NUM        => MRG_RD_ARB_NODE_NUM , -- 
-            ARB_PIPELINE        => MRG_RD_ARB_PIPELINE   -- 
+            ARB_PIPELINE        => MRG_RD_ARB_PIPELINE , -- 
+            MRG_REG_PARAM       => MRG_RD_REG_PARAM      --
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -569,12 +569,6 @@ begin
             CLK                 => CLK                 , -- In  :
             RST                 => RST                 , -- In  :
             CLR                 => CLR                 , -- In  :
-        ---------------------------------------------------------------------------
-        -- Register Interface
-        ---------------------------------------------------------------------------
-            REG_L               => mrg_rd_reg_load     , -- In  :
-            REG_D               => mrg_rd_reg_wbit     , -- In  :
-            REG_Q               => mrg_rd_reg_rbit     , -- Out :
         ---------------------------------------------------------------------------
         -- AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -601,6 +595,12 @@ begin
             AXI_RVALID          => MRG_AXI_RVALID      , -- In  :
             AXI_RREADY          => MRG_AXI_RREADY      , -- Out :
         ---------------------------------------------------------------------------
+        -- Merge Reader Control Register Interface.
+        ---------------------------------------------------------------------------
+            MRG_REG_L           => mrg_rd_reg_load     , -- In  :
+            MRG_REG_D           => mrg_rd_reg_wbit     , -- In  :
+            MRG_REG_Q           => mrg_rd_reg_rbit     , -- Out :
+        ---------------------------------------------------------------------------
         -- Merge Outlet Signals.
         ---------------------------------------------------------------------------
             MRG_DATA            => MRG_RD_DATA         , -- Out :
@@ -623,7 +623,6 @@ begin
         generic map (                                    -- 
             WORDS               => WORDS               , --
             WORD_BITS           => WORD_BITS           , --
-            REG_PARAM           => MRG_WR_REG_PARAM    , --
             AXI_ID_BASE         => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => MRG_AXI_ID_WIDTH    , --
             AXI_AUSER_WIDTH     => MRG_AXI_AUSER_WIDTH , --
@@ -636,7 +635,8 @@ begin
             AXI_QUEUE_SIZE      => MRG_WR_AXI_QUEUE    , -- 
             AXI_REQ_REGS        => MRG_WR_AXI_REQ_REGS , -- 
             AXI_ACK_REGS        => MRG_WR_AXI_ACK_REGS , --
-            AXI_RESP_REGS       => MRG_WR_AXI_RESP_REGS  -- 
+            AXI_RESP_REGS       => MRG_WR_AXI_RESP_REGS, -- 
+            MRG_REG_PARAM       => MRG_WR_REG_PARAM      --
         )                                                -- 
         port map (                                       -- 
         ---------------------------------------------------------------------------
@@ -645,12 +645,6 @@ begin
             CLK                 => CLK                 , -- In  :
             RST                 => RST                 , -- In  :
             CLR                 => CLR                 , -- In  :
-        ---------------------------------------------------------------------------
-        -- Register Interface
-        ---------------------------------------------------------------------------
-            REG_L               => mrg_wr_reg_load     , -- In  :
-            REG_D               => mrg_wr_reg_wbit     , -- In  :
-            REG_Q               => mrg_wr_reg_rbit     , -- Out :
         ---------------------------------------------------------------------------
         -- AXI Master Writer Address Channel Signals.
         ---------------------------------------------------------------------------
@@ -685,6 +679,12 @@ begin
             AXI_BUSER           => MRG_AXI_BUSER       , -- In  :
             AXI_BVALID          => MRG_AXI_BVALID      , -- In  :
             AXI_BREADY          => MRG_AXI_BREADY      , -- Out :
+        ---------------------------------------------------------------------------
+        -- Merge Writer Control Register Interface.
+        ---------------------------------------------------------------------------
+            MRG_REG_L           => mrg_wr_reg_load     , -- In  :
+            MRG_REG_D           => mrg_wr_reg_wbit     , -- In  :
+            MRG_REG_Q           => mrg_wr_reg_rbit     , -- Out :
         ---------------------------------------------------------------------------
         -- Merge Intake Signals.
         ---------------------------------------------------------------------------
