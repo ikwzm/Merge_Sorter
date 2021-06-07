@@ -8,5 +8,5 @@
     PathList :
       - "../../../src/main/vhdl/"
       - "../../../src/test/vhdl/"
-    Top      :  ["ArgSort_Vivado_Test_Bench"]
+    Top      :  ["ArgSort_Kernel_Test_Bench"]
     

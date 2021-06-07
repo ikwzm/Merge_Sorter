@@ -11,7 +11,7 @@ clean:
 	-rm $(foreach SCENARIO, $(TEST_SCENARIOS), $(addsuffix .snr,$(SCENARIO)))
 
 define RUN
-$(addsuffix .snr,$(1)): test_gen.rb argsort_vivado_test_bench.rb
+$(addsuffix .snr,$(1)): test_gen.rb argsort_kernel_test_bench.rb
 	ruby test_gen.rb -v $(1)
 endef
 

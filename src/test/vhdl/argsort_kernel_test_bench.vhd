@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    argsort_vivado_test_bench.vhd
---!     @brief   Merge Sorter ArgSort Vivado Test Bench :
+--!     @file    argsort_kernel_test_bench.vhd
+--!     @brief   Merge Sorter ArgSort Xilinx RTL Kernel Test Bench :
 --!     @version 1.0.0
 --!     @date    2021/6/4
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench is
+entity  ArgSort_Kernel_Test_Bench is
     generic (
         NAME            :  STRING  := "TEST";
         SCENARIO_FILE   :  STRING  := "test.snr";
@@ -53,7 +53,7 @@ entity  ArgSort_Vivado_Test_Bench is
         DEBUG_ENABLE    :  integer range 0 to 1 := 1;
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench;
+end ArgSort_Kernel_Test_Bench;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     std.textio.all;
 library Merge_Sorter;
-use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_Vivado;
+use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_Kernel;
 library DUMMY_PLUG;
 use     DUMMY_PLUG.AXI4_TYPES.all;
 use     DUMMY_PLUG.AXI4_MODELS.AXI4_MASTER_PLAYER;
@@ -72,7 +72,7 @@ use     DUMMY_PLUG.CORE.MARCHAL;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_TYPE;
 use     DUMMY_PLUG.CORE.REPORT_STATUS_VECTOR;
 use     DUMMY_PLUG.CORE.MARGE_REPORT_STATUS;
-architecture Model of ArgSort_Vivado_Test_Bench is
+architecture Model of ArgSort_Kernel_Test_Bench is
     -------------------------------------------------------------------------------
     -- 各種定数
     -------------------------------------------------------------------------------
@@ -317,7 +317,7 @@ begin
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    DUT:  ArgSort_Vivado                                 -- 
+    DUT:  ArgSort_Kernel                                 -- 
         generic map (
             MRG_WAYS            => MRG_WAYS            ,
             MRG_WORDS           => MRG_WORDS           ,
@@ -886,7 +886,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X04_W1_F0 is
+entity  ArgSort_Kernel_Test_Bench_X04_W1_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F0";
         SCENARIO_FILE   :  STRING  := "test_x04_w1_f0.snr";
@@ -895,10 +895,10 @@ entity  ArgSort_Vivado_Test_Bench_X04_W1_F0 is
         STM_FEEDBACK    :  integer := 0;  -- F0
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X04_W1_F0;
-architecture Model of ArgSort_Vivado_Test_Bench_X04_W1_F0 is
+end ArgSort_Kernel_Test_Bench_X04_W1_F0;
+architecture Model of ArgSort_Kernel_Test_Bench_X04_W1_F0 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -912,7 +912,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X04_W1_F1 is
+entity  ArgSort_Kernel_Test_Bench_X04_W1_F1 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F1";
         SCENARIO_FILE   :  STRING  := "test_x04_w1_f1.snr";
@@ -921,10 +921,10 @@ entity  ArgSort_Vivado_Test_Bench_X04_W1_F1 is
         STM_FEEDBACK    :  integer := 1;  -- F1
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X04_W1_F1;
-architecture Model of ArgSort_Vivado_Test_Bench_X04_W1_F1 is
+end ArgSort_Kernel_Test_Bench_X04_W1_F1;
+architecture Model of ArgSort_Kernel_Test_Bench_X04_W1_F1 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -938,7 +938,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X04_W1_F2 is
+entity  ArgSort_Kernel_Test_Bench_X04_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F2";
         SCENARIO_FILE   :  STRING  := "test_x04_w1_f2.snr";
@@ -947,10 +947,10 @@ entity  ArgSort_Vivado_Test_Bench_X04_W1_F2 is
         STM_FEEDBACK    :  integer := 2;  -- F2
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X04_W1_F2;
-architecture Model of ArgSort_Vivado_Test_Bench_X04_W1_F2 is
+end ArgSort_Kernel_Test_Bench_X04_W1_F2;
+architecture Model of ArgSort_Kernel_Test_Bench_X04_W1_F2 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -964,7 +964,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X04_W2_F2 is
+entity  ArgSort_Kernel_Test_Bench_X04_W2_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_W2_F2";
         SCENARIO_FILE   :  STRING  := "test_x04_w2_f2.snr";
@@ -973,10 +973,10 @@ entity  ArgSort_Vivado_Test_Bench_X04_W2_F2 is
         STM_FEEDBACK    :  integer := 2;  -- F2
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X04_W2_F2;
-architecture Model of ArgSort_Vivado_Test_Bench_X04_W2_F2 is
+end ArgSort_Kernel_Test_Bench_X04_W2_F2;
+architecture Model of ArgSort_Kernel_Test_Bench_X04_W2_F2 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -990,7 +990,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X16_W1_F2 is
+entity  ArgSort_Kernel_Test_Bench_X16_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X16_W1_F2";
         SCENARIO_FILE   :  STRING  := "test_x16_w1_f2.snr";
@@ -1000,10 +1000,10 @@ entity  ArgSort_Vivado_Test_Bench_X16_W1_F2 is
         STM_IN_QUEUE    :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X16_W1_F2;
-architecture Model of ArgSort_Vivado_Test_Bench_X16_W1_F2 is
+end ArgSort_Kernel_Test_Bench_X16_W1_F2;
+architecture Model of ArgSort_Kernel_Test_Bench_X16_W1_F2 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -1018,7 +1018,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X16_W2_F2 is
+entity  ArgSort_Kernel_Test_Bench_X16_W2_F2 is
     generic (
         NAME            :  STRING  := "TEST_X16_W2_F2";
         SCENARIO_FILE   :  STRING  := "test_x16_w2_f2.snr";
@@ -1028,10 +1028,10 @@ entity  ArgSort_Vivado_Test_Bench_X16_W2_F2 is
         STM_IN_QUEUE    :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X16_W2_F2;
-architecture Model of ArgSort_Vivado_Test_Bench_X16_W2_F2 is
+end ArgSort_Kernel_Test_Bench_X16_W2_F2;
+architecture Model of ArgSort_Kernel_Test_Bench_X16_W2_F2 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,
@@ -1046,7 +1046,7 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado_Test_Bench_X32_W1_F2 is
+entity  ArgSort_Kernel_Test_Bench_X32_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X32_W1_F2";
         SCENARIO_FILE   :  STRING  := "test_x32_w1_f2.snr";
@@ -1056,10 +1056,10 @@ entity  ArgSort_Vivado_Test_Bench_X32_W1_F2 is
         STM_IN_QUEUE    :  integer := 0;
         FINISH_ABORT    :  boolean := FALSE
     );
-end ArgSort_Vivado_Test_Bench_X32_W1_F2;
-architecture Model of ArgSort_Vivado_Test_Bench_X32_W1_F2 is
+end ArgSort_Kernel_Test_Bench_X32_W1_F2;
+architecture Model of ArgSort_Kernel_Test_Bench_X32_W1_F2 is
 begin
-    TB: entity WORK.ArgSort_Vivado_Test_Bench generic map(
+    TB: entity WORK.ArgSort_Kernel_Test_Bench generic map(
         NAME            => NAME          , 
         SCENARIO_FILE   => SCENARIO_FILE , 
         MRG_WAYS        => MRG_WAYS      ,

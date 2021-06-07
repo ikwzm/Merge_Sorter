@@ -3,9 +3,9 @@
 #
 
 set project_directory       [file dirname [info script]]
-set project_name            "argsort_vivado"
+set project_name            "argsort_kernel"
 set device_parts            "xc7z020clg400-1"
-set test_bench              "ArgSort_Vivado_Test_Bench_X04_W1_F1"
+set test_bench              "ArgSort_Kernel_Test_Bench_X04_W1_F1"
 set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_w1_f1_1.snr" ]
 #
 # Create project
@@ -81,7 +81,7 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 #
 update_compile_order -fileset sources_1
 set obj [get_filesets sources_1]
-set_property "top" "ArgSort_Vivado"  $obj
+set_property "top" "ArgSort_Kernel"  $obj
 #
 # Set 'sim_1' fileset properties
 #

@@ -1,5 +1,5 @@
 
-class ArgSort_Vivado_Test_Bench
+class ArgSort_Kernel_Test_Bench
 
   attr_reader   :name, :csr, :merchal
   attr_reader   :ways, :words, :feedback
@@ -28,7 +28,7 @@ class ArgSort_Vivado_Test_Bench
     @merchal      = ScenarioWriter::Marchal.new("MARCHAL", file)
     @stm_mem      = ScenarioWriter::AXI_Memory.new("STM" , file, @stm_mem_size, @stm_mem_addr, 15, 2)
     @mrg_mem      = ScenarioWriter::AXI_Memory.new("MRG" , file, @mrg_mem_size, @mrg_mem_addr,  0, 0)
-    @tag          = "ArgSort_Vivado_Test"
+    @tag          = "ArgSort_Kernel_Test"
   end
 
   def start(title)

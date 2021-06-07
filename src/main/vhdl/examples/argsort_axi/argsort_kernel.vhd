@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------
---!     @file    argsort_vivado.vhd
---!     @brief   Merge Sorter ArgSort for Xilinx Vivado
+--!     @file    argsort_kernel.vhd
+--!     @brief   Merge Sorter ArgSort for Xilinx RTL Kernel
 --!     @version 1.0.0
 --!     @date    2021/6/5
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
@@ -36,7 +36,7 @@
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
-entity  ArgSort_Vivado is
+entity  ArgSort_Kernel is
     generic (
         MRG_WAYS            : --! @brief MERGE WAY SIZE :
                               integer :=  4;
@@ -288,7 +288,7 @@ entity  ArgSort_Vivado is
     -------------------------------------------------------------------------------
         INTERRUPT           : out std_logic
     );
-end ArgSort_Vivado;
+end ArgSort_Kernel;
 -----------------------------------------------------------------------------------
 -- 
 -----------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_REGISTER_INTERFACE;
 use     PIPEWORK.COMPONENTS.REGISTER_ACCESS_ADAPTER;
-architecture RTL of ArgSort_Vivado is
+architecture RTL of ArgSort_Kernel is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------

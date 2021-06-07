@@ -8,7 +8,7 @@ DUMMY_PLUG_SRC_PATH  = $(DUMMY_PLUG_PATH)/src/main/vhdl
 DUMMY_PLUG_WORK_PATH = $(DUMMY_PLUG_PATH)/sim/ghdl-0.35/dummy_plug
 DUMMY_PLUG_TOOL_PATH = $(DUMMY_PLUG_PATH)/tools
 
-SCENARIO_PATH        = ../../../src/test/scenarios/argsort_vivado/
+SCENARIO_PATH        = ../../../src/test/scenarios/argsort_kernel/
 
 COPY       = cp
 CAT        = cat
@@ -28,14 +28,14 @@ test   : $(TEST)
 clean  :
 	$(REMOVE) sources.mk *.cf
 
-dut         : argsort_vivado
+dut         : argsort_kernel
 
-test_bench  : argsort_vivado_test_bench
+test_bench  : argsort_kernel_test_bench
 
 define RUN
 $(1): $(2) test_bench dut
-	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Vivado_Test_Bench_,$(1))
-	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Vivado_Test_Bench_,$(1))
+	$(GHDL) -e $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Kernel_Test_Bench_,$(1))
+	$(GHDL) -r $(GHDLFLAGS) --work=MERGE_SORTER $(subst test_,ArgSort_Kernel_Test_Bench_,$(1))
 
 $(2): $(SCENARIO_PATH)/$(1)_1.snr $(SCENARIO_PATH)/$(1)_2.snr $(SCENARIO_PATH)/$(1)_3.snr
 	$(CAT) $(SCENARIO_PATH)/$(1)_1.snr $(SCENARIO_PATH)/$(1)_2.snr $(SCENARIO_PATH)/$(1)_3.snr > $(2)

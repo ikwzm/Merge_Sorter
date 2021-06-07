@@ -26,7 +26,7 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_axi_
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/interface/merge_axi_writer.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_core.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_axi_interface.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_vivado.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/examples/argsort_axi/argsort_kernel.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/components.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/reducer.vhd
@@ -88,4 +88,4 @@ add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_m
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_memory_player.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/axi4/axi4_models.vhd
 add_vhdl_file sim_1     DUMMY_PLUG ../../../Dummy_Plug/src/main/vhdl/core/marchal.vhd
-add_vhdl_file sim_1     WORK ../../../src/test/vhdl/argsort_vivado_test_bench.vhd
+add_vhdl_file sim_1     WORK ../../../src/test/vhdl/argsort_kernel_test_bench.vhd

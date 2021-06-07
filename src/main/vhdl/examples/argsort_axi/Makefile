@@ -5,7 +5,7 @@ ENTITY_FILES = argsort_axi_interface.vhd \
                argsort_axi_reader.vhd    \
                argsort_axi_writer.vhd    \
                argsort_axi.vhd           \
-               argsort_vivado.vhd        \
+               argsort_kernel.vhd        \
                ${ENDLIST}
 
 argsort_axi_components.vhd : ${ENTITY_FILES}

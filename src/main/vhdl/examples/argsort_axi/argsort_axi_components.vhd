@@ -948,9 +948,9 @@ component ArgSort_AXI
     );
 end component;
 -----------------------------------------------------------------------------------
---! @brief ArgSort_Vivado                                                        --
+--! @brief ArgSort_Kernel                                                        --
 -----------------------------------------------------------------------------------
-component ArgSort_Vivado
+component ArgSort_Kernel
     generic (
         MRG_WAYS            : --! @brief MERGE WAY SIZE :
                               integer :=  4;

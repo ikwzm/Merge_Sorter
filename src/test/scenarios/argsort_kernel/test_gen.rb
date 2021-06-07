@@ -1,6 +1,6 @@
 require 'optparse'
 require_relative '../scripts/scenario_writer.rb'
-require_relative './argsort_vivado_test_bench.rb'
+require_relative './argsort_kernel_test_bench.rb'
 
 class TestGenerator
 
@@ -52,7 +52,7 @@ class TestGenerator
   
   def test_1(file,ways,words,feedback)
 
-    testbench = ArgSort_Vivado_Test_Bench.new(file,ways,words,feedback)
+    testbench = ArgSort_Kernel_Test_Bench.new(file,ways,words,feedback)
 
     testbench.start("TEST 1")
     test_num = 1
@@ -71,7 +71,7 @@ class TestGenerator
 
   def test_2(file,ways,words,feedback)
 
-    testbench = ArgSort_Vivado_Test_Bench.new(file,ways,words,feedback)
+    testbench = ArgSort_Kernel_Test_Bench.new(file,ways,words,feedback)
 
     testbench.start("TEST 2")
     test_num = 1
@@ -91,7 +91,7 @@ class TestGenerator
 
   def test_3(file,ways,words,feedback)
 
-    testbench = ArgSort_Vivado_Test_Bench.new(file,ways,words,feedback)
+    testbench = ArgSort_Kernel_Test_Bench.new(file,ways,words,feedback)
 
     testbench.start("TEST 3")
     test_num = 1
