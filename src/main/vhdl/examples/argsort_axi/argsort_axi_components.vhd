@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 1.0.0                                                           --
---!     @date    2021/06/07                                                      --
+--!     @date    2021/06/08                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -57,7 +57,9 @@ component ArgSort_AXI_Interface
         WORD_COMP_HI        :  integer :=   63;
         MRG_AXI_ID_BASE     :  integer :=    0;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
-        MRG_AXI_AUSER_WIDTH :  integer :=    4;
+        MRG_AXI_ARUSER_WIDTH:  integer :=    4;
+        MRG_AXI_AWUSER_WIDTH:  integer :=    4;
+        MRG_AXI_RUSER_WIDTH :  integer :=    4;
         MRG_AXI_WUSER_WIDTH :  integer :=    4;
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -77,7 +79,9 @@ component ArgSort_AXI_Interface
         MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_AXI_ID_BASE     :  integer :=    0;
         STM_AXI_ID_WIDTH    :  integer :=    8;
-        STM_AXI_AUSER_WIDTH :  integer :=    4;
+        STM_AXI_ARUSER_WIDTH:  integer :=    4;
+        STM_AXI_AWUSER_WIDTH:  integer :=    4;
+        STM_AXI_RUSER_WIDTH :  integer :=    4;
         STM_AXI_WUSER_WIDTH :  integer :=    4;
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -182,15 +186,16 @@ component ArgSort_AXI_Interface
         STM_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_ARUSER_WIDTH-1 downto 0);
         STM_AXI_ARVALID     :  out std_logic;
         STM_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0);
+        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
         STM_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        STM_AXI_RUSER       :  in  std_logic_vector(STM_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_RLAST       :  in  std_logic;
         STM_AXI_RVALID      :  in  std_logic;
         STM_AXI_RREADY      :  out std_logic;
@@ -207,7 +212,7 @@ component ArgSort_AXI_Interface
         STM_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AWUSER_WIDTH-1 downto 0);
         STM_AXI_AWVALID     :  out std_logic;
         STM_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
@@ -223,9 +228,9 @@ component ArgSort_AXI_Interface
     ------------------------------------------------------------------------------
     -- Stream AXI Write Response Channel Signals.
     ------------------------------------------------------------------------------
-        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0);
-        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0);
+        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_BVALID      :  in  std_logic;
         STM_AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
@@ -249,15 +254,16 @@ component ArgSort_AXI_Interface
         MRG_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_ARUSER_WIDTH-1 downto 0);
         MRG_AXI_ARVALID     :  out std_logic;
         MRG_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Merge AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0);
-        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0);
-        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
+        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        MRG_AXI_RUSER       :  in  std_logic_vector(MRG_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         MRG_AXI_RLAST       :  in  std_logic;
         MRG_AXI_RVALID      :  in  std_logic;
         MRG_AXI_RREADY      :  out std_logic;
@@ -274,7 +280,7 @@ component ArgSort_AXI_Interface
         MRG_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AWUSER_WIDTH-1 downto 0);
         MRG_AXI_AWVALID     :  out std_logic;
         MRG_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------

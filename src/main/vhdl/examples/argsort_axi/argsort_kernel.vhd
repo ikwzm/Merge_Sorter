@@ -2,7 +2,7 @@
 --!     @file    argsort_kernel.vhd
 --!     @brief   Merge Sorter ArgSort for Xilinx RTL Kernel
 --!     @version 1.0.0
---!     @date    2021/6/5
+--!     @date    2021/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -1096,7 +1096,8 @@ begin
             WORD_COMP_HI        => MRG_WORD_COMP_HI    , --   
             MRG_AXI_ID_BASE     => MRG_AXI_ID_BASE     , -- 
             MRG_AXI_ID_WIDTH    => MRG_AXI_ID_WIDTH    , --   
-            MRG_AXI_AUSER_WIDTH => MRG_AXI_USER_WIDTH  , --   
+            MRG_AXI_ARUSER_WIDTH=> MRG_AXI_USER_WIDTH  , --   
+            MRG_AXI_AWUSER_WIDTH=> MRG_AXI_USER_WIDTH  , --   
             MRG_AXI_WUSER_WIDTH => 1                   , --   
             MRG_AXI_BUSER_WIDTH => 1                   , --   
             MRG_AXI_ADDR_WIDTH  => MRG_AXI_ADDR_WIDTH  , --   
@@ -1116,7 +1117,8 @@ begin
             MRG_WR_AXI_RESP_REGS=> MRG_WR_AXI_RESP_REGS, -- 
             STM_AXI_ID_BASE     => STM_AXI_ID_BASE     , --   
             STM_AXI_ID_WIDTH    => STM_AXI_ID_WIDTH    , --   
-            STM_AXI_AUSER_WIDTH => STM_AXI_USER_WIDTH  , --   
+            STM_AXI_ARUSER_WIDTH=> STM_AXI_USER_WIDTH  , --   
+            STM_AXI_AWUSER_WIDTH=> STM_AXI_USER_WIDTH  , --   
             STM_AXI_WUSER_WIDTH => 1                   , --   
             STM_AXI_BUSER_WIDTH => 1                   , --   
             STM_AXI_ADDR_WIDTH  => STM_AXI_ADDR_WIDTH  , --   

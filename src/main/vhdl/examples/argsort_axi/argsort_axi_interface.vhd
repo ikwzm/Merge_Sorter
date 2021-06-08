@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
 --!     @version 1.0.0
---!     @date    2021/6/7
+--!     @date    2021/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -47,7 +47,9 @@ entity  ArgSort_AXI_Interface is
         WORD_COMP_HI        :  integer :=   63;
         MRG_AXI_ID_BASE     :  integer :=    0;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
-        MRG_AXI_AUSER_WIDTH :  integer :=    4;
+        MRG_AXI_ARUSER_WIDTH:  integer :=    4;
+        MRG_AXI_AWUSER_WIDTH:  integer :=    4;
+        MRG_AXI_RUSER_WIDTH :  integer :=    4;
         MRG_AXI_WUSER_WIDTH :  integer :=    4;
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -67,7 +69,9 @@ entity  ArgSort_AXI_Interface is
         MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_AXI_ID_BASE     :  integer :=    0;
         STM_AXI_ID_WIDTH    :  integer :=    8;
-        STM_AXI_AUSER_WIDTH :  integer :=    4;
+        STM_AXI_ARUSER_WIDTH:  integer :=    4;
+        STM_AXI_AWUSER_WIDTH:  integer :=    4;
+        STM_AXI_RUSER_WIDTH :  integer :=    4;
         STM_AXI_WUSER_WIDTH :  integer :=    4;
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -172,15 +176,16 @@ entity  ArgSort_AXI_Interface is
         STM_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_ARUSER_WIDTH-1 downto 0);
         STM_AXI_ARVALID     :  out std_logic;
         STM_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0);
+        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
         STM_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        STM_AXI_RUSER       :  in  std_logic_vector(STM_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_RLAST       :  in  std_logic;
         STM_AXI_RVALID      :  in  std_logic;
         STM_AXI_RREADY      :  out std_logic;
@@ -197,7 +202,7 @@ entity  ArgSort_AXI_Interface is
         STM_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AWUSER_WIDTH-1 downto 0);
         STM_AXI_AWVALID     :  out std_logic;
         STM_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
@@ -213,9 +218,9 @@ entity  ArgSort_AXI_Interface is
     ------------------------------------------------------------------------------
     -- Stream AXI Write Response Channel Signals.
     ------------------------------------------------------------------------------
-        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0);
-        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0);
+        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_BVALID      :  in  std_logic;
         STM_AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
@@ -239,15 +244,16 @@ entity  ArgSort_AXI_Interface is
         MRG_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_ARUSER_WIDTH-1 downto 0);
         MRG_AXI_ARVALID     :  out std_logic;
         MRG_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Merge AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0);
-        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0);
-        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
+        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        MRG_AXI_RUSER       :  in  std_logic_vector(MRG_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         MRG_AXI_RLAST       :  in  std_logic;
         MRG_AXI_RVALID      :  in  std_logic;
         MRG_AXI_RREADY      :  out std_logic;
@@ -264,7 +270,7 @@ entity  ArgSort_AXI_Interface is
         MRG_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AWUSER_WIDTH-1 downto 0);
         MRG_AXI_AWVALID     :  out std_logic;
         MRG_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
@@ -391,7 +397,7 @@ begin
             WORD_COMP_HI        => WORD_COMP_HI        , --
             AXI_ID_BASE         => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => STM_AXI_ID_WIDTH    , --
-            AXI_AUSER_WIDTH     => STM_AXI_AUSER_WIDTH , --
+            AXI_AUSER_WIDTH     => STM_AXI_ARUSER_WIDTH, --
             AXI_ADDR_WIDTH      => STM_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH      => STM_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE       => STM_RD_AXI_XFER_SIZE, --
@@ -466,7 +472,7 @@ begin
             WORD_COMP_HI        => WORD_COMP_HI        , --
             AXI_ID_BASE         => STM_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => STM_AXI_ID_WIDTH    , --
-            AXI_AUSER_WIDTH     => STM_AXI_AUSER_WIDTH , --
+            AXI_AUSER_WIDTH     => STM_AXI_AWUSER_WIDTH, --
             AXI_WUSER_WIDTH     => STM_AXI_WUSER_WIDTH , --
             AXI_BUSER_WIDTH     => STM_AXI_BUSER_WIDTH , --
             AXI_ADDR_WIDTH      => STM_AXI_ADDR_WIDTH  , --
@@ -550,7 +556,7 @@ begin
             WORD_BITS           => WORD_BITS           , --
             AXI_ID_BASE         => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => MRG_AXI_ID_WIDTH    , --
-            AXI_AUSER_WIDTH     => MRG_AXI_AUSER_WIDTH , --
+            AXI_AUSER_WIDTH     => MRG_AXI_ARUSER_WIDTH, --
             AXI_ADDR_WIDTH      => MRG_AXI_ADDR_WIDTH  , --
             AXI_DATA_WIDTH      => MRG_AXI_DATA_WIDTH  , --
             AXI_XFER_SIZE       => MRG_RD_AXI_XFER_SIZE, --
@@ -625,7 +631,7 @@ begin
             WORD_BITS           => WORD_BITS           , --
             AXI_ID_BASE         => MRG_AXI_ID_BASE     , --
             AXI_ID_WIDTH        => MRG_AXI_ID_WIDTH    , --
-            AXI_AUSER_WIDTH     => MRG_AXI_AUSER_WIDTH , --
+            AXI_AUSER_WIDTH     => MRG_AXI_AWUSER_WIDTH, --
             AXI_WUSER_WIDTH     => MRG_AXI_WUSER_WIDTH , --
             AXI_BUSER_WIDTH     => MRG_AXI_BUSER_WIDTH , --
             AXI_ADDR_WIDTH      => MRG_AXI_ADDR_WIDTH  , --
