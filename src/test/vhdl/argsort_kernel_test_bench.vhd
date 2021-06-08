@@ -2,7 +2,7 @@
 --!     @file    argsort_kernel_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort Xilinx RTL Kernel Test Bench :
 --!     @version 1.0.0
---!     @date    2021/6/4
+--!     @date    2021/6/8
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -157,9 +157,6 @@ architecture Model of ArgSort_Kernel_Test_Bench is
     -------------------------------------------------------------------------------
     constant  STM_MEMORY_SIZE   :  integer := 32*1024;
     constant  STM_AXI_ID_BASE   :  integer := 0;
-    constant  STM_AXI_CACHE     :  integer := 15;
-    constant  STM_AXI_PROT      :  integer := 1;
-    constant  STM_AXI_AUSER     :  integer := 0;
     constant  STM_AXI_WIDTH     :  AXI4_SIGNAL_WIDTH_TYPE := (
                                        ID          => 4,
                                        AWADDR      => AXI_ADDR_WIDTH,
@@ -224,9 +221,6 @@ architecture Model of ArgSort_Kernel_Test_Bench is
     -------------------------------------------------------------------------------
     constant  MRG_MEMORY_SIZE   :  integer := 32*1024;
     constant  MRG_AXI_ID_BASE   :  integer := 2;
-    constant  MRG_AXI_CACHE     :  integer := 15;
-    constant  MRG_AXI_PROT      :  integer := 1;
-    constant  MRG_AXI_AUSER     :  integer := 0;
     constant  MRG_AXI_WIDTH     :  AXI4_SIGNAL_WIDTH_TYPE := (
                                        ID          => 4,
                                        AWADDR      => AXI_ADDR_WIDTH,
@@ -319,189 +313,203 @@ begin
     -------------------------------------------------------------------------------
     DUT:  ArgSort_Kernel                                 -- 
         generic map (
-            MRG_WAYS            => MRG_WAYS            ,
-            MRG_WORDS           => MRG_WORDS           ,
-            WORD_BITS           => WORD_BITS           , 
-            INDEX_BITS          => INDEX_BITS          ,
-            COMP_SIGN           => TRUE                ,
-            SORT_ORDER          => 0                   ,
-            MRG_FIFO_SIZE       => 0                   ,
-            STM_FEEDBACK        => STM_FEEDBACK        ,
-            STM_IN_QUEUE_SIZE   => STM_IN_QUEUE        ,
-            CSR_AXI_ADDR_WIDTH  => CSR_WIDTH.ARADDR    ,
-            CSR_AXI_DATA_WIDTH  => CSR_WIDTH.RDATA     ,
-            STM_AXI_ADDR_WIDTH  => STM_AXI_WIDTH.ARADDR,
-            STM_AXI_DATA_WIDTH  => STM_AXI_WIDTH.RDATA ,
-            STM_AXI_USER_WIDTH  => STM_AXI_WIDTH.ARUSER, -- 
-            STM_AXI_ID_WIDTH    => STM_AXI_WIDTH.ID    , -- 
-            STM_AXI_ID_BASE     => STM_AXI_ID_BASE     , -- 
-            STM_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
-            STM_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
-            MRG_AXI_ADDR_WIDTH  => MRG_AXI_WIDTH.ARADDR, -- 
-            MRG_AXI_DATA_WIDTH  => MRG_AXI_WIDTH.RDATA , -- 
-            MRG_AXI_USER_WIDTH  => MRG_AXI_WIDTH.ARUSER, -- 
-            MRG_AXI_ID_WIDTH    => MRG_AXI_WIDTH.ID    , -- 
-            MRG_AXI_ID_BASE     => MRG_AXI_ID_BASE     , -- 
-            MRG_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
-            MRG_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , --
-            DEBUG_ENABLE        => DEBUG_ENABLE          -- 
-        )                                                -- 
-        port map (                                       -- 
+            MRG_WAYS                    => MRG_WAYS            ,
+            MRG_WORDS                   => MRG_WORDS           ,
+            WORD_BITS                   => WORD_BITS           , 
+            INDEX_BITS                  => INDEX_BITS          ,
+            COMP_SIGN                   => TRUE                ,
+            SORT_ORDER                  => 0                   ,
+            MRG_FIFO_SIZE               => 0                   ,
+            STM_FEEDBACK                => STM_FEEDBACK        ,
+            STM_IN_QUEUE_SIZE           => STM_IN_QUEUE        ,
+            C_S_AXI_CONTROL_ADDR_WIDTH  => CSR_WIDTH.ARADDR    ,
+            C_S_AXI_CONTROL_DATA_WIDTH  => CSR_WIDTH.RDATA     ,
+            C_M_AXI_STM_ADDR_WIDTH      => STM_AXI_WIDTH.ARADDR,
+            C_M_AXI_STM_DATA_WIDTH      => STM_AXI_WIDTH.RDATA ,
+            C_M_AXI_STM_ARUSER_WIDTH    => STM_AXI_WIDTH.ARUSER, -- 
+            C_M_AXI_STM_AWUSER_WIDTH    => STM_AXI_WIDTH.AWUSER, -- 
+            C_M_AXI_STM_RUSER_WIDTH     => STM_AXI_WIDTH.RUSER, -- 
+            C_M_AXI_STM_WUSER_WIDTH     => STM_AXI_WIDTH.WUSER, -- 
+            C_M_AXI_STM_BUSER_WIDTH     => STM_AXI_WIDTH.BUSER, -- 
+            C_M_AXI_STM_ID_WIDTH        => STM_AXI_WIDTH.ID    , -- 
+            C_M_AXI_STM_ID_BASE         => STM_AXI_ID_BASE     , -- 
+            C_M_AXI_STM_RD_XFER_SIZE    => AXI_XFER_SIZE       , -- 
+            C_M_AXI_STM_WR_XFER_SIZE    => AXI_XFER_SIZE       , -- 
+            C_M_AXI_MRG_ADDR_WIDTH      => MRG_AXI_WIDTH.ARADDR, -- 
+            C_M_AXI_MRG_DATA_WIDTH      => MRG_AXI_WIDTH.RDATA , -- 
+            C_M_AXI_MRG_ARUSER_WIDTH    => MRG_AXI_WIDTH.ARUSER, -- 
+            C_M_AXI_MRG_AWUSER_WIDTH    => MRG_AXI_WIDTH.ARUSER, -- 
+            C_M_AXI_MRG_RUSER_WIDTH     => MRG_AXI_WIDTH.RUSER , -- 
+            C_M_AXI_MRG_WUSER_WIDTH     => MRG_AXI_WIDTH.WUSER , -- 
+            C_M_AXI_MRG_BUSER_WIDTH     => MRG_AXI_WIDTH.BUSER , -- 
+            C_M_AXI_MRG_ID_WIDTH        => MRG_AXI_WIDTH.ID    , -- 
+            C_M_AXI_MRG_ID_BASE         => MRG_AXI_ID_BASE     , -- 
+            C_M_AXI_MRG_RD_XFER_SIZE    => AXI_XFER_SIZE       , -- 
+            C_M_AXI_MRG_WR_XFER_SIZE    => AXI_XFER_SIZE       , --
+            DEBUG_ENABLE                => DEBUG_ENABLE          -- 
+        )                                                        -- 
+        port map (                                               -- 
         ---------------------------------------------------------------------------
         -- Clock/Reset Signals.
         ---------------------------------------------------------------------------
-            ACLK                => ACLK                , -- In  :
-            ARESETn             => ARESETn             , -- In  :
+            AP_CLK                      => ACLK                , -- In  :
+            AP_RST_N                    => ARESETn             , -- In  :
         ---------------------------------------------------------------------------
         -- Control Status Register I/F AXI4 Read Address Channel Signals.
         ---------------------------------------------------------------------------
-            CSR_AXI_ARADDR      => csr_araddr          , -- in  :
-            CSR_AXI_ARVALID     => csr_arvalid         , -- in  :
-            CSR_AXI_ARREADY     => csr_arready         , -- out :
+            S_AXI_CONTROL_ARADDR        => csr_araddr          , -- in  :
+            S_AXI_CONTROL_ARVALID       => csr_arvalid         , -- in  :
+            S_AXI_CONTROL_ARREADY       => csr_arready         , -- out :
         ------------------------------------------------------------------------------
         -- Control Status Register I/F AXI4 Read Data Channel Signals.
         ------------------------------------------------------------------------------
-            CSR_AXI_RDATA       => csr_rdata           , -- out :
-            CSR_AXI_RRESP       => csr_rresp           , -- out :
-            CSR_AXI_RVALID      => csr_rvalid          , -- out :
-            CSR_AXI_RREADY      => csr_rready          , -- in  :
+            S_AXI_CONTROL_RDATA         => csr_rdata           , -- out :
+            S_AXI_CONTROL_RRESP         => csr_rresp           , -- out :
+            S_AXI_CONTROL_RVALID        => csr_rvalid          , -- out :
+            S_AXI_CONTROL_RREADY        => csr_rready          , -- in  :
         ------------------------------------------------------------------------------
         -- Control Status Register I/F AXI4 Write Address Channel Signals.
         ------------------------------------------------------------------------------
-            CSR_AXI_AWADDR      => csr_awaddr          , -- in  :
-            CSR_AXI_AWVALID     => csr_awvalid         , -- in  :
-            CSR_AXI_AWREADY     => csr_awready         , -- out :
+            S_AXI_CONTROL_AWADDR        => csr_awaddr          , -- in  :
+            S_AXI_CONTROL_AWVALID       => csr_awvalid         , -- in  :
+            S_AXI_CONTROL_AWREADY       => csr_awready         , -- out :
         ------------------------------------------------------------------------------
         -- Control Status Register I/F AXI4 Write Data Channel Signals.
         ------------------------------------------------------------------------------
-            CSR_AXI_WDATA       => csr_wdata           , -- in  :
-            CSR_AXI_WSTRB       => csr_wstrb           , -- in  :
-            CSR_AXI_WVALID      => csr_wvalid          , -- in  :
-            CSR_AXI_WREADY      => csr_wready          , -- out :
+            S_AXI_CONTROL_WDATA         => csr_wdata           , -- in  :
+            S_AXI_CONTROL_WSTRB         => csr_wstrb           , -- in  :
+            S_AXI_CONTROL_WVALID        => csr_wvalid          , -- in  :
+            S_AXI_CONTROL_WREADY        => csr_wready          , -- out :
         ------------------------------------------------------------------------------
         -- Control Status Register I/F AXI4 Write Response Channel Signals.
         ------------------------------------------------------------------------------
-            CSR_AXI_BRESP       => csr_bresp           , -- out :
-            CSR_AXI_BVALID      => csr_bvalid          , -- out :
-            CSR_AXI_BREADY      => csr_bready          , -- in  :
+            S_AXI_CONTROL_BRESP         => csr_bresp           , -- out :
+            S_AXI_CONTROL_BVALID        => csr_bvalid          , -- out :
+            S_AXI_CONTROL_BREADY        => csr_bready          , -- in  :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
-            STM_AXI_ARID        => stm_axi_arid        , -- Out :
-            STM_AXI_ARADDR      => stm_axi_araddr      , -- Out :
-            STM_AXI_ARLEN       => stm_axi_arlen       , -- Out :
-            STM_AXI_ARSIZE      => stm_axi_arsize      , -- Out :
-            STM_AXI_ARBURST     => stm_axi_arburst     , -- Out :
-            STM_AXI_ARLOCK      => stm_axi_arlock      , -- Out :
-            STM_AXI_ARCACHE     => stm_axi_arcache     , -- Out :
-            STM_AXI_ARPROT      => stm_axi_arprot      , -- Out :
-            STM_AXI_ARQOS       => stm_axi_arqos       , -- Out :
-            STM_AXI_ARREGION    => stm_axi_arregion    , -- Out :
-            STM_AXI_ARUSER      => stm_axi_aruser      , -- Out :
-            STM_AXI_ARVALID     => stm_axi_arvalid     , -- Out :
-            STM_AXI_ARREADY     => stm_axi_arready     , -- In  :
+            M_AXI_STM_ARID              => stm_axi_arid        , -- Out :
+            M_AXI_STM_ARADDR            => stm_axi_araddr      , -- Out :
+            M_AXI_STM_ARLEN             => stm_axi_arlen       , -- Out :
+            M_AXI_STM_ARSIZE            => stm_axi_arsize      , -- Out :
+            M_AXI_STM_ARBURST           => stm_axi_arburst     , -- Out :
+            M_AXI_STM_ARLOCK            => stm_axi_arlock      , -- Out :
+            M_AXI_STM_ARCACHE           => stm_axi_arcache     , -- Out :
+            M_AXI_STM_ARPROT            => stm_axi_arprot      , -- Out :
+            M_AXI_STM_ARQOS             => stm_axi_arqos       , -- Out :
+            M_AXI_STM_ARREGION          => stm_axi_arregion    , -- Out :
+            M_AXI_STM_ARUSER            => stm_axi_aruser      , -- Out :
+            M_AXI_STM_ARVALID           => stm_axi_arvalid     , -- Out :
+            M_AXI_STM_ARREADY           => stm_axi_arready     , -- In  :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Read Data Channel Signals.
         ---------------------------------------------------------------------------
-            STM_AXI_RID         => stm_axi_rid         , -- In  :
-            STM_AXI_RDATA       => stm_axi_rdata       , -- In  :
-            STM_AXI_RRESP       => stm_axi_rresp       , -- In  :
-            STM_AXI_RLAST       => stm_axi_rlast       , -- In  :
-            STM_AXI_RVALID      => stm_axi_rvalid      , -- In  :
-            STM_AXI_RREADY      => stm_axi_rready      , -- Out :
+            M_AXI_STM_RID               => stm_axi_rid         , -- In  :
+            M_AXI_STM_RDATA             => stm_axi_rdata       , -- In  :
+            M_AXI_STM_RRESP             => stm_axi_rresp       , -- In  :
+            M_AXI_STM_RUSER             => stm_axi_ruser       , -- In  :
+            M_AXI_STM_RLAST             => stm_axi_rlast       , -- In  :
+            M_AXI_STM_RVALID            => stm_axi_rvalid      , -- In  :
+            M_AXI_STM_RREADY            => stm_axi_rready      , -- Out :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Writer Address Channel Signals.
         ---------------------------------------------------------------------------
-            STM_AXI_AWID        => stm_axi_awid        , -- Out :
-            STM_AXI_AWADDR      => stm_axi_awaddr      , -- Out :
-            STM_AXI_AWLEN       => stm_axi_awlen       , -- Out :
-            STM_AXI_AWSIZE      => stm_axi_awsize      , -- Out :
-            STM_AXI_AWBURST     => stm_axi_awburst     , -- Out :
-            STM_AXI_AWLOCK      => stm_axi_awlock      , -- Out :
-            STM_AXI_AWCACHE     => stm_axi_awcache     , -- Out :
-            STM_AXI_AWPROT      => stm_axi_awprot      , -- Out :
-            STM_AXI_AWQOS       => stm_axi_awqos       , -- Out :
-            STM_AXI_AWREGION    => stm_axi_awregion    , -- Out :
-            STM_AXI_AWUSER      => stm_axi_awuser      , -- Out :
-            STM_AXI_AWVALID     => stm_axi_awvalid     , -- Out :
-            STM_AXI_AWREADY     => stm_axi_awready     , -- In  :
+            M_AXI_STM_AWID              => stm_axi_awid        , -- Out :
+            M_AXI_STM_AWADDR            => stm_axi_awaddr      , -- Out :
+            M_AXI_STM_AWLEN             => stm_axi_awlen       , -- Out :
+            M_AXI_STM_AWSIZE            => stm_axi_awsize      , -- Out :
+            M_AXI_STM_AWBURST           => stm_axi_awburst     , -- Out :
+            M_AXI_STM_AWLOCK            => stm_axi_awlock      , -- Out :
+            M_AXI_STM_AWCACHE           => stm_axi_awcache     , -- Out :
+            M_AXI_STM_AWPROT            => stm_axi_awprot      , -- Out :
+            M_AXI_STM_AWQOS             => stm_axi_awqos       , -- Out :
+            M_AXI_STM_AWREGION          => stm_axi_awregion    , -- Out :
+            M_AXI_STM_AWUSER            => stm_axi_awuser      , -- Out :
+            M_AXI_STM_AWVALID           => stm_axi_awvalid     , -- Out :
+            M_AXI_STM_AWREADY           => stm_axi_awready     , -- In  :
         ---------------------------------------------------------------------------
         -- Stream AXI Master Write Data Channel Signals.
         ---------------------------------------------------------------------------
-            STM_AXI_WID         => stm_axi_wid         , -- Out :
-            STM_AXI_WDATA       => stm_axi_wdata       , -- Out :
-            STM_AXI_WSTRB       => stm_axi_wstrb       , -- Out :
-            STM_AXI_WLAST       => stm_axi_wlast       , -- Out :
-            STM_AXI_WVALID      => stm_axi_wvalid      , -- Out :
-            STM_AXI_WREADY      => stm_axi_wready      , -- In  :
+            M_AXI_STM_WID               => stm_axi_wid         , -- Out :
+            M_AXI_STM_WDATA             => stm_axi_wdata       , -- Out :
+            M_AXI_STM_WSTRB             => stm_axi_wstrb       , -- Out :
+            M_AXI_STM_WUSER             => stm_axi_wuser       , -- Out :
+            M_AXI_STM_WLAST             => stm_axi_wlast       , -- Out :
+            M_AXI_STM_WVALID            => stm_axi_wvalid      , -- Out :
+            M_AXI_STM_WREADY            => stm_axi_wready      , -- In  :
         ---------------------------------------------------------------------------
         -- Stream AXI Write Response Channel Signals.
         ---------------------------------------------------------------------------
-            STM_AXI_BID         => stm_axi_bid         , -- In  :
-            STM_AXI_BRESP       => stm_axi_bresp       , -- In  :
-            STM_AXI_BVALID      => stm_axi_bvalid      , -- In  :
-            STM_AXI_BREADY      => stm_axi_bready      , -- Out :
+            M_AXI_STM_BID               => stm_axi_bid         , -- In  :
+            M_AXI_STM_BRESP             => stm_axi_bresp       , -- In  :
+            M_AXI_STM_BUSER             => stm_axi_buser       , -- In  :
+            M_AXI_STM_BVALID            => stm_axi_bvalid      , -- In  :
+            M_AXI_STM_BREADY            => stm_axi_bready      , -- Out :
         ---------------------------------------------------------------------------
         -- Merge AXI Master Read Address Channel Signals.
         ---------------------------------------------------------------------------
-            MRG_AXI_ARID        => mrg_axi_arid        , -- Out :
-            MRG_AXI_ARADDR      => mrg_axi_araddr      , -- Out :
-            MRG_AXI_ARLEN       => mrg_axi_arlen       , -- Out :
-            MRG_AXI_ARSIZE      => mrg_axi_arsize      , -- Out :
-            MRG_AXI_ARBURST     => mrg_axi_arburst     , -- Out :
-            MRG_AXI_ARLOCK      => mrg_axi_arlock      , -- Out :
-            MRG_AXI_ARCACHE     => mrg_axi_arcache     , -- Out :
-            MRG_AXI_ARPROT      => mrg_axi_arprot      , -- Out :
-            MRG_AXI_ARQOS       => mrg_axi_arqos       , -- Out :
-            MRG_AXI_ARREGION    => mrg_axi_arregion    , -- Out :
-            MRG_AXI_ARUSER      => mrg_axi_aruser      , -- Out :
-            MRG_AXI_ARVALID     => mrg_axi_arvalid     , -- Out :
-            MRG_AXI_ARREADY     => mrg_axi_arready     , -- In  :
+            M_AXI_MRG_ARID              => mrg_axi_arid        , -- Out :
+            M_AXI_MRG_ARADDR            => mrg_axi_araddr      , -- Out :
+            M_AXI_MRG_ARLEN             => mrg_axi_arlen       , -- Out :
+            M_AXI_MRG_ARSIZE            => mrg_axi_arsize      , -- Out :
+            M_AXI_MRG_ARBURST           => mrg_axi_arburst     , -- Out :
+            M_AXI_MRG_ARLOCK            => mrg_axi_arlock      , -- Out :
+            M_AXI_MRG_ARCACHE           => mrg_axi_arcache     , -- Out :
+            M_AXI_MRG_ARPROT            => mrg_axi_arprot      , -- Out :
+            M_AXI_MRG_ARQOS             => mrg_axi_arqos       , -- Out :
+            M_AXI_MRG_ARREGION          => mrg_axi_arregion    , -- Out :
+            M_AXI_MRG_ARUSER            => mrg_axi_aruser      , -- Out :
+            M_AXI_MRG_ARVALID           => mrg_axi_arvalid     , -- Out :
+            M_AXI_MRG_ARREADY           => mrg_axi_arready     , -- In  :
         ---------------------------------------------------------------------------
         -- Merge AXI Master Read Data Channel Signals.
         ---------------------------------------------------------------------------
-            MRG_AXI_RID         => mrg_axi_rid         , -- In  :
-            MRG_AXI_RDATA       => mrg_axi_rdata       , -- In  :
-            MRG_AXI_RRESP       => mrg_axi_rresp       , -- In  :
-            MRG_AXI_RLAST       => mrg_axi_rlast       , -- In  :
-            MRG_AXI_RVALID      => mrg_axi_rvalid      , -- In  :
-            MRG_AXI_RREADY      => mrg_axi_rready      , -- Out :
+            M_AXI_MRG_RID               => mrg_axi_rid         , -- In  :
+            M_AXI_MRG_RDATA             => mrg_axi_rdata       , -- In  :
+            M_AXI_MRG_RRESP             => mrg_axi_rresp       , -- In  :
+            M_AXI_MRG_RUSER             => mrg_axi_ruser       , -- In  :
+            M_AXI_MRG_RLAST             => mrg_axi_rlast       , -- In  :
+            M_AXI_MRG_RVALID            => mrg_axi_rvalid      , -- In  :
+            M_AXI_MRG_RREADY            => mrg_axi_rready      , -- Out :
         ---------------------------------------------------------------------------
         -- Merge AXI Master Writer Address Channel Signals.
         ---------------------------------------------------------------------------
-            MRG_AXI_AWID        => mrg_axi_awid        , -- Out :
-            MRG_AXI_AWADDR      => mrg_axi_awaddr      , -- Out :
-            MRG_AXI_AWLEN       => mrg_axi_awlen       , -- Out :
-            MRG_AXI_AWSIZE      => mrg_axi_awsize      , -- Out :
-            MRG_AXI_AWBURST     => mrg_axi_awburst     , -- Out :
-            MRG_AXI_AWLOCK      => mrg_axi_awlock      , -- Out :
-            MRG_AXI_AWCACHE     => mrg_axi_awcache     , -- Out :
-            MRG_AXI_AWPROT      => mrg_axi_awprot      , -- Out :
-            MRG_AXI_AWQOS       => mrg_axi_awqos       , -- Out :
-            MRG_AXI_AWREGION    => mrg_axi_awregion    , -- Out :
-            MRG_AXI_AWUSER      => mrg_axi_awuser      , -- Out :
-            MRG_AXI_AWVALID     => mrg_axi_awvalid     , -- Out :
-            MRG_AXI_AWREADY     => mrg_axi_awready     , -- In  :
+            M_AXI_MRG_AWID              => mrg_axi_awid        , -- Out :
+            M_AXI_MRG_AWADDR            => mrg_axi_awaddr      , -- Out :
+            M_AXI_MRG_AWLEN             => mrg_axi_awlen       , -- Out :
+            M_AXI_MRG_AWSIZE            => mrg_axi_awsize      , -- Out :
+            M_AXI_MRG_AWBURST           => mrg_axi_awburst     , -- Out :
+            M_AXI_MRG_AWLOCK            => mrg_axi_awlock      , -- Out :
+            M_AXI_MRG_AWCACHE           => mrg_axi_awcache     , -- Out :
+            M_AXI_MRG_AWPROT            => mrg_axi_awprot      , -- Out :
+            M_AXI_MRG_AWQOS             => mrg_axi_awqos       , -- Out :
+            M_AXI_MRG_AWREGION          => mrg_axi_awregion    , -- Out :
+            M_AXI_MRG_AWUSER            => mrg_axi_awuser      , -- Out :
+            M_AXI_MRG_AWVALID           => mrg_axi_awvalid     , -- Out :
+            M_AXI_MRG_AWREADY           => mrg_axi_awready     , -- In  :
         ---------------------------------------------------------------------------
         -- Merge AXI Master Write Data Channel Signals.
         ---------------------------------------------------------------------------
-            MRG_AXI_WID         => mrg_axi_wid         , -- Out :
-            MRG_AXI_WDATA       => mrg_axi_wdata       , -- Out :
-            MRG_AXI_WSTRB       => mrg_axi_wstrb       , -- Out :
-            MRG_AXI_WLAST       => mrg_axi_wlast       , -- Out :
-            MRG_AXI_WVALID      => mrg_axi_wvalid      , -- Out :
-            MRG_AXI_WREADY      => mrg_axi_wready      , -- In  :
+            M_AXI_MRG_WID               => mrg_axi_wid         , -- Out :
+            M_AXI_MRG_WDATA             => mrg_axi_wdata       , -- Out :
+            M_AXI_MRG_WSTRB             => mrg_axi_wstrb       , -- Out :
+            M_AXI_MRG_WUSER             => mrg_axi_wuser       , -- Out :
+            M_AXI_MRG_WLAST             => mrg_axi_wlast       , -- Out :
+            M_AXI_MRG_WVALID            => mrg_axi_wvalid      , -- Out :
+            M_AXI_MRG_WREADY            => mrg_axi_wready      , -- In  :
         ---------------------------------------------------------------------------
         -- Merge AXI Write Response Channel Signals.
         ---------------------------------------------------------------------------
-            MRG_AXI_BID         => mrg_axi_bid         , -- In  :
-            MRG_AXI_BRESP       => mrg_axi_bresp       , -- In  :
-            MRG_AXI_BVALID      => mrg_axi_bvalid      , -- In  :
-            MRG_AXI_BREADY      => mrg_axi_bready      , -- Out :
+            M_AXI_MRG_BID               => mrg_axi_bid         , -- In  :
+            M_AXI_MRG_BRESP             => mrg_axi_bresp       , -- In  :
+            M_AXI_MRG_BUSER             => mrg_axi_buser       , -- In  :
+            M_AXI_MRG_BVALID            => mrg_axi_bvalid      , -- In  :
+            M_AXI_MRG_BREADY            => mrg_axi_bready      , -- Out :
         ---------------------------------------------------------------------------
         -- 
         ---------------------------------------------------------------------------
-            interrupt           => interrupt             -- Out :
+            interrupt                   => interrupt             -- Out :
         );
     -------------------------------------------------------------------------------
     -- 
