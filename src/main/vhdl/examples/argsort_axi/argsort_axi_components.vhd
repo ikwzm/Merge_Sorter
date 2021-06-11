@@ -2,7 +2,7 @@
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
 --!     @version 1.0.0                                                           --
---!     @date    2021/06/08                                                      --
+--!     @date    2021/06/11                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -1018,7 +1018,7 @@ component ArgSort_Kernel
                                       integer range 0 to 1 := 1;
         C_M_AXI_STM_WR_ACK_REGS     : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
                                       integer range 0 to 1 := 1;
-        C_AXI_STM_WR_RESP_REGS      : --! @brief STREAM OUT AXI RESPONSE REGISTER :
+        C_M_AXI_STM_WR_RESP_REGS    : --! @brief STREAM OUT AXI RESPONSE REGISTER :
                                       integer range 0 to 1 := 1;
         C_M_AXI_MRG_ADDR_WIDTH      : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                                       integer := 32;

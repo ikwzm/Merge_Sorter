@@ -98,7 +98,7 @@ entity  ArgSort_Kernel is
                                       integer range 0 to 1 := 1;
         C_M_AXI_STM_WR_ACK_REGS     : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
                                       integer range 0 to 1 := 1;
-        C_AXI_STM_WR_RESP_REGS      : --! @brief STREAM OUT AXI RESPONSE REGISTER :
+        C_M_AXI_STM_WR_RESP_REGS    : --! @brief STREAM OUT AXI RESPONSE REGISTER :
                                       integer range 0 to 1 := 1;
         C_M_AXI_MRG_ADDR_WIDTH      : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
                                       integer := 32;
@@ -1157,7 +1157,7 @@ begin
             STM_WR_AXI_QUEUE    => C_M_AXI_STM_WR_QUEUE        , --
             STM_WR_AXI_REQ_REGS => C_M_AXI_STM_WR_REQ_REGS     , --
             STM_WR_AXI_ACK_REGS => C_M_AXI_STM_WR_ACK_REGS     , --
-            STM_WR_AXI_RESP_REGS=> C_AXI_STM_WR_RESP_REGS      , -- 
+            STM_WR_AXI_RESP_REGS=> C_M_AXI_STM_WR_RESP_REGS    , -- 
             STM_FEEDBACK        => STM_FEEDBACK                , --
             STM_RD_ADDR_VALID   => FALSE                       , --
             STM_WR_ADDR_VALID   => FALSE                       , --
