@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 0.9.1                                                           --
---!     @date    2020/11/19                                                      --
+--!     @version 1.0.0                                                           --
+--!     @date    2021/06/11                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 --                                                                               --
---      Copyright (C) 2020 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
+--      Copyright (C) 2021 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
 --      All rights reserved.                                                     --
 --                                                                               --
 --      Redistribution and use in source and binary forms, with or without       --
@@ -57,7 +57,9 @@ component ArgSort_AXI_Interface
         WORD_COMP_HI        :  integer :=   63;
         MRG_AXI_ID_BASE     :  integer :=    0;
         MRG_AXI_ID_WIDTH    :  integer :=    8;
-        MRG_AXI_AUSER_WIDTH :  integer :=    4;
+        MRG_AXI_ARUSER_WIDTH:  integer :=    4;
+        MRG_AXI_AWUSER_WIDTH:  integer :=    4;
+        MRG_AXI_RUSER_WIDTH :  integer :=    4;
         MRG_AXI_WUSER_WIDTH :  integer :=    4;
         MRG_AXI_BUSER_WIDTH :  integer :=    4;
         MRG_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -77,7 +79,9 @@ component ArgSort_AXI_Interface
         MRG_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_AXI_ID_BASE     :  integer :=    0;
         STM_AXI_ID_WIDTH    :  integer :=    8;
-        STM_AXI_AUSER_WIDTH :  integer :=    4;
+        STM_AXI_ARUSER_WIDTH:  integer :=    4;
+        STM_AXI_AWUSER_WIDTH:  integer :=    4;
+        STM_AXI_RUSER_WIDTH :  integer :=    4;
         STM_AXI_WUSER_WIDTH :  integer :=    4;
         STM_AXI_BUSER_WIDTH :  integer :=    4;
         STM_AXI_ADDR_WIDTH  :  integer :=   32;
@@ -94,11 +98,14 @@ component ArgSort_AXI_Interface
         STM_WR_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         STM_WR_AXI_RESP_REGS:  integer range 0 to 1 := 1;
         STM_FEEDBACK        :  integer :=    1;
+        STM_RD_ADDR_VALID   :  boolean := TRUE;
+        STM_WR_ADDR_VALID   :  boolean := TRUE;
         REG_RW_ADDR_BITS    :  integer :=   64;
         REG_RW_MODE_BITS    :  integer :=   32;
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   16;
         REG_STAT_BITS       :  integer :=    6;
+        REG_COUNT_BITS      :  integer :=   32;
         DEBUG_ENABLE        :  integer :=    0;
         DEBUG_SIZE          :  integer :=    1;
         DEBUG_BITS          :  integer range 64 to 64 := 64;
@@ -114,11 +121,11 @@ component ArgSort_AXI_Interface
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
@@ -126,11 +133,11 @@ component ArgSort_AXI_Interface
         REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
@@ -163,6 +170,9 @@ component ArgSort_AXI_Interface
         REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
         REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
         REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_Q         :  out std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -176,15 +186,16 @@ component ArgSort_AXI_Interface
         STM_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_ARUSER      :  out std_logic_vector(STM_AXI_ARUSER_WIDTH-1 downto 0);
         STM_AXI_ARVALID     :  out std_logic;
         STM_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Stream AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0);
+        STM_AXI_RID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_RDATA       :  in  std_logic_vector(STM_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
         STM_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        STM_AXI_RUSER       :  in  std_logic_vector(STM_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_RLAST       :  in  std_logic;
         STM_AXI_RVALID      :  in  std_logic;
         STM_AXI_RREADY      :  out std_logic;
@@ -201,7 +212,7 @@ component ArgSort_AXI_Interface
         STM_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         STM_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         STM_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AUSER_WIDTH -1 downto 0);
+        STM_AXI_AWUSER      :  out std_logic_vector(STM_AXI_AWUSER_WIDTH-1 downto 0);
         STM_AXI_AWVALID     :  out std_logic;
         STM_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
@@ -217,9 +228,9 @@ component ArgSort_AXI_Interface
     ------------------------------------------------------------------------------
     -- Stream AXI Write Response Channel Signals.
     ------------------------------------------------------------------------------
-        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0);
-        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0);
-        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0);
+        STM_AXI_BID         :  in  std_logic_vector(STM_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        STM_AXI_BRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        STM_AXI_BUSER       :  in  std_logic_vector(STM_AXI_BUSER_WIDTH -1 downto 0) := (others => '0');
         STM_AXI_BVALID      :  in  std_logic;
         STM_AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
@@ -243,15 +254,16 @@ component ArgSort_AXI_Interface
         MRG_AXI_ARPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_ARQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_ARUSER      :  out std_logic_vector(MRG_AXI_ARUSER_WIDTH-1 downto 0);
         MRG_AXI_ARVALID     :  out std_logic;
         MRG_AXI_ARREADY     :  in  std_logic;
     -------------------------------------------------------------------------------
     -- Merge AXI Master Read Data Channel Signals.
     -------------------------------------------------------------------------------
-        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0);
-        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0);
-        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0);
+        MRG_AXI_RID         :  in  std_logic_vector(MRG_AXI_ID_WIDTH    -1 downto 0) := (others => '0');
+        MRG_AXI_RDATA       :  in  std_logic_vector(MRG_AXI_DATA_WIDTH  -1 downto 0) := (others => '0');
+        MRG_AXI_RRESP       :  in  std_logic_vector(1 downto 0)                      := (others => '0');
+        MRG_AXI_RUSER       :  in  std_logic_vector(MRG_AXI_RUSER_WIDTH -1 downto 0) := (others => '0');
         MRG_AXI_RLAST       :  in  std_logic;
         MRG_AXI_RVALID      :  in  std_logic;
         MRG_AXI_RREADY      :  out std_logic;
@@ -268,7 +280,7 @@ component ArgSort_AXI_Interface
         MRG_AXI_AWPROT      :  out std_logic_vector(2 downto 0);
         MRG_AXI_AWQOS       :  out std_logic_vector(3 downto 0);
         MRG_AXI_AWREGION    :  out std_logic_vector(3 downto 0);
-        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AUSER_WIDTH -1 downto 0);
+        MRG_AXI_AWUSER      :  out std_logic_vector(MRG_AXI_AWUSER_WIDTH-1 downto 0);
         MRG_AXI_AWVALID     :  out std_logic;
         MRG_AXI_AWREADY     :  in  std_logic;
     ------------------------------------------------------------------------------
@@ -532,7 +544,6 @@ component ArgSort_AXI_Reader
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -542,7 +553,8 @@ component ArgSort_AXI_Reader
         AXI_BUF_DEPTH   :  integer := 11;
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_RDATA_REGS  :  integer :=  2;
-        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -551,12 +563,6 @@ component ArgSort_AXI_Reader
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -583,6 +589,12 @@ component ArgSort_AXI_Reader
         AXI_RVALID      :  in  std_logic;
         AXI_RREADY      :  out std_logic;
     -------------------------------------------------------------------------------
+    -- Stream Reader Control Register Interface.
+    -------------------------------------------------------------------------------
+        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+    -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
@@ -608,7 +620,6 @@ component ArgSort_AXI_Writer
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -621,7 +632,8 @@ component ArgSort_AXI_Writer
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
-        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1;
+        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -630,12 +642,6 @@ component ArgSort_AXI_Writer
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -671,7 +677,13 @@ component ArgSort_AXI_Writer
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
-    -- Merge Outlet Signals.
+    -- Stream Writer Control Register Interface.
+    -------------------------------------------------------------------------------
+        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+    -------------------------------------------------------------------------------
+    -- Stream Intake Signals.
     -------------------------------------------------------------------------------
         STM_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
         STM_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
@@ -939,6 +951,284 @@ component ArgSort_AXI
     -- Interrupt Request
     -------------------------------------------------------------------------------
         INTERRUPT           : out std_logic
+    );
+end component;
+-----------------------------------------------------------------------------------
+--! @brief ArgSort_Kernel                                                        --
+-----------------------------------------------------------------------------------
+component ArgSort_Kernel
+    generic (
+        MRG_WAYS                    : --! @brief MERGE WAY SIZE :
+                                      integer :=  4;
+        MRG_WORDS                   : --! @brief MERGE WORD SIZE :
+                                      integer :=  1;
+        WORD_BITS                   : --! @brief SORT WORD BIT SIZE :
+                                      integer := 32;
+        INDEX_BITS                  : --! @brief INDEX BIT SIZE :
+                                      integer := 32;
+        COMP_SIGN                   : --! @brief COMPARE SIGN :
+                                      boolean := FALSE;
+        SORT_ORDER                  : --! @brief SORT ORDER :
+                                      integer :=  0;
+        MRG_FIFO_SIZE               : --! @brief MERGE FIFO SIZE :
+                                      integer :=  16;
+        STM_FEEDBACK                : --! @brief STREAM FEED BACK NUMBER :
+                                      integer :=  0;
+        STM_IN_QUEUE_SIZE           : --! @brief STREAM IN QUEUE SIZE :
+                                      integer :=  0;
+        C_S_AXI_CONTROL_ADDR_WIDTH  : --! @brief S_AXI_CONTROL I/F ADDRRESS WIDTH :
+                                      integer := 6;
+        C_S_AXI_CONTROL_DATA_WIDTH  : --! @brief S_AXI_CONTROL I/F DATA WIDTH :
+                                      integer := 32;
+        C_M_AXI_STM_ADDR_WIDTH      : --! @brief STREAM IN/OUT AXI ADDRESS WIDTH :
+                                      integer := 32;
+        C_M_AXI_STM_DATA_WIDTH      : --! @brief STREAM IN/OUT AXI DATA WIDTH :
+                                      integer := 64;
+        C_M_AXI_STM_ID_WIDTH        : --! @brief STREAM IN/OUT AXI ID WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_ARUSER_WIDTH    : --! @brief STREAM IN/OUT AXI ARUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_AWUSER_WIDTH    : --! @brief STREAM IN/OUT AXI AWUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_RUSER_WIDTH     : --! @brief STREAM IN/OUT AXI RUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_WUSER_WIDTH     : --! @brief STREAM IN/OUT AXI WUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_BUSER_WIDTH     : --! @brief STREAM IN/OUT AXI BUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_STM_ID_BASE         : --! @brief STREAM IN/OUT AXI ID BASE :
+                                      integer := 0;
+        C_M_AXI_STM_RD_XFER_SIZE    : --! @brief STREAM IN  AXI MAX XFER SIZE :
+                                      integer := 11;
+        C_M_AXI_STM_RD_BUF_SIZE     : --! @brief STREAM IN  AXI BUFFER SIZE :
+                                      integer := 0;
+        C_M_AXI_STM_RD_QUEUE        : --! @brief STREAM IN  AXI QUEUE SIZE :
+                                      integer := 4;
+        C_M_AXI_STM_RD_DATA_REGS    : --! @brief STREAM IN  AXI DATA REGISTER :
+                                      integer := 2;
+        C_M_AXI_STM_RD_ACK_REGS     : --! @brief STREAM IN  AXI ACKNOWLEDGE REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_STM_WR_XFER_SIZE    : --! @brief STREAM OUT AXI MAX XFER SIZE :
+                                      integer := 11;
+        C_M_AXI_STM_WR_BUF_SIZE     : --! @brief STREAM OUT AXI BUFFER SIZE :
+                                      integer := 0;
+        C_M_AXI_STM_WR_QUEUE        : --! @brief STREAM OUT AXI QUEUE SIZE :
+                                      integer := 4;
+        C_M_AXI_STM_WR_REQ_REGS     : --! @brief STREAM OUT AXI REQUEST REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_STM_WR_ACK_REGS     : --! @brief STREAM OUT AXI ACKNOWLEDGE REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_STM_WR_RESP_REGS    : --! @brief STREAM OUT AXI RESPONSE REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_MRG_ADDR_WIDTH      : --! @brief MERGE IN/OUT AXI ADDRESS WIDTH :
+                                      integer := 32;
+        C_M_AXI_MRG_DATA_WIDTH      : --! @brief MERGE IN/OUT AXI DATA WIDTH :
+                                      integer := 64;
+        C_M_AXI_MRG_ID_WIDTH        : --! @brief MERGE IN/OUT AXI ID WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_ARUSER_WIDTH    : --! @brief MERGE IN/OUT AXI ARUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_AWUSER_WIDTH    : --! @brief MERGE IN/OUT AXI AWUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_RUSER_WIDTH     : --! @brief MERGE IN/OUT AXI RUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_WUSER_WIDTH     : --! @brief MERGE IN/OUT AXI WUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_BUSER_WIDTH     : --! @brief MERGE IN/OUT AXI BUSER WIDTH :
+                                      integer := 1;
+        C_M_AXI_MRG_ID_BASE         : --! @brief MERGE IN/OUT AXI ID BASE :
+                                      integer := 0;
+        C_M_AXI_MRG_RD_XFER_SIZE    : --! @brief MERGE IN  AXI MAX XFER SIZE :
+                                      integer := 11;
+        C_M_AXI_MRG_RD_BUF_SIZE     : --! @brief MERGE IN  AXI BUFFER SIZE :
+                                      integer := 0;
+        C_M_AXI_MRG_RD_QUEUE        : --! @brief MERGE IN  AXI QUEUE SIZE :
+                                      integer := 4;
+        C_M_AXI_MRG_RD_DATA_REGS    : --! @brief MERGE IN  AXI DATA REGISTER :
+                                      integer := 2;
+        C_M_AXI_MRG_RD_ACK_REGS     : --! @brief MERGE IN  AXI ACKNOWLEDGE REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_MRG_RD_ARB_NODE_NUM : --! @brief MERGE IN  ARBITER NODE SIZE :
+                                      integer := 4;
+        C_M_AXI_MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
+                                      integer := 0;
+        C_M_AXI_MRG_WR_XFER_SIZE    : --! @brief MERGE OUT AXI MAX XFER SIZE :
+                                      integer := 11;
+        C_M_AXI_MRG_WR_BUF_SIZE     : --! @brief MERGE OUT AXI BUFFER SIZE :
+                                      integer := 0;
+        C_M_AXI_MRG_WR_QUEUE        : --! @brief MERGE OUT AXI QUEUE SIZE :
+                                      integer := 4;
+        C_M_AXI_MRG_WR_REQ_REGS     : --! @brief MERGE OUT AXI REQUEST REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_MRG_WR_ACK_REGS     : --! @brief MERGE OUT AXI ACKNOWLEDGE REGISTER :
+                                      integer range 0 to 1 := 1;
+        C_M_AXI_MRG_WR_RESP_REGS    : --! @brief MERGE OUT AXI RESPONSE REGISTER :
+                                      integer range 0 to 1 := 1;
+        DEBUG_ENABLE                : --! @brief DEBUG ENABLE :
+                                      integer range 0 to 1 := 0
+    );
+    port(
+    -------------------------------------------------------------------------------
+    -- Clock / Reset Signals.
+    -------------------------------------------------------------------------------
+        AP_CLK                      : in  std_logic;
+        AP_RST_N                    : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- Control Status Register I/F AXI4 Read Address Channel Signals.
+    -------------------------------------------------------------------------------
+        S_AXI_CONTROL_ARADDR        : in  std_logic_vector(C_S_AXI_CONTROL_ADDR_WIDTH   -1 downto 0);
+        S_AXI_CONTROL_ARVALID       : in  std_logic;
+        S_AXI_CONTROL_ARREADY       : out std_logic;
+    ------------------------------------------------------------------------------
+    -- Control Status Register I/F AXI4 Read Data Channel Signals.
+    ------------------------------------------------------------------------------
+        S_AXI_CONTROL_RDATA         : out std_logic_vector(C_S_AXI_CONTROL_DATA_WIDTH   -1 downto 0);
+        S_AXI_CONTROL_RRESP         : out std_logic_vector(1 downto 0);  
+        S_AXI_CONTROL_RVALID        : out std_logic;
+        S_AXI_CONTROL_RREADY        : in  std_logic;
+    ------------------------------------------------------------------------------
+    -- Control Status Register I/F AXI4 Write Address Channel Signals.
+    ------------------------------------------------------------------------------
+        S_AXI_CONTROL_AWADDR        : in  std_logic_vector(C_S_AXI_CONTROL_ADDR_WIDTH   -1 downto 0);
+        S_AXI_CONTROL_AWVALID       : in  std_logic;
+        S_AXI_CONTROL_AWREADY       : out std_logic;
+    ------------------------------------------------------------------------------
+    -- Control Status Register I/F AXI4 Write Data Channel Signals.
+    ------------------------------------------------------------------------------
+        S_AXI_CONTROL_WDATA         : in  std_logic_vector(C_S_AXI_CONTROL_DATA_WIDTH   -1 downto 0);
+        S_AXI_CONTROL_WSTRB         : in  std_logic_vector(C_S_AXI_CONTROL_DATA_WIDTH/8 -1 downto 0);
+        S_AXI_CONTROL_WVALID        : in  std_logic;
+        S_AXI_CONTROL_WREADY        : out std_logic;
+    ------------------------------------------------------------------------------
+    -- Control Status Register I/F AXI4 Write Response Channel Signals.
+    ------------------------------------------------------------------------------
+        S_AXI_CONTROL_BRESP         : out std_logic_vector(1 downto 0);
+        S_AXI_CONTROL_BVALID        : out std_logic;
+        S_AXI_CONTROL_BREADY        : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- STREAM IN/OUT AXI4 Read Address Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_STM_ARID              : out std_logic_vector(C_M_AXI_STM_ID_WIDTH    -1 downto 0);
+        M_AXI_STM_ARADDR            : out std_logic_vector(C_M_AXI_STM_ADDR_WIDTH  -1 downto 0);
+        M_AXI_STM_ARLEN             : out std_logic_vector(7 downto 0);
+        M_AXI_STM_ARSIZE            : out std_logic_vector(2 downto 0);
+        M_AXI_STM_ARBURST           : out std_logic_vector(1 downto 0);
+        M_AXI_STM_ARLOCK            : out std_logic_vector(0 downto 0);
+        M_AXI_STM_ARCACHE           : out std_logic_vector(3 downto 0);
+        M_AXI_STM_ARPROT            : out std_logic_vector(2 downto 0);
+        M_AXI_STM_ARQOS             : out std_logic_vector(3 downto 0);
+        M_AXI_STM_ARREGION          : out std_logic_vector(3 downto 0);
+        M_AXI_STM_ARUSER            : out std_logic_vector(C_M_AXI_STM_ARUSER_WIDTH-1 downto 0);
+        M_AXI_STM_ARVALID           : out std_logic;
+        M_AXI_STM_ARREADY           : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- STREAM IN/OUT AXI4 Read Data Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_STM_RID               : in  std_logic_vector(C_M_AXI_STM_ID_WIDTH    -1 downto 0);
+        M_AXI_STM_RDATA             : in  std_logic_vector(C_M_AXI_STM_DATA_WIDTH  -1 downto 0);
+        M_AXI_STM_RRESP             : in  std_logic_vector(1 downto 0);
+        M_AXI_STM_RUSER             : in  std_logic_vector(C_M_AXI_STM_RUSER_WIDTH -1 downto 0);
+        M_AXI_STM_RLAST             : in  std_logic;
+        M_AXI_STM_RVALID            : in  std_logic;
+        M_AXI_STM_RREADY            : out std_logic;
+    -------------------------------------------------------------------------------
+    -- STREAM IN/OUT AXI4 Write Address Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_STM_AWID              : out std_logic_vector(C_M_AXI_STM_ID_WIDTH    -1 downto 0);
+        M_AXI_STM_AWADDR            : out std_logic_vector(C_M_AXI_STM_ADDR_WIDTH  -1 downto 0);
+        M_AXI_STM_AWLEN             : out std_logic_vector(7 downto 0);
+        M_AXI_STM_AWSIZE            : out std_logic_vector(2 downto 0);
+        M_AXI_STM_AWBURST           : out std_logic_vector(1 downto 0);
+        M_AXI_STM_AWLOCK            : out std_logic_vector(0 downto 0);
+        M_AXI_STM_AWCACHE           : out std_logic_vector(3 downto 0);
+        M_AXI_STM_AWPROT            : out std_logic_vector(2 downto 0);
+        M_AXI_STM_AWQOS             : out std_logic_vector(3 downto 0);
+        M_AXI_STM_AWREGION          : out std_logic_vector(3 downto 0);
+        M_AXI_STM_AWUSER            : out std_logic_vector(C_M_AXI_STM_AWUSER_WIDTH-1 downto 0);
+        M_AXI_STM_AWVALID           : out std_logic;
+        M_AXI_STM_AWREADY           : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- STREAM IN/OUT AXI4 Write Data Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_STM_WID               : out std_logic_vector(C_M_AXI_STM_ID_WIDTH    -1 downto 0);
+        M_AXI_STM_WDATA             : out std_logic_vector(C_M_AXI_STM_DATA_WIDTH  -1 downto 0);
+        M_AXI_STM_WSTRB             : out std_logic_vector(C_M_AXI_STM_DATA_WIDTH/8-1 downto 0);
+        M_AXI_STM_WUSER             : out std_logic_vector(C_M_AXI_STM_WUSER_WIDTH -1 downto 0);
+        M_AXI_STM_WLAST             : out std_logic;
+        M_AXI_STM_WVALID            : out std_logic;
+        M_AXI_STM_WREADY            : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- STREAM IN/OUT AXI4 Write Response Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_STM_BID               : in  std_logic_vector(C_M_AXI_STM_ID_WIDTH    -1 downto 0);
+        M_AXI_STM_BRESP             : in  std_logic_vector(1 downto 0);
+        M_AXI_STM_BUSER             : in  std_logic_vector(C_M_AXI_STM_BUSER_WIDTH -1 downto 0);
+        M_AXI_STM_BVALID            : in  std_logic;
+        M_AXI_STM_BREADY            : out std_logic;
+    -------------------------------------------------------------------------------
+    -- MERGE IN/OUT AXI4 Read Address Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_MRG_ARID              : out std_logic_vector(C_M_AXI_MRG_ID_WIDTH    -1 downto 0);
+        M_AXI_MRG_ARADDR            : out std_logic_vector(C_M_AXI_MRG_ADDR_WIDTH  -1 downto 0);
+        M_AXI_MRG_ARLEN             : out std_logic_vector(7 downto 0);
+        M_AXI_MRG_ARSIZE            : out std_logic_vector(2 downto 0);
+        M_AXI_MRG_ARBURST           : out std_logic_vector(1 downto 0);
+        M_AXI_MRG_ARLOCK            : out std_logic_vector(0 downto 0);
+        M_AXI_MRG_ARCACHE           : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_ARPROT            : out std_logic_vector(2 downto 0);
+        M_AXI_MRG_ARQOS             : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_ARREGION          : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_ARUSER            : out std_logic_vector(C_M_AXI_MRG_ARUSER_WIDTH-1 downto 0);
+        M_AXI_MRG_ARVALID           : out std_logic;
+        M_AXI_MRG_ARREADY           : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- MERGE IN/OUT AXI4 Read Data Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_MRG_RID               : in  std_logic_vector(C_M_AXI_MRG_ID_WIDTH    -1 downto 0);
+        M_AXI_MRG_RDATA             : in  std_logic_vector(C_M_AXI_MRG_DATA_WIDTH  -1 downto 0);
+        M_AXI_MRG_RRESP             : in  std_logic_vector(1 downto 0);
+        M_AXI_MRG_RUSER             : in  std_logic_vector(C_M_AXI_MRG_RUSER_WIDTH -1 downto 0);
+        M_AXI_MRG_RLAST             : in  std_logic;
+        M_AXI_MRG_RVALID            : in  std_logic;
+        M_AXI_MRG_RREADY            : out std_logic;
+    -------------------------------------------------------------------------------
+    -- MERGE IN/OUT AXI4 Write Address Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_MRG_AWID              : out std_logic_vector(C_M_AXI_MRG_ID_WIDTH    -1 downto 0);
+        M_AXI_MRG_AWADDR            : out std_logic_vector(C_M_AXI_MRG_ADDR_WIDTH  -1 downto 0);
+        M_AXI_MRG_AWLEN             : out std_logic_vector(7 downto 0);
+        M_AXI_MRG_AWSIZE            : out std_logic_vector(2 downto 0);
+        M_AXI_MRG_AWBURST           : out std_logic_vector(1 downto 0);
+        M_AXI_MRG_AWLOCK            : out std_logic_vector(0 downto 0);
+        M_AXI_MRG_AWCACHE           : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_AWPROT            : out std_logic_vector(2 downto 0);
+        M_AXI_MRG_AWQOS             : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_AWREGION          : out std_logic_vector(3 downto 0);
+        M_AXI_MRG_AWUSER            : out std_logic_vector(C_M_AXI_MRG_AWUSER_WIDTH-1 downto 0);
+        M_AXI_MRG_AWVALID           : out std_logic;
+        M_AXI_MRG_AWREADY           : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- MERGE IN/OUT AXI4 Write Data Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_MRG_WID               : out std_logic_vector(C_M_AXI_MRG_ID_WIDTH    -1 downto 0);
+        M_AXI_MRG_WDATA             : out std_logic_vector(C_M_AXI_MRG_DATA_WIDTH  -1 downto 0);
+        M_AXI_MRG_WSTRB             : out std_logic_vector(C_M_AXI_MRG_DATA_WIDTH/8-1 downto 0);
+        M_AXI_MRG_WUSER             : out std_logic_vector(C_M_AXI_MRG_WUSER_WIDTH -1 downto 0);
+        M_AXI_MRG_WLAST             : out std_logic;
+        M_AXI_MRG_WVALID            : out std_logic;
+        M_AXI_MRG_WREADY            : in  std_logic;
+    -------------------------------------------------------------------------------
+    -- MERGE IN/OUT AXI4 Write Response Channel Signals.
+    -------------------------------------------------------------------------------
+        M_AXI_MRG_BID               : in  std_logic_vector(C_M_AXI_MRG_ID_WIDTH    -1 downto 0);
+        M_AXI_MRG_BRESP             : in  std_logic_vector(1 downto 0);
+        M_AXI_MRG_BUSER             : in  std_logic_vector(C_M_AXI_MRG_BUSER_WIDTH -1 downto 0);
+        M_AXI_MRG_BVALID            : in  std_logic;
+        M_AXI_MRG_BREADY            : out std_logic;
+    -------------------------------------------------------------------------------
+    -- Interrupt Request
+    -------------------------------------------------------------------------------
+        INTERRUPT                   : out std_logic
     );
 end component;
 end ArgSort_AXI_Components;

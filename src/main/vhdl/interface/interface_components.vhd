@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 0.9.1                                                           --
---!     @date    2020/11/19                                                      --
+--!     @version 1.0.0                                                           --
+--!     @date    2021/06/07                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 --                                                                               --
---      Copyright (C) 2020 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
+--      Copyright (C) 2021 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
 --      All rights reserved.                                                     --
 --                                                                               --
 --      Redistribution and use in source and binary forms, with or without       --
@@ -244,7 +244,6 @@ component Merge_AXI_Reader
         WAYS            :  integer :=  8;
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -256,7 +255,8 @@ component Merge_AXI_Reader
         AXI_RDATA_REGS  :  integer :=  2;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
         ARB_NODE_NUM    :  integer :=  4;
-        ARB_PIPELINE    :  integer :=  0
+        ARB_PIPELINE    :  integer :=  0;
+        MRG_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -265,12 +265,6 @@ component Merge_AXI_Reader
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
-        REG_D           :  in  std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
-        REG_Q           :  out std_logic_vector(WAYS*REG_PARAM.BITS -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -297,6 +291,12 @@ component Merge_AXI_Reader
         AXI_RVALID      :  in  std_logic;
         AXI_RREADY      :  out std_logic;
     -------------------------------------------------------------------------------
+    -- Merge Reader Control Register Interface.
+    -------------------------------------------------------------------------------
+        MRG_REG_L       :  in  std_logic_vector(WAYS*MRG_REG_PARAM.BITS -1 downto 0);
+        MRG_REG_D       :  in  std_logic_vector(WAYS*MRG_REG_PARAM.BITS -1 downto 0);
+        MRG_REG_Q       :  out std_logic_vector(WAYS*MRG_REG_PARAM.BITS -1 downto 0);
+    -------------------------------------------------------------------------------
     -- Merge Outlet Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  out std_logic_vector(WAYS*WORDS*WORD_BITS-1 downto 0);
@@ -320,7 +320,6 @@ component Merge_AXI_Writer
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -333,7 +332,8 @@ component Merge_AXI_Writer
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
-        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1;
+        MRG_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -342,12 +342,6 @@ component Merge_AXI_Writer
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -383,6 +377,12 @@ component Merge_AXI_Writer
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
+    -- Merge Writer Control Register Interface.
+    -------------------------------------------------------------------------------
+        MRG_REG_L       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_D       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_Q       :  out std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+    -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
         MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
@@ -413,10 +413,15 @@ component Interface_Controller
         REG_SIZE_BITS       :  integer :=   32;
         REG_MODE_BITS       :  integer :=   16;
         REG_STAT_BITS       :  integer :=    6;
+        REG_COUNT_BITS      :  integer :=   32;
         MRG_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         MRG_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_RD_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         STM_WR_REG_PARAM    :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
+        STM_RD_ADDR_VALID   :  boolean := TRUE;
+        STM_RD_MODE_VALID   :  boolean := TRUE;
+        STM_WR_ADDR_VALID   :  boolean := TRUE;
+        STM_WR_MODE_VALID   :  boolean := TRUE;
         DEBUG_ENABLE        :  integer :=    0;
         DEBUG_SIZE          :  integer :=    1;
         DEBUG_BITS          :  integer range 64 to 64 := 64;
@@ -432,11 +437,11 @@ component Interface_Controller
     -------------------------------------------------------------------------------
     -- Register Interface
     -------------------------------------------------------------------------------
-        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_RD_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_RD_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_RD_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
+        REG_WR_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
+        REG_WR_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0) := (others => '0');
         REG_WR_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T0_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
@@ -444,11 +449,11 @@ component Interface_Controller
         REG_T1_ADDR_L       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_D       :  in  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
         REG_T1_ADDR_Q       :  out std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
-        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_RD_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_RD_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_RD_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
+        REG_WR_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
+        REG_WR_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0) := (others => '0');
         REG_WR_MODE_Q       :  out std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_L       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
         REG_T0_MODE_D       :  in  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
@@ -481,6 +486,9 @@ component Interface_Controller
         REG_STAT_D          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
         REG_STAT_Q          :  out std_logic_vector(REG_STAT_BITS   -1 downto 0);
         REG_STAT_I          :  in  std_logic_vector(REG_STAT_BITS   -1 downto 0) := (others => '0');
+        REG_COUNT_L         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_D         :  in  std_logic_vector(REG_COUNT_BITS  -1 downto 0) := (others => '0');
+        REG_COUNT_Q         :  out std_logic_vector(REG_COUNT_BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Sorter Core Control Interface
     -------------------------------------------------------------------------------

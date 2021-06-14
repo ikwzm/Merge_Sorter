@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_writer.vhd
 --!     @brief   Merge Sorter Merge AXI Writer Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.0.0
+--!     @date    2021/6/7
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2021 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@ entity  Merge_AXI_Writer is
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -55,7 +54,8 @@ entity  Merge_AXI_Writer is
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
-        AXI_RESP_REGS   :  integer range 0 to 1 :=  1
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1;
+        MRG_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -64,12 +64,6 @@ entity  Merge_AXI_Writer is
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS   -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -104,6 +98,12 @@ entity  Merge_AXI_Writer is
         AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH  -1 downto 0);
         AXI_BVALID      :  in  std_logic;
         AXI_BREADY      :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Merge Writer Control Register Interface.
+    -------------------------------------------------------------------------------
+        MRG_REG_L       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_D       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_Q       :  out std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
@@ -160,8 +160,8 @@ architecture RTL of Merge_AXI_Writer is
     -- 
     ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
-    constant  REQ_SIZE_BITS     :  integer := REG_PARAM.SIZE_BITS;
-    constant  REQ_MODE_BITS     :  integer := REG_PARAM.MODE_BITS;
+    constant  REQ_SIZE_BITS     :  integer := MRG_REG_PARAM.SIZE_BITS;
+    constant  REQ_MODE_BITS     :  integer := MRG_REG_PARAM.MODE_BITS;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -354,16 +354,16 @@ begin
     --
     -------------------------------------------------------------------------------
     REQ_MODE_BLK: block
-        constant  REQ_MODE_CACHE_HI   :  integer := REG_PARAM.MODE_CACHE_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_CACHE_LO   :  integer := REG_PARAM.MODE_CACHE_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_HI   :  integer := REG_PARAM.MODE_APROT_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_LO   :  integer := REG_PARAM.MODE_APROT_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_HI   :  integer := REG_PARAM.MODE_AUSER_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_LO   :  integer := REG_PARAM.MODE_AUSER_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_LO     :  integer := REG_PARAM.MODE_AID_LO     - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_HI     :  integer := REG_PARAM.MODE_AID_HI     - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SPECUL_POS :  integer := REG_PARAM.MODE_SPECUL_POS - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SAFETY_POS :  integer := REG_PARAM.MODE_SAFETY_POS - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_CACHE_HI   :  integer := MRG_REG_PARAM.MODE_CACHE_HI   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_CACHE_LO   :  integer := MRG_REG_PARAM.MODE_CACHE_LO   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_HI   :  integer := MRG_REG_PARAM.MODE_APROT_HI   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_LO   :  integer := MRG_REG_PARAM.MODE_APROT_LO   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AUSER_HI   :  integer := MRG_REG_PARAM.MODE_AUSER_HI   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AUSER_LO   :  integer := MRG_REG_PARAM.MODE_AUSER_LO   - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_LO     :  integer := MRG_REG_PARAM.MODE_AID_LO     - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_HI     :  integer := MRG_REG_PARAM.MODE_AID_HI     - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_SPECUL_POS :  integer := MRG_REG_PARAM.MODE_SPECUL_POS - MRG_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_SAFETY_POS :  integer := MRG_REG_PARAM.MODE_SAFETY_POS - MRG_REG_PARAM.MODE_LO;
         function  GEN_REQ_ID(AID:std_logic_vector) return std_logic_vector is
             variable  id              :  integer;
         begin
@@ -395,7 +395,7 @@ begin
         generic map (                                    -- 
             WORDS               => WORDS               , --   
             WORD_BITS           => WORD_BITS           , --   
-            REG_PARAM           => REG_PARAM           , -- 
+            REG_PARAM           => MRG_REG_PARAM       , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
@@ -412,9 +412,9 @@ begin
         -------------------------------------------------------------------------------
         -- Register Interface
         -------------------------------------------------------------------------------
-            REG_L               => REG_L               , --  In  :
-            REG_D               => REG_D               , --  In  :
-            REG_Q               => REG_Q               , --  Out :
+            REG_L               => MRG_REG_L           , --  In  :
+            REG_D               => MRG_REG_D           , --  In  :
+            REG_Q               => MRG_REG_Q           , --  Out :
         -------------------------------------------------------------------------------
         -- Transaction Command Request Signals.
         -------------------------------------------------------------------------------

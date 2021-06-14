@@ -1,0 +1,12 @@
+
+- Global:
+    Print    :  true
+
+- Library:
+    Name     :  merge_sorter
+    Format   :  "#{File.basename(file_name,\".vhd\")} : #{file_name} #{@use_list.map{|u|File.basename(u.file_name,\".vhd\")}.join(\" \")}\n\tghdl -a -C $(GHDLFLAGS) --work=#{library_name} #{file_name}\n\n"
+    PathList :
+      - "../../../src/main/vhdl/"
+      - "../../../src/test/vhdl/"
+    Top      :  ["ArgSort_Kernel_Test_Bench"]
+    

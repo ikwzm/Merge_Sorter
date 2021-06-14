@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_reader.vhd
 --!     @brief   Merge Sorter ArgSort AXI Reader Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.0.0
+--!     @date    2021/6/7
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2021 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,6 @@ entity  ArgSort_AXI_Reader is
         WORD_INDEX_HI   :  integer := 31;
         WORD_COMP_LO    :  integer := 32;
         WORD_COMP_HI    :  integer := 63;
-        REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
@@ -56,7 +55,8 @@ entity  ArgSort_AXI_Reader is
         AXI_BUF_DEPTH   :  integer := 11;
         AXI_QUEUE_SIZE  :  integer :=  4;
         AXI_RDATA_REGS  :  integer :=  2;
-        AXI_ACK_REGS    :  integer range 0 to 1 :=  1
+        AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
+        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -65,12 +65,6 @@ entity  ArgSort_AXI_Reader is
         CLK             :  in  std_logic;
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
-    -------------------------------------------------------------------------------
-    -- Register Interface
-    -------------------------------------------------------------------------------
-        REG_L           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_D           :  in  std_logic_vector(REG_PARAM.BITS  -1 downto 0);
-        REG_Q           :  out std_logic_vector(REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- AXI Master Read Address Channel Signals.
     -------------------------------------------------------------------------------
@@ -96,6 +90,12 @@ entity  ArgSort_AXI_Reader is
         AXI_RLAST       :  in  std_logic;
         AXI_RVALID      :  in  std_logic;
         AXI_RREADY      :  out std_logic;
+    -------------------------------------------------------------------------------
+    -- Stream Reader Control Register Interface.
+    -------------------------------------------------------------------------------
+        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
+        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
     -------------------------------------------------------------------------------
     -- Stream Outlet Signals.
     -------------------------------------------------------------------------------
@@ -157,8 +157,8 @@ architecture RTL of ArgSort_AXI_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
-    constant  REQ_SIZE_BITS     :  integer := REG_PARAM.SIZE_BITS;
-    constant  REQ_MODE_BITS     :  integer := REG_PARAM.MODE_BITS;
+    constant  REQ_SIZE_BITS     :  integer := STM_REG_PARAM.SIZE_BITS;
+    constant  REQ_MODE_BITS     :  integer := STM_REG_PARAM.MODE_BITS;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -342,16 +342,16 @@ begin
     --
     -------------------------------------------------------------------------------
     REQ_MODE_BLK: block
-        constant  REQ_MODE_CACHE_HI   :  integer := REG_PARAM.MODE_CACHE_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_CACHE_LO   :  integer := REG_PARAM.MODE_CACHE_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_HI   :  integer := REG_PARAM.MODE_APROT_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_LO   :  integer := REG_PARAM.MODE_APROT_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_HI   :  integer := REG_PARAM.MODE_AUSER_HI   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_LO   :  integer := REG_PARAM.MODE_AUSER_LO   - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_LO     :  integer := REG_PARAM.MODE_AID_LO     - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_HI     :  integer := REG_PARAM.MODE_AID_HI     - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SPECUL_POS :  integer := REG_PARAM.MODE_SPECUL_POS - REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SAFETY_POS :  integer := REG_PARAM.MODE_SAFETY_POS - REG_PARAM.MODE_LO;
+        constant  REQ_MODE_CACHE_HI   :  integer := STM_REG_PARAM.MODE_CACHE_HI   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_CACHE_LO   :  integer := STM_REG_PARAM.MODE_CACHE_LO   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_HI   :  integer := STM_REG_PARAM.MODE_APROT_HI   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_APROT_LO   :  integer := STM_REG_PARAM.MODE_APROT_LO   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AUSER_HI   :  integer := STM_REG_PARAM.MODE_AUSER_HI   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AUSER_LO   :  integer := STM_REG_PARAM.MODE_AUSER_LO   - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_LO     :  integer := STM_REG_PARAM.MODE_AID_LO     - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_AID_HI     :  integer := STM_REG_PARAM.MODE_AID_HI     - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_SPECUL_POS :  integer := STM_REG_PARAM.MODE_SPECUL_POS - STM_REG_PARAM.MODE_LO;
+        constant  REQ_MODE_SAFETY_POS :  integer := STM_REG_PARAM.MODE_SAFETY_POS - STM_REG_PARAM.MODE_LO;
         function  GEN_REQ_ID(AID:std_logic_vector) return std_logic_vector is
             variable  id              :  integer;
         begin
@@ -383,7 +383,7 @@ begin
         generic map (                                    -- 
             WORDS               => WORDS               , --   
             WORD_BITS           => WORD_BITS           , --   
-            REG_PARAM           => REG_PARAM           , -- 
+            REG_PARAM           => STM_REG_PARAM       , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
@@ -404,9 +404,9 @@ begin
         ---------------------------------------------------------------------------
         -- Register Interface
         ---------------------------------------------------------------------------
-            REG_L               => REG_L               , --  In  :
-            REG_D               => REG_D               , --  In  :
-            REG_Q               => REG_Q               , --  Out :
+            REG_L               => STM_REG_L           , --  In  :
+            REG_D               => STM_REG_D           , --  In  :
+            REG_Q               => STM_REG_Q           , --  Out :
         ---------------------------------------------------------------------------
         -- Transaction Command Request Signals.
         ---------------------------------------------------------------------------
