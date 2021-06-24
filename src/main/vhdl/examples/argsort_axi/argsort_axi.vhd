@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 0.9.2
---!     @date    2021/6/8
+--!     @version 1.1.0
+--!     @date    2021/6/24
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -50,8 +50,10 @@ entity  ArgSort_AXI is
                               boolean := FALSE;
         SORT_ORDER          : --! @brief SORT ORDER :
                               integer :=  0;
+        SORT_SIZE_BITS      : --! @brief SORT SIZE BITS :
+                              integer range 1 to 32 := 28;
         MRG_FIFO_SIZE       : --! @brief MERGE FIFO SIZE :
-                              integer :=  16;
+                              integer := 16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
                               integer :=  0;
         STM_IN_QUEUE_SIZE   : --! @brief STREAM IN QUEUE SIZE :
@@ -350,7 +352,6 @@ architecture RTL of ArgSort_AXI is
     -------------------------------------------------------------------------------
     constant  REG_RW_ADDR_BITS  :  integer := 64;
     constant  REG_RW_MODE_BITS  :  integer := 32;
-    constant  REG_SIZE_BITS     :  integer := 32;
     constant  REG_MODE_BITS     :  integer := 16;
     constant  REG_STAT_BITS     :  integer :=  8;
     constant  REG_CTRL_BITS     :  integer :=  8;
@@ -370,8 +371,8 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_BITS :  integer := 64;
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
-    constant  VERSION_MAJOR     :  integer range 0 to 15 := 0;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 9;
+    constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 1;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
@@ -436,8 +437,11 @@ architecture RTL of ArgSort_AXI is
     -- SIZE_REGS
     -------------------------------------------------------------------------------
     constant  SIZE_REGS_ADDR    :  integer := 16#38#;
+    constant  SIZE_REGS_BITS    :  integer := 32;
     constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
-    constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + REG_SIZE_BITS - 1;
+    constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + SIZE_REGS_BITS - 1;
+    constant  SIZE_SIZE_LO      :  integer := 8*SIZE_REGS_ADDR;
+    constant  SIZE_SIZE_HI      :  integer := 8*SIZE_REGS_ADDR    + SORT_SIZE_BITS - 1;
     -------------------------------------------------------------------------------
     -- MODE_REGS
     -------------------------------------------------------------------------------
@@ -504,9 +508,9 @@ architecture RTL of ArgSort_AXI is
     signal    reg_t1_mode_load  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     signal    reg_t1_mode_wbit  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     signal    reg_t1_mode_data  :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
-    signal    reg_size_load     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
-    signal    reg_size_wbit     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
-    signal    reg_size_data     :  std_logic_vector(REG_SIZE_BITS   -1 downto 0);
+    signal    reg_size_load     :  std_logic_vector(SORT_SIZE_BITS  -1 downto 0);
+    signal    reg_size_wbit     :  std_logic_vector(SORT_SIZE_BITS  -1 downto 0);
+    signal    reg_size_data     :  std_logic_vector(SORT_SIZE_BITS  -1 downto 0);
     signal    reg_mode_load     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
     signal    reg_mode_wbit     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
     signal    reg_mode_data     :  std_logic_vector(REG_MODE_BITS   -1 downto 0);
@@ -775,9 +779,9 @@ begin
         ---------------------------------------------------------------------------
         -- reg_size
         ---------------------------------------------------------------------------
-        reg_size_load <= regs_load(SIZE_REGS_HI downto  SIZE_REGS_LO);
-        reg_size_wbit <= regs_wbit(SIZE_REGS_HI downto  SIZE_REGS_LO);
-        regs_rbit(SIZE_REGS_HI downto  SIZE_REGS_LO) <= reg_size_data;
+        reg_size_load <= regs_load(SIZE_SIZE_HI downto  SIZE_SIZE_LO);
+        reg_size_wbit <= regs_wbit(SIZE_SIZE_HI downto  SIZE_SIZE_LO);
+        regs_rbit(SIZE_REGS_HI downto  SIZE_REGS_LO) <= std_logic_vector(resize(to_01(unsigned(reg_size_data)), SIZE_REGS_BITS));
         ---------------------------------------------------------------------------
         -- reg_mode
         ---------------------------------------------------------------------------
@@ -896,7 +900,7 @@ begin
             STM_FEEDBACK        => STM_FEEDBACK        , --   
             REG_RW_ADDR_BITS    => REG_RW_ADDR_BITS    , --   
             REG_RW_MODE_BITS    => REG_RW_MODE_BITS    , --   
-            REG_SIZE_BITS       => REG_SIZE_BITS       , --   
+            REG_SIZE_BITS       => SORT_SIZE_BITS      , --   
             REG_MODE_BITS       => REG_MODE_BITS       , --   
             DEBUG_ENABLE        => DEBUG_ENABLE        , --   
             DEBUG_SIZE          => DEBUG_SIZE          , --
