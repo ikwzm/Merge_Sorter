@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.1.0
+--!     @date    2021/6/24
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020 Ichiro Kawazome
+--      Copyright (C) 2021 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -50,6 +50,7 @@ entity  ArgSort_AXI_Test_Bench is
         STM_IN_QUEUE    :  integer :=  0;
         WORD_BITS       :  integer := 32;
         INDEX_BITS      :  integer := 32;
+        SORT_SIZE_BITS  :  integer := 32;
         DEBUG_ENABLE    :  integer range 0 to 1 := 1;
         FINISH_ABORT    :  boolean := FALSE
     );
@@ -325,6 +326,7 @@ begin
             INDEX_BITS          => INDEX_BITS          ,
             COMP_SIGN           => TRUE                ,
             SORT_ORDER          => 0                   ,
+            SORT_SIZE_BITS      => SORT_SIZE_BITS      ,
             MRG_FIFO_SIZE       => 0                   ,
             STM_FEEDBACK        => STM_FEEDBACK        ,
             STM_IN_QUEUE_SIZE   => STM_IN_QUEUE        ,
@@ -893,6 +895,7 @@ entity  ArgSort_AXI_Test_Bench_X04_W1_F0 is
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 0;  -- F0
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X04_W1_F0;
@@ -904,6 +907,7 @@ begin
         MRG_WAYS        => MRG_WAYS      ,
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -919,6 +923,7 @@ entity  ArgSort_AXI_Test_Bench_X04_W1_F1 is
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 1;  -- F1
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X04_W1_F1;
@@ -930,6 +935,7 @@ begin
         MRG_WAYS        => MRG_WAYS      ,
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -945,6 +951,7 @@ entity  ArgSort_AXI_Test_Bench_X04_W1_F2 is
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X04_W1_F2;
@@ -956,6 +963,7 @@ begin
         MRG_WAYS        => MRG_WAYS      ,
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -971,6 +979,7 @@ entity  ArgSort_AXI_Test_Bench_X04_W2_F2 is
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 2;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X04_W2_F2;
@@ -982,6 +991,7 @@ begin
         MRG_WAYS        => MRG_WAYS      ,
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -998,6 +1008,7 @@ entity  ArgSort_AXI_Test_Bench_X16_W1_F2 is
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
         STM_IN_QUEUE    :  integer := 0;
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X16_W1_F2;
@@ -1010,6 +1021,7 @@ begin
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
         STM_IN_QUEUE    => STM_IN_QUEUE  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -1026,6 +1038,7 @@ entity  ArgSort_AXI_Test_Bench_X16_W2_F2 is
         MRG_WORDS       :  integer := 2;  -- W2
         STM_FEEDBACK    :  integer := 2;  -- F2
         STM_IN_QUEUE    :  integer := 0;
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X16_W2_F2;
@@ -1038,6 +1051,7 @@ begin
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
         STM_IN_QUEUE    => STM_IN_QUEUE  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
@@ -1054,6 +1068,7 @@ entity  ArgSort_AXI_Test_Bench_X32_W1_F2 is
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
         STM_IN_QUEUE    :  integer := 0;
+        SORT_SIZE_BITS  :  integer := 28;
         FINISH_ABORT    :  boolean := FALSE
     );
 end ArgSort_AXI_Test_Bench_X32_W1_F2;
@@ -1066,6 +1081,7 @@ begin
         MRG_WORDS       => MRG_WORDS     ,
         STM_FEEDBACK    => STM_FEEDBACK  ,
         STM_IN_QUEUE    => STM_IN_QUEUE  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;

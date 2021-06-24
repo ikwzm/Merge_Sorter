@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 1.0.0
---!     @date    2021/6/5
+--!     @version 1.1.0
+--!     @date    2021/6/24
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -192,12 +192,49 @@ architecture RTL of Interface_Controller is
     constant STM_RD_DATA_BYTES   :  integer := STM_RD_DATA_BITS/8;
     constant STM_WR_DATA_BYTES   :  integer := STM_WR_DATA_BITS/8;
     constant WORD_BYTES          :  integer := WORD_BITS/8;
-    constant SIZE_BITS           :  integer := REG_SIZE_BITS+1;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    signal   sort_block_size     :  unsigned(SIZE_BITS-1 downto 0);
-    signal   sort_total_size     :  unsigned(SIZE_BITS-1 downto 0);
+    type     SETTING_TYPE        is record
+             BLOCK_SIZE_BITS     :  integer;
+             XFER_SIZE_BITS      :  integer;
+             TOTAL_SIZE_BITS     :  integer;
+    end record;
+    function INIT(SIZE_BITS: integer) return SETTING_TYPE is
+        constant   max_size      :  unsigned(SIZE_BITS   -1 downto 0) := (others => '1');
+        variable   block_size    :  unsigned(SIZE_BITS+16-1 downto 0);
+        variable   xfer_size     :  unsigned(SIZE_BITS+16-1 downto 0);
+        variable   setting       :  SETTING_TYPE;
+    begin
+        block_size := to_unsigned(WORDS*(WAYS**(STM_FEEDBACK+1)), block_size'length);
+        xfer_size  := xfer_size;
+        while (block_size < max_size) loop
+            xfer_size  := block_size;
+            block_size := resize(block_size * WAYS, block_size'length);
+        end loop;
+        setting.BLOCK_SIZE_BITS := block_size'high;
+        for i in block_size'high downto block_size'low loop
+            if (block_size(i) = '1') then
+                setting.BLOCK_SIZE_BITS := i + 1;
+                exit;
+            end if;
+        end loop;
+        setting.XFER_SIZE_BITS  := xfer_size'high;
+        for i in xfer_size'high downto xfer_size'low loop
+            if (xfer_size(i) = '1') then
+                setting.XFER_SIZE_BITS := i + 1;
+                exit;
+            end if;
+        end loop;
+        setting.TOTAL_SIZE_BITS := SIZE_BITS;
+        return setting;
+    end function;
+    constant SETTING             :  SETTING_TYPE := INIT(REG_SIZE_BITS);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    signal   sort_block_size     :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+    signal   sort_total_size     :  unsigned(SETTING.TOTAL_SIZE_BITS-1 downto 0);
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -227,7 +264,7 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     signal   mrg_reader_request  :  boolean;
     signal   mrg_reader_running  :  boolean;
-    signal   mrg_reader_xsize    :  unsigned(SIZE_BITS-1 downto 0);
+    signal   mrg_reader_xsize    :  unsigned(SETTING.XFER_SIZE_BITS-1 downto 0);
     signal   mrg_reader_addr     :  std_logic_vector(REG_RW_ADDR_BITS-1 downto 0);
     signal   mrg_reader_mode     :  std_logic_vector(REG_RW_MODE_BITS-1 downto 0);
     signal   mrg_reader_busy     :  std_logic_vector(WAYS-1 downto 0);
@@ -820,11 +857,11 @@ begin
     MRG_RD_CTRL: for channel in 0 to WAYS-1 generate
         type     STATE_TYPE     is (IDLE_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   curr_base      :  unsigned(SIZE_BITS-1 downto 0);
-        signal   next_base      :  unsigned(SIZE_BITS-1 downto 0);
-        signal   offset         :  unsigned(SIZE_BITS-1 downto 0);
-        signal   offset_size    :  unsigned(SIZE_BITS-1 downto 0);
-        signal   remain_size    :  unsigned(SIZE_BITS-1 downto 0);
+        signal   curr_base      :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+        signal   next_base      :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+        signal   offset         :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+        signal   offset_size    :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+        signal   remain_size    :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   remain_zero    :  boolean;
         signal   read_addr      :  unsigned(MRG_RD_REG_PARAM.ADDR_BITS-1 downto 0);
         signal   read_bytes     :  unsigned(MRG_RD_REG_PARAM.SIZE_BITS-1 downto 0);
@@ -1272,7 +1309,13 @@ begin
                         mode <= DEBUG_MODE;
                     elsif (to_01(unsigned(mode)) = 1) then
                         if (debug_req and active(i) = '1') then
-                            regs(SIZE_BITS-1 downto 0) <= std_logic_vector(sort_block_size);
+                            for i in regs'low to regs'high-1 loop
+                                if (sort_block_size'low <= i and i <= sort_block_size'high) then
+                                    regs(i) <= sort_block_size(i);
+                                else
+                                    regs(i) <= '0';
+                                end if;
+                            end loop;
                             if (last_proc) then
                                 regs(regs'high) <= '1';
                             else

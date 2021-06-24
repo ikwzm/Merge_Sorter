@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 1.0.0                                                           --
---!     @date    2021/06/11                                                      --
+--!     @version 1.1.0                                                           --
+--!     @date    2021/06/24                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -714,8 +714,10 @@ component ArgSort_AXI
                               boolean := FALSE;
         SORT_ORDER          : --! @brief SORT ORDER :
                               integer :=  0;
+        SORT_SIZE_BITS      : --! @brief SORT SIZE BITS :
+                              integer range 1 to 32 := 28;
         MRG_FIFO_SIZE       : --! @brief MERGE FIFO SIZE :
-                              integer :=  16;
+                              integer := 16;
         STM_FEEDBACK        : --! @brief STREAM FEED BACK NUMBER :
                               integer :=  0;
         STM_IN_QUEUE_SIZE   : --! @brief STREAM IN QUEUE SIZE :
