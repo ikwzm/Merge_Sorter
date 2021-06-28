@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_kernel_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort Xilinx RTL Kernel Test Bench :
---!     @version 1.0.0
---!     @date    2021/6/8
+--!     @version 1.2.0
+--!     @date    2021/6/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -50,6 +50,8 @@ entity  ArgSort_Kernel_Test_Bench is
         STM_IN_QUEUE    :  integer :=  0;
         WORD_BITS       :  integer := 32;
         INDEX_BITS      :  integer := 32;
+        SORT_SIZE_BITS  :  integer := 32;
+        MRG_RD_PRE_STATE:  integer :=  0;
         DEBUG_ENABLE    :  integer range 0 to 1 := 1;
         FINISH_ABORT    :  boolean := FALSE
     );
@@ -319,7 +321,9 @@ begin
             INDEX_BITS                  => INDEX_BITS          ,
             COMP_SIGN                   => TRUE                ,
             SORT_ORDER                  => 0                   ,
+            SORT_SIZE_BITS              => SORT_SIZE_BITS      ,
             MRG_FIFO_SIZE               => 0                   ,
+            MRG_RD_PRE_STATE            => MRG_RD_PRE_STATE    ,
             STM_FEEDBACK                => STM_FEEDBACK        ,
             STM_IN_QUEUE_SIZE           => STM_IN_QUEUE        ,
             C_S_AXI_CONTROL_ADDR_WIDTH  => CSR_WIDTH.ARADDR    ,
@@ -328,9 +332,9 @@ begin
             C_M_AXI_STM_DATA_WIDTH      => STM_AXI_WIDTH.RDATA ,
             C_M_AXI_STM_ARUSER_WIDTH    => STM_AXI_WIDTH.ARUSER, -- 
             C_M_AXI_STM_AWUSER_WIDTH    => STM_AXI_WIDTH.AWUSER, -- 
-            C_M_AXI_STM_RUSER_WIDTH     => STM_AXI_WIDTH.RUSER, -- 
-            C_M_AXI_STM_WUSER_WIDTH     => STM_AXI_WIDTH.WUSER, -- 
-            C_M_AXI_STM_BUSER_WIDTH     => STM_AXI_WIDTH.BUSER, -- 
+            C_M_AXI_STM_RUSER_WIDTH     => STM_AXI_WIDTH.RUSER , -- 
+            C_M_AXI_STM_WUSER_WIDTH     => STM_AXI_WIDTH.WUSER , -- 
+            C_M_AXI_STM_BUSER_WIDTH     => STM_AXI_WIDTH.BUSER , -- 
             C_M_AXI_STM_ID_WIDTH        => STM_AXI_WIDTH.ID    , -- 
             C_M_AXI_STM_ID_BASE         => STM_AXI_ID_BASE     , -- 
             C_M_AXI_STM_RD_XFER_SIZE    => AXI_XFER_SIZE       , -- 
