@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 1.1.0
---!     @date    2021/6/24
+--!     @version 1.2.0
+--!     @date    2021/6/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -117,6 +117,8 @@ entity  ArgSort_AXI is
         MRG_RD_ARB_NODE_NUM : --! @brief MERGE IN  ARBITER NODE SIZE :
                               integer := 4;
         MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
+                              integer := 0;
+        MRG_RD_PRE_STATE    : --! @brief MERGE IN  PRE STATE :
                               integer := 0;
         MRG_WR_AXI_XFER_SIZE: --! @brief MERGE OUT AXI MAX XFER SIZE :
                               integer := 11;
@@ -372,7 +374,7 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 1;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 2;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
@@ -871,7 +873,8 @@ begin
             MRG_RD_AXI_DATA_REGS=> MRG_RD_AXI_DATA_REGS, --
             MRG_RD_AXI_ACK_REGS => MRG_RD_AXI_ACK_REGS , -- 
             MRG_RD_ARB_NODE_NUM => MRG_RD_ARB_NODE_NUM , --   
-            MRG_RD_ARB_PIPELINE => MRG_RD_ARB_PIPELINE , --   
+            MRG_RD_ARB_PIPELINE => MRG_RD_ARB_PIPELINE , --
+            MRG_RD_PRE_STATE    => MRG_RD_PRE_STATE    , --
             MRG_WR_AXI_XFER_SIZE=> MRG_WR_XFER_SIZE    , --   
             MRG_WR_AXI_BUF_DEPTH=> MRG_WR_BUF_DEPTH    , --   
             MRG_WR_AXI_QUEUE    => MRG_WR_AXI_QUEUE    , -- 

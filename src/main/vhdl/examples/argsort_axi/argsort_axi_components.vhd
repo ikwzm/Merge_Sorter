@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 1.1.0                                                           --
---!     @date    2021/06/24                                                      --
+--!     @version 1.2.0                                                           --
+--!     @date    2021/06/28                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -71,6 +71,7 @@ component ArgSort_AXI_Interface
         MRG_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         MRG_RD_ARB_NODE_NUM :  integer :=    4;
         MRG_RD_ARB_PIPELINE :  integer :=    0;
+        MRG_RD_PRE_STATE    :  integer :=    0;
         MRG_WR_AXI_XFER_SIZE:  integer :=   11;
         MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
         MRG_WR_AXI_QUEUE    :  integer :=    4;
@@ -782,6 +783,8 @@ component ArgSort_AXI
                               integer := 4;
         MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
                               integer := 0;
+        MRG_RD_PRE_STATE    : --! @brief MERGE IN  PRE STATE :
+                              integer := 0;
         MRG_WR_AXI_XFER_SIZE: --! @brief MERGE OUT AXI MAX XFER SIZE :
                               integer := 11;
         MRG_WR_AXI_BUF_SIZE : --! @brief MERGE OUT AXI BUFFER SIZE :
@@ -972,8 +975,12 @@ component ArgSort_Kernel
                                       boolean := FALSE;
         SORT_ORDER                  : --! @brief SORT ORDER :
                                       integer :=  0;
+        SORT_SIZE_BITS              : --! @brief SORT SIZE BITS :
+                                      integer range 1 to 32 := 28;
         MRG_FIFO_SIZE               : --! @brief MERGE FIFO SIZE :
                                       integer :=  16;
+        MRG_RD_PRE_STATE            : --! @brief MERGE IN  PRE STATE :
+                                      integer :=  0;
         STM_FEEDBACK                : --! @brief STREAM FEED BACK NUMBER :
                                       integer :=  0;
         STM_IN_QUEUE_SIZE           : --! @brief STREAM IN QUEUE SIZE :

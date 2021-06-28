@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_interface.vhd
 --!     @brief   Merge Sorter ArgSort AXI Interface Module :
---!     @version 1.0.0
---!     @date    2021/6/8
+--!     @version 1.2.0
+--!     @date    2021/6/27
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -61,6 +61,7 @@ entity  ArgSort_AXI_Interface is
         MRG_RD_AXI_ACK_REGS :  integer range 0 to 1 := 1;
         MRG_RD_ARB_NODE_NUM :  integer :=    4;
         MRG_RD_ARB_PIPELINE :  integer :=    0;
+        MRG_RD_PRE_STATE    :  integer :=    0;
         MRG_WR_AXI_XFER_SIZE:  integer :=   11;
         MRG_WR_AXI_BUF_DEPTH:  integer :=   12;
         MRG_WR_AXI_QUEUE    :  integer :=    4;
@@ -735,6 +736,7 @@ begin
             STM_WR_REG_PARAM    => STM_WR_REG_PARAM    , --
             STM_RD_ADDR_VALID   => STM_RD_ADDR_VALID   , --
             STM_WR_ADDR_VALID   => STM_WR_ADDR_VALID   , --
+            MRG_RD_PRE_STATE    => MRG_RD_PRE_STATE    , --
             DEBUG_ENABLE        => DEBUG_ENABLE        , -- 
             DEBUG_SIZE          => DEBUG_SIZE          , --
             DEBUG_BITS          => DEBUG_BITS          , --

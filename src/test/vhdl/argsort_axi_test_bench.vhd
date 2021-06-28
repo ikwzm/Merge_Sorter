@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 1.1.0
---!     @date    2021/6/24
+--!     @version 1.2.0
+--!     @date    2021/6/27
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -51,6 +51,7 @@ entity  ArgSort_AXI_Test_Bench is
         WORD_BITS       :  integer := 32;
         INDEX_BITS      :  integer := 32;
         SORT_SIZE_BITS  :  integer := 32;
+        MRG_RD_PRE_STATE:  integer :=  0;
         DEBUG_ENABLE    :  integer range 0 to 1 := 1;
         FINISH_ABORT    :  boolean := FALSE
     );
@@ -346,6 +347,7 @@ begin
             MRG_AXI_ID_BASE     => MRG_AXI_ID_BASE     , -- 
             MRG_RD_AXI_XFER_SIZE=> AXI_XFER_SIZE       , -- 
             MRG_WR_AXI_XFER_SIZE=> AXI_XFER_SIZE       , --
+            MRG_RD_PRE_STATE    => MRG_RD_PRE_STATE    , --
             DEBUG_ENABLE        => DEBUG_ENABLE          -- 
         )                                                -- 
         port map (                                       -- 
@@ -1052,6 +1054,37 @@ begin
         STM_FEEDBACK    => STM_FEEDBACK  ,
         STM_IN_QUEUE    => STM_IN_QUEUE  ,
         SORT_SIZE_BITS  => SORT_SIZE_BITS,
+        FINISH_ABORT    => FINISH_ABORT
+    );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  ArgSort_AXI_Test_Bench_X16_W2_F0 is
+    generic (
+        NAME            :  STRING  := "TEST_X16_W2_F0";
+        SCENARIO_FILE   :  STRING  := "test_x16_W2_f0.snr";
+        MRG_WAYS        :  integer := 16; -- X16
+        MRG_WORDS       :  integer := 2;  -- W2
+        STM_FEEDBACK    :  integer := 0;  -- F0
+        STM_IN_QUEUE    :  integer := 0;
+        SORT_SIZE_BITS  :  integer := 28;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end ArgSort_AXI_Test_Bench_X16_W2_F0;
+architecture Model of ArgSort_AXI_Test_Bench_X16_W2_F0 is
+begin
+    TB: entity WORK.ArgSort_AXI_Test_Bench generic map(
+        NAME            => NAME          , 
+        SCENARIO_FILE   => SCENARIO_FILE , 
+        MRG_WAYS        => MRG_WAYS      ,
+        MRG_WORDS       => MRG_WORDS     ,
+        STM_FEEDBACK    => STM_FEEDBACK  ,
+        STM_IN_QUEUE    => STM_IN_QUEUE  ,
+        SORT_SIZE_BITS  => SORT_SIZE_BITS,
+        MRG_RD_PRE_STATE=> 12            ,
         FINISH_ABORT    => FINISH_ABORT
     );
 end Model;
