@@ -783,6 +783,8 @@ component ArgSort_AXI
                               integer := 4;
         MRG_RD_ARB_PIPELINE : --! @brief MERGE IN  ARBITER PIPELINE :
                               integer := 0;
+        MRG_RD_PRE_STATE    : --! @brief MERGE IN  PRE STATE :
+                              integer := 0;
         MRG_WR_AXI_XFER_SIZE: --! @brief MERGE OUT AXI MAX XFER SIZE :
                               integer := 11;
         MRG_WR_AXI_BUF_SIZE : --! @brief MERGE OUT AXI BUFFER SIZE :
