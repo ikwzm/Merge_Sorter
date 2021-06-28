@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_components.vhd                                        --
 --!     @brief   Merge Sorter Interface Component Library Description Package    --
---!     @version 1.1.0                                                           --
---!     @date    2021/06/24                                                      --
+--!     @version 1.2.0                                                           --
+--!     @date    2021/06/28                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -422,6 +422,7 @@ component Interface_Controller
         STM_RD_MODE_VALID   :  boolean := TRUE;
         STM_WR_ADDR_VALID   :  boolean := TRUE;
         STM_WR_MODE_VALID   :  boolean := TRUE;
+        MRG_RD_PRE_STATE    :  integer :=    0;
         DEBUG_ENABLE        :  integer :=    0;
         DEBUG_SIZE          :  integer :=    1;
         DEBUG_BITS          :  integer range 64 to 64 := 64;

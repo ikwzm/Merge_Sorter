@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 1.1.0
---!     @date    2021/6/24
+--!     @version 1.2.0
+--!     @date    2021/6/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -60,6 +60,7 @@ entity  Interface_Controller is
         STM_RD_MODE_VALID   :  boolean := TRUE;
         STM_WR_ADDR_VALID   :  boolean := TRUE;
         STM_WR_MODE_VALID   :  boolean := TRUE;
+        MRG_RD_PRE_STATE    :  integer :=    0;
         DEBUG_ENABLE        :  integer :=    0;
         DEBUG_SIZE          :  integer :=    1;
         DEBUG_BITS          :  integer range 64 to 64 := 64;
@@ -189,9 +190,35 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    function required_bits(MAX_NUM: integer) return integer is
+        variable bits :  integer;
+    begin
+        bits := 1;
+        while (2**bits < MAX_NUM) loop
+            bits := bits + 1;
+        end loop;
+        return bits;
+    end function;
+    function required_bits(MAX_NUM: unsigned) return integer is
+        variable bits :  integer;
+        alias    vec  :  unsigned(MAX_NUM'length-1 downto 0) is MAX_NUM;
+    begin
+        bits := 1;
+        for i in vec'high downto vec'low loop
+            if (vec(i) = '1') then
+                bits := i + 1;
+                exit;
+            end if;
+        end loop;
+        return bits;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     constant STM_RD_DATA_BYTES   :  integer := STM_RD_DATA_BITS/8;
     constant STM_WR_DATA_BYTES   :  integer := STM_WR_DATA_BITS/8;
     constant WORD_BYTES          :  integer := WORD_BITS/8;
+    constant SORT_BLOCK_INIT_SIZE:  integer := WORDS*(WAYS**(STM_FEEDBACK+1));
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -199,6 +226,7 @@ architecture RTL of Interface_Controller is
              BLOCK_SIZE_BITS     :  integer;
              XFER_SIZE_BITS      :  integer;
              TOTAL_SIZE_BITS     :  integer;
+             WAYS_BITS           :  integer;
     end record;
     function INIT(SIZE_BITS: integer) return SETTING_TYPE is
         constant   max_size      :  unsigned(SIZE_BITS   -1 downto 0) := (others => '1');
@@ -206,30 +234,129 @@ architecture RTL of Interface_Controller is
         variable   xfer_size     :  unsigned(SIZE_BITS+16-1 downto 0);
         variable   setting       :  SETTING_TYPE;
     begin
-        block_size := to_unsigned(WORDS*(WAYS**(STM_FEEDBACK+1)), block_size'length);
+        block_size := to_unsigned(SORT_BLOCK_INIT_SIZE, block_size'length);
         xfer_size  := xfer_size;
         while (block_size < max_size) loop
             xfer_size  := block_size;
             block_size := resize(block_size * WAYS, block_size'length);
         end loop;
-        setting.BLOCK_SIZE_BITS := block_size'high;
-        for i in block_size'high downto block_size'low loop
-            if (block_size(i) = '1') then
-                setting.BLOCK_SIZE_BITS := i + 1;
-                exit;
-            end if;
-        end loop;
-        setting.XFER_SIZE_BITS  := xfer_size'high;
-        for i in xfer_size'high downto xfer_size'low loop
-            if (xfer_size(i) = '1') then
-                setting.XFER_SIZE_BITS := i + 1;
-                exit;
-            end if;
-        end loop;
-        setting.TOTAL_SIZE_BITS := SIZE_BITS;
+        setting.TOTAL_SIZE_BITS  := SIZE_BITS;
+        setting.BLOCK_SIZE_BITS  := required_bits(block_size);
+        setting.XFER_SIZE_BITS   := required_bits(xfer_size );
+        setting.WAYS_BITS        := required_bits(WAYS      );
         return setting;
     end function;
     constant SETTING             :  SETTING_TYPE := INIT(REG_SIZE_BITS);
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant MRG_RD_PRE_STATE_LEN:  integer := SETTING.WAYS_BITS+1;
+    constant MRG_RD_PRE_STATE_VEC:  std_logic_vector(MRG_RD_PRE_STATE_LEN-1 downto 0)
+                                 := std_logic_vector(to_unsigned(MRG_RD_PRE_STATE, MRG_RD_PRE_STATE_LEN));
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    type     BIT_VECTOR_PARAM_TYPE  is record
+                 BITS            :  integer;
+                 LO_POS          :  integer;
+                 HI_POS          :  integer;
+    end record;
+    function NEW_BIT_VECTOR_PARAM(BITS: integer; LO_POS: integer := 0) return BIT_VECTOR_PARAM_TYPE is
+        variable param           :  BIT_VECTOR_PARAM_TYPE;
+    begin
+        param.BITS   := BITS;
+        param.LO_POS := LO_POS;
+        param.HI_POS := param.LO_POS + BITS - 1;
+        return param;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    type     TWO_STAGE_MUL_PARAM_TYPE is record
+                 A               :  BIT_VECTOR_PARAM_TYPE;
+                 B               :  BIT_VECTOR_PARAM_TYPE;
+                 O               :  BIT_VECTOR_PARAM_TYPE;
+                 AL              :  BIT_VECTOR_PARAM_TYPE;
+                 AH              :  BIT_VECTOR_PARAM_TYPE;
+                 TL              :  BIT_VECTOR_PARAM_TYPE;
+                 TX              :  BIT_VECTOR_PARAM_TYPE;
+                 TH              :  BIT_VECTOR_PARAM_TYPE;
+                 OL              :  BIT_VECTOR_PARAM_TYPE;
+                 OH              :  BIT_VECTOR_PARAM_TYPE;
+    end record;
+    function NEW_TWO_STAGE_MUL_PARAM(
+                 A_BITS          :  integer;
+                 B_BITS          :  integer;
+                 O_BITS          :  integer;
+                 L_BITS          :  integer
+    )            return             TWO_STAGE_MUL_PARAM_TYPE is
+        variable param           :  TWO_STAGE_MUL_PARAM_TYPE;
+    begin
+        param.A  := NEW_BIT_VECTOR_PARAM(A_BITS);
+        param.B  := NEW_BIT_VECTOR_PARAM(B_BITS);
+        param.O  := NEW_BIT_VECTOR_PARAM(O_BITS);
+        param.AL := NEW_BIT_VECTOR_PARAM(L_BITS, 0);
+        param.AH := NEW_BIT_VECTOR_PARAM(A_BITS - L_BITS, L_BITS);
+        param.TL := NEW_BIT_VECTOR_PARAM(L_BITS);
+        param.TX := NEW_BIT_VECTOR_PARAM(B_BITS         , L_BITS);
+        param.TH := NEW_BIT_VECTOR_PARAM(O_BITS - L_BITS, L_BITS);
+        param.OL := NEW_BIT_VECTOR_PARAM(L_BITS);
+        param.OH := NEW_BIT_VECTOR_PARAM(O_BITS - L_BITS, L_BITS);
+        return param;
+    end function;
+    constant TWO_STAGE_MUL_PARAM :  TWO_STAGE_MUL_PARAM_TYPE 
+                                 := NEW_TWO_STAGE_MUL_PARAM(
+                                        A_BITS => SETTING.XFER_SIZE_BITS ,
+                                        B_BITS => SETTING.WAYS_BITS      ,
+                                        O_BITS => SETTING.BLOCK_SIZE_BITS,
+                                        L_BITS => (SETTING.XFER_SIZE_BITS +
+                                                   required_bits(SORT_BLOCK_INIT_SIZE))/2
+                                    );
+    type     TWO_STAGE_MUL_TMP_TYPE is record
+                 L               :  unsigned(TWO_STAGE_MUL_PARAM.TL.HI_POS downto
+                                             TWO_STAGE_MUL_PARAM.TL.LO_POS);
+                 X               :  unsigned(TWO_STAGE_MUL_PARAM.TX.HI_POS downto
+                                             TWO_STAGE_MUL_PARAM.TX.LO_POS);
+                 H               :  unsigned(TWO_STAGE_MUL_PARAM.TH.HI_POS downto
+                                             TWO_STAGE_MUL_PARAM.TH.LO_POS);
+    end record;
+    constant TWO_STAGE_MUL_TMP_NULL : TWO_STAGE_MUL_TMP_TYPE := (
+                                          L => (others => '0'),
+                                          X => (others => '0'),
+                                          H => (others => '0')
+                                      );
+    function TWO_STAGE_MUL_FIRST_STAGE(
+                 PARAM           :  TWO_STAGE_MUL_PARAM_TYPE;
+                 A               :  unsigned;
+                 B               :  unsigned
+    )            return             TWO_STAGE_MUL_TMP_TYPE is
+        variable t               :  TWO_STAGE_MUL_TMP_TYPE;
+        variable a_l             :  unsigned(PARAM.AL.BITS-1 downto 0);
+        variable a_h             :  unsigned(PARAM.AH.BITS-1 downto 0);
+        variable b_x             :  unsigned(PARAM.B.BITS -1 downto 0);
+        variable t_xl            :  unsigned(PARAM.TX.BITS+PARAM.TL.BITS-1 downto 0);
+    begin
+        a_l  := A(PARAM.AL.HI_POS downto PARAM.AL.LO_POS);
+        a_h  := A(PARAM.AH.HI_POS downto PARAM.AH.LO_POS);
+        b_x  := B;
+        t_xl := resize(a_l * b_x, t_xl'length);
+        t.L  := t_xl(PARAM.TL.HI_POS downto PARAM.TL.LO_POS);
+        t.X  := t_xl(PARAM.TX.HI_POS downto PARAM.TX.LO_POS);
+        t.H  := resize(a_h * b_x, PARAM.TH.BITS);
+        return t;
+    end function;
+    function TWO_STAGE_MUL_SECOND_STAGE(
+                 PARAM           :  TWO_STAGE_MUL_PARAM_TYPE;
+                 T               :  TWO_STAGE_MUL_TMP_TYPE
+    )            return             unsigned is
+        variable o               :  unsigned(PARAM.O.BITS -1 downto 0);
+        alias    t_x             :  unsigned(PARAM.TX.BITS-1 downto 0) is T.X;
+        alias    t_h             :  unsigned(PARAM.TH.BITS-1 downto 0) is T.H;
+    begin
+        o(PARAM.OL.HI_POS downto PARAM.OL.LO_POS) := T.L;
+        o(PARAM.OH.HI_POS downto PARAM.OH.LO_POS) := resize(t_h + t_x, PARAM.OH.BITS);
+        return o;
+    end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -490,8 +617,8 @@ begin
                                 mrg_writer_addr <= tmp_1_base_addr;
                                 mrg_writer_mode <= tmp_1_xfer_mode;
                             end if;
-                            sort_total_size <= resize     (unsigned(size_regs)           , sort_total_size'length);
-                            sort_block_size <= to_unsigned(WORDS*(WAYS**(STM_FEEDBACK+1)), sort_block_size'length);
+                            sort_total_size <= resize     (unsigned(size_regs) , sort_total_size'length);
+                            sort_block_size <= to_unsigned(SORT_BLOCK_INIT_SIZE, sort_block_size'length);
                         when STM_RD_CHK_STATE =>
                             next_state  := STM_RD_REQ_STATE;
                             if (sort_block_size >= sort_total_size) then
@@ -855,13 +982,29 @@ begin
     --
     -------------------------------------------------------------------------------
     MRG_RD_CTRL: for channel in 0 to WAYS-1 generate
-        type     STATE_TYPE     is (IDLE_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
+        function popcount_channel return integer is
+            constant  vec  :  std_logic_vector(SETTING.WAYS_BITS-1 downto 0)
+                           := std_logic_vector(to_unsigned(channel, SETTING.WAYS_BITS));
+            variable  num  :  integer;
+            variable  idx  :  integer;
+        begin
+            num  := 0;
+            for i in vec'range loop
+                if (vec(i) = '1') then
+                    num := num + 1;
+                end if;
+            end loop;
+            return num;
+        end function;
+        constant need_pre_state :  boolean := (MRG_RD_PRE_STATE_VEC(popcount_channel) = '1');
+        type     STATE_TYPE     is (IDLE_STATE, P0_STATE, S0_STATE, S1_STATE, S2_STATE, REQ_STATE, RUN_STATE);
         signal   curr_state     :  STATE_TYPE;
         signal   curr_base      :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   next_base      :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   offset         :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   offset_size    :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   remain_size    :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
+        signal   multi_temp      :  TWO_STAGE_MUL_TMP_TYPE;
         signal   remain_zero    :  boolean;
         signal   read_addr      :  unsigned(MRG_RD_REG_PARAM.ADDR_BITS-1 downto 0);
         signal   read_bytes     :  unsigned(MRG_RD_REG_PARAM.SIZE_BITS-1 downto 0);
@@ -883,6 +1026,7 @@ begin
                     offset_size <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
+                    multi_temp  <= TWO_STAGE_MUL_TMP_NULL;
                     read_addr   <= (others => '0');
                     read_bytes  <= (others => '0');
                     read_last   <= FALSE;
@@ -895,6 +1039,7 @@ begin
                     offset_size <= (others => '0');
                     remain_zero <= FALSE;
                     remain_size <= (others => '0');
+                    multi_temp  <= TWO_STAGE_MUL_TMP_NULL;
                     read_addr   <= (others => '0');
                     read_bytes  <= (others => '0');
                     read_last   <= FALSE;
@@ -902,19 +1047,39 @@ begin
                     case curr_state is
                         when IDLE_STATE =>
                             if (mrg_reader_request = TRUE) then
-                                curr_state <= S0_STATE;
+                                if need_pre_state then
+                                    curr_state <= P0_STATE;
+                                else
+                                    curr_state <= S0_STATE;
+                                end if;
                             else
-                                curr_state <= IDLE_STATE;
+                                    curr_state <= IDLE_STATE;
                             end if;
                             curr_base    <= (others => '0');
                             next_base    <= sort_block_size;
                             offset       <= (others => '0');
-                            offset_size  <= resize(channel * mrg_reader_xsize, offset_size'length);
+                            if need_pre_state then
+                                multi_temp  <= TWO_STAGE_MUL_FIRST_STAGE(
+                                                   TWO_STAGE_MUL_PARAM,
+                                                   mrg_reader_xsize   ,
+                                                   to_unsigned(channel, TWO_STAGE_MUL_PARAM.B.BITS)
+                                               );
+                            else
+                                offset_size <= resize(channel * mrg_reader_xsize, offset_size'length);
+                            end if;
                             remain_zero  <= FALSE;
                             remain_size  <= (others => '0');
                             read_addr    <= (others => '0');
                             read_bytes   <= (others => '0');
                             read_last    <= FALSE;
+                        when P0_STATE =>
+                            curr_state   <= S0_STATE;
+                            if need_pre_state then
+                                offset_size <= TWO_STAGE_MUL_SECOND_STAGE(
+                                                   TWO_STAGE_MUL_PARAM,
+                                                   multi_temp
+                                               );
+                            end if;
                         when S0_STATE =>
                             curr_state   <= S1_STATE;
                             offset       <= resize(curr_base + offset_size, offset'length);
