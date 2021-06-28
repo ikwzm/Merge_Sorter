@@ -979,6 +979,8 @@ component ArgSort_Kernel
                                       integer range 1 to 32 := 28;
         MRG_FIFO_SIZE               : --! @brief MERGE FIFO SIZE :
                                       integer :=  16;
+        MRG_RD_PRE_STATE            : --! @brief MERGE IN  PRE STATE :
+                                      integer :=  0;
         STM_FEEDBACK                : --! @brief STREAM FEED BACK NUMBER :
                                       integer :=  0;
         STM_IN_QUEUE_SIZE           : --! @brief STREAM IN QUEUE SIZE :
