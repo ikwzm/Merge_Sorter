@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_kernel.vhd
 --!     @brief   Merge Sorter ArgSort for Xilinx RTL Kernel
---!     @version 1.0.0
---!     @date    2021/6/8
+--!     @version 1.1.0
+--!     @date    2021/6/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -50,6 +50,8 @@ entity  ArgSort_Kernel is
                                       boolean := FALSE;
         SORT_ORDER                  : --! @brief SORT ORDER :
                                       integer :=  0;
+        SORT_SIZE_BITS              : --! @brief SORT SIZE BITS :
+                                      integer range 1 to 32 := 28;
         MRG_FIFO_SIZE               : --! @brief MERGE FIFO SIZE :
                                       integer :=  16;
         STM_FEEDBACK                : --! @brief STREAM FEED BACK NUMBER :
@@ -371,7 +373,6 @@ architecture RTL of ArgSort_Kernel is
     -- 
     -------------------------------------------------------------------------------
     constant  RW_ADDR_BITS      :  integer := 64;
-    constant  RW_SIZE_BITS      :  integer := 32;
     constant  RW_MODE_BITS      :  integer := 16;
     constant  SORT_COUNT_BITS   :  integer := 16;
     -------------------------------------------------------------------------------
@@ -388,9 +389,9 @@ architecture RTL of ArgSort_Kernel is
     signal    sort_start        :  std_logic;
     signal    sort_busy         :  std_logic;
     signal    sort_done         :  std_logic;
-    signal    sort_size_load    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
-    signal    sort_size_wbit    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
-    signal    sort_size_data    :  std_logic_vector(RW_SIZE_BITS     -1 downto 0);
+    signal    sort_size_load    :  std_logic_vector(SORT_SIZE_BITS   -1 downto 0);
+    signal    sort_size_wbit    :  std_logic_vector(SORT_SIZE_BITS   -1 downto 0);
+    signal    sort_size_data    :  std_logic_vector(SORT_SIZE_BITS   -1 downto 0);
     signal    sort_count_load   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
     signal    sort_count_wbit   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
     signal    sort_count_regs   :  std_logic_vector(SORT_COUNT_BITS  -1 downto 0);
@@ -530,8 +531,8 @@ architecture RTL of ArgSort_Kernel is
     constant  SIZE_REGS_LO      :  integer := 8*SIZE_REGS_ADDR;
     constant  SIZE_REGS_HI      :  integer := 8*SIZE_REGS_ADDR    + SIZE_REGS_BITS    - 1;
     constant  SIZE_SIZE_LO      :  integer := 0;
-    constant  SIZE_SIZE_HI      :  integer := RW_SIZE_BITS  - 1;
-    constant  SIZE_RESV_LO      :  integer := RW_SIZE_BITS;
+    constant  SIZE_SIZE_HI      :  integer := SORT_SIZE_BITS  - 1;
+    constant  SIZE_RESV_LO      :  integer := SORT_SIZE_BITS;
     constant  SIZE_RESV_HI      :  integer := SIZE_REGS_BITS - 1;
     signal    size_load         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
     signal    size_wbit         :  std_logic_vector(SIZE_REGS_BITS   -1 downto 0);
@@ -618,7 +619,7 @@ architecture RTL of ArgSort_Kernel is
     -------------------------------------------------------------------------------
     constant  VERSION_REGS_BITS :  integer := 64;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 0;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 1;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
@@ -1163,7 +1164,7 @@ begin
             STM_WR_ADDR_VALID   => FALSE                       , --
             REG_RW_ADDR_BITS    => RW_ADDR_BITS                , --   
             REG_RW_MODE_BITS    => RW_MODE_BITS                , --   
-            REG_SIZE_BITS       => RW_SIZE_BITS                , --   
+            REG_SIZE_BITS       => SORT_SIZE_BITS              , --   
             REG_MODE_BITS       => COMMAND_REGS_BITS           , --   
             REG_COUNT_BITS      => SORT_COUNT_BITS             , --   
             DEBUG_ENABLE        => DEBUG_ENABLE                , --   

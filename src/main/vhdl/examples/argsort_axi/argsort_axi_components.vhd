@@ -975,6 +975,8 @@ component ArgSort_Kernel
                                       boolean := FALSE;
         SORT_ORDER                  : --! @brief SORT ORDER :
                                       integer :=  0;
+        SORT_SIZE_BITS              : --! @brief SORT SIZE BITS :
+                                      integer range 1 to 32 := 28;
         MRG_FIFO_SIZE               : --! @brief MERGE FIFO SIZE :
                                       integer :=  16;
         STM_FEEDBACK                : --! @brief STREAM FEED BACK NUMBER :
