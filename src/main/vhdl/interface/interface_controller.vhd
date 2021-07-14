@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 1.2.0
---!     @date    2021/6/28
+--!     @version 1.3.0
+--!     @date    2021/7/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -256,33 +256,17 @@ architecture RTL of Interface_Controller is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    type     BIT_VECTOR_PARAM_TYPE  is record
-                 BITS            :  integer;
-                 LO_POS          :  integer;
-                 HI_POS          :  integer;
-    end record;
-    function NEW_BIT_VECTOR_PARAM(BITS: integer; LO_POS: integer := 0) return BIT_VECTOR_PARAM_TYPE is
-        variable param           :  BIT_VECTOR_PARAM_TYPE;
-    begin
-        param.BITS   := BITS;
-        param.LO_POS := LO_POS;
-        param.HI_POS := param.LO_POS + BITS - 1;
-        return param;
-    end function;
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
     type     TWO_STAGE_MUL_PARAM_TYPE is record
-                 A               :  BIT_VECTOR_PARAM_TYPE;
-                 B               :  BIT_VECTOR_PARAM_TYPE;
-                 O               :  BIT_VECTOR_PARAM_TYPE;
-                 AL              :  BIT_VECTOR_PARAM_TYPE;
-                 AH              :  BIT_VECTOR_PARAM_TYPE;
-                 TL              :  BIT_VECTOR_PARAM_TYPE;
-                 TX              :  BIT_VECTOR_PARAM_TYPE;
-                 TH              :  BIT_VECTOR_PARAM_TYPE;
-                 OL              :  BIT_VECTOR_PARAM_TYPE;
-                 OH              :  BIT_VECTOR_PARAM_TYPE;
+                 A               :  Interface.Bit_Slice_Field_Type;
+                 B               :  Interface.Bit_Slice_Field_Type;
+                 O               :  Interface.Bit_Slice_Field_Type;
+                 AL              :  Interface.Bit_Slice_Field_Type;
+                 AH              :  Interface.Bit_Slice_Field_Type;
+                 TL              :  Interface.Bit_Slice_Field_Type;
+                 TX              :  Interface.Bit_Slice_Field_Type;
+                 TH              :  Interface.Bit_Slice_Field_Type;
+                 OL              :  Interface.Bit_Slice_Field_Type;
+                 OH              :  Interface.Bit_Slice_Field_Type;
     end record;
     function NEW_TWO_STAGE_MUL_PARAM(
                  A_BITS          :  integer;
@@ -292,16 +276,16 @@ architecture RTL of Interface_Controller is
     )            return             TWO_STAGE_MUL_PARAM_TYPE is
         variable param           :  TWO_STAGE_MUL_PARAM_TYPE;
     begin
-        param.A  := NEW_BIT_VECTOR_PARAM(A_BITS);
-        param.B  := NEW_BIT_VECTOR_PARAM(B_BITS);
-        param.O  := NEW_BIT_VECTOR_PARAM(O_BITS);
-        param.AL := NEW_BIT_VECTOR_PARAM(L_BITS, 0);
-        param.AH := NEW_BIT_VECTOR_PARAM(A_BITS - L_BITS, L_BITS);
-        param.TL := NEW_BIT_VECTOR_PARAM(L_BITS);
-        param.TX := NEW_BIT_VECTOR_PARAM(B_BITS         , L_BITS);
-        param.TH := NEW_BIT_VECTOR_PARAM(O_BITS - L_BITS, L_BITS);
-        param.OL := NEW_BIT_VECTOR_PARAM(L_BITS);
-        param.OH := NEW_BIT_VECTOR_PARAM(O_BITS - L_BITS, L_BITS);
+        param.A  := Interface.New_Bit_Slice_Field(A_BITS);
+        param.B  := Interface.New_Bit_Slice_Field(B_BITS);
+        param.O  := Interface.New_Bit_Slice_Field(O_BITS);
+        param.AL := Interface.New_Bit_Slice_Field(L_BITS, 0);
+        param.AH := Interface.New_Bit_Slice_Field(A_BITS - L_BITS, L_BITS);
+        param.TL := Interface.New_Bit_Slice_Field(L_BITS);
+        param.TX := Interface.New_Bit_Slice_Field(B_BITS         , L_BITS);
+        param.TH := Interface.New_Bit_Slice_Field(O_BITS - L_BITS, L_BITS);
+        param.OL := Interface.New_Bit_Slice_Field(L_BITS);
+        param.OH := Interface.New_Bit_Slice_Field(O_BITS - L_BITS, L_BITS);
         return param;
     end function;
     constant TWO_STAGE_MUL_PARAM :  TWO_STAGE_MUL_PARAM_TYPE 
@@ -313,12 +297,9 @@ architecture RTL of Interface_Controller is
                                                    required_bits(SORT_BLOCK_INIT_SIZE))/2
                                     );
     type     TWO_STAGE_MUL_TMP_TYPE is record
-                 L               :  unsigned(TWO_STAGE_MUL_PARAM.TL.HI_POS downto
-                                             TWO_STAGE_MUL_PARAM.TL.LO_POS);
-                 X               :  unsigned(TWO_STAGE_MUL_PARAM.TX.HI_POS downto
-                                             TWO_STAGE_MUL_PARAM.TX.LO_POS);
-                 H               :  unsigned(TWO_STAGE_MUL_PARAM.TH.HI_POS downto
-                                             TWO_STAGE_MUL_PARAM.TH.LO_POS);
+                 L               :  unsigned(TWO_STAGE_MUL_PARAM.TL.HI downto TWO_STAGE_MUL_PARAM.TL.LO);
+                 X               :  unsigned(TWO_STAGE_MUL_PARAM.TX.HI downto TWO_STAGE_MUL_PARAM.TX.LO);
+                 H               :  unsigned(TWO_STAGE_MUL_PARAM.TH.HI downto TWO_STAGE_MUL_PARAM.TH.LO);
     end record;
     constant TWO_STAGE_MUL_TMP_NULL : TWO_STAGE_MUL_TMP_TYPE := (
                                           L => (others => '0'),
@@ -333,15 +314,15 @@ architecture RTL of Interface_Controller is
         variable t               :  TWO_STAGE_MUL_TMP_TYPE;
         variable a_l             :  unsigned(PARAM.AL.BITS-1 downto 0);
         variable a_h             :  unsigned(PARAM.AH.BITS-1 downto 0);
-        variable b_x             :  unsigned(PARAM.B.BITS -1 downto 0);
+        variable b_x             :  unsigned(PARAM.B .BITS-1 downto 0);
         variable t_xl            :  unsigned(PARAM.TX.BITS+PARAM.TL.BITS-1 downto 0);
     begin
-        a_l  := A(PARAM.AL.HI_POS downto PARAM.AL.LO_POS);
-        a_h  := A(PARAM.AH.HI_POS downto PARAM.AH.LO_POS);
+        a_l  := A(PARAM.AL.HI downto PARAM.AL.LO);
+        a_h  := A(PARAM.AH.HI downto PARAM.AH.LO);
         b_x  := B;
         t_xl := resize(a_l * b_x, t_xl'length);
-        t.L  := t_xl(PARAM.TL.HI_POS downto PARAM.TL.LO_POS);
-        t.X  := t_xl(PARAM.TX.HI_POS downto PARAM.TX.LO_POS);
+        t.L  := t_xl(PARAM.TL.HI downto PARAM.TL.LO);
+        t.X  := t_xl(PARAM.TX.HI downto PARAM.TX.LO);
         t.H  := resize(a_h * b_x, PARAM.TH.BITS);
         return t;
     end function;
@@ -353,8 +334,8 @@ architecture RTL of Interface_Controller is
         alias    t_x             :  unsigned(PARAM.TX.BITS-1 downto 0) is T.X;
         alias    t_h             :  unsigned(PARAM.TH.BITS-1 downto 0) is T.H;
     begin
-        o(PARAM.OL.HI_POS downto PARAM.OL.LO_POS) := T.L;
-        o(PARAM.OH.HI_POS downto PARAM.OH.LO_POS) := resize(t_h + t_x, PARAM.OH.BITS);
+        o(PARAM.OL.HI downto PARAM.OL.LO) := T.L;
+        o(PARAM.OH.HI downto PARAM.OH.LO) := resize(t_h + t_x, PARAM.OH.BITS);
         return o;
     end function;
     -------------------------------------------------------------------------------
@@ -870,9 +851,9 @@ begin
     STM_RD_CTRL: block
         type     STATE_TYPE     is (IDLE_STATE, REQ_STATE, RUN0_STATE, RUN1_STATE, DONE_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   read_addr      :  unsigned(STM_RD_REG_PARAM.ADDR_BITS-1 downto 0);
-        signal   xfer_mode      :  unsigned(STM_RD_REG_PARAM.MODE_BITS-1 downto 0);
-        signal   read_bytes     :  unsigned(STM_RD_REG_PARAM.SIZE_BITS-1 downto 0);
+        signal   read_addr      :  unsigned(STM_RD_REG_PARAM.ADDR.BITS-1 downto 0);
+        signal   xfer_mode      :  unsigned(STM_RD_REG_PARAM.MODE.BITS-1 downto 0);
+        signal   read_bytes     :  unsigned(STM_RD_REG_PARAM.SIZE.BITS-1 downto 0);
         signal   reg_data       :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
         signal   reg_load       :  std_logic_vector(STM_RD_REG_PARAM.BITS-1 downto 0);
     begin
@@ -937,28 +918,28 @@ begin
         -- xfer_mode
         ---------------------------------------------------------------------------
         STM_RD_MODE: if (STM_RD_MODE_VALID = TRUE ) generate
-            xfer_mode <= resize(unsigned(stm_reader_mode), STM_RD_REG_PARAM.MODE_BITS);
+            xfer_mode <= resize(unsigned(stm_reader_mode), STM_RD_REG_PARAM.MODE.BITS);
         end generate;
         MRG_RD_MODE: if (STM_RD_MODE_VALID = FALSE) generate
-            xfer_mode <= resize(unsigned(mrg_reader_mode), STM_RD_REG_PARAM.MODE_BITS);
+            xfer_mode <= resize(unsigned(mrg_reader_mode), STM_RD_REG_PARAM.MODE.BITS);
         end generate;
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
         process (reset_bit, read_addr, read_bytes, xfer_mode) begin
             reg_data <= (others => '0');
-            reg_data(STM_RD_REG_PARAM.ADDR_HI downto STM_RD_REG_PARAM.ADDR_LO) <= std_logic_vector(read_addr);
-            reg_data(STM_RD_REG_PARAM.SIZE_HI downto STM_RD_REG_PARAM.SIZE_LO) <= std_logic_vector(read_bytes);
-            reg_data(STM_RD_REG_PARAM.MODE_HI downto STM_RD_REG_PARAM.MODE_LO) <= std_logic_vector(xfer_mode);
-            reg_data(STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO) <= (STM_RD_REG_PARAM.STAT_HI downto STM_RD_REG_PARAM.STAT_LO => '0');
-            reg_data(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
-            reg_data(STM_RD_REG_PARAM.CTRL_PAUSE_POS) <= '0';
-            reg_data(STM_RD_REG_PARAM.CTRL_STOP_POS ) <= '0';
-            reg_data(STM_RD_REG_PARAM.CTRL_START_POS) <= '1';
-            reg_data(STM_RD_REG_PARAM.CTRL_FIRST_POS) <= '1';
-            reg_data(STM_RD_REG_PARAM.CTRL_LAST_POS ) <= '1';
-            reg_data(STM_RD_REG_PARAM.CTRL_DONE_POS ) <= '1';
-            reg_data(STM_RD_REG_PARAM.CTRL_EBLK_POS ) <= '0';
+            reg_data(STM_RD_REG_PARAM.ADDR.HI downto STM_RD_REG_PARAM.ADDR.LO) <= std_logic_vector(read_addr);
+            reg_data(STM_RD_REG_PARAM.SIZE.HI downto STM_RD_REG_PARAM.SIZE.LO) <= std_logic_vector(read_bytes);
+            reg_data(STM_RD_REG_PARAM.MODE.HI downto STM_RD_REG_PARAM.MODE.LO) <= std_logic_vector(xfer_mode);
+            reg_data(STM_RD_REG_PARAM.STAT.HI downto STM_RD_REG_PARAM.STAT.LO) <= (STM_RD_REG_PARAM.STAT.HI downto STM_RD_REG_PARAM.STAT.LO => '0');
+            reg_data(STM_RD_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
+            reg_data(STM_RD_REG_PARAM.CTRL.PAUSE.POS) <= '0';
+            reg_data(STM_RD_REG_PARAM.CTRL.STOP.POS ) <= '0';
+            reg_data(STM_RD_REG_PARAM.CTRL.START.POS) <= '1';
+            reg_data(STM_RD_REG_PARAM.CTRL.FIRST.POS) <= '1';
+            reg_data(STM_RD_REG_PARAM.CTRL.LAST.POS ) <= '1';
+            reg_data(STM_RD_REG_PARAM.CTRL.DONE.POS ) <= '1';
+            reg_data(STM_RD_REG_PARAM.CTRL.EBLK.POS ) <= '0';
         end process;
         ---------------------------------------------------------------------------
         -- reg_load
@@ -968,7 +949,7 @@ begin
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(STM_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
+                reg_load(STM_RD_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -1006,8 +987,8 @@ begin
         signal   remain_size    :  unsigned(SETTING.BLOCK_SIZE_BITS-1 downto 0);
         signal   multi_temp      :  TWO_STAGE_MUL_TMP_TYPE;
         signal   remain_zero    :  boolean;
-        signal   read_addr      :  unsigned(MRG_RD_REG_PARAM.ADDR_BITS-1 downto 0);
-        signal   read_bytes     :  unsigned(MRG_RD_REG_PARAM.SIZE_BITS-1 downto 0);
+        signal   read_addr      :  unsigned(MRG_RD_REG_PARAM.ADDR.BITS-1 downto 0);
+        signal   read_bytes     :  unsigned(MRG_RD_REG_PARAM.SIZE.BITS-1 downto 0);
         signal   read_last      :  boolean;
         type     READER_STATE_TYPE is (READER_IDLE, READER_RUN0, READER_RUN1);
         signal   reader_state   :  READER_STATE_TYPE;
@@ -1172,22 +1153,22 @@ begin
         ---------------------------------------------------------------------------
         process (read_addr, read_bytes, read_last, mrg_reader_mode, reset_bit) begin
             reg_data <= (others => '0');
-            reg_data(MRG_RD_REG_PARAM.ADDR_HI downto MRG_RD_REG_PARAM.ADDR_LO) <= std_logic_vector(read_addr);
-            reg_data(MRG_RD_REG_PARAM.SIZE_HI downto MRG_RD_REG_PARAM.SIZE_LO) <= std_logic_vector(read_bytes);
-            reg_data(MRG_RD_REG_PARAM.MODE_HI downto MRG_RD_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(mrg_reader_mode), MRG_RD_REG_PARAM.MODE_BITS));
-            reg_data(MRG_RD_REG_PARAM.STAT_HI downto MRG_RD_REG_PARAM.STAT_LO) <= (MRG_RD_REG_PARAM.STAT_HI downto MRG_RD_REG_PARAM.STAT_LO => '0');
-            reg_data(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
-            reg_data(MRG_RD_REG_PARAM.CTRL_PAUSE_POS) <= '0';
-            reg_data(MRG_RD_REG_PARAM.CTRL_STOP_POS ) <= '0';
-            reg_data(MRG_RD_REG_PARAM.CTRL_START_POS) <= '1';
-            reg_data(MRG_RD_REG_PARAM.CTRL_FIRST_POS) <= '1';
-            reg_data(MRG_RD_REG_PARAM.CTRL_LAST_POS ) <= '1';
+            reg_data(MRG_RD_REG_PARAM.ADDR.HI downto MRG_RD_REG_PARAM.ADDR.LO) <= std_logic_vector(read_addr);
+            reg_data(MRG_RD_REG_PARAM.SIZE.HI downto MRG_RD_REG_PARAM.SIZE.LO) <= std_logic_vector(read_bytes);
+            reg_data(MRG_RD_REG_PARAM.MODE.HI downto MRG_RD_REG_PARAM.MODE.LO) <= std_logic_vector(resize(unsigned(mrg_reader_mode), MRG_RD_REG_PARAM.MODE.BITS));
+            reg_data(MRG_RD_REG_PARAM.STAT.HI downto MRG_RD_REG_PARAM.STAT.LO) <= (MRG_RD_REG_PARAM.STAT.HI downto MRG_RD_REG_PARAM.STAT.LO => '0');
+            reg_data(MRG_RD_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
+            reg_data(MRG_RD_REG_PARAM.CTRL.PAUSE.POS) <= '0';
+            reg_data(MRG_RD_REG_PARAM.CTRL.STOP.POS ) <= '0';
+            reg_data(MRG_RD_REG_PARAM.CTRL.START.POS) <= '1';
+            reg_data(MRG_RD_REG_PARAM.CTRL.FIRST.POS) <= '1';
+            reg_data(MRG_RD_REG_PARAM.CTRL.LAST.POS ) <= '1';
             if (read_last = TRUE) then
-                reg_data(MRG_RD_REG_PARAM.CTRL_DONE_POS ) <= '1';
-                reg_data(MRG_RD_REG_PARAM.CTRL_EBLK_POS ) <= '1';
+                reg_data(MRG_RD_REG_PARAM.CTRL.DONE.POS ) <= '1';
+                reg_data(MRG_RD_REG_PARAM.CTRL.EBLK.POS ) <= '1';
             else
-                reg_data(MRG_RD_REG_PARAM.CTRL_DONE_POS ) <= '0';
-                reg_data(MRG_RD_REG_PARAM.CTRL_EBLK_POS ) <= '0';
+                reg_data(MRG_RD_REG_PARAM.CTRL.DONE.POS ) <= '0';
+                reg_data(MRG_RD_REG_PARAM.CTRL.EBLK.POS ) <= '0';
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -1198,7 +1179,7 @@ begin
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(MRG_RD_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
+                reg_load(MRG_RD_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -1214,9 +1195,9 @@ begin
     STM_WR_CTRL: block
         type     STATE_TYPE     is (IDLE_STATE, REQ_STATE, RUN0_STATE, RUN1_STATE, DONE_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   write_addr     :  unsigned(STM_WR_REG_PARAM.ADDR_BITS-1 downto 0);
-        signal   write_bytes    :  unsigned(STM_WR_REG_PARAM.SIZE_BITS-1 downto 0);
-        signal   xfer_mode      :  unsigned(STM_WR_REG_PARAM.MODE_BITS-1 downto 0);
+        signal   write_addr     :  unsigned(STM_WR_REG_PARAM.ADDR.BITS-1 downto 0);
+        signal   write_bytes    :  unsigned(STM_WR_REG_PARAM.SIZE.BITS-1 downto 0);
+        signal   xfer_mode      :  unsigned(STM_WR_REG_PARAM.MODE.BITS-1 downto 0);
         signal   reg_data       :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
         signal   reg_load       :  std_logic_vector(STM_WR_REG_PARAM.BITS-1 downto 0);
     begin
@@ -1281,28 +1262,28 @@ begin
         -- xfer_mode
         ---------------------------------------------------------------------------
         STM_WR_MODE: if (STM_WR_MODE_VALID = TRUE ) generate
-            xfer_mode <= resize(unsigned(stm_writer_mode), STM_WR_REG_PARAM.MODE_BITS);
+            xfer_mode <= resize(unsigned(stm_writer_mode), STM_WR_REG_PARAM.MODE.BITS);
         end generate;
         MRG_WR_MODE: if (STM_WR_MODE_VALID = FALSE) generate
-            xfer_mode <= resize(unsigned(mrg_writer_mode), STM_WR_REG_PARAM.MODE_BITS);
+            xfer_mode <= resize(unsigned(mrg_writer_mode), STM_WR_REG_PARAM.MODE.BITS);
         end generate;
         ---------------------------------------------------------------------------
         -- reg_data
         ---------------------------------------------------------------------------
         process (reset_bit, write_addr, write_bytes, xfer_mode) begin
             reg_data <= (others => '0');
-            reg_data(STM_WR_REG_PARAM.ADDR_HI downto STM_WR_REG_PARAM.ADDR_LO) <= std_logic_vector(write_addr);
-            reg_data(STM_WR_REG_PARAM.SIZE_HI downto STM_WR_REG_PARAM.SIZE_LO) <= std_logic_vector(write_bytes);
-            reg_data(STM_WR_REG_PARAM.MODE_HI downto STM_WR_REG_PARAM.MODE_LO) <= std_logic_vector(xfer_mode);
-            reg_data(STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO) <= (STM_WR_REG_PARAM.STAT_HI downto STM_WR_REG_PARAM.STAT_LO => '0');
-            reg_data(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
-            reg_data(STM_WR_REG_PARAM.CTRL_PAUSE_POS) <= '0';
-            reg_data(STM_WR_REG_PARAM.CTRL_STOP_POS ) <= '0';
-            reg_data(STM_WR_REG_PARAM.CTRL_START_POS) <= '1';
-            reg_data(STM_WR_REG_PARAM.CTRL_FIRST_POS) <= '1';
-            reg_data(STM_WR_REG_PARAM.CTRL_LAST_POS ) <= '1';
-            reg_data(STM_WR_REG_PARAM.CTRL_DONE_POS ) <= '1';
-            reg_data(STM_WR_REG_PARAM.CTRL_EBLK_POS ) <= '0';
+            reg_data(STM_WR_REG_PARAM.ADDR.HI downto STM_WR_REG_PARAM.ADDR.LO) <= std_logic_vector(write_addr);
+            reg_data(STM_WR_REG_PARAM.SIZE.HI downto STM_WR_REG_PARAM.SIZE.LO) <= std_logic_vector(write_bytes);
+            reg_data(STM_WR_REG_PARAM.MODE.HI downto STM_WR_REG_PARAM.MODE.LO) <= std_logic_vector(xfer_mode);
+            reg_data(STM_WR_REG_PARAM.STAT.HI downto STM_WR_REG_PARAM.STAT.LO) <= (STM_WR_REG_PARAM.STAT.HI downto STM_WR_REG_PARAM.STAT.LO => '0');
+            reg_data(STM_WR_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
+            reg_data(STM_WR_REG_PARAM.CTRL.PAUSE.POS) <= '0';
+            reg_data(STM_WR_REG_PARAM.CTRL.STOP.POS ) <= '0';
+            reg_data(STM_WR_REG_PARAM.CTRL.START.POS) <= '1';
+            reg_data(STM_WR_REG_PARAM.CTRL.FIRST.POS) <= '1';
+            reg_data(STM_WR_REG_PARAM.CTRL.LAST.POS ) <= '1';
+            reg_data(STM_WR_REG_PARAM.CTRL.DONE.POS ) <= '1';
+            reg_data(STM_WR_REG_PARAM.CTRL.EBLK.POS ) <= '0';
         end process;
         ---------------------------------------------------------------------------
         -- reg_load
@@ -1312,7 +1293,7 @@ begin
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(STM_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
+                reg_load(STM_WR_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------
@@ -1328,8 +1309,8 @@ begin
     MRG_WR_CTRL: block
         type     STATE_TYPE     is (IDLE_STATE, REQ_STATE, RUN0_STATE, RUN1_STATE, DONE_STATE);
         signal   curr_state     :  STATE_TYPE;
-        signal   write_addr     :  unsigned(MRG_WR_REG_PARAM.ADDR_BITS-1 downto 0);
-        signal   write_bytes    :  unsigned(MRG_WR_REG_PARAM.SIZE_BITS-1 downto 0);
+        signal   write_addr     :  unsigned(MRG_WR_REG_PARAM.ADDR.BITS-1 downto 0);
+        signal   write_bytes    :  unsigned(MRG_WR_REG_PARAM.SIZE.BITS-1 downto 0);
         signal   reg_data       :  std_logic_vector(MRG_WR_REG_PARAM.BITS-1 downto 0);
         signal   reg_load       :  std_logic_vector(MRG_WR_REG_PARAM.BITS-1 downto 0);
     begin
@@ -1391,18 +1372,18 @@ begin
         ---------------------------------------------------------------------------
         process (reset_bit, write_addr, write_bytes, mrg_writer_mode) begin
             reg_data <= (others => '0');
-            reg_data(MRG_WR_REG_PARAM.ADDR_HI downto MRG_WR_REG_PARAM.ADDR_LO) <= std_logic_vector(write_addr );
-            reg_data(MRG_WR_REG_PARAM.SIZE_HI downto MRG_WR_REG_PARAM.SIZE_LO) <= std_logic_vector(write_bytes);
-            reg_data(MRG_WR_REG_PARAM.MODE_HI downto MRG_WR_REG_PARAM.MODE_LO) <= std_logic_vector(resize(unsigned(mrg_writer_mode), MRG_WR_REG_PARAM.MODE_BITS));
-            reg_data(MRG_WR_REG_PARAM.STAT_HI downto MRG_WR_REG_PARAM.STAT_LO) <= (MRG_WR_REG_PARAM.STAT_HI downto MRG_WR_REG_PARAM.STAT_LO => '0');
-            reg_data(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
-            reg_data(MRG_WR_REG_PARAM.CTRL_PAUSE_POS) <= '0';
-            reg_data(MRG_WR_REG_PARAM.CTRL_STOP_POS ) <= '0';
-            reg_data(MRG_WR_REG_PARAM.CTRL_START_POS) <= '1';
-            reg_data(MRG_WR_REG_PARAM.CTRL_FIRST_POS) <= '1';
-            reg_data(MRG_WR_REG_PARAM.CTRL_LAST_POS ) <= '1';
-            reg_data(MRG_WR_REG_PARAM.CTRL_DONE_POS ) <= '1';
-            reg_data(MRG_WR_REG_PARAM.CTRL_EBLK_POS ) <= '0';
+            reg_data(MRG_WR_REG_PARAM.ADDR.HI downto MRG_WR_REG_PARAM.ADDR.LO) <= std_logic_vector(write_addr );
+            reg_data(MRG_WR_REG_PARAM.SIZE.HI downto MRG_WR_REG_PARAM.SIZE.LO) <= std_logic_vector(write_bytes);
+            reg_data(MRG_WR_REG_PARAM.MODE.HI downto MRG_WR_REG_PARAM.MODE.LO) <= std_logic_vector(resize(unsigned(mrg_writer_mode), MRG_WR_REG_PARAM.MODE.BITS));
+            reg_data(MRG_WR_REG_PARAM.STAT.HI downto MRG_WR_REG_PARAM.STAT.LO) <= (MRG_WR_REG_PARAM.STAT.HI downto MRG_WR_REG_PARAM.STAT.LO => '0');
+            reg_data(MRG_WR_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
+            reg_data(MRG_WR_REG_PARAM.CTRL.PAUSE.POS) <= '0';
+            reg_data(MRG_WR_REG_PARAM.CTRL.STOP.POS ) <= '0';
+            reg_data(MRG_WR_REG_PARAM.CTRL.START.POS) <= '1';
+            reg_data(MRG_WR_REG_PARAM.CTRL.FIRST.POS) <= '1';
+            reg_data(MRG_WR_REG_PARAM.CTRL.LAST.POS ) <= '1';
+            reg_data(MRG_WR_REG_PARAM.CTRL.DONE.POS ) <= '1';
+            reg_data(MRG_WR_REG_PARAM.CTRL.EBLK.POS ) <= '0';
         end process;
         ---------------------------------------------------------------------------
         -- reg_load
@@ -1412,7 +1393,7 @@ begin
                 reg_load <= (others => '1');
             else
                 reg_load <= (others => '0');
-                reg_load(MRG_WR_REG_PARAM.CTRL_RESET_POS) <= reset_bit;
+                reg_load(MRG_WR_REG_PARAM.CTRL.RESET.POS) <= reset_bit;
             end if;
         end process;
         ---------------------------------------------------------------------------

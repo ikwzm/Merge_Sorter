@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_components.vhd                                      --
 --!     @brief   ArgSorter Component Library Description Package                 --
---!     @version 1.2.0                                                           --
---!     @date    2021/06/28                                                      --
+--!     @version 1.3.0                                                           --
+--!     @date    2021/07/14                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
@@ -376,7 +376,7 @@ component ArgSort_Reader
         REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
         REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
         REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE.BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_NONE        :  out std_logic;
@@ -475,7 +475,7 @@ component ArgSort_Writer
         REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
         REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
         REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE.BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_NONE        :  out std_logic;

@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_writer.vhd
 --!     @brief   Merge Sorter ArgSort Writer Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.3.0
+--!     @date    2021/7/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2021 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ entity  ArgSort_Writer is
         REQ_ADDR        :  out std_logic_vector(REQ_ADDR_BITS      -1 downto 0);
         REQ_SIZE        :  out std_logic_vector(REQ_SIZE_BITS      -1 downto 0);
         REQ_BUF_PTR     :  out std_logic_vector(BUF_DEPTH          -1 downto 0);
-        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE_BITS-1 downto 0);
+        REQ_MODE        :  out std_logic_vector(REG_PARAM.MODE.BITS-1 downto 0);
         REQ_FIRST       :  out std_logic;
         REQ_LAST        :  out std_logic;
         REQ_NONE        :  out std_logic;
@@ -174,7 +174,7 @@ architecture RTL of ArgSort_Writer is
                                     := std_logic_vector(to_unsigned(MAX_XFER_BYTES     , BUF_DEPTH+1));
     constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
                                     := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT_RESV_BITS-1 downto 0) := (others => '0');
+    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT.RESV.BITS-1 downto 0) := (others => '0');
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -226,12 +226,12 @@ begin
             O_CLK_RATE          => 1                       , --
             O_REQ_ADDR_VALID    => 1                       , --
             O_REQ_ADDR_BITS     => REQ_ADDR_BITS           , --
-            O_REG_ADDR_BITS     => REG_PARAM.ADDR_BITS     , --
+            O_REG_ADDR_BITS     => REG_PARAM.ADDR.BITS     , --
             O_REQ_SIZE_VALID    => 1                       , --
             O_REQ_SIZE_BITS     => REQ_SIZE_BITS           , --
-            O_REG_SIZE_BITS     => REG_PARAM.SIZE_BITS     , --
-            O_REG_MODE_BITS     => REG_PARAM.MODE_BITS     , --
-            O_REG_STAT_BITS     => REG_PARAM.STAT_RESV_BITS, --
+            O_REG_SIZE_BITS     => REG_PARAM.SIZE.BITS     , --
+            O_REG_MODE_BITS     => REG_PARAM.MODE.BITS     , --
+            O_REG_STAT_BITS     => REG_PARAM.STAT.RESV.BITS, --
             O_USE_PULL_BUF_SIZE => 0                       , --
             O_FIXED_FLOW_OPEN   => 0                       , --
             O_FIXED_POOL_OPEN   => 1                       , --
@@ -260,49 +260,49 @@ begin
         ---------------------------------------------------------------------------
         -- Outlet Control Register Interface.
         ---------------------------------------------------------------------------
-            O_ADDR_L            => reg_load(REG_PARAM.ADDR_HI      downto REG_PARAM.ADDR_LO     ), --  In  :
-            O_ADDR_D            => reg_wbit(REG_PARAM.ADDR_HI      downto REG_PARAM.ADDR_LO     ), --  In  :
-            O_ADDR_Q            => reg_rbit(REG_PARAM.ADDR_HI      downto REG_PARAM.ADDR_LO     ), --  Out :
-            O_SIZE_L            => reg_load(REG_PARAM.SIZE_HI      downto REG_PARAM.SIZE_LO     ), --  In  :
-            O_SIZE_D            => reg_wbit(REG_PARAM.SIZE_HI      downto REG_PARAM.SIZE_LO     ), --  In  :
-            O_SIZE_Q            => reg_rbit(REG_PARAM.SIZE_HI      downto REG_PARAM.SIZE_LO     ), --  Out :
-            O_MODE_L            => reg_load(REG_PARAM.MODE_HI      downto REG_PARAM.MODE_LO     ), --  In  :
-            O_MODE_D            => reg_wbit(REG_PARAM.MODE_HI      downto REG_PARAM.MODE_LO     ), --  In  :
-            O_MODE_Q            => reg_rbit(REG_PARAM.MODE_HI      downto REG_PARAM.MODE_LO     ), --  Out :
-            O_STAT_L            => reg_load(REG_PARAM.STAT_RESV_HI downto REG_PARAM.STAT_RESV_LO), --  In  :
-            O_STAT_D            => reg_wbit(REG_PARAM.STAT_RESV_HI downto REG_PARAM.STAT_RESV_LO), --  In  :
-            O_STAT_Q            => reg_rbit(REG_PARAM.STAT_RESV_HI downto REG_PARAM.STAT_RESV_LO), --  Out :
+            O_ADDR_L            => reg_load(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
+            O_ADDR_D            => reg_wbit(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
+            O_ADDR_Q            => reg_rbit(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  Out :
+            O_SIZE_L            => reg_load(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
+            O_SIZE_D            => reg_wbit(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
+            O_SIZE_Q            => reg_rbit(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  Out :
+            O_MODE_L            => reg_load(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
+            O_MODE_D            => reg_wbit(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
+            O_MODE_Q            => reg_rbit(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  Out :
+            O_STAT_L            => reg_load(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
+            O_STAT_D            => reg_wbit(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
+            O_STAT_Q            => reg_rbit(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  Out :
             O_STAT_I            => O_STAT_RESV_NULL                    , --  In  :
-            O_RESET_L           => reg_load(REG_PARAM.CTRL_RESET_POS)  , --  In  :
-            O_RESET_D           => reg_wbit(REG_PARAM.CTRL_RESET_POS)  , --  In  :
-            O_RESET_Q           => reg_rbit(REG_PARAM.CTRL_RESET_POS)  , --  Out :
-            O_START_L           => reg_load(REG_PARAM.CTRL_START_POS)  , --  In  :
-            O_START_D           => reg_wbit(REG_PARAM.CTRL_START_POS)  , --  In  :
-            O_START_Q           => reg_rbit(REG_PARAM.CTRL_START_POS)  , --  Out :
-            O_STOP_L            => reg_load(REG_PARAM.CTRL_STOP_POS )  , --  In  :
-            O_STOP_D            => reg_wbit(REG_PARAM.CTRL_STOP_POS )  , --  In  :
-            O_STOP_Q            => reg_rbit(REG_PARAM.CTRL_STOP_POS )  , --  Out :
-            O_PAUSE_L           => reg_load(REG_PARAM.CTRL_PAUSE_POS)  , --  In  :
-            O_PAUSE_D           => reg_wbit(REG_PARAM.CTRL_PAUSE_POS)  , --  In  :
-            O_PAUSE_Q           => reg_rbit(REG_PARAM.CTRL_PAUSE_POS)  , --  Out :
-            O_FIRST_L           => reg_load(REG_PARAM.CTRL_FIRST_POS)  , --  In  :
-            O_FIRST_D           => reg_wbit(REG_PARAM.CTRL_FIRST_POS)  , --  In  :
-            O_FIRST_Q           => reg_rbit(REG_PARAM.CTRL_FIRST_POS)  , --  Out :
-            O_LAST_L            => reg_load(REG_PARAM.CTRL_LAST_POS )  , --  In  :
-            O_LAST_D            => reg_wbit(REG_PARAM.CTRL_LAST_POS )  , --  In  :
-            O_LAST_Q            => reg_rbit(REG_PARAM.CTRL_LAST_POS )  , --  Out :
-            O_DONE_EN_L         => reg_load(REG_PARAM.CTRL_DONE_POS )  , --  In  :
-            O_DONE_EN_D         => reg_wbit(REG_PARAM.CTRL_DONE_POS )  , --  In  :
-            O_DONE_EN_Q         => reg_rbit(REG_PARAM.CTRL_DONE_POS )  , --  Out :
-            O_DONE_ST_L         => reg_load(REG_PARAM.STAT_DONE_POS )  , --  In  :
-            O_DONE_ST_D         => reg_wbit(REG_PARAM.STAT_DONE_POS )  , --  In  :
-            O_DONE_ST_Q         => reg_rbit(REG_PARAM.STAT_DONE_POS )  , --  Out :
-            O_ERR_ST_L          => reg_load(REG_PARAM.STAT_ERROR_POS)  , --  In  :
-            O_ERR_ST_D          => reg_wbit(REG_PARAM.STAT_ERROR_POS)  , --  In  :
-            O_ERR_ST_Q          => reg_rbit(REG_PARAM.STAT_ERROR_POS)  , --  Out :
-            O_CLOSE_ST_L        => reg_load(REG_PARAM.STAT_CLOSE_POS)  , --  In  :
-            O_CLOSE_ST_D        => reg_wbit(REG_PARAM.STAT_CLOSE_POS)  , --  In  :
-            O_CLOSE_ST_Q        => reg_rbit(REG_PARAM.STAT_CLOSE_POS)  , --  Out :
+            O_RESET_L           => reg_load(REG_PARAM.CTRL.RESET.POS)  , --  In  :
+            O_RESET_D           => reg_wbit(REG_PARAM.CTRL.RESET.POS)  , --  In  :
+            O_RESET_Q           => reg_rbit(REG_PARAM.CTRL.RESET.POS)  , --  Out :
+            O_START_L           => reg_load(REG_PARAM.CTRL.START.POS)  , --  In  :
+            O_START_D           => reg_wbit(REG_PARAM.CTRL.START.POS)  , --  In  :
+            O_START_Q           => reg_rbit(REG_PARAM.CTRL.START.POS)  , --  Out :
+            O_STOP_L            => reg_load(REG_PARAM.CTRL.STOP.POS )  , --  In  :
+            O_STOP_D            => reg_wbit(REG_PARAM.CTRL.STOP.POS )  , --  In  :
+            O_STOP_Q            => reg_rbit(REG_PARAM.CTRL.STOP.POS )  , --  Out :
+            O_PAUSE_L           => reg_load(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
+            O_PAUSE_D           => reg_wbit(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
+            O_PAUSE_Q           => reg_rbit(REG_PARAM.CTRL.PAUSE.POS)  , --  Out :
+            O_FIRST_L           => reg_load(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
+            O_FIRST_D           => reg_wbit(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
+            O_FIRST_Q           => reg_rbit(REG_PARAM.CTRL.FIRST.POS)  , --  Out :
+            O_LAST_L            => reg_load(REG_PARAM.CTRL.LAST.POS )  , --  In  :
+            O_LAST_D            => reg_wbit(REG_PARAM.CTRL.LAST.POS )  , --  In  :
+            O_LAST_Q            => reg_rbit(REG_PARAM.CTRL.LAST.POS )  , --  Out :
+            O_DONE_EN_L         => reg_load(REG_PARAM.CTRL.DONE.POS )  , --  In  :
+            O_DONE_EN_D         => reg_wbit(REG_PARAM.CTRL.DONE.POS )  , --  In  :
+            O_DONE_EN_Q         => reg_rbit(REG_PARAM.CTRL.DONE.POS )  , --  Out :
+            O_DONE_ST_L         => reg_load(REG_PARAM.STAT.DONE.POS )  , --  In  :
+            O_DONE_ST_D         => reg_wbit(REG_PARAM.STAT.DONE.POS )  , --  In  :
+            O_DONE_ST_Q         => reg_rbit(REG_PARAM.STAT.DONE.POS )  , --  Out :
+            O_ERR_ST_L          => reg_load(REG_PARAM.STAT.ERROR.POS)  , --  In  :
+            O_ERR_ST_D          => reg_wbit(REG_PARAM.STAT.ERROR.POS)  , --  In  :
+            O_ERR_ST_Q          => reg_rbit(REG_PARAM.STAT.ERROR.POS)  , --  Out :
+            O_CLOSE_ST_L        => reg_load(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
+            O_CLOSE_ST_D        => reg_wbit(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
+            O_CLOSE_ST_Q        => reg_rbit(REG_PARAM.STAT.CLOSE.POS)  , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Configuration Signals.
         ---------------------------------------------------------------------------
@@ -413,7 +413,7 @@ begin
             BUF_PTR             => buf_wptr                            , --  Out :
             BUF_DATA            => buf_wdata                             --  Out :
         );                                                               --
-    REQ_MODE <= reg_rbit(REG_PARAM.MODE_HI downto REG_PARAM.MODE_LO);    -- 
+    REQ_MODE <= reg_rbit(REG_PARAM.MODE.HI downto REG_PARAM.MODE.LO);    -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -425,7 +425,7 @@ begin
             if (RST = '1') then
                     o_state <= O_IDLE;
             elsif (CLK'event and CLK = '1') then
-                if    (CLR = '1' or reg_rbit(REG_PARAM.CTRL_RESET_POS) = '1') then
+                if    (CLR = '1' or reg_rbit(REG_PARAM.CTRL.RESET.POS) = '1') then
                     o_state <= O_IDLE;
                 else
                     case o_state is
@@ -464,7 +464,7 @@ begin
                            (o_state = O_TAR                  )) else '0';
         DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
                            (o_state = O_TAR  and o_open = '0')) else '0';
-        reg_rbit(REG_PARAM.CTRL_EBLK_POS) <= '0';
+        reg_rbit(REG_PARAM.CTRL.EBLK.POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 

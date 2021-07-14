@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
---!     @version 1.0.0
---!     @date    2021/6/7
+--!     @version 1.3.0
+--!     @date    2021/7/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -153,8 +153,9 @@ architecture RTL of Merge_AXI_Reader is
     -- 
     ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
-    constant  REQ_SIZE_BITS     :  integer := MRG_REG_PARAM.SIZE_BITS;
-    constant  REQ_MODE_BITS     :  integer := MRG_REG_PARAM.MODE_BITS;
+    constant  REQ_SIZE_BITS     :  integer := MRG_REG_PARAM.SIZE.BITS;
+    constant  REQ_MODE_BITS     :  integer := MRG_REG_PARAM.MODE.BITS;
+    constant  REQ_MODE_FIELD    :  Interface.Mode_Regs_Field_Type := Interface.New_Mode_Regs_Field(0);
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -339,16 +340,6 @@ begin
     --
     -------------------------------------------------------------------------------
     REQ_MODE_BLK: block
-        constant  REQ_MODE_CACHE_HI   :  integer := MRG_REG_PARAM.MODE_CACHE_HI   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_CACHE_LO   :  integer := MRG_REG_PARAM.MODE_CACHE_LO   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_HI   :  integer := MRG_REG_PARAM.MODE_APROT_HI   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_APROT_LO   :  integer := MRG_REG_PARAM.MODE_APROT_LO   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_HI   :  integer := MRG_REG_PARAM.MODE_AUSER_HI   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AUSER_LO   :  integer := MRG_REG_PARAM.MODE_AUSER_LO   - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_LO     :  integer := MRG_REG_PARAM.MODE_AID_LO     - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_AID_HI     :  integer := MRG_REG_PARAM.MODE_AID_HI     - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SPECUL_POS :  integer := MRG_REG_PARAM.MODE_SPECUL_POS - MRG_REG_PARAM.MODE_LO;
-        constant  REQ_MODE_SAFETY_POS :  integer := MRG_REG_PARAM.MODE_SAFETY_POS - MRG_REG_PARAM.MODE_LO;
         function  GEN_REQ_ID(AID:std_logic_vector) return std_logic_vector is
             variable  id              :  integer;
         begin
@@ -363,15 +354,15 @@ begin
                 if (CLR = '1') then
                     AXI_ARUSER <= (others => '0');
                 elsif (req_valid /= REQ_VALID_ALL0 and req_ready = '1') then
-                    AXI_ARUSER <= std_logic_vector(resize(unsigned(req_mode(REQ_MODE_AUSER_HI downto REQ_MODE_AUSER_LO)), AXI_AUSER_WIDTH));
+                    AXI_ARUSER <= std_logic_vector(resize(unsigned(req_mode(REQ_MODE_FIELD.AUSER.HI downto REQ_MODE_FIELD.AUSER.LO)), AXI_AUSER_WIDTH));
                 end if;
             end if;
         end process;
-        req_id          <= GEN_REQ_ID(req_mode(REQ_MODE_AID_HI downto REQ_MODE_AID_LO));
-        req_cache       <= req_mode(REQ_MODE_CACHE_HI downto REQ_MODE_CACHE_LO);
-        req_prot        <= req_mode(REQ_MODE_APROT_HI downto REQ_MODE_APROT_LO);
-        req_speculative <= req_mode(REQ_MODE_SPECUL_POS);
-        req_safety      <= req_mode(REQ_MODE_SAFETY_POS);
+        req_id          <= GEN_REQ_ID(req_mode(REQ_MODE_FIELD.AID.HI downto REQ_MODE_FIELD.AID.LO));
+        req_cache       <= req_mode(REQ_MODE_FIELD.CACHE.HI downto REQ_MODE_FIELD.CACHE.LO);
+        req_prot        <= req_mode(REQ_MODE_FIELD.APROT.HI downto REQ_MODE_FIELD.APROT.LO);
+        req_speculative <= req_mode(REQ_MODE_FIELD.SPECUL.POS);
+        req_safety      <= req_mode(REQ_MODE_FIELD.SAFETY.POS);
     end block;
     -------------------------------------------------------------------------------
     --
