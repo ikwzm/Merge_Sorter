@@ -2,7 +2,7 @@
 --!     @file    merge_writer.vhd
 --!     @brief   Merge Sorter Merge Writer Module :
 --!     @version 1.3.0
---!     @date    2021/7/14
+--!     @date    2021/7/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -40,6 +40,7 @@ library Merge_Sorter;
 use     Merge_Sorter.Interface;
 entity  Merge_Writer is
     generic (
+        CHANNEL         :  integer :=  0;
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
         REG_PARAM       :  Interface.Regs_Field_Type := Interface.Default_Regs_Param;
@@ -78,7 +79,7 @@ entity  Merge_Writer is
     -- Transaction Command Acknowledge Signals.
     -------------------------------------------------------------------------------
         ACK_VALID       :  in  std_logic;
-        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        ACK_SIZE        :  in  std_logic_vector(BUF_DEPTH         downto 0);
         ACK_ERROR       :  in  std_logic := '0';
         ACK_NEXT        :  in  std_logic;
         ACK_LAST        :  in  std_logic;
@@ -97,27 +98,27 @@ entity  Merge_Writer is
         FLOW_PAUSE      :  out std_logic;
         FLOW_STOP       :  out std_logic;
         FLOW_LAST       :  out std_logic;
-        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH             downto 0);
+        FLOW_SIZE       :  out std_logic_vector(BUF_DEPTH         downto 0);
         PULL_FIN_VALID  :  in  std_logic;
         PULL_FIN_LAST   :  in  std_logic;
         PULL_FIN_ERROR  :  in  std_logic := '0';
-        PULL_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
-        PULL_BUF_RESET  :  in  std_logic;
-        PULL_BUF_VALID  :  in  std_logic;
+        PULL_FIN_SIZE   :  in  std_logic_vector(BUF_DEPTH         downto 0);
+        PULL_BUF_RESET  :  in  std_logic := '0';
+        PULL_BUF_VALID  :  in  std_logic := '0';
         PULL_BUF_LAST   :  in  std_logic;
         PULL_BUF_ERROR  :  in  std_logic := '0';
-        PULL_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH             downto 0);
+        PULL_BUF_SIZE   :  in  std_logic_vector(BUF_DEPTH         downto 0);
         PULL_BUF_READY  :  out std_logic;
     -------------------------------------------------------------------------------
     -- Buffer Interface Signals.
     -------------------------------------------------------------------------------
-        BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS      -1 downto 0);
-        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH          -1 downto 0);
+        BUF_DATA        :  out std_logic_vector(BUF_DATA_BITS  -1 downto 0);
+        BUF_PTR         :  in  std_logic_vector(BUF_DEPTH      -1 downto 0);
     -------------------------------------------------------------------------------
     -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS    -1 downto 0);
-        MRG_STRB        :  in  std_logic_vector(WORDS              -1 downto 0);
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS-1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS          -1 downto 0);
         MRG_LAST        :  in  std_logic;
         MRG_VALID       :  in  std_logic;
         MRG_READY       :  out std_logic;
@@ -153,58 +154,44 @@ architecture RTL of Merge_Writer is
         return value;
     end function;
     ------------------------------------------------------------------------------
-    -- 
+    -- 各種定数
     ------------------------------------------------------------------------------
-    constant  BUF_DATA_WIDTH        :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
-    constant  BUF_BYTES             :  integer := 2**BUF_DEPTH;
-    constant  MAX_XFER_BYTES        :  integer := 2**MAX_XFER_SIZE;
+    constant  BUF_DATA_WIDTH    :  integer := CALC_DATA_WIDTH(BUF_DATA_BITS);
+    constant  BUF_DATA_BYTES    :  integer := BUF_DATA_BITS/8;
+    constant  BUF_BYTES         :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES    :  integer := 2**MAX_XFER_SIZE;
     ------------------------------------------------------------------------------
     -- 出力側のフロー制御用定数.
     ------------------------------------------------------------------------------
-    constant  O_FLOW_READY_LEVEL    :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(MAX_XFER_BYTES     , BUF_DEPTH+1));
-    constant  O_BUF_READY_LEVEL     :  std_logic_vector(BUF_DEPTH downto 0)
-                                    := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
-    constant  O_STAT_RESV_NULL      :  std_logic_vector(REG_PARAM.STAT.RESV.BITS-1 downto 0) := (others => '0');
+    constant  O_FLOW_READY_LEVEL:  std_logic_vector(BUF_DEPTH downto 0)
+                                := std_logic_vector(to_unsigned(MAX_XFER_BYTES     , BUF_DEPTH+1));
+    constant  O_BUF_READY_LEVEL :  std_logic_vector(BUF_DEPTH downto 0)
+                                := std_logic_vector(to_unsigned(2*(BUF_DATA_BITS/8), BUF_DEPTH+1));
+    ---------------------------------------------------------------------------
+    -- 各種レジスタ出力信号
+    ---------------------------------------------------------------------------
+    signal    reg_o             :  std_logic_vector(REG_PARAM.BITS -1 downto 0);
     ------------------------------------------------------------------------------
-    -- 
+    -- バッファ制御信号
     ------------------------------------------------------------------------------
-    signal    reg_load              :  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-    signal    reg_wbit              :  std_logic_vector(REG_PARAM.BITS -1 downto 0);
-    signal    reg_rbit              :  std_logic_vector(REG_PARAM.BITS -1 downto 0);
+    signal    buf_wen           :  std_logic;
+    signal    buf_ben           :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
+    signal    buf_wptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
+    signal    buf_wdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
+    signal    buf_we            :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
     ------------------------------------------------------------------------------
-    -- 
+    -- PUMP STREAM 側 制御信号
     ------------------------------------------------------------------------------
-    signal    buf_wen               :  std_logic;
-    signal    buf_ben               :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
-    signal    buf_wptr              :  std_logic_vector(BUF_DEPTH      -1 downto 0);
-    signal    buf_wdata             :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
-    signal    buf_we                :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
-    ------------------------------------------------------------------------------
-    -- 
-    ------------------------------------------------------------------------------
-    signal    o_open                :  std_logic;
-    signal    o_open_valid          :  std_logic;
-    signal    o_close_valid         :  std_logic;
-    ------------------------------------------------------------------------------
-    -- 
-    ------------------------------------------------------------------------------
-    signal    i_reset               :  std_logic;
-    signal    i_stop                :  std_logic;
-    signal    i_error               :  std_logic;
-    signal    i_open_valid          :  std_logic;
-    signal    i_close_valid         :  std_logic;
-    ------------------------------------------------------------------------------
-    -- 
-    ------------------------------------------------------------------------------
-    signal    i_strb                :  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
+    signal    o_open            :  std_logic;
+    signal    o_open_valid      :  std_logic;
+    signal    o_close_valid     :  std_logic;
+    signal    i_reset           :  std_logic;
+    signal    i_stop            :  std_logic;
+    signal    i_error           :  std_logic;
+    signal    i_open_valid      :  std_logic;
+    signal    i_close_valid     :  std_logic;
+    signal    i_strb            :  std_logic_vector(WORDS*WORD_BITS/8-1 downto 0);
 begin
-    -------------------------------------------------------------------------------
-    --
-    -------------------------------------------------------------------------------
-    reg_load <= REG_L;
-    reg_wbit <= REG_D;
-    REG_Q <= reg_rbit;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -223,7 +210,7 @@ begin
             O_FIXED_FLOW_OPEN   => 0                       , --
             O_FIXED_POOL_OPEN   => 1                       , --
             I_CLK_RATE          => 1                       , --
-            I_DATA_BITS         => WORDS*WORD_BITS         , --
+            I_DATA_BITS         => WORD_BITS*WORDS         , --
             I_WORD_BITS         => WORD_BITS               , --
             BUF_DEPTH           => BUF_DEPTH               , --
             BUF_DATA_BITS       => BUF_DATA_BITS           , --
@@ -247,160 +234,166 @@ begin
         ---------------------------------------------------------------------------
         -- Outlet Control Register Interface.
         ---------------------------------------------------------------------------
-            O_ADDR_L            => reg_load(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
-            O_ADDR_D            => reg_wbit(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
-            O_ADDR_Q            => reg_rbit(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  Out :
-            O_SIZE_L            => reg_load(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
-            O_SIZE_D            => reg_wbit(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
-            O_SIZE_Q            => reg_rbit(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  Out :
-            O_MODE_L            => reg_load(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
-            O_MODE_D            => reg_wbit(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
-            O_MODE_Q            => reg_rbit(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  Out :
-            O_STAT_L            => reg_load(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
-            O_STAT_D            => reg_wbit(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
-            O_STAT_Q            => reg_rbit(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  Out :
-            O_STAT_I            => O_STAT_RESV_NULL                    , --  In  :
-            O_RESET_L           => reg_load(REG_PARAM.CTRL.RESET.POS)  , --  In  :
-            O_RESET_D           => reg_wbit(REG_PARAM.CTRL.RESET.POS)  , --  In  :
-            O_RESET_Q           => reg_rbit(REG_PARAM.CTRL.RESET.POS)  , --  Out :
-            O_START_L           => reg_load(REG_PARAM.CTRL.START.POS)  , --  In  :
-            O_START_D           => reg_wbit(REG_PARAM.CTRL.START.POS)  , --  In  :
-            O_START_Q           => reg_rbit(REG_PARAM.CTRL.START.POS)  , --  Out :
-            O_STOP_L            => reg_load(REG_PARAM.CTRL.STOP.POS )  , --  In  :
-            O_STOP_D            => reg_wbit(REG_PARAM.CTRL.STOP.POS )  , --  In  :
-            O_STOP_Q            => reg_rbit(REG_PARAM.CTRL.STOP.POS )  , --  Out :
-            O_PAUSE_L           => reg_load(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
-            O_PAUSE_D           => reg_wbit(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
-            O_PAUSE_Q           => reg_rbit(REG_PARAM.CTRL.PAUSE.POS)  , --  Out :
-            O_FIRST_L           => reg_load(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
-            O_FIRST_D           => reg_wbit(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
-            O_FIRST_Q           => reg_rbit(REG_PARAM.CTRL.FIRST.POS)  , --  Out :
-            O_LAST_L            => reg_load(REG_PARAM.CTRL.LAST.POS )  , --  In  :
-            O_LAST_D            => reg_wbit(REG_PARAM.CTRL.LAST.POS )  , --  In  :
-            O_LAST_Q            => reg_rbit(REG_PARAM.CTRL.LAST.POS )  , --  Out :
-            O_DONE_EN_L         => reg_load(REG_PARAM.CTRL.DONE.POS )  , --  In  :
-            O_DONE_EN_D         => reg_wbit(REG_PARAM.CTRL.DONE.POS )  , --  In  :
-            O_DONE_EN_Q         => reg_rbit(REG_PARAM.CTRL.DONE.POS )  , --  Out :
-            O_DONE_ST_L         => reg_load(REG_PARAM.STAT.DONE.POS )  , --  In  :
-            O_DONE_ST_D         => reg_wbit(REG_PARAM.STAT.DONE.POS )  , --  In  :
-            O_DONE_ST_Q         => reg_rbit(REG_PARAM.STAT.DONE.POS )  , --  Out :
-            O_ERR_ST_L          => reg_load(REG_PARAM.STAT.ERROR.POS)  , --  In  :
-            O_ERR_ST_D          => reg_wbit(REG_PARAM.STAT.ERROR.POS)  , --  In  :
-            O_ERR_ST_Q          => reg_rbit(REG_PARAM.STAT.ERROR.POS)  , --  Out :
-            O_CLOSE_ST_L        => reg_load(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
-            O_CLOSE_ST_D        => reg_wbit(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
-            O_CLOSE_ST_Q        => reg_rbit(REG_PARAM.STAT.CLOSE.POS)  , --  Out :
+            O_ADDR_L            => REG_L(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
+            O_ADDR_D            => REG_D(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  In  :
+            O_ADDR_Q            => reg_o(REG_PARAM.ADDR.HI      downto REG_PARAM.ADDR.LO     ), --  Out :
+            O_SIZE_L            => REG_L(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
+            O_SIZE_D            => REG_D(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  In  :
+            O_SIZE_Q            => reg_o(REG_PARAM.SIZE.HI      downto REG_PARAM.SIZE.LO     ), --  Out :
+            O_MODE_L            => REG_L(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
+            O_MODE_D            => REG_D(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  In  :
+            O_MODE_Q            => reg_o(REG_PARAM.MODE.HI      downto REG_PARAM.MODE.LO     ), --  Out :
+            O_STAT_L            => REG_L(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
+            O_STAT_D            => REG_D(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  In  :
+            O_STAT_Q            => reg_o(REG_PARAM.STAT.RESV.HI downto REG_PARAM.STAT.RESV.LO), --  Out :
+            O_RESET_L           => REG_L(REG_PARAM.CTRL.RESET.POS)  , --  In  :
+            O_RESET_D           => REG_D(REG_PARAM.CTRL.RESET.POS)  , --  In  :
+            O_RESET_Q           => reg_o(REG_PARAM.CTRL.RESET.POS)  , --  Out :
+            O_START_L           => REG_L(REG_PARAM.CTRL.START.POS)  , --  In  :
+            O_START_D           => REG_D(REG_PARAM.CTRL.START.POS)  , --  In  :
+            O_START_Q           => reg_o(REG_PARAM.CTRL.START.POS)  , --  Out :
+            O_STOP_L            => REG_L(REG_PARAM.CTRL.STOP.POS )  , --  In  :
+            O_STOP_D            => REG_D(REG_PARAM.CTRL.STOP.POS )  , --  In  :
+            O_STOP_Q            => reg_o(REG_PARAM.CTRL.STOP.POS )  , --  Out :
+            O_PAUSE_L           => REG_L(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
+            O_PAUSE_D           => REG_D(REG_PARAM.CTRL.PAUSE.POS)  , --  In  :
+            O_PAUSE_Q           => reg_o(REG_PARAM.CTRL.PAUSE.POS)  , --  Out :
+            O_FIRST_L           => REG_L(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
+            O_FIRST_D           => REG_D(REG_PARAM.CTRL.FIRST.POS)  , --  In  :
+            O_FIRST_Q           => reg_o(REG_PARAM.CTRL.FIRST.POS)  , --  Out :
+            O_LAST_L            => REG_L(REG_PARAM.CTRL.LAST.POS )  , --  In  :
+            O_LAST_D            => REG_D(REG_PARAM.CTRL.LAST.POS )  , --  In  :
+            O_LAST_Q            => reg_o(REG_PARAM.CTRL.LAST.POS )  , --  Out :
+            O_DONE_EN_L         => REG_L(REG_PARAM.CTRL.DONE.POS )  , --  In  :
+            O_DONE_EN_D         => REG_D(REG_PARAM.CTRL.DONE.POS )  , --  In  :
+            O_DONE_EN_Q         => reg_o(REG_PARAM.CTRL.DONE.POS )  , --  Out :
+            O_DONE_ST_L         => REG_L(REG_PARAM.STAT.DONE.POS )  , --  In  :
+            O_DONE_ST_D         => REG_D(REG_PARAM.STAT.DONE.POS )  , --  In  :
+            O_DONE_ST_Q         => reg_o(REG_PARAM.STAT.DONE.POS )  , --  Out :
+            O_ERR_ST_L          => REG_L(REG_PARAM.STAT.ERROR.POS)  , --  In  :
+            O_ERR_ST_D          => REG_D(REG_PARAM.STAT.ERROR.POS)  , --  In  :
+            O_ERR_ST_Q          => reg_o(REG_PARAM.STAT.ERROR.POS)  , --  Out :
+            O_CLOSE_ST_L        => REG_L(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
+            O_CLOSE_ST_D        => REG_D(REG_PARAM.STAT.CLOSE.POS)  , --  In  :
+            O_CLOSE_ST_Q        => reg_o(REG_PARAM.STAT.CLOSE.POS)  , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Configuration Signals.
         ---------------------------------------------------------------------------
-            O_ADDR_FIX          => '0'                                 , --  In  :
-            O_BUF_READY_LEVEL   => O_BUF_READY_LEVEL                   , --  In  :
-            O_FLOW_READY_LEVEL  => O_FLOW_READY_LEVEL                  , --  In  :
+            O_ADDR_FIX          => '0'                              , --  In  :
+            O_BUF_READY_LEVEL   => O_BUF_READY_LEVEL                , --  In  :
+            O_FLOW_READY_LEVEL  => O_FLOW_READY_LEVEL               , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transaction Command Request Signals.
         ---------------------------------------------------------------------------
-            O_REQ_VALID         => REQ_VALID                           , --  Out :
-            O_REQ_ADDR          => REQ_ADDR                            , --  Out :
-            O_REQ_SIZE          => REQ_SIZE                            , --  Out :
-            O_REQ_BUF_PTR       => REQ_BUF_PTR                         , --  Out :
-            O_REQ_FIRST         => REQ_FIRST                           , --  Out :
-            O_REQ_LAST          => REQ_LAST                            , --  Out :
-            O_REQ_NONE          => REQ_NONE                            , --  Out :
-            O_REQ_READY         => REQ_READY                           , --  In  :
+            O_REQ_VALID         => REQ_VALID                        , --  Out :
+            O_REQ_ADDR          => REQ_ADDR                         , --  Out :
+            O_REQ_SIZE          => REQ_SIZE                         , --  Out :
+            O_REQ_BUF_PTR       => REQ_BUF_PTR                      , --  Out :
+            O_REQ_FIRST         => REQ_FIRST                        , --  Out :
+            O_REQ_LAST          => REQ_LAST                         , --  Out :
+            O_REQ_NONE          => REQ_NONE                         , --  Out :
+            O_REQ_READY         => REQ_READY                        , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transaction Command Acknowledge Signals.
         ---------------------------------------------------------------------------
-            O_ACK_VALID         => ACK_VALID                           , --  In  :
-            O_ACK_SIZE          => ACK_SIZE                            , --  In  :
-            O_ACK_ERROR         => ACK_ERROR                           , --  In  :
-            O_ACK_NEXT          => ACK_NEXT                            , --  In  :
-            O_ACK_LAST          => ACK_LAST                            , --  In  :
-            O_ACK_STOP          => ACK_STOP                            , --  In  :
-            O_ACK_NONE          => ACK_NONE                            , --  In  :
+            O_ACK_VALID         => ACK_VALID                        , --  In  :
+            O_ACK_SIZE          => ACK_SIZE                         , --  In  :
+            O_ACK_ERROR         => ACK_ERROR                        , --  In  :
+            O_ACK_NEXT          => ACK_NEXT                         , --  In  :
+            O_ACK_LAST          => ACK_LAST                         , --  In  :
+            O_ACK_STOP          => ACK_STOP                         , --  In  :
+            O_ACK_NONE          => ACK_NONE                         , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Transfer Status Signals.
         ---------------------------------------------------------------------------
-            O_XFER_BUSY         => XFER_BUSY                           , --  In  :
-            O_XFER_DONE         => XFER_DONE                           , --  In  :
-            O_XFER_ERROR        => XFER_ERROR                          , --  In  :
+            O_XFER_BUSY         => XFER_BUSY                        , --  In  :
+            O_XFER_DONE         => XFER_DONE                        , --  In  :
+            O_XFER_ERROR        => XFER_ERROR                       , --  In  :
         ---------------------------------------------------------------------------
         -- Outlet Flow Control Signals.
         ---------------------------------------------------------------------------
-            O_FLOW_READY        => FLOW_READY                          , --  Out :
-            O_FLOW_PAUSE        => FLOW_PAUSE                          , --  Out :
-            O_FLOW_STOP         => FLOW_STOP                           , --  Out :
-            O_FLOW_LAST         => FLOW_LAST                           , --  Out :
-            O_FLOW_SIZE         => FLOW_SIZE                           , --  Out :
-            O_PULL_FIN_VALID    => PULL_FIN_VALID                      , --  In  :
-            O_PULL_FIN_LAST     => PULL_FIN_LAST                       , --  In  :
-            O_PULL_FIN_ERROR    => PULL_FIN_ERROR                      , --  In  :
-            O_PULL_FIN_SIZE     => PULL_FIN_SIZE                       , --  In  :
-            O_PULL_BUF_RESET    => PULL_BUF_RESET                      , --  In  :
-            O_PULL_BUF_VALID    => PULL_BUF_VALID                      , --  In  :
-            O_PULL_BUF_LAST     => PULL_BUF_LAST                       , --  In  :
-            O_PULL_BUF_ERROR    => PULL_BUF_ERROR                      , --  In  :
-            O_PULL_BUF_SIZE     => PULL_BUF_SIZE                       , --  In  :
-            O_PULL_BUF_READY    => PULL_BUF_READY                      , --  Out :
+            O_FLOW_READY        => FLOW_READY                       , --  Out :
+            O_FLOW_PAUSE        => FLOW_PAUSE                       , --  Out :
+            O_FLOW_STOP         => FLOW_STOP                        , --  Out :
+            O_FLOW_LAST         => FLOW_LAST                        , --  Out :
+            O_FLOW_SIZE         => FLOW_SIZE                        , --  Out :
+            O_PULL_FIN_VALID    => PULL_FIN_VALID                   , --  In  :
+            O_PULL_FIN_LAST     => PULL_FIN_LAST                    , --  In  :
+            O_PULL_FIN_ERROR    => PULL_FIN_ERROR                   , --  In  :
+            O_PULL_FIN_SIZE     => PULL_FIN_SIZE                    , --  In  :
+            O_PULL_BUF_RESET    => PULL_BUF_RESET                   , --  In  :
+            O_PULL_BUF_VALID    => PULL_BUF_VALID                   , --  In  :
+            O_PULL_BUF_LAST     => PULL_BUF_LAST                    , --  In  :
+            O_PULL_BUF_ERROR    => PULL_BUF_ERROR                   , --  In  :
+            O_PULL_BUF_SIZE     => PULL_BUF_SIZE                    , --  In  :
+            O_PULL_BUF_READY    => PULL_BUF_READY                   , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Status.
         ---------------------------------------------------------------------------
-            O_OPEN              => o_open                              , --  Out :
-            O_TRAN_BUSY         => open                                , --  Out :
-            O_TRAN_DONE         => open                                , --  Out :
-            O_TRAN_ERROR        => open                                , --  Out :
+            O_OPEN              => o_open                           , --  Out :
+            O_TRAN_BUSY         => open                             , --  Out :
+            O_TRAN_DONE         => open                             , --  Out :
+            O_TRAN_ERROR        => open                             , --  Out :
         ---------------------------------------------------------------------------
         -- Outlet Open/Close Infomation Interface
         ---------------------------------------------------------------------------
-            O_O2I_OPEN_INFO     => "0"                                 , --  In  :
-            O_O2I_CLOSE_INFO    => "0"                                 , --  In  :
-            O_I2O_OPEN_INFO     => open                                , --  Out :
-            O_I2O_OPEN_VALID    => o_open_valid                        , --  Out :
-            O_I2O_CLOSE_INFO    => open                                , --  Out :
-            O_I2O_CLOSE_VALID   => o_close_valid                       , --  Out :
-            O_I2O_STOP          => open                                , --  Out :
+            O_O2I_OPEN_INFO     => "0"                              , --  In  :
+            O_O2I_CLOSE_INFO    => "0"                              , --  In  :
+            O_I2O_OPEN_INFO     => open                             , --  Out :
+            O_I2O_OPEN_VALID    => o_open_valid                     , --  Out :
+            O_I2O_CLOSE_INFO    => open                             , --  Out :
+            O_I2O_CLOSE_VALID   => o_close_valid                    , --  Out :
+            O_I2O_STOP          => open                             , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Clock and Clock Enable.
         ---------------------------------------------------------------------------
-            I_CLK               => CLK                                 , --  In  :
-            I_CLR               => CLR                                 , --  In  :
-            I_CKE               => '1'                                 , --  In  :
+            I_CLK               => CLK                              , --  In  :
+            I_CLR               => CLR                              , --  In  :
+            I_CKE               => '1'                              , --  In  :
         ---------------------------------------------------------------------------
         -- Intake Stream Interface.
         ---------------------------------------------------------------------------
-            I_DATA              => MRG_DATA                            , --  In  :
-            I_STRB              => i_strb                              , --  In  :
-            I_LAST              => MRG_LAST                            , --  In  :
-            I_VALID             => MRG_VALID                           , --  In  :
-            I_READY             => MRG_READY                           , --  Out :
+            I_DATA              => MRG_DATA                         , --  In  :
+            I_STRB              => i_strb                           , --  In  :
+            I_LAST              => MRG_LAST                         , --  In  :
+            I_VALID             => MRG_VALID                        , --  In  :
+            I_READY             => MRG_READY                        , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Status.
         ---------------------------------------------------------------------------
-            I_OPEN              => open                                , --  Out :
-            I_DONE              => open                                , --  Out :
+            I_OPEN              => open                             , --  Out :
+            I_DONE              => open                             , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Open/Close Infomation Interface
         ---------------------------------------------------------------------------
-            I_I2O_STOP          => '0'                                 , --  In  :
-            I_I2O_OPEN_INFO     => "0"                                 , --  In  :
-            I_I2O_OPEN_VALID    => i_open_valid                        , --  In  :
-            I_I2O_CLOSE_INFO    => "0"                                 , --  In  :
-            I_I2O_CLOSE_VALID   => i_close_valid                       , --  In  :
-            I_O2I_RESET         => i_reset                             , --  Out :
-            I_O2I_STOP          => i_stop                              , --  Out :
-            I_O2I_ERROR         => i_error                             , --  Out :
-            I_O2I_OPEN_INFO     => open                                , --  Out :
-            I_O2I_OPEN_VALID    => i_open_valid                        , --  Out :
-            I_O2I_CLOSE_INFO    => open                                , --  Out :
-            I_O2I_CLOSE_VALID   => i_close_valid                       , --  Out :
+            I_I2O_STOP          => '0'                              , --  In  :
+            I_I2O_OPEN_INFO     => "0"                              , --  In  :
+            I_I2O_OPEN_VALID    => i_open_valid                     , --  In  :
+            I_I2O_CLOSE_INFO    => "0"                              , --  In  :
+            I_I2O_CLOSE_VALID   => i_close_valid                    , --  In  :
+            I_O2I_RESET         => i_reset                          , --  Out :
+            I_O2I_STOP          => i_stop                           , --  Out :
+            I_O2I_ERROR         => i_error                          , --  Out :
+            I_O2I_OPEN_INFO     => open                             , --  Out :
+            I_O2I_OPEN_VALID    => i_open_valid                     , --  Out :
+            I_O2I_CLOSE_INFO    => open                             , --  Out :
+            I_O2I_CLOSE_VALID   => i_close_valid                    , --  Out :
         ---------------------------------------------------------------------------
         -- Intake Buffer Read Interface.
         ---------------------------------------------------------------------------
-            BUF_WEN             => buf_wen                             , --  Out :
-            BUF_BEN             => buf_ben                             , --  Out :
-            BUF_PTR             => buf_wptr                            , --  Out :
-            BUF_DATA            => buf_wdata                             --  Out :
-        );                                                               --
-    REQ_MODE <= reg_rbit(REG_PARAM.MODE.HI downto REG_PARAM.MODE.LO);    -- 
+            BUF_WEN             => buf_wen                          , --  Out :
+            BUF_BEN             => buf_ben                          , --  Out :
+            BUF_PTR             => buf_wptr                         , --  Out :
+            BUF_DATA            => buf_wdata                          --  Out :
+        );                                                            --
+    ---------------------------------------------------------------------------
+    --
+    ---------------------------------------------------------------------------
+    REG_Q <= reg_o;
+    ---------------------------------------------------------------------------
+    --
+    ---------------------------------------------------------------------------
+    REQ_MODE <= reg_o(REG_PARAM.MODE.HI downto REG_PARAM.MODE.LO);    -- 
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -422,7 +415,7 @@ begin
             if (RST = '1') then
                     o_state <= O_IDLE;
             elsif (CLK'event and CLK = '1') then
-                if    (CLR = '1' or reg_rbit(REG_PARAM.CTRL.RESET.POS) = '1') then
+                if    (CLR = '1' or reg_o(REG_PARAM.CTRL.RESET.POS) = '1') then
                     o_state <= O_IDLE;
                 else
                     case o_state is
@@ -461,7 +454,7 @@ begin
                            (o_state = O_TAR                  )) else '0';
         DONE  <= '1' when ((o_state = O_RUN  and o_open = '0' and o_close_valid = '1') or
                            (o_state = O_TAR  and o_open = '0')) else '0';
-        reg_rbit(REG_PARAM.CTRL.EBLK.POS) <= '0';
+        reg_o(REG_PARAM.CTRL.EBLK.POS) <= '0';
     end block;
     -------------------------------------------------------------------------------
     -- 
@@ -472,7 +465,7 @@ begin
             RWIDTH      => BUF_DATA_WIDTH      , --
             WWIDTH      => BUF_DATA_WIDTH      , --
             WEBIT       => BUF_DATA_WIDTH-3    , --
-            ID          => 0                     -- 
+            ID          => CHANNEL               -- 
         )                                        -- 
         port map (                               -- 
             WCLK        => CLK                 , -- In  :

@@ -2,7 +2,7 @@
 --!     @file    merge_axi_reader.vhd
 --!     @brief   Merge Sorter Merge AXI Reader Module :
 --!     @version 1.3.0
---!     @date    2021/7/14
+--!     @date    2021/7/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -124,6 +124,7 @@ use     Merge_Sorter.Interface_Components.Merge_Reader;
 library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
 use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_READ_INTERFACE;
+use     PIPEWORK.COMPONENTS.QUEUE_TREE_ARBITER;
 architecture RTL of Merge_AXI_Reader is
     -------------------------------------------------------------------------------
     --
@@ -149,6 +150,8 @@ architecture RTL of Merge_AXI_Reader is
     constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
+    constant  BUF_BYTES         :  integer := 2**BUF_DEPTH;
+    constant  MAX_XFER_BYTES    :  integer := 2**AXI_XFER_SIZE;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
@@ -208,6 +211,97 @@ architecture RTL of Merge_AXI_Reader is
     signal    buf_ben           :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
     signal    buf_wptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
     signal    buf_wen           :  std_logic_vector(WAYS           -1 downto 0);
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    type      REQ_ADDR_VECTOR       is array (integer range <>) of std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
+    type      REQ_SIZE_VECTOR       is array (integer range <>) of std_logic_vector(REQ_SIZE_BITS -1 downto 0);
+    type      REQ_MODE_VECTOR       is array (integer range <>) of std_logic_vector(REQ_MODE_BITS -1 downto 0);
+    type      REQ_BUF_PTR_VECTOR    is array (integer range <>) of std_logic_vector(BUF_DEPTH     -1 downto 0);
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    signal    i_req_addr        :  REQ_ADDR_VECTOR   (WAYS-1 downto 0);
+    signal    i_req_size        :  REQ_SIZE_VECTOR   (WAYS-1 downto 0);
+    signal    i_req_mode        :  REQ_MODE_VECTOR   (WAYS-1 downto 0);
+    signal    i_req_buf_ptr     :  REQ_BUF_PTR_VECTOR(WAYS-1 downto 0);
+    signal    i_req_first       :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_last        :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_none        :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_valid       :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_req_ready       :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_flow_ready      :  std_logic_vector  (WAYS-1 downto 0);
+    signal    i_flow_stop       :  std_logic_vector  (WAYS-1 downto 0);
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    function  SELECT_REQ_FLAG(SEL: std_logic_vector; VEC: std_logic_vector) return std_logic is
+        variable req_flag  :  std_logic;
+    begin
+        req_flag := '0';
+        for i in VEC'range loop
+            if (SEL(i) = '1') then
+                req_flag := req_flag or VEC(i);
+            end if;
+        end loop;
+        return req_flag;
+    end function;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    function  SELECT_REQ_ADDR(SEL: std_logic_vector; VEC: REQ_ADDR_VECTOR) return std_logic_vector is
+        variable v_req_addr  :  std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
+    begin
+        v_req_addr := (others => '0');
+        for i in VEC'range loop
+            if (SEL(i) = '1') then
+                v_req_addr := v_req_addr or VEC(i);
+            end if;
+        end loop;
+        return v_req_addr;
+    end function;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    function  SELECT_REQ_SIZE(SEL: std_logic_vector; VEC: REQ_SIZE_VECTOR) return std_logic_vector is
+        variable v_req_size  :  std_logic_vector(REQ_SIZE_BITS-1 downto 0);
+    begin
+        v_req_size := (others => '0');
+        for i in VEC'range loop
+            if (SEL(i) = '1') then
+                v_req_size := v_req_size or VEC(i);
+            end if;
+        end loop;
+        return v_req_size;
+    end function;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    function  SELECT_REQ_MODE(SEL: std_logic_vector; VEC: REQ_MODE_VECTOR) return std_logic_vector is
+        variable v_req_mode  :  std_logic_vector(REQ_MODE_BITS-1 downto 0);
+    begin
+        v_req_mode := (others => '0');
+        for i in VEC'range loop
+            if (SEL(i) = '1') then
+                v_req_mode := v_req_mode or VEC(i);
+            end if;
+        end loop;
+        return v_req_mode;
+    end function;
+    ------------------------------------------------------------------------------
+    -- 
+    ------------------------------------------------------------------------------
+    function  SELECT_REQ_BUF_PTR(SEL: std_logic_vector; VEC: REQ_BUF_PTR_VECTOR) return std_logic_vector is
+        variable v_req_buf_ptr :  std_logic_vector(BUF_DEPTH-1 downto 0);
+    begin
+        v_req_buf_ptr := (others => '0');
+        for i in VEC'range loop
+            if (SEL(i) = '1') then
+                v_req_buf_ptr := v_req_buf_ptr or VEC(i);
+            end if;
+        end loop;
+        return v_req_buf_ptr;
+    end function;
 begin
     -------------------------------------------------------------------------------
     --
@@ -367,101 +461,244 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    READER:  Merge_Reader                                -- 
-        generic map (                                    --
-            WAYS                => WAYS                , -- 
-            WORDS               => WORDS               , -- 
-            WORD_BITS           => WORD_BITS           , --   
-            REG_PARAM           => MRG_REG_PARAM       , --
-            REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
-            REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
-            BUF_DATA_BITS       => BUF_DATA_BITS       , --   
-            BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => AXI_XFER_SIZE       , --   
-            ARB_NODE_NUM        => ARB_NODE_NUM        , --   
-            ARB_PIPELINE        => ARB_PIPELINE          --   
-        )                                                -- 
-        port map (                                       -- 
+    REQ: block
+        constant  ARB_NULL          :  std_logic_vector  (WAYS-1 downto 0) := (others => '0');
+        signal    arb_request       :  std_logic_vector  (0 to WAYS-1);
+        signal    arb_grant         :  std_logic_vector  (0 to WAYS-1);
+        signal    arb_valid         :  std_logic;
+        signal    arb_shift         :  std_logic;
+        type      STATE_TYPE        is (IDLE_STATE, REQ_STATE, ACK_STATE);
+        signal    curr_state        :  STATE_TYPE;
+        signal    arb_sel           :  std_logic_vector  (WAYS-1 downto 0);
+        signal    curr_val          :  std_logic_vector  (WAYS-1 downto 0);
+        function  REVERSE_VECTOR(A: in std_logic_vector) return std_logic_vector is
+            variable  reserved_a :  std_logic_vector(A'reverse_range);
+        begin
+            for i in reserved_a'range loop
+                reserved_a(i) := A(i);
+            end loop;
+            return reserved_a;
+        end function;
+    begin
         ---------------------------------------------------------------------------
-        -- Clock/Reset Signals.
+        --
         ---------------------------------------------------------------------------
-            CLK                 => CLK                 , --  In  :
-            RST                 => RST                 , --  In  :
-            CLR                 => CLR                 , --  In  :
+        ARB: QUEUE_TREE_ARBITER                  -- 
+            generic map (                        -- 
+                MIN_NUM     => 0              ,  -- 
+                MAX_NUM     => WAYS-1         , -- 
+                NODE_NUM    => ARB_NODE_NUM   ,  --
+                PIPELINE    => ARB_PIPELINE      -- 
+            )                                    -- 
+            port map (                           -- 
+                CLK         => CLK            ,  -- In  :
+                RST         => RST            ,  -- In  :
+                CLR         => CLR            ,  -- In  :
+                REQUEST     => arb_request    ,  -- In  :
+                GRANT       => arb_grant      ,  -- Out :
+                VALID       => arb_valid      ,  -- Out :
+                SHIFT       => arb_shift         -- In  :
+            );                                   --
+        arb_request <= REVERSE_VECTOR(i_req_valid);
+        arb_sel     <= REVERSE_VECTOR(arb_grant);
+        arb_shift   <= '1' when ((ack_valid and curr_val) /= ARB_NULL) else '0';
         ---------------------------------------------------------------------------
-        -- Register Interface
+        --
         ---------------------------------------------------------------------------
-            REG_L               => MRG_REG_L           , --  In  :
-            REG_D               => MRG_REG_D           , --  In  :
-            REG_Q               => MRG_REG_Q           , --  Out :
+        process (CLK, RST) begin
+            if (RST = '1') then
+                    curr_state  <= IDLE_STATE;
+                    curr_val    <= (others => '0');
+                    req_addr    <= (others => '0');
+                    req_size    <= (others => '0');
+                    req_buf_ptr <= (others => '0');
+                    req_mode    <= (others => '0');
+                    req_first   <= '0';
+                    req_last    <= '0';
+                    req_none    <= '0';
+                    flow_stop   <= '0';
+            elsif (CLK'event and CLK = '1') then
+                if (CLR = '1') then
+                    curr_state  <= IDLE_STATE;
+                    curr_val    <= (others => '0');
+                    req_addr    <= (others => '0');
+                    req_size    <= (others => '0');
+                    req_buf_ptr <= (others => '0');
+                    req_mode    <= (others => '0');
+                    req_first   <= '0';
+                    req_last    <= '0';
+                    req_none    <= '0';
+                    flow_stop   <= '0';
+                else
+                    case curr_state is
+                        when IDLE_STATE =>
+                            if (arb_valid = '1') then
+                                curr_state <= REQ_STATE;
+                                curr_val   <= arb_sel;
+                            else
+                                curr_state <= IDLE_STATE;
+                                curr_val   <= (others => '0');
+                            end if;
+                            req_addr    <= SELECT_REQ_ADDR(   arb_sel, i_req_addr   );
+                            req_size    <= SELECT_REQ_SIZE(   arb_sel, i_req_size   );
+                            req_buf_ptr <= SELECT_REQ_BUF_PTR(arb_sel, i_req_buf_ptr);
+                            req_mode    <= SELECT_REQ_MODE(   arb_sel, i_req_mode   );
+                            req_first   <= SELECT_REQ_FLAG(   arb_sel, i_req_first  );
+                            req_last    <= SELECT_REQ_FLAG(   arb_sel, i_req_last   );
+                            req_none    <= SELECT_REQ_FLAG(   arb_sel, i_req_none   );
+                            flow_stop   <= SELECT_REQ_FLAG(   arb_sel, i_flow_stop  );
+                        when REQ_STATE =>
+                            if    (REQ_READY = '0') then
+                                curr_state <= REQ_STATE;
+                            elsif (arb_shift = '1') then
+                                curr_state <= IDLE_STATE;
+                                curr_val   <= (others => '0');
+                                flow_stop  <= '0';
+                            else
+                                curr_state <= ACK_STATE;
+                            end if;
+                        when ACK_STATE =>
+                            if (arb_shift = '1') then
+                                curr_state <= IDLE_STATE;
+                                curr_val   <= (others => '0');
+                                flow_stop  <= '0';
+                            else
+                                curr_state <= ACK_STATE;
+                            end if;
+                        when others => 
+                                curr_state <= IDLE_STATE;
+                                curr_val   <= (others => '0');
+                                flow_stop  <= '0';
+                    end case;
+                end if;
+            end if;
+        end process;
+        req_valid   <= curr_val;
+        flow_pause  <= '0';
+        flow_last   <= '0';
+        flow_size   <= std_logic_vector(to_unsigned(MAX_XFER_BYTES, FLOW_SIZE'length));
+        i_req_ready <= (others => '1');
+    end block;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    MRG: for channel in 0 to WAYS-1 generate 
+        signal    reg_load          :  std_logic_vector(MRG_REG_PARAM.BITS-1 downto 0);
+        signal    reg_wbit          :  std_logic_vector(MRG_REG_PARAM.BITS-1 downto 0);
+        signal    reg_rbit          :  std_logic_vector(MRG_REG_PARAM.BITS-1 downto 0);
+        signal    mrg_in_data       :  std_logic_vector(WORDS*WORD_BITS   -1 downto 0);
+        signal    mrg_in_none       :  std_logic_vector(WORDS             -1 downto 0);
+    begin
         ---------------------------------------------------------------------------
-        -- Transaction Command Request Signals.
+        --
         ---------------------------------------------------------------------------
-            REQ_VALID           => req_valid           , --  Out :
-            REQ_ADDR            => req_addr            , --  Out :
-            REQ_SIZE            => req_size            , --  Out :
-            REQ_BUF_PTR         => req_buf_ptr         , --  Out :
-            REQ_MODE            => req_mode            , --  Out :
-            REQ_FIRST           => req_first           , --  Out :
-            REQ_LAST            => req_last            , --  Out :
-            REQ_NONE            => req_none            , --  Out :
-            REQ_READY           => req_ready           , --  In  :
+        reg_load <= MRG_REG_L((channel+1)*MRG_REG_PARAM.BITS-1 downto channel*MRG_REG_PARAM.BITS);
+        reg_wbit <= MRG_REG_D((channel+1)*MRG_REG_PARAM.BITS-1 downto channel*MRG_REG_PARAM.BITS);
+        MRG_REG_Q((channel+1)*MRG_REG_PARAM.BITS-1 downto channel*MRG_REG_PARAM.BITS) <= reg_rbit;
         ---------------------------------------------------------------------------
-        -- Transaction Command Acknowledge Signals.
+        --
         ---------------------------------------------------------------------------
-            ACK_VALID           => ack_valid           , --  In  :
-            ACK_SIZE            => ack_size            , --  In  :
-            ACK_ERROR           => ack_error           , --  In  :
-            ACK_NEXT            => ack_next            , --  In  :
-            ACK_LAST            => ack_last            , --  In  :
-            ACK_STOP            => ack_stop            , --  In  :
-            ACK_NONE            => ack_none            , --  In  :
+        READER:  Merge_Reader                                    -- 
+            generic map (                                        --
+                CHANNEL             => channel                 , -- 
+                WORDS               => WORDS                   , -- 
+                WORD_BITS           => WORD_BITS               , --   
+                REG_PARAM           => MRG_REG_PARAM           , --
+                REQ_ADDR_BITS       => AXI_ADDR_WIDTH          , --   
+                REQ_SIZE_BITS       => REQ_SIZE_BITS           , --   
+                BUF_DATA_BITS       => BUF_DATA_BITS           , --   
+                BUF_DEPTH           => BUF_DEPTH               , --   
+                MAX_XFER_SIZE       => AXI_XFER_SIZE           , --   
+                ARB_NODE_NUM        => ARB_NODE_NUM            , --   
+                ARB_PIPELINE        => ARB_PIPELINE              --   
+            )                                                    -- 
+            port map (                                           -- 
+            -----------------------------------------------------------------------
+            -- Clock/Reset Signals.
+            -----------------------------------------------------------------------
+                CLK                 => CLK                     , --  In  :
+                RST                 => RST                     , --  In  :
+                CLR                 => CLR                     , --  In  :
+            -----------------------------------------------------------------------
+            -- Register Interface
+            -----------------------------------------------------------------------
+                REG_L               => reg_load                , --  In  :
+                REG_D               => reg_wbit                , --  In  :
+                REG_Q               => reg_rbit                , --  Out :
+            -----------------------------------------------------------------------
+            -- Transaction Command Request Signals.
+            -----------------------------------------------------------------------
+                REQ_VALID           => i_req_valid   (channel) , --  Out :
+                REQ_ADDR            => i_req_addr    (channel) , --  Out :
+                REQ_SIZE            => i_req_size    (channel) , --  Out :
+                REQ_BUF_PTR         => i_req_buf_ptr (channel) , --  Out :
+                REQ_MODE            => i_req_mode    (channel) , --  Out :
+                REQ_FIRST           => i_req_first   (channel) , --  Out :
+                REQ_LAST            => i_req_last    (channel) , --  Out :
+                REQ_NONE            => i_req_none    (channel) , --  Out :
+                REQ_READY           => i_req_ready   (channel) , --  In  :
+            -----------------------------------------------------------------------
+            -- Transaction Command Acknowledge Signals.
+            -----------------------------------------------------------------------
+                ACK_VALID           => ack_valid     (channel) , --  In  :
+                ACK_SIZE            => ack_size                , --  In  :
+                ACK_ERROR           => ack_error               , --  In  :
+                ACK_NEXT            => ack_next                , --  In  :
+                ACK_LAST            => ack_last                , --  In  :
+                ACK_STOP            => ack_stop                , --  In  :
+                ACK_NONE            => ack_none                , --  In  :
+            -----------------------------------------------------------------------
+            -- Transfer Status Signals.
+            -----------------------------------------------------------------------
+                XFER_BUSY           => xfer_busy     (channel) , --  In  :
+                XFER_DONE           => xfer_done     (channel) , --  In  :
+                XFER_ERROR          => xfer_error    (channel) , --  In  :
+            -----------------------------------------------------------------------
+            -- Intake Flow Control Signals.
+            -----------------------------------------------------------------------
+                FLOW_READY          => open                    , --  Out :
+                FLOW_PAUSE          => open                    , --  Out :
+                FLOW_STOP           => i_flow_stop   (channel) , --  Out :
+                FLOW_LAST           => open                    , --  Out :
+                FLOW_SIZE           => open                    , --  Out :
+                PUSH_FIN_VALID      => push_fin_valid(channel) , --  In  :
+                PUSH_FIN_LAST       => push_fin_last           , --  In  :
+                PUSH_FIN_ERROR      => push_fin_error          , --  In  :
+                PUSH_FIN_SIZE       => push_fin_size           , --  In  :
+                PUSH_BUF_RESET      => push_buf_reset(channel) , --  In  :
+                PUSH_BUF_VALID      => push_buf_valid(channel) , --  In  :
+                PUSH_BUF_LAST       => push_buf_last           , --  In  :
+                PUSH_BUF_ERROR      => push_buf_error          , --  In  :
+                PUSH_BUF_SIZE       => push_buf_size           , --  In  :
+                PUSH_BUF_READY      => push_buf_ready(channel) , --  Out :
+            -----------------------------------------------------------------------
+            -- Buffer Interface Signals.
+            -----------------------------------------------------------------------
+                BUF_WEN             => buf_wen       (channel) , --  In  :
+                BUF_BEN             => buf_ben                 , --  In  :
+                BUF_DATA            => buf_wdata               , --  In  :
+                BUF_PTR             => buf_wptr                , --  In  :
+            -----------------------------------------------------------------------
+            -- Merge Outlet Signals.
+            -----------------------------------------------------------------------
+                MRG_DATA            => mrg_in_data             , --  Out :
+                MRG_NONE            => mrg_in_none             , --  Out :
+                MRG_EBLK            => MRG_EBLK      (channel) , --  Out :
+                MRG_LAST            => MRG_LAST      (channel) , --  Out :
+                MRG_VALID           => MRG_VALID     (channel) , --  Out :
+                MRG_READY           => MRG_READY     (channel) , --  In  :
+                MRG_LEVEL           => MRG_LEVEL     (channel) , --  In  :
+            -----------------------------------------------------------------------
+            -- Status Output.
+            -----------------------------------------------------------------------
+                BUSY                => BUSY          (channel) , --  Out :
+                DONE                => DONE          (channel)   --  Out :
+            );
         ---------------------------------------------------------------------------
-        -- Transfer Status Signals.
+        --
         ---------------------------------------------------------------------------
-            XFER_BUSY           => xfer_busy           , --  In  :
-            XFER_DONE           => xfer_done           , --  In  :
-            XFER_ERROR          => xfer_error          , --  In  :
-        ---------------------------------------------------------------------------
-        -- Intake Flow Control Signals.
-        ---------------------------------------------------------------------------
-            FLOW_READY          => open                , --  Out :
-            FLOW_PAUSE          => flow_pause          , --  Out :
-            FLOW_STOP           => flow_stop           , --  Out :
-            FLOW_LAST           => flow_last           , --  Out :
-            FLOW_SIZE           => flow_size           , --  Out :
-            PUSH_FIN_VALID      => push_fin_valid      , --  In  :
-            PUSH_FIN_LAST       => push_fin_last       , --  In  :
-            PUSH_FIN_ERROR      => push_fin_error      , --  In  :
-            PUSH_FIN_SIZE       => push_fin_size       , --  In  :
-            PUSH_BUF_RESET      => push_buf_reset      , --  In  :
-            PUSH_BUF_VALID      => push_buf_valid      , --  In  :
-            PUSH_BUF_LAST       => push_buf_last       , --  In  :
-            PUSH_BUF_ERROR      => push_buf_error      , --  In  :
-            PUSH_BUF_SIZE       => push_buf_size       , --  In  :
-            PUSH_BUF_READY      => push_buf_ready      , --  Out :
-        ---------------------------------------------------------------------------
-        -- Buffer Interface Signals.
-        ---------------------------------------------------------------------------
-            BUF_WEN             => buf_wen             , --  In  :
-            BUF_BEN             => buf_ben             , --  In  :
-            BUF_DATA            => buf_wdata           , --  In  :
-            BUF_PTR             => buf_wptr            , --  In  :
-        ---------------------------------------------------------------------------
-        -- Merge Outlet Signals.
-        ---------------------------------------------------------------------------
-            MRG_DATA            => MRG_DATA            , --  Out :
-            MRG_NONE            => MRG_NONE            , --  Out :
-            MRG_EBLK            => MRG_EBLK            , --  Out :
-            MRG_LAST            => MRG_LAST            , --  Out :
-            MRG_VALID           => MRG_VALID           , --  Out :
-            MRG_READY           => MRG_READY           , --  In  :
-            MRG_LEVEL           => MRG_LEVEL           , --  In  :
-        ---------------------------------------------------------------------------
-        -- Status Output.
-        ---------------------------------------------------------------------------
-            BUSY                => BUSY                , --  Out :
-            DONE                => DONE                  --  Out :
-        );
+        MRG_DATA((channel+1)*(WORDS*WORD_BITS)-1 downto channel*(WORDS*WORD_BITS)) <= mrg_in_data;
+        MRG_NONE((channel+1)*(WORDS          )-1 downto channel*(WORDS          )) <= mrg_in_none;
+    end generate;
 end RTL;
 
