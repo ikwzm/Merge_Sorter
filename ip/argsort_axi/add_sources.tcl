@@ -42,9 +42,6 @@ add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/register_access_s
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/axi4/axi4_register_interface.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/register_access_adapter.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/queue_arbiter_one_hot_arch.vhd
-add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/sdpram_altera_auto_select.vhd
-add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/sdpram_model.vhd
-add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/sdpram_xilinx_auto_select.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/sdpram_xilinx_ultrascale_auto_select.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/sorting_network.vhd
