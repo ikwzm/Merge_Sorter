@@ -11,7 +11,7 @@ ENTITY_FILES = argsort_axi_interface.vhd \
 argsort_axi_components.vhd : ${ENTITY_FILES}
 	../../../../../PipeWork/tools/MakeComponentPackage.rb --verbose \
             --brief   'ArgSorter Component Library Description Package' \
-            --version 1.2.0 \
+            --version 1.3.0 \
             --author  'Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>' \
             --library Merge_Sorter \
             --package ArgSort_AXI_Components \
