@@ -759,23 +759,30 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 1 11]{Type=Txt;
 }
-Char[3 0 1 11 0]{CntInfo='';
+Char[3 0 1 11 0]{CntInfo='・ https://github.com/ikwzm/ArgSort-Kv260';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
 }
 Basic[3 0 1 12]{Type=Txt;
 }
-Char[3 0 1 12 0]{CntInfo='ここでは VHDL でどのように実装したかを、いくつかにわけて紹介します。';
+Char[3 0 1 12 0]{CntInfo='';
 }
 Basic[3 0 1 13]{Type=Txt;
 }
-Char[3 0 1 13 0]{CntInfo='';
+Char[3 0 1 13 0]{CntInfo='ここでは VHDL でどのように実装したかを、いくつかにわけて紹介します。';
 }
 Basic[3 0 1 14]{Type=Txt;
 }
-Char[3 0 1 14 0]{CntInfo='なお、あくまでもこれらの基本的なアイデアは 「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化」を元にしたものです。これらのアイデアを記事として公開してくださった方々に感謝します。';
+Char[3 0 1 14 0]{CntInfo='';
 }
 Basic[3 0 1 15]{Type=Txt;
 }
-Char[3 0 1 15 0]{CntInfo='';
+Char[3 0 1 15 0]{CntInfo='なお、あくまでもこれらの基本的なアイデアは 「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化」を元にしたものです。これらのアイデアを記事として公開してくださった方々に感謝します。';
+}
+Basic[3 0 1 16]{Type=Txt;
+}
+Char[3 0 1 16 0]{CntInfo='';
 }
 Comp[3 0 2]{Type=NoSeg;
 }
@@ -881,14 +888,21 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 2 13]{Type=Txt;
 }
-Char[3 0 2 13 0]{CntInfo='13. ArgSort (執筆するかも？) ';
+Char[3 0 2 13 0]{CntInfo='13. [ArgSort]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
 Basic[3 0 2 14]{Type=Txt;
 }
-Char[3 0 2 14 0]{CntInfo='14. Ultra96-V2 への実装結果 (執筆するかも？)';
+Char[3 0 2 14 0]{CntInfo='14. [ArgSort-Ultra96]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 2 15]{Type=Txt;
+}
+Char[3 0 2 15 0]{CntInfo='15. [ArgSort-Kv260]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
@@ -1005,7 +1019,21 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 3 2 3]{Type=Txt;
 }
-Char[3 0 3 2 3 0]{CntInfo='9. https://github.com/ikwzm/ZynqMP-FPGA-Linux';
+Char[3 0 3 2 3 0]{CntInfo='9. https://github.com/ikwzm/ArgSort-Kv260';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 3 2 4]{Type=Txt;
+}
+Char[3 0 3 2 4 0]{CntInfo='10. https://github.com/ikwzm/ZynqMP-FPGA-Linux';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 3 2 5]{Type=Txt;
+}
+Char[3 0 3 2 5 0]{CntInfo='11. https://github.com/ikwzm/ZynqMP-FPGA-Ubuntu20.04';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };

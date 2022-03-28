@@ -21,7 +21,6 @@
 マルチワードソートノードは、同時に処理するワードを複数ワードにすることで、単位時間あたりに出力するワード数を増やします。その結果、マージソートをワード数倍に高速化することが出来ます。
 
 マルチワードノードソートは、[「はじめに」]で紹介した以下の ACRi の記事がとても詳しいです。私はその記事に刺激を受けて VHDL で実装してみたに過ぎません。詳しい内容はそちらを参照してください。
-
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」] 
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」] 
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」] 
@@ -496,7 +495,6 @@ end RTL;
 
 ## 参照
 
-
 * 目次: [「はじめに」]
 * 次回: [「マージソート ツリー」]
 * 前回: [「シングルワード マージソート ノード」]
@@ -518,6 +516,9 @@ https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter
 [「端数ワード処理」]: ./10_merge_sort_core_1.md "「VHDL で書くマージソーター(端数ワード処理)」"
 [「ストリーム入力」]: ./11_merge_sort_core_2.md "「VHDL で書くマージソーター(ストリーム入力)」"
 [「ストリームフィードバック」]: ./12_merge_sort_core_3.md "「VHDL で書くマージソーター(ストリームフィードバック)」"
+[「ArgSort IP」]: ./13_argsort.md "「VHDL で書くマージソーター(ArgSort IP)」"
+[「ArgSort-Ultra96」]: https://github.com/ikwzm/ArgSort-Ultra96/blob/1.2.1/doc/ja/argsort-ultra96.md "「VHDL で書くマージソーター(ArgSort-Ultra96)」"
+[「ArgSort-Kv260」]: https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md "「VHDL で書くマージソーター(ArgSort-Kv260)」"
 [ACRi]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
 [アダプティブコンピューティング研究推進体(ACRi)]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
 [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
