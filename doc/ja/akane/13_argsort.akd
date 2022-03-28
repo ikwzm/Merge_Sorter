@@ -16578,7 +16578,7 @@ Align=Start;
 }
 Basic[3 0 8 2]{Type=Txt;
 }
-Char[3 0 8 2 0]{CntInfo='・次回: 「ArgSort-Ultra96」(執筆するかも？)';
+Char[3 0 8 2 0]{CntInfo='・次回: [「ArgSort-Ultra96」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
