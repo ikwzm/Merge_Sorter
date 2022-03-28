@@ -9,7 +9,6 @@
 別記事 [「はじめに」] を参照してください。
 
 前々回の記事で紹介した[「マージソート ツリー」]だけでも基本的なソートは行えますが、そのままでは使い勝手がよくありません。そこで[「マージソート ツリー」]の周りに幾つかの回路を追加してもう少し使い勝手を良くしたマージソートコアを作りました。マージソートコアは具体的には次の機能を[「マージソート ツリー」]に追加します。
-
   * [「端数ワード処理」]	
   * 「ストリーム入力」(この記事)
   * [「ストリームフィードバック」]
@@ -40,7 +39,6 @@ Fig.1 マージソートコアの構成
 
 
 ストリーム入力の目的は次の二つです。
-
   * 最初のパスの転送効率アップ
   * マルチワード マージソートの際のソーティングネットワークの削減
 
@@ -149,7 +147,6 @@ Fig.7 マルチワードマージソートの最初のパス(ストリーム入�
 
 ## 参照
 
-
 * 目次: [「はじめに」]
 * 次回: [「ストリームフィードバック」]
 * 前回: [「端数ワード処理」]
@@ -172,6 +169,9 @@ https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/core_stream_
 [「端数ワード処理」]: ./10_merge_sort_core_1.md "「VHDL で書くマージソーター(端数ワード処理)」"
 [「ストリーム入力」]: ./11_merge_sort_core_2.md "「VHDL で書くマージソーター(ストリーム入力)」"
 [「ストリームフィードバック」]: ./12_merge_sort_core_3.md "「VHDL で書くマージソーター(ストリームフィードバック)」"
+[「ArgSort IP」]: ./13_argsort.md "「VHDL で書くマージソーター(ArgSort IP)」"
+[「ArgSort-Ultra96」]: https://github.com/ikwzm/ArgSort-Ultra96/blob/1.2.1/doc/ja/argsort-ultra96.md "「VHDL で書くマージソーター(ArgSort-Ultra96)」"
+[「ArgSort-Kv260」]: https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md "「VHDL で書くマージソーター(ArgSort-Kv260)」"
 [ACRi]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
 [アダプティブコンピューティング研究推進体(ACRi)]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
 [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"

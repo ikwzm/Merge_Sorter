@@ -1,10 +1,17 @@
 ---
-input_file  : 05_bitonic_sorter.akd
+input_file  : 13_argsort.akd
 
-output_file : ../05_bitonic_sorter.md
+output_file : ../13_argsort.md
 
 image_url :
-  "Fig.1 バイトニックソートのソーティングネットワーク例" : "image/05_bitonic_sorter_1.jpg"
+  "Fig.1 マージソートコアの構成"         : "image/13_argsort_1.jpg"
+  "Fig.2 ArgSort IPの構成"               : "image/13_argsort_2.jpg"
+  "Fig.3 ArgSort IPの動作"               : "image/13_argsort_3.jpg"
+  "Fig.4 ArgSort IP のプレビュー"        : "image/13_argsort_4.jpg"
+  "Fig.5 ArgSort IP CORE Parameters"     : "image/13_argsort_5.jpg"
+  "Fig.6 ArgSort IP STM-AXI Parameters"  : "image/13_argsort_6.jpg"
+  "Fig.7 ArgSort IP MRG-AXI Parameters"  : "image/13_argsort_7.jpg"
+  "Fig.8 ArgSort IP CSR-AXI Parameters"  : "image/13_argsort_8.jpg"
 
 link_list :
   - id   : "「はじめに」"
@@ -52,7 +59,3 @@ link_list :
   - id   : "「ArgSort-Kv260」"
     title: "「VHDL で書くマージソーター(ArgSort-Kv260)」"
     url  : "https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md"
-  - id   : "Wikipedia/Bitonic_sorter"
-    title: "Wikipedia/Bitonic_sorter"
-    url  : "https://ja.wikipedia.org/wiki/%E3%83%90%E3%82%A4%E3%83%88%E3%83%8B%E3%83%83%E3%82%AF%E3%82%BD%E3%83%BC%E3%83%88"
----

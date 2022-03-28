@@ -10,7 +10,8 @@ TARGET            = ["01_introduction.md"          ,
                      "09_merge_sort_tree.md"       ,
                      "10_merge_sort_core_1.md"     ,
                      "11_merge_sort_core_2.md"     ,
-                     "12_merge_sort_core_3.md"     ].map{|name| File.join(TARGET_DIR, name)}
+                     "12_merge_sort_core_3.md"     ,
+                     "13_argsort.md"               ].map{|name| File.join(TARGET_DIR, name)}
 
 AKANE_TO_MARKDOWN = File.join("..", "..", "..", "..", "..", "src", "akane_reader", "akane-to-markdown.rb")
 
