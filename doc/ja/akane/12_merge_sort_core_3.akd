@@ -9366,7 +9366,7 @@ Align=Start;
 }
 Basic[3 0 5 2]{Type=Txt;
 }
-Char[3 0 5 2 0]{CntInfo='・次回: 「ArgSort」(執筆するかも？)';
+Char[3 0 5 2 0]{CntInfo='・次回: [「ArgSort IP」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
