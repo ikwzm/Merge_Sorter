@@ -33,6 +33,10 @@ define TEST_UNIT_NAME
 $(subst test_,Bitonic_Sorter_Test_Bench_,$(1))
 endef
 
+define TEST_SCENARIO_NAME
+$(addsuffix .snr,$(subst _q0,,$(subst _q1,,$(subst _q2,,$(1)))))
+endef
+
 define NVC_ANALIZE_FILE
 $(addprefix WORK/WORK.,$(call TEST_UNIT_NAME, $(shell echo $(call TEST_UNIT_NAME,$(1)) | tr a-z A-Z)))
 endef
@@ -45,8 +49,9 @@ define NVC_RUN
 $(1): $(call NVC_EXECUTE_FILE,$(1)) $(2)
 	$(NVC) $(NVCFLAGS) --work=WORK -r $(call TEST_UNIT_NAME,$(1))
 
-$(2) : $(SCENARIO_PATH)/$(2)
-	$(COPY) $< $@
+
+$(2): $(SCENARIO_PATH)/$(2)
+	$(COPY) $(SCENARIO_PATH)/$(2) $(2)
 endef
 
 define NVC_ELAB
@@ -60,5 +65,5 @@ $(call NVC_ANALIZE_FILE, $(TEST_BENCH)) : analyze_libs.sh
 analyze_libs : $(call NVC_ANALIZE_FILE, $(TEST_BENCH))
 
 $(foreach TB, $(TEST_BENCH), $(eval $(call NVC_ELAB, $(TB))))
-$(foreach TB, $(TEST_BENCH), $(eval $(call NVC_RUN , $(TB), $(addsuffix .snr,$(TB)))))
+$(foreach TB, $(TEST_BENCH), $(eval $(call NVC_RUN , $(TB),$(call TEST_SCENARIO_NAME, $(TB)))))
 
