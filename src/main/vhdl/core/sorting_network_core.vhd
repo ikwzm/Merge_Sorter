@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    sorting_network_core.vhd
 --!     @brief   Sorting Network Core Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 2.0.0
+--!     @date    2022/10/19
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020 Ichiro Kawazome
+--      Copyright (C) 2020-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -123,42 +123,58 @@ begin
         --
         ---------------------------------------------------------------------------
         NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
-            constant  STEP           :  integer := Stage_Param.Comparator_List(i).STEP;
-            constant  UP             :  boolean := Stage_Param.Comparator_List(i).UP;
+            constant  OP   :  Sorting_Network.Operator_Type := Stage_Param.Operator_List(i);
+            constant  STEP :  integer := OP.STEP;
         begin
-            XCHG: if STEP > 0 generate
-                signal    comp_sel_a     :  std_logic;
-                signal    comp_sel_b     :  std_logic;
-                signal    swap           :  boolean;
-            begin
-                -------------------------------------------------------------------
-                --
-                -------------------------------------------------------------------
-                COMP: Word_Compare                                    --
-                    generic map(                                      --
-                        WORD_PARAM  => WORD_PARAM                   , -- 
-                        SORT_ORDER  => NETWORK_PARAM.Sort_Order       -- 
-                    )                                                 -- 
-                    port map (                                        --
-                        CLK         => CLK                          , -- In  :
-                        RST         => RST                          , -- In  :
-                        CLR         => CLR                          , -- In  :
-                        A_WORD      => stage_word(stage-1)(i     )  , -- In  :
-                        B_WORD      => stage_word(stage-1)(i+STEP)  , -- In  :
-                        VALID       => '1'                          , -- In  :
-                        READY       => open                         , -- Out :
-                        SEL_A       => comp_sel_a                   , -- Out :
-                        SEL_B       => comp_sel_b                     -- Out :
-                    );                                                --
-                swap <= (comp_sel_b = '1' and UP = TRUE ) or
-                        (comp_sel_a = '1' and UP = FALSE);
-                sorted_word(i     ) <= stage_word(stage-1)(i+STEP) when (swap) else
-                                       stage_word(stage-1)(i     );
-                sorted_word(i+STEP) <= stage_word(stage-1)(i     ) when (swap) else
-                                       stage_word(stage-1)(i+STEP);
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            OP_COMP: if Sorting_Network.Operator_Is_Comp(OP) generate
+                constant  UP   :  boolean := Sorting_Network.Operator_Is_Comp_Up(OP);
+            begin 
+                COMP: if (STEP > 0) generate
+                    signal    swap      :  boolean;
+                    signal    sel_a     :  std_logic;
+                    signal    sel_b     :  std_logic;
+                begin
+                    U: Word_Compare                                      --
+                        generic map(                                     --
+                            WORD_PARAM  => WORD_PARAM                  , -- 
+                            SORT_ORDER  => NETWORK_PARAM.Sort_Order      -- 
+                        )                                                -- 
+                        port map (                                       --
+                            CLK         => CLK                         , -- In  :
+                            RST         => RST                         , -- In  :
+                            CLR         => CLR                         , -- In  :
+                            A_WORD      => stage_word(stage-1)(i     ) , -- In  :
+                            B_WORD      => stage_word(stage-1)(i+STEP) , -- In  :
+                            VALID       => '1'                         , -- In  :
+                            READY       => open                        , -- Out :
+                            SEL_A       => sel_a                       , -- Out :
+                            SEL_B       => sel_b                         -- Out :
+                        );                                               --
+                    swap <= (sel_b = '1' and UP = TRUE ) or
+                            (sel_a = '1' and UP = FALSE);
+                    sorted_word(i     ) <= stage_word(stage-1)(i+STEP) when (swap) else
+                                           stage_word(stage-1)(i     );
+                    sorted_word(i+STEP) <= stage_word(stage-1)(i     ) when (swap) else
+                                           stage_word(stage-1)(i+STEP);
+                end generate;
+                PASS: if (STEP = 0) generate
+                    sorted_word(i     ) <= stage_word(stage-1)(i     );
+                end generate;
             end generate;
-            PASS: if STEP = 0 generate
-                sorted_word(i     ) <= stage_word(stage-1)(i     );
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            OP_PASS: if Sorting_Network.Operator_Is_Pass(OP) generate
+                    sorted_word(i     ) <= stage_word(stage-1)(i+STEP);
+            end generate;
+            -----------------------------------------------------------------------
+            --
+            -----------------------------------------------------------------------
+            OP_NONE: if Sorting_Network.Operator_Is_None(OP) generate
+                    sorted_word(i     ) <= stage_word(stage-1)(i     );
             end generate;
         end generate;
         ---------------------------------------------------------------------------
