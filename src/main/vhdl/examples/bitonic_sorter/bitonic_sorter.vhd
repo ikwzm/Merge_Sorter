@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    bitonic_sorter.vhd
 --!     @brief   Bitonic Sorter
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.0
+--!     @date    2022/10/22
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020 Ichiro Kawazome
+--      Copyright (C) 2020-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Bitonic_Sorting_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of Bitonic_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -97,7 +98,7 @@ begin
 
     CORE: Sorting_Network_Core
         generic map (
-            NETWORK_PARAM   => Sorting_Network.New_Bitonic_Sorter_Network(
+            NETWORK_PARAM   => Bitonic_Sorting_Network.New_Sorter_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,

@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.0
+--!     @date    2022/10/22
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -85,6 +85,7 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_Sorting_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 use     Merge_Sorter.Core_Components.Word_Reducer;
 architecture RTL of Core_Stream_Intake is
@@ -235,7 +236,7 @@ begin
     -------------------------------------------------------------------------------
     MULTI_WORD: if (MRG_WORDS > 1) generate
         constant  SORT_PARAM        :  Sorting_Network.Param_Type
-                                    := Sorting_Network.New_OddEven_Sorter_Network(
+                                    := OddEven_Sorting_Network.New_Sorter_Network(
                                            LO     => 0           ,
                                            HI     => MRG_WORDS-1 ,
                                            ORDER  => SORT_ORDER  ,

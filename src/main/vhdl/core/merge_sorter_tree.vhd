@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_tree.vhd
 --!     @brief   Merge Sorter Single Word Tree Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.0
+--!     @date    2022/10/22
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
