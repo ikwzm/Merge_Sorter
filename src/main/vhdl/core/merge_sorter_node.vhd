@@ -267,13 +267,13 @@ begin
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
                                            ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           QUEUE  => Sorting_Network.Constant_Queue_Size(1)
                                        );
             param.FINAL_MERGE       := OddEven_Sorting_Network.New_Merger_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
                                            ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           QUEUE  => Sorting_Network.Constant_Queue_Size(1)
                                        );
             param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
             return param;

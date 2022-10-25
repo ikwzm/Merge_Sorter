@@ -2,7 +2,7 @@
 --!     @file    bitonic_sorting_network.vhd
 --!     @brief   Bitonic Sorting Network Package :
 --!     @version 1.4.0
---!     @date    2022/10/22
+--!     @date    2022/10/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -43,11 +43,37 @@ package Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type;
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type;
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
 end Bitonic_Sorting_Network;
 -----------------------------------------------------------------------------------
 --
@@ -98,43 +124,89 @@ package body Bitonic_Sorting_Network is
     ) is
         variable  dist        :        integer;
         variable  first       :        Sorting_Network.Param_Type;
+        variable  first_lo    :        integer;
+        variable  first_hi    :        integer;
         variable  second      :        Sorting_Network.Param_Type;
+        variable  second_lo   :        integer;
+        variable  second_hi   :        integer;
         variable  next_stage  :        integer;
     begin
         if (HI - LO > 0) then
-            dist   := ((HI-LO+1)+1)/2;
-            first  := NETWORK;
-            second := NETWORK;
-            bitonic_sort (first  , START_STAGE, LO        , LO + dist-1, TRUE );
-            bitonic_sort (second , START_STAGE, LO + dist , HI         , FALSE);
-            Sorting_Network.Merge_Network_Stage_List(NETWORK, first , START_STAGE);
-            Sorting_Network.Merge_Network_Stage_List(NETWORK, second, START_STAGE);
+            dist      := ((HI-LO+1)+1)/2;
+            first_lo  := LO;
+            first_hi  := LO + dist - 1;
+            second_lo := LO + dist;
+            second_hi := HI;
+            first     := Sorting_Network.New_Network(first_lo ,first_hi ,START_STAGE,NETWORK.Sort_Order);
+            second    := Sorting_Network.New_Network(second_lo,second_hi,START_STAGE,NETWORK.Sort_Order);
+            bitonic_sort (first  , START_STAGE, first_lo,  first_hi , TRUE );
+            bitonic_sort (second , START_STAGE, second_lo, second_hi, FALSE);
+            Sorting_Network.Merge_Network(NETWORK, first );
+            Sorting_Network.Merge_Network(NETWORK, second);
             next_stage := NETWORK.Stage_Hi + 1;
-            bitonic_merge(NETWORK, next_stage , LO        , HI         , UP   );
+            bitonic_merge(NETWORK, next_stage , LO       , HI       , UP   );
         end if;
     end procedure;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_sort(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Sorting_Network.Add_Queue_Params(network, QUEUE);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Sorter_Network(LO, HI, ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Sorting_Network.Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Merger_Network(LO, HI, ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
 end Bitonic_Sorting_Network;

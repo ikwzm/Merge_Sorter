@@ -240,7 +240,7 @@ begin
                                            LO     => 0           ,
                                            HI     => MRG_WORDS-1 ,
                                            ORDER  => SORT_ORDER  ,
-                                           QUEUE  => 1
+                                           QUEUE  => Sorting_Network.Constant_Queue_Size(1)
                                        );
         signal    word_valid        :  std_logic_vector(MRG_WORDS          -1 downto 0);
         signal    sort_i_word       :  TEAM_TYPE;

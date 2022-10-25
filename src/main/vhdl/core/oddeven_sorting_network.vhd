@@ -2,7 +2,7 @@
 --!     @file    oddeven_sorting_network.vhd
 --!     @brief   OddEven Sorting Network Package :
 --!     @version 1.4.0
---!     @date    2022/10/22
+--!     @date    2022/10/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -43,11 +43,37 @@ package OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type;
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type;
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
 end OddEven_Sorting_Network;
 -----------------------------------------------------------------------------------
 --
@@ -109,27 +135,65 @@ package body OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
         variable  network     :        Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi);
-        Sorting_Network.Reverse_Network_Stage_List(network);
-        Sorting_Network.Add_Queue_Params(network, QUEUE);
+        Sorting_Network.Reverse_Network_Stage(network);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Sorting_Network.Param_Type
+    function   New_Sorter_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :        Sorting_Network.Param_Type;
+    begin
+        network := New_Sorter_Network(LO,HI,ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
         variable  network     :        Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1);
-        Sorting_Network.Reverse_Network_Stage_List(network);
-        Sorting_Network.Add_Queue_Params(network, QUEUE);
+        Sorting_Network.Reverse_Network_Stage(network);
+        return network;
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   New_Merger_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :        Sorting_Network.Param_Type;
+    begin
+        network := New_Merger_Network(LO,HI,ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
 end OddEven_Sorting_Network;

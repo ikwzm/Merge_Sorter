@@ -2,7 +2,7 @@
 --!     @file    oddeven_sorter.vhd
 --!     @brief   Batcher's Odd-Even Merge Sorter
 --!     @version 1.4.0
---!     @date    2022/10/22
+--!     @date    2022/10/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -102,7 +102,7 @@ begin
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,
-                                   QUEUE => QUEUE_SIZE
+                                   QUEUE => Sorting_Network.Constant_Queue_Size(QUEUE_SIZE)
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
             INFO_BITS       => INFO_BITS         -- 
