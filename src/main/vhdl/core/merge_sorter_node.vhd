@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_node.vhd
 --!     @brief   Merge Sorter Node Module :
---!     @version 1.4.0
---!     @date    2022/10/22
+--!     @version 1.4.1
+--!     @date    2022/10/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -266,16 +266,17 @@ begin
             param.LOSER_MERGE       := OddEven_Sorting_Network.New_Merger_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => Sorting_Network.Constant_Queue_Size(1)
+                                           ORDER  => SORT_ORDER
                                        );
             param.FINAL_MERGE       := OddEven_Sorting_Network.New_Merger_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => Sorting_Network.Constant_Queue_Size(1)
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
+            Sorting_Network.Set_Queue_Param(param.LOSER_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,1));
+            Sorting_Network.Set_Queue_Param(param.FINAL_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,0));
             return param;
         end function;
         ---------------------------------------------------------------------------
