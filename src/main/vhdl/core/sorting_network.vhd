@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------
 --!     @file    sorting_network.vhd
 --!     @brief   Sorting Network Package :
---!     @version 1.4.0
+--!     @version 1.4.1
 --!     @date    2022/10/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
@@ -156,6 +156,15 @@ package Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
+    procedure Merge_Network(
+        variable  NETWORK     :  inout Param_Type;
+                  A           :  in    Param_Type;
+                  NET_OFFSET  :  in    integer;
+                  STAGE_OFFSET:  in    integer
+    );
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
     type      Queue_Param_Type                  is record
                   First_Stage_Queue_Size        :  integer;
                   Last_Stage_Queue_Size         :  integer;
@@ -176,6 +185,7 @@ package Sorting_Network is
     --
     -------------------------------------------------------------------------------
     function   Constant_Queue_Size(QUEUE_SIZE: integer) return Queue_Param_Type;
+    function   Constant_Queue_Size(F,M,L: integer) return Queue_Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -317,43 +327,64 @@ package body Sorting_Network is
     -------------------------------------------------------------------------------
     procedure Merge_Network(
         variable  NETWORK     :  inout Param_Type;
-                  A           :  in    Param_Type
+                  A           :  in    Param_Type;
+                  NET_OFFSET  :  in    integer;
+                  STAGE_OFFSET:  in    integer
     ) is
         variable  n_op        :        Operator_Type;
         variable  a_op        :        Operator_Type;
+        variable  n_net       :        integer;
+        variable  n_stage     :        integer;
     begin
-        if (A.Stage_Size = 0) then
+        if (A.Stage_Size = 0 or A.Size = 0) then
             return;
         end if;
-        if (NETWORK.Stage_Lo >= A.Stage_Lo) then
-            NETWORK.Stage_Lo := A.Stage_Lo;
-        end if;
-        if (NETWORK.Stage_Hi <= A.Stage_Hi) then
-            NETWORK.Stage_Hi := A.Stage_Hi;
-        end if;
-        if (NETWORK.Lo >= A.Lo) then
-            NETWORK.Lo := A.Lo;
-        end if;
-        if (NETWORK.Hi <= A.Hi) then
-            NETWORK.Hi := A.Hi;
-        end if;
-        for stage in NETWORK.Stage_Lo to NETWORK.Stage_Hi loop
-            if (A.Stage_Lo <= stage and stage <= A.Stage_Hi) then
-                for net in NETWORK.Lo to NETWORK.Hi loop
-                    if (A.Lo <= net and net <= A.Hi) then
-                        n_op := NETWORK.Stage_List(stage).Operator_List(net);
-                        a_op := A      .Stage_List(stage).Operator_List(net);
-                        if (Operator_Is_None(a_op) = FALSE) then
-                            assert (Operator_Is_None(n_op) or (n_op = a_op))
-                                report "Merge_Network error" severity ERROR;
-                            NETWORK.Stage_List(stage).Operator_List(net) := a_op;
-                        end if;
-                    end if;
-                end loop;
-            end if;
+
+        assert (A.Stage_Lo+STAGE_OFFSET >= NETWORK.Stage_List'low ) and 
+               (A.Stage_Hi+STAGE_OFFSET <= NETWORK.Stage_List'high) and
+               (A.Lo+NET_OFFSET >= NETWORK.Stage_List(1).Operator_List'low ) and
+               (A.Hi+NET_OFFSET <= NETWORK.Stage_List(1).Operator_List'high)
+            report "Merge_Network range error" severity ERROR;
+            
+        for a_stage in A.Stage_Lo to A.Stage_Hi loop
+            n_stage := a_stage + STAGE_OFFSET;
+            for a_net in A.Lo to A.Hi loop
+                n_net := a_net + NET_OFFSET;
+                n_op  := NETWORK.Stage_List(n_stage).Operator_List(n_net);
+                a_op  := A      .Stage_List(a_stage).Operator_List(a_net);
+                if (Operator_Is_None(a_op) = FALSE) then
+                    assert (Operator_Is_None(n_op) or (n_op = a_op))
+                        report "Merge_Network override error" severity ERROR;
+                    NETWORK.Stage_List(n_stage).Operator_List(n_net) := a_op;
+                end if;
+            end loop;
         end loop;
+
+        if (NETWORK.Stage_Lo >= A.Stage_Lo+STAGE_OFFSET) then
+            NETWORK.Stage_Lo := A.Stage_Lo+STAGE_OFFSET;
+        end if;
+        if (NETWORK.Stage_Hi <= A.Stage_Hi+STAGE_OFFSET) then
+            NETWORK.Stage_Hi := A.Stage_Hi+STAGE_OFFSET;
+        end if;
+        if (NETWORK.Lo >= A.Lo+NET_OFFSET) then
+            NETWORK.Lo := A.Lo+NET_OFFSET;
+        end if;
+        if (NETWORK.Hi <= A.Hi+NET_OFFSET) then
+            NETWORK.Hi := A.Hi+NET_OFFSET;
+        end if;
+
         NETWORK.Size       := NETWORK.Hi       - NETWORK.Lo       + 1;
         NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
+    end procedure;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    procedure Merge_Network(
+        variable  NETWORK     :  inout Param_Type;
+                  A           :  in    Param_Type
+    ) is
+    begin 
+        Merge_Network(NETWORK, A, 0, 0);
     end procedure;
     -------------------------------------------------------------------------------
     --
@@ -375,9 +406,18 @@ package body Sorting_Network is
     is
         variable param : Queue_Param_Type;
     begin
-        param.First_Stage_Queue_Size        := QUEUE_SIZE;
-        param.Last_Stage_Queue_Size         := QUEUE_SIZE;
-        param.Middle_Stage_Queue_Size       := QUEUE_SIZE;
+        return Constant_Queue_Size(QUEUE_SIZE, QUEUE_SIZE, QUEUE_SIZE);
+    end function;
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    function   Constant_Queue_Size(F,M,L: integer) return Queue_Param_Type
+    is
+        variable param : Queue_Param_Type;
+    begin
+        param.First_Stage_Queue_Size        := F;
+        param.Last_Stage_Queue_Size         := L;
+        param.Middle_Stage_Queue_Size       := M;
         param.Middle_Stage_Interval_Init    := 0;
         param.Middle_Stage_Interval_Delta   := 1;
         param.Middle_Stage_Interval_Limit   := 1;
