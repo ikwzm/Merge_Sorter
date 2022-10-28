@@ -387,3 +387,96 @@ begin
             FINISH_ABORT    => FINISH_ABORT
         );
 end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q1 is
+    generic (
+        NAME            :  STRING  := "TEST_X1x3_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x3x3_O1_S0.snr";
+        WORDS           :  integer := 9;
+        GROUP_WORDS     :  integer := 3;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 1;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q1;
+architecture Model of Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q1 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X3x3_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x3x3_O1_S0.snr";
+        WORDS           :  integer := 9;
+        GROUP_WORDS     :  integer := 3;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q2;
+architecture Model of Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q2 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X9x1_O1_S0_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X9x1_O1_S0";
+        SCENARIO_FILE   :  STRING  := "test_x9x1_O1_S0.snr";
+        WORDS           :  integer := 9;
+        GROUP_WORDS     :  integer := 1;
+        SORT_ORDER      :  integer := 1;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X9x1_O1_S0_Q2;
+architecture Model of Asymmetric_Sorter_Test_Bench_X9x1_O1_S0_Q2 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
