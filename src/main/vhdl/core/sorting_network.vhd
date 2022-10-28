@@ -2,7 +2,7 @@
 --!     @file    sorting_network.vhd
 --!     @brief   Sorting Network Package :
 --!     @version 1.4.1
---!     @date    2022/10/26
+--!     @date    2022/10/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -41,7 +41,7 @@ package Sorting_Network is
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
-    constant  Max_Network_Size      :  integer := 256;
+    constant  Max_Network_Size      :  integer := 128;
     constant  Max_Stage_Size        :  integer := 256;
     constant  Max_Stage_Queue_Size  :  integer := 2;
     constant  Stage_Queue_Ctrl_Bits :  integer := Max_Stage_Queue_Size+1;
@@ -193,6 +193,16 @@ package Sorting_Network is
         variable  NETWORK     :  inout Param_Type;
                   QUEUE_PARAM :  in    Queue_Param_Type
     );
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function Count_Comparator(NETWORK: Param_Type) return integer;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function To_String(NETWORK: Param_Type   ) return STRING;
+    function To_String(OP     : Operator     ) return STRING;
+    function To_String(OP     : Operator_Type) return STRING;
 end Sorting_Network;
 -----------------------------------------------------------------------------------
 --
@@ -201,6 +211,113 @@ library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 package body Sorting_Network is
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    procedure to_string(
+                  VAL   : in    integer;
+                  STR   : out   STRING ;
+                  LEN   : out   integer
+    ) is
+	variable  buf   :       string(STR'length downto 1);
+	variable  pos   :       integer;
+	variable  tmp   :       integer;
+        variable  digit :       integer range 0 to 9;
+    begin
+        pos := 1;
+        tmp := abs(VAL);
+	loop
+            digit := abs(tmp mod 10);
+            case digit is
+               when 0 => buf(pos) := '0';
+               when 1 => buf(pos) := '1';
+               when 2 => buf(pos) := '2';
+               when 3 => buf(pos) := '3';
+               when 4 => buf(pos) := '4';
+               when 5 => buf(pos) := '5';
+               when 6 => buf(pos) := '6';
+               when 7 => buf(pos) := '7';
+               when 8 => buf(pos) := '8';
+               when 9 => buf(pos) := '9';
+            end case;
+            pos := pos + 1;
+	    tmp := tmp / 10;
+	    exit when tmp = 0;
+	end loop;
+	if (VAL < 0) then
+	    buf(pos) := '-';
+        else
+            pos := pos - 1;
+	end if;
+	STR(1 to pos) := buf(pos downto 1);
+	LEN := pos;
+    end procedure;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function to_string(VAL: integer) return STRING is
+	variable  str : string(1 to 32);
+	variable  len : integer;
+    begin
+	to_string(VAL, str, len);
+	return str(1 to len);
+    end function;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function To_String(OP: Operator) return STRING is
+    begin
+        case OP is
+            when OP_NONE      => return string'("OP_NONE"   );
+            when OP_PASS      => return string'("OP_PASS"   );
+            when OP_COMP_UP   => return string'("OP_COMP_UP");
+            when OP_COMP_DOWN => return string'("OP_COMP_DN");
+            when others       => return string'("OP_ERROR"  );
+        end case;
+    end function;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function To_String(OP: Operator_Type) return STRING is
+        constant o : string(1 to 1) := string'("(");
+        constant c : string(1 to 1) := string'(")");
+    begin
+        case OP.OP is
+            when OP_PASS      => return to_string(OP.OP) & o & to_string(OP.STEP) & c;
+            when OP_COMP_UP   => return to_string(OP.OP) & o & to_string(OP.STEP) & c;
+            when OP_COMP_DOWN => return to_string(OP.OP) & o & to_string(OP.STEP) & c;
+            when others       => return to_string(OP.OP);
+        end case;
+    end function;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function To_String(NETWORK: Param_Type) return STRING is
+        variable comp_num : integer := Count_Comparator(NETWORK);
+    begin
+        return string'("NET=["  ) & to_string(NETWORK.Lo) &
+               string'(":")       & to_string(NETWORK.Hi) & string'("],") &
+               string'("STAGE=[") & to_string(NETWORK.Stage_Lo) &
+               string'(":")       & to_string(NETWORK.Stage_Hi) & string'("],") &
+               string'("COMP=")   & to_string(comp_num);
+    end function;
+    -------------------------------------------------------------------------------
+    -- 
+    -------------------------------------------------------------------------------
+    function Count_Comparator(NETWORK: Param_Type) return integer is
+        variable op    :  Operator_Type;
+        variable count : integer;
+    begin
+        count := 0;
+        for stage in NETWORK.Stage_Lo to NETWORK.Stage_Hi loop
+            for net in NETWORK.Lo to NETWORK.Hi loop
+                if Operator_Is_Comp(NETWORK.Stage_List(stage).Operator_List(net)) then
+                    count := count + 1;
+                end if;
+            end loop;
+        end loop;
+        return count;
+    end function;
     -------------------------------------------------------------------------------
     -- 
     -------------------------------------------------------------------------------
@@ -254,17 +371,31 @@ package body Sorting_Network is
             op := OP_COMP_DOWN;
         end if;
         assert (HI - LO > 0)
-            report "Add_Comparator error" severity ERROR;
+            report "Add_Comparator boundary error" &
+                   " STAGE=" & to_string(STAGE)    &
+                   ",LO="    & to_string(LO)       &
+                   ",HI="    & to_string(HI)
+            severity ERROR;
         assert ((NETWORK.Stage_List(STAGE).Operator_List(LO).STEP = 0      ) or
                 (NETWORK.Stage_List(STAGE).Operator_List(LO).OP   = OP_NONE) or
                 ((NETWORK.Stage_List(STAGE).Operator_List(LO).STEP = HI-LO) and
                  (NETWORK.Stage_List(STAGE).Operator_List(LO).OP   = op   )))
-            report "Add_Comparator error" severity ERROR;
+            report "Add_Comparator overwrite error" &
+                   " STAGE=" & to_string(STAGE)     &
+                   ",LO=" & to_string(LO)           &
+                   ",HI=" & to_string(HI)           &
+                   ",OP=" & To_String(NETWORK.Stage_List(STAGE).Operator_List(LO)) 
+            severity ERROR;
         assert ((NETWORK.Stage_List(STAGE).Operator_List(HI).STEP = 0      ) or
                 (NETWORK.Stage_List(STAGE).Operator_List(HI).OP   = OP_NONE) or
                 ((NETWORK.Stage_List(STAGE).Operator_List(HI).STEP = LO-HI) and
                  (NETWORK.Stage_List(STAGE).Operator_List(HI).OP   = op   )))
-            report "Add_Comparator error" severity ERROR;
+            report "Add_Comparator overwrite error" &
+                   " STAGE=" & to_string(STAGE)     &
+                   ",LO=" & to_string(LO)           &
+                   ",HI=" & to_string(HI)           &
+                   ",OP=" & To_String(NETWORK.Stage_List(STAGE).Operator_List(HI)) 
+            severity ERROR;
         NETWORK.Stage_List(STAGE).Operator_List(LO).STEP := HI-LO;
         NETWORK.Stage_List(STAGE).Operator_List(LO).OP   := op;
         NETWORK.Stage_List(STAGE).Operator_List(HI).STEP := LO-HI;
@@ -295,7 +426,10 @@ package body Sorting_Network is
     ) is
     begin
         assert ((NETWORK.Stage_List(STAGE).Operator_List(NET).OP = OP_NONE))
-            report "Add_Pass_Operator error" severity ERROR;
+            report "Add_Pass_Operator error"    &
+                   " STAGE=" & to_string(STAGE) &
+                   ",NET="   & to_string(NET)     
+            severity ERROR;
         NETWORK.Stage_List(STAGE).Operator_List(NET).STEP := 0;
         NETWORK.Stage_List(STAGE).Operator_List(NET).OP   := OP_NONE;
     end procedure;
