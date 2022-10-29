@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    bitonic_sorting_network.vhd
---!     @brief   Bitonic Sorting Network Package :
---!     @version 1.4.0
---!     @date    2022/10/26
+--!     @file    bitonic_mergesort_network.vhd
+--!     @brief   Bitonic MergeSort Network Package :
+--!     @version 1.4.1
+--!     @date    2022/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -39,11 +39,11 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-package Bitonic_Sorting_Network is
+package Bitonic_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -51,7 +51,7 @@ package Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -60,7 +60,7 @@ package Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -68,13 +68,13 @@ package Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type;
-end Bitonic_Sorting_Network;
+end Bitonic_Mergesort_Network;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-package body Bitonic_Sorting_Network is
+package body Bitonic_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ package body Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -165,7 +165,7 @@ package body Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -174,14 +174,14 @@ package body Bitonic_Sorting_Network is
     is
         variable  network     :  Sorting_Network.Param_Type;
     begin
-        network := New_Sorter_Network(LO, HI, ORDER);
+        network := New_Network(LO, HI, ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -196,7 +196,7 @@ package body Bitonic_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -205,8 +205,8 @@ package body Bitonic_Sorting_Network is
     is
         variable  network     :  Sorting_Network.Param_Type;
     begin
-        network := New_Merger_Network(LO, HI, ORDER);
+        network := New_Merge_Network(LO, HI, ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
-end Bitonic_Sorting_Network;
+end Bitonic_MergeSort_Network;
