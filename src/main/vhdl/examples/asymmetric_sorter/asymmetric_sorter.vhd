@@ -2,7 +2,7 @@
 --!     @file    asymmetric_sorter.vhd
 --!     @brief   Asymmetric Sorter
 --!     @version 1.4.1
---!     @date    2022/10/28
+--!     @date    2022/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -74,7 +74,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
-use     Merge_Sorter.Asymmetric_Sorting_Network;
+use     Merge_Sorter.Asymmetric_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of Asymmetric_Sorter is
     function  GEN_NETWORK_PARAM return Sorting_Network.Param_Type
@@ -87,14 +87,14 @@ architecture RTL of Asymmetric_Sorter is
             assert (WORDS mod GROUP_WORDS = 0)
                 report "GEN_NETWORK_PARAM error" severity ERROR;
             network     := Sorting_Network.New_Network(0, WORDS-1, SORT_ORDER);
-            sub_network := Asymmetric_Sorting_Network.New_Sorter_Network(0, GROUP_WORDS-1, SORT_ORDER);
-            top_network := Asymmetric_Sorting_Network.New_Sorter_Network(0, WORDS-1, SORT_ORDER, GROUP_WORDS);
+            sub_network := Asymmetric_MergeSort_Network.New_Network(0, GROUP_WORDS-1, SORT_ORDER);
+            top_network := Asymmetric_MergeSort_Network.New_Network(0, WORDS-1, SORT_ORDER, GROUP_WORDS);
             for i in 0 to WORDS/GROUP_WORDS-1 loop
                 Sorting_Network.Merge_Network(network, sub_network, i*GROUP_WORDS, network.Stage_Lo);
             end loop;
             Sorting_Network.Merge_Network(network, top_network, 0, network.Stage_Hi+1);
         else
-            network := Asymmetric_Sorting_Network.New_Sorter_Network(0, WORDS-1, SORT_ORDER);
+            network := Asymmetric_MergeSort_Network.New_Network(0, WORDS-1, SORT_ORDER);
         end if;
         Sorting_Network.Set_Queue_Param(network, Sorting_Network.Constant_Queue_Size(QUEUE_SIZE));
         assert (FALSE)

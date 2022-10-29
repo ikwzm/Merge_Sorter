@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    oddeven_sorting_network.vhd
---!     @brief   OddEven Sorting Network Package :
---!     @version 1.4.0
---!     @date    2022/10/26
+--!     @file    oddeven_mergesort_network.vhd
+--!     @brief   Batcher's Odd-Even MergeSort Network Package :
+--!     @version 1.4.1
+--!     @date    2022/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -39,11 +39,11 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-package OddEven_Sorting_Network is
+package OddEven_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -51,7 +51,7 @@ package OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -60,7 +60,7 @@ package OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -68,13 +68,13 @@ package OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type;
-end OddEven_Sorting_Network;
+end OddEven_MergeSort_Network;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-package body OddEven_Sorting_Network is
+package body OddEven_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ package body OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -151,7 +151,7 @@ package body OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -160,14 +160,14 @@ package body OddEven_Sorting_Network is
     is
         variable  network     :        Sorting_Network.Param_Type;
     begin
-        network := New_Sorter_Network(LO,HI,ORDER);
+        network := New_Network(LO,HI,ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer
@@ -183,7 +183,7 @@ package body OddEven_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -192,8 +192,8 @@ package body OddEven_Sorting_Network is
     is
         variable  network     :        Sorting_Network.Param_Type;
     begin
-        network := New_Merger_Network(LO,HI,ORDER);
+        network := New_Merge_Network(LO,HI,ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
-end OddEven_Sorting_Network;
+end OddEven_MergeSort_Network;

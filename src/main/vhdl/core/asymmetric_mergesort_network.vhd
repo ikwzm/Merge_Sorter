@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
---!     @file    asymmetric_sorting_network.vhd
---!     @brief   Asymmetric Sorting Network Package :
+--!     @file    asymmetric_mergesort_network.vhd
+--!     @brief   Asymmetric MergeSort Network Package :
 --!     @version 1.4.1
---!     @date    2022/10/28
+--!     @date    2022/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -39,11 +39,11 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-package Asymmetric_Sorting_Network is
+package Asymmetric_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -52,7 +52,7 @@ package Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -62,7 +62,7 @@ package Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   R_LO        :  integer;
                   R_HI        :  integer;
                   L_LO        :  integer;
@@ -72,7 +72,7 @@ package Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   R_LO        :  integer;
                   R_HI        :  integer;
                   L_LO        :  integer;
@@ -80,7 +80,7 @@ package Asymmetric_Sorting_Network is
                   ORDER       :  integer;
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type;
-end Asymmetric_Sorting_Network;
+end Asymmetric_MergeSort_Network;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -89,8 +89,8 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Sorting_Network;
-use     Merge_Sorter.OddEven_Sorting_Network;
-package body Asymmetric_Sorting_Network is
+use     Merge_Sorter.OddEven_MergeSort_Network;
+package body Asymmetric_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ package body Asymmetric_Sorting_Network is
         ---------------------------------------------------------------------------
         -- merge_network
         ---------------------------------------------------------------------------
-        merge_network := OddEven_Sorting_Network.New_Merger_Network(0, 2*HALF_SIZE-1, 0);
+        merge_network := OddEven_MergeSort_Network.New_Merge_Network(0, 2*HALF_SIZE-1, 0);
         ---------------------------------------------------------------------------
         -- curr_net_list initialize
         ---------------------------------------------------------------------------
@@ -308,7 +308,7 @@ package body Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -324,7 +324,7 @@ package body Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Sorter_Network(
+    function   New_Network(
                   LO          :  integer;
                   HI          :  integer;
                   ORDER       :  integer;
@@ -334,14 +334,14 @@ package body Asymmetric_Sorting_Network is
     is
         variable  network     :  Sorting_Network.Param_Type;
     begin
-        network := New_Sorter_Network(LO, HI, ORDER, GROUP_NETS);
+        network := New_Network(LO, HI, ORDER, GROUP_NETS);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   R_LO        :  integer;
                   R_HI        :  integer;
                   L_LO        :  integer;
@@ -362,7 +362,7 @@ package body Asymmetric_Sorting_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function   New_Merger_Network(
+    function   New_Merge_Network(
                   R_LO        :  integer;
                   R_HI        :  integer;
                   L_LO        :  integer;
@@ -373,8 +373,8 @@ package body Asymmetric_Sorting_Network is
     is
         variable  network     :  Sorting_Network.Param_Type;
     begin
-        network := New_Merger_Network(R_LO, R_HI, L_LO, L_HI, ORDER);
+        network := New_Merge_Network(R_LO, R_HI, L_LO, L_HI, ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
-end Asymmetric_Sorting_Network;
+end Asymmetric_MergeSort_Network;

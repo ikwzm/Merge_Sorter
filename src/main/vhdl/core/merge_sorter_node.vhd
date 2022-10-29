@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_node.vhd
 --!     @brief   Merge Sorter Node Module :
 --!     @version 1.4.1
---!     @date    2022/10/26
+--!     @date    2022/10/28
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -74,7 +74,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
-use     Merge_Sorter.OddEven_Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Word_Compare;
 use     Merge_Sorter.Core_Components.Word_Queue;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
@@ -263,12 +263,12 @@ begin
             variable param          :  PARAM_TYPE;
         begin
             param.INTAKE_QUEUE_SIZE := 2;
-            param.LOSER_MERGE       := OddEven_Sorting_Network.New_Merger_Network(
+            param.LOSER_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
                                            ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE       := OddEven_Sorting_Network.New_Merger_Network(
+            param.FINAL_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
                                            ORDER  => SORT_ORDER
