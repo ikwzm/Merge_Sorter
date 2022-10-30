@@ -311,7 +311,8 @@ package body Sorting_Network is
         count := 0;
         for stage in NETWORK.Stage_Lo to NETWORK.Stage_Hi loop
             for net in NETWORK.Lo to NETWORK.Hi loop
-                if Operator_Is_Comp(NETWORK.Stage_List(stage).Operator_List(net)) then
+                op := NETWORK.Stage_List(stage).Operator_List(net);
+                if Operator_Is_Comp(op) and (op.STEP > 0) then
                     count := count + 1;
                 end if;
             end loop;
