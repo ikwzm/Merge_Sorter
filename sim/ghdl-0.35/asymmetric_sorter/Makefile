@@ -1,4 +1,4 @@
-PROJECT_NAME  = bitonic_sorter
+PROJECT_NAME  = asymmetric_sorter
 SCENARIO_PATH = ../../../src/test/scenarios/sorting_network
 
 COPY          = cp
@@ -7,19 +7,19 @@ REMOVE        = -rm
 GHDL          = ghdl
 GHDLFLAGS     = --mb-comments
 
-TEST_BENCH    = test_x08_o0_s0_q0 \
-                test_x08_o0_s0_q1 \
-                test_x08_o0_s0_q2 \
-                test_x08_o0_s1_q0 \
-                test_x08_o0_s1_q1 \
-                test_x08_o0_s1_q2 \
-                test_x08_o1_s0_q0 \
-                test_x08_o1_s0_q1 \
-                test_x08_o1_s0_q2 \
-                test_x08_o1_s1_q0 \
-                test_x08_o1_s1_q1 \
-                test_x08_o1_s1_q2 \
+TEST_BENCH    = test_x2x3_o0_s0_q0 \
+                test_x3x2_o0_s0_q0 \
+                test_x6x1_o0_s0_q0 \
+                test_x3x3_o1_s0_q1 \
+                test_x3x3_o1_s0_q2 \
+                test_x9x1_o1_s0_q2 \
                 $(END_LIST)
+
+SCENARIO_X6_O0_S0 += test_x2x3_o0_s0.snr
+SCENARIO_X6_O0_S0 += test_x3x2_o0_s0.snr
+SCENARIO_X6_O0_S0 += test_x6x1_o0_s0.snr
+SCENARIO_X9_O1_S0 += test_x3x3_o1_s0.snr
+SCENARIO_X9_O1_S0 += test_x9x1_o1_s0.snr
 
 test: $(TEST_BENCH)
 
@@ -58,7 +58,7 @@ work-obj93.cf         : $(WORK_SRC) merge_sorter-obj93.cf dummy_plug-obj93.cf
 	done
 
 define TEST_UNIT_NAME
-$(subst test_,Bitonic_Sorter_Test_Bench_,$(1))
+$(subst test_,Asymmetric_Sorter_Test_Bench_,$(1))
 endef
 
 define TEST_SCENARIO_NAME
@@ -72,12 +72,12 @@ $(1): $(2) test_bench dut
 endef
 
 define MAKE_SCENARIO
-$(1): $(SCENARIO_PATH)/$(1)
-	$(COPY) $(SCENARIO_PATH)/$(1) $(1)
+$(1): $(SCENARIO_PATH)/$(2)
+	$(COPY) $(SCENARIO_PATH)/$(2) $(1)
 endef
 
-SCENARIO_FILES = $(sort $(foreach TB, $(TEST_BENCH), $(call TEST_SCENARIO_NAME, $(TB))))
+$(foreach FILE, $(SCENARIO_X6_O0_S0), $(eval $(call MAKE_SCENARIO,$(FILE),test_x06_o0_s0.snr)))
+$(foreach FILE, $(SCENARIO_X9_O1_S0), $(eval $(call MAKE_SCENARIO,$(FILE),test_x09_o1_s0.snr)))
 
-$(foreach FILE, $(SCENARIO_FILES), $(eval $(call MAKE_SCENARIO,$(FILE))))
+$(foreach TEST, $(TEST_BENCH), $(eval $(call GHDL_RUN,$(TEST),$(call TEST_SCENARIO_NAME,$(TEST)))))
 
-$(foreach TEST, $(TEST_BENCH), $(eval $(call GHDL_RUN, $(TEST),$(call TEST_SCENARIO_NAME, $(TEST)))))
