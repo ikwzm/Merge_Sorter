@@ -1,6 +1,4 @@
 PROJECT_NAME  = argsort_axi
-PIPEWORK_PATH = ../../../PipeWork
-SRC_TEST_PATH = ../../../src/test/vhdl/$(PROJECT_NAME)
 SCENARIO_PATH = ../../../src/test/scenarios/$(PROJECT_NAME)
 
 COPY          = cp

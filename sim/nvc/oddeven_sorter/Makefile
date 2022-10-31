@@ -1,4 +1,4 @@
-PROJECT_NAME  = bitonic_sorter
+PROJECT_NAME  = oddeven_sorter
 SCENARIO_PATH = ../../../src/test/scenarios/sorting_network
 
 COPY          = cp
@@ -30,7 +30,7 @@ analyze_libs.sh: libs.yml
 	../../../PipeWork/tools/vhdl-archiver.rb -v --config libs.yml > analyze_libs.sh
 
 define TEST_UNIT_NAME
-$(subst test_,Bitonic_Sorter_Test_Bench_,$(1))
+$(subst test_,OddEven_Sorter_Test_Bench_,$(1))
 endef
 
 define TEST_SCENARIO_NAME
