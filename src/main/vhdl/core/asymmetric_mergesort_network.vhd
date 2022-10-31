@@ -2,7 +2,7 @@
 --!     @file    asymmetric_mergesort_network.vhd
 --!     @brief   Asymmetric MergeSort Network Package :
 --!     @version 1.4.1
---!     @date    2022/10/29
+--!     @date    2022/10/20
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -63,20 +63,20 @@ package Asymmetric_MergeSort_Network is
     --
     -------------------------------------------------------------------------------
     function   New_Merge_Network(
-                  R_LO        :  integer;
-                  R_HI        :  integer;
                   L_LO        :  integer;
                   L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
                   ORDER       :  integer
     )             return         Sorting_Network.Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     function   New_Merge_Network(
-                  R_LO        :  integer;
-                  R_HI        :  integer;
                   L_LO        :  integer;
                   L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
                   ORDER       :  integer;
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type;
@@ -106,18 +106,18 @@ package body Asymmetric_MergeSort_Network is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function  max(R,L: integer) return integer is
+    function  max(L,R: integer) return integer is
     begin
-        if (R > L) then return R;
+        if (L < R) then return R;
         else            return L;
         end if;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    function  min(R,L: integer) return integer is
+    function  min(L,R: integer) return integer is
     begin
-        if (R < L) then return R;
+        if (L > R) then return R;
         else            return L;
         end if;
     end function;
@@ -127,10 +127,10 @@ package body Asymmetric_MergeSort_Network is
     procedure asymmetric_merge(
         variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
-                  R_LO        :  in    integer;
-                  R_HI        :  in    integer;
                   L_LO        :  in    integer;
                   L_HI        :  in    integer;
+                  H_LO        :  in    integer;
+                  H_HI        :  in    integer;
         constant  HALF_SIZE   :  in    integer
     ) is
         type      NET_VALID_VECTOR   is array(0 to 2*HALF_SIZE-1) of integer;
@@ -138,8 +138,8 @@ package body Asymmetric_MergeSort_Network is
         variable  next_net_list      :  NET_VALID_VECTOR;
         variable  merge_network      :  Sorting_Network.Param_Type;
         variable  operator           :  Sorting_Network.Operator_Type;
-        variable  r_size             :  integer;
         variable  l_size             :  integer;
+        variable  h_size             :  integer;
         variable  op_lo_net          :  integer;
         variable  op_hi_net          :  integer;
         variable  comp_lo_net        :  integer;
@@ -155,18 +155,18 @@ package body Asymmetric_MergeSort_Network is
         ---------------------------------------------------------------------------
         -- curr_net_list initialize
         ---------------------------------------------------------------------------
-        r_size := R_HI - R_LO + 1;
         l_size := L_HI - L_LO + 1;
+        h_size := H_HI - H_LO + 1;
         for i in 0 to HALF_SIZE-1 loop
-            if (i < r_size) then
-                curr_net_list(i) := i + R_LO;
+            if (i < l_size) then
+                curr_net_list(i) := i + L_LO;
             else
                 curr_net_list(i) := -1;
             end if;
         end loop;
         for i in 0 to HALF_SIZE-1 loop
-            if (i < l_size) then
-                curr_net_list(i+HALF_SIZE) := i + L_LO;
+            if (i < h_size) then
+                curr_net_list(i+HALF_SIZE) := i + H_LO;
             else
                 curr_net_list(i+HALF_SIZE) := -1;
             end if;
@@ -244,7 +244,7 @@ package body Asymmetric_MergeSort_Network is
             last_stage    := curr_stage;
             curr_stage    := curr_stage + 1;
         end loop;
-        if (last_stage >= NETWORK.Stage_Hi) then
+        if (last_stage > NETWORK.Stage_Hi) then
             NETWORK.Stage_Hi := last_stage;
         end if;
         NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
@@ -255,16 +255,16 @@ package body Asymmetric_MergeSort_Network is
     procedure asymmetric_merge(
         variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
-                  R_LO        :  in    integer;
-                  R_HI        :  in    integer;
                   L_LO        :  in    integer;
-                  L_HI        :  in    integer
+                  L_HI        :  in    integer;
+                  H_LO        :  in    integer;
+                  H_HI        :  in    integer
     ) is
         variable  half_size   :        integer;
     begin
-        half_size := max(align_by_power_of_2(R_HI-R_LO+1), 
-                         align_by_power_of_2(L_HI-L_LO+1));
-        asymmetric_merge(NETWORK, START_STAGE, R_LO, R_HI, L_LO, L_HI, half_size);
+        half_size := max(align_by_power_of_2(L_HI-L_LO+1), 
+                         align_by_power_of_2(H_HI-H_LO+1));
+        asymmetric_merge(NETWORK, START_STAGE, L_LO, L_HI, H_LO, H_HI, half_size);
     end procedure;
     -------------------------------------------------------------------------------
     --
@@ -278,12 +278,12 @@ package body Asymmetric_MergeSort_Network is
     ) is
         variable  net_size    :        integer;
         variable  group_count :        integer;
-        variable  r_network   :        Sorting_Network.Param_Type;
-        variable  r_lo        :        integer;
-        variable  r_hi        :        integer;
         variable  l_network   :        Sorting_Network.Param_Type;
         variable  l_lo        :        integer;
         variable  l_hi        :        integer;
+        variable  h_network   :        Sorting_Network.Param_Type;
+        variable  h_lo        :        integer;
+        variable  h_hi        :        integer;
         variable  next_stage  :        integer;
     begin
         net_size := HI - LO + 1;
@@ -291,18 +291,18 @@ package body Asymmetric_MergeSort_Network is
             report "asymmetric_sort error" severity ERROR;
         group_count := net_size / GROUP_NETS;
         if (group_count > 1) then
-            r_lo := LO;
-            r_hi := LO + GROUP_NETS*(group_count/2) - 1;
-            l_lo := r_hi + 1;
-            l_hi := HI;
-            r_network := Sorting_Network.New_Network(r_lo, r_hi, START_STAGE, NETWORK.Sort_Order);
+            l_lo := LO;
+            l_hi := LO + GROUP_NETS*(group_count/2) - 1;
+            h_lo := l_hi + 1;
+            h_hi := HI;
             l_network := Sorting_Network.New_Network(l_lo, l_hi, START_STAGE, NETWORK.Sort_Order);
-            asymmetric_sort(r_network, START_STAGE, r_lo, r_hi, GROUP_NETS);
+            h_network := Sorting_Network.New_Network(h_lo, h_hi, START_STAGE, NETWORK.Sort_Order);
             asymmetric_sort(l_network, START_STAGE, l_lo, l_hi, GROUP_NETS);
-            Sorting_Network.Merge_Network(NETWORK, r_network);
+            asymmetric_sort(h_network, START_STAGE, h_lo, h_hi, GROUP_NETS);
             Sorting_Network.Merge_Network(NETWORK, l_network);
+            Sorting_Network.Merge_Network(NETWORK, h_network);
             next_stage := NETWORK.Stage_Hi + 1;
-            asymmetric_merge(NETWORK, next_stage, r_lo, r_hi, l_lo, l_hi);
+            asymmetric_merge(NETWORK, next_stage, l_lo, l_hi, h_lo, h_hi);
         end if;
     end procedure;
     -------------------------------------------------------------------------------
@@ -342,10 +342,10 @@ package body Asymmetric_MergeSort_Network is
     --
     -------------------------------------------------------------------------------
     function   New_Merge_Network(
-                  R_LO        :  integer;
-                  R_HI        :  integer;
                   L_LO        :  integer;
                   L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
                   ORDER       :  integer
     )             return         Sorting_Network.Param_Type
     is
@@ -353,27 +353,27 @@ package body Asymmetric_MergeSort_Network is
         variable  net_lo      :  integer;
         variable  net_hi      :  integer;
     begin
-        net_lo  := min(R_LO, L_LO);
-        net_hi  := max(R_HI, L_HI);
+        net_lo  := min(L_LO, H_LO);
+        net_hi  := max(L_HI, H_HI);
         network := Sorting_Network.New_Network(net_lo, net_hi, ORDER);
-        asymmetric_merge(network, network.Stage_Lo, R_LO, R_HI, L_LO, L_HI);
+        asymmetric_merge(network, network.Stage_Lo, L_LO, L_HI, H_LO, H_HI);
         return network;
     end function;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
     function   New_Merge_Network(
-                  R_LO        :  integer;
-                  R_HI        :  integer;
                   L_LO        :  integer;
                   L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
                   ORDER       :  integer;
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type
     is
         variable  network     :  Sorting_Network.Param_Type;
     begin
-        network := New_Merge_Network(R_LO, R_HI, L_LO, L_HI, ORDER);
+        network := New_Merge_Network(L_LO, L_HI, H_LO, H_HI, ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
