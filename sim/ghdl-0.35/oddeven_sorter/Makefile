@@ -1,4 +1,4 @@
-PROJECT_NAME  = bitonic_sorter
+PROJECT_NAME  = oddeven_sorter
 SCENARIO_PATH = ../../../src/test/scenarios/sorting_network
 
 COPY          = cp

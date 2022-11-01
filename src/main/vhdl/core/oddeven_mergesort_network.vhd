@@ -141,7 +141,7 @@ package body OddEven_MergeSort_Network is
                   ORDER       :  integer
     )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi);
@@ -158,7 +158,7 @@ package body OddEven_MergeSort_Network is
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := New_Network(LO,HI,ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
@@ -173,7 +173,7 @@ package body OddEven_MergeSort_Network is
                   ORDER       :  integer
     )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1);
@@ -190,7 +190,7 @@ package body OddEven_MergeSort_Network is
                   QUEUE       :  Sorting_Network.Queue_Param_Type
     )             return         Sorting_Network.Param_Type
     is
-        variable  network     :        Sorting_Network.Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
         network := New_Merge_Network(LO,HI,ORDER);
         Sorting_Network.Set_Queue_Param(network, QUEUE);
