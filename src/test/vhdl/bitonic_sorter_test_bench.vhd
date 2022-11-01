@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    bitonic_sorter_test_bench.vhd
 --!     @brief   Bitonic Sorter Test Bench :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.1
+--!     @date    2022/11/1
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020 Ichiro Kawazome
+--      Copyright (C) 2020-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -300,7 +300,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := FALSE;
@@ -329,7 +329,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S0_Q1 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := FALSE;
@@ -358,7 +358,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := FALSE;
@@ -387,7 +387,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S1_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := TRUE;
@@ -416,7 +416,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S1_Q1 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := TRUE;
@@ -445,7 +445,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O0_S1_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X08_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o0_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 0;
         COMP_SIGN       :  boolean := TRUE;
@@ -474,7 +474,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := FALSE;
@@ -503,7 +503,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S0_Q1 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := FALSE;
@@ -532,7 +532,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s0.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := FALSE;
@@ -561,7 +561,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S1_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := TRUE;
@@ -590,7 +590,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S1_Q1 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := TRUE;
@@ -619,7 +619,7 @@ use     ieee.std_logic_1164.all;
 entity  Bitonic_Sorter_Test_Bench_X08_O1_S1_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X08_O1_S1";
-        SCENARIO_FILE   :  STRING  := "test_x08_O1_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x08_o1_s1.snr";
         WORDS           :  integer := 8;
         SORT_ORDER      :  integer := 1;
         COMP_SIGN       :  boolean := TRUE;

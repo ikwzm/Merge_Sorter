@@ -2,7 +2,7 @@
 --!     @file    asymmetric_sorter_test_bench.vhd
 --!     @brief   Batcher's Odd-Even Merge Sorter Test Bench :
 --!     @version 1.4.1
---!     @date    2022/10/30
+--!     @date    2022/11/1
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -302,7 +302,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X6x1_O0_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X6x1_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x6x1_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x6x1_o0_s0.snr";
         WORDS           :  integer := 6;
         GROUP_WORDS     :  integer := 1;
         SORT_ORDER      :  integer := 0;
@@ -333,7 +333,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X3x2_O0_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X3x2_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x3x2_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x3x2_o0_s0.snr";
         WORDS           :  integer := 6;
         GROUP_WORDS     :  integer := 2;
         SORT_ORDER      :  integer := 0;
@@ -364,7 +364,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X2x3_O0_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X2x3_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x2x3_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x2x3_o0_s0.snr";
         WORDS           :  integer := 6;
         GROUP_WORDS     :  integer := 3;
         SORT_ORDER      :  integer := 0;
@@ -395,7 +395,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X8x1_O0_S1_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X8x1_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x8x1_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x8x1_o0_s1.snr";
         WORDS           :  integer := 8;
         GROUP_WORDS     :  integer := 1;
         SORT_ORDER      :  integer := 0;
@@ -426,7 +426,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X4x2_O0_S1_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X4x2_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x4x2_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x4x2_o0_s1.snr";
         WORDS           :  integer := 8;
         GROUP_WORDS     :  integer := 2;
         SORT_ORDER      :  integer := 0;
@@ -457,7 +457,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X2x4_O0_S1_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X2x4_O0_S1";
-        SCENARIO_FILE   :  STRING  := "test_x2x4_O0_S1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x2x4_o0_s1.snr";
         WORDS           :  integer := 8;
         GROUP_WORDS     :  integer := 4;
         SORT_ORDER      :  integer := 0;
@@ -488,7 +488,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q1 is
     generic (
         NAME            :  STRING  := "TEST_X1x3_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x3x3_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x3x3_o1_s0.snr";
         WORDS           :  integer := 9;
         GROUP_WORDS     :  integer := 3;
         SORT_ORDER      :  integer := 1;
@@ -519,7 +519,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X3x3_O1_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X3x3_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x3x3_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x3x3_o1_s0.snr";
         WORDS           :  integer := 9;
         GROUP_WORDS     :  integer := 3;
         SORT_ORDER      :  integer := 1;
@@ -550,7 +550,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X9x1_O1_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X9x1_O1_S0";
-        SCENARIO_FILE   :  STRING  := "test_x9x1_O1_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x9x1_o1_s0.snr";
         WORDS           :  integer := 9;
         GROUP_WORDS     :  integer := 1;
         SORT_ORDER      :  integer := 1;
@@ -581,7 +581,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X5x2_O0_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X5x2_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x5x2_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x5x2_o0_s0.snr";
         WORDS           :  integer := 10;
         GROUP_WORDS     :  integer := 2;
         SORT_ORDER      :  integer := 0;
@@ -612,7 +612,7 @@ use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X2x5_O0_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X2x5_O0_S0";
-        SCENARIO_FILE   :  STRING  := "test_x2x5_O0_S0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x2x5_o0_s0.snr";
         WORDS           :  integer := 10;
         GROUP_WORDS     :  integer := 5;
         SORT_ORDER      :  integer := 0;
