@@ -1,0 +1,28 @@
+
+- Global:
+    Print    :  true
+
+- Library:
+    Name     :  DUMMY_PLUG
+    Format   :  "#{library_name}_SRC += #{file_name}"
+    Exclude  :  ["../../../Dummy_Plug/src/main/vhdl/core/sync_alt.vhd"]
+    PathList :  ["../../../Dummy_Plug/src/main/vhdl/"]
+
+- Library:
+    Name     :  PIPEWORK
+    Format   :  "#{library_name}_SRC += #{file_name}"
+    Exclude  :  ["../../../PipeWork/src/components/sdpram_altera_auto_select.vhd",
+                 "../../../PipeWork/src/components/sdpram_xilinx_auto_select.vhd",
+                 "../../../PipeWork/src/components/sdpram_xilinx_ultrascale_auto_select.vhd"]
+    PathList :  ["../../../PipeWork/src/"]
+
+- Library:
+    Name     :  MERGE_SORTER
+    Format   :  "#{library_name}_SRC += #{file_name}"
+    PathList :  ["../../../src/main/vhdl"]
+
+- Library:
+    Name     :  WORK
+    Format   :  "#{library_name}_SRC += #{file_name}"
+    PathList :  ["../../../src/test/vhdl"]
+    Top      :  ["Merge_Sorter_Core_Test_Bench"]

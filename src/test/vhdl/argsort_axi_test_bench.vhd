@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 1.2.0
---!     @date    2021/6/27
+--!     @version 1.4.1
+--!     @date    2022/11/1
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2021 Ichiro Kawazome
+--      Copyright (C) 2021-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -893,7 +893,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X04_W1_F0 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F0";
-        SCENARIO_FILE   :  STRING  := "test_x04_W1_f0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x04_w1_f0.snr";
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 0;  -- F0
@@ -921,7 +921,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X04_W1_F1 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F1";
-        SCENARIO_FILE   :  STRING  := "test_x04_W1_f1.snr";
+        SCENARIO_FILE   :  STRING  := "test_x04_w1_f1.snr";
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 1;  -- F1
@@ -949,7 +949,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X04_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_W1_F2";
-        SCENARIO_FILE   :  STRING  := "test_x04_W1_f2.snr";
+        SCENARIO_FILE   :  STRING  := "test_x04_w1_f2.snr";
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
@@ -977,7 +977,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X04_W2_F2 is
     generic (
         NAME            :  STRING  := "TEST_X04_W2_F2";
-        SCENARIO_FILE   :  STRING  := "test_x04_W2_f2.snr";
+        SCENARIO_FILE   :  STRING  := "test_x04_w2_f2.snr";
         MRG_WAYS        :  integer := 4;  -- X04
         MRG_WORDS       :  integer := 2;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
@@ -1005,7 +1005,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X16_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X16_W1_F2";
-        SCENARIO_FILE   :  STRING  := "test_x16_W1_f2.snr";
+        SCENARIO_FILE   :  STRING  := "test_x16_w1_f2.snr";
         MRG_WAYS        :  integer := 16; -- X16
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2
@@ -1035,7 +1035,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X16_W2_F2 is
     generic (
         NAME            :  STRING  := "TEST_X16_W2_F2";
-        SCENARIO_FILE   :  STRING  := "test_x16_W2_f2.snr";
+        SCENARIO_FILE   :  STRING  := "test_x16_w2_f2.snr";
         MRG_WAYS        :  integer := 16; -- X16
         MRG_WORDS       :  integer := 2;  -- W2
         STM_FEEDBACK    :  integer := 2;  -- F2
@@ -1065,7 +1065,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X16_W2_F0 is
     generic (
         NAME            :  STRING  := "TEST_X16_W2_F0";
-        SCENARIO_FILE   :  STRING  := "test_x16_W2_f0.snr";
+        SCENARIO_FILE   :  STRING  := "test_x16_w2_f0.snr";
         MRG_WAYS        :  integer := 16; -- X16
         MRG_WORDS       :  integer := 2;  -- W2
         STM_FEEDBACK    :  integer := 0;  -- F0
@@ -1096,7 +1096,7 @@ use     ieee.std_logic_1164.all;
 entity  ArgSort_AXI_Test_Bench_X32_W1_F2 is
     generic (
         NAME            :  STRING  := "TEST_X32_W1_F2";
-        SCENARIO_FILE   :  STRING  := "test_x32_W1_f2.snr";
+        SCENARIO_FILE   :  STRING  := "test_x32_w1_f2.snr";
         MRG_WAYS        :  integer := 32; -- X32
         MRG_WORDS       :  integer := 1;  -- W1
         STM_FEEDBACK    :  integer := 2;  -- F2

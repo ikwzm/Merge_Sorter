@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    merge_sorter_node.vhd
 --!     @brief   Merge Sorter Node Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.1
+--!     @date    2022/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -74,6 +74,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Word_Compare;
 use     Merge_Sorter.Core_Components.Word_Queue;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
@@ -262,19 +263,20 @@ begin
             variable param          :  PARAM_TYPE;
         begin
             param.INTAKE_QUEUE_SIZE := 2;
-            param.LOSER_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.LOSER_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.FINAL_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
+            Sorting_Network.Set_Queue_Param(param.LOSER_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,1));
+            Sorting_Network.Set_Queue_Param(param.FINAL_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,0));
             return param;
         end function;
         ---------------------------------------------------------------------------

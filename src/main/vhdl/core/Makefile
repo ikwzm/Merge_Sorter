@@ -15,7 +15,7 @@ ENTITY_FILES = merge_sorter_core.vhd      \
 core_components.vhd : ${ENTITY_FILES}
 	../../../../PipeWork/tools/MakeComponentPackage.rb --verbose \
             --brief   'Merge Sorter Core Component Library Description Package' \
-            --version 0.9.1 \
+            --version 1.4.1 \
             --author  'Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>' \
             --library Merge_Sorter \
             --package Core_Components \

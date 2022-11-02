@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    oddeven_sorter.vhd
 --!     @brief   Batcher's Odd-Even Merge Sorter
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.1
+--!     @date    2022/10/29
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020 Ichiro Kawazome
+--      Copyright (C) 2020-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of OddEven_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -97,11 +98,11 @@ begin
 
     CORE: Sorting_Network_Core
         generic map (
-            NETWORK_PARAM   => Sorting_Network.New_OddEven_Sorter_Network(
+            NETWORK_PARAM   => OddEven_MergeSort_Network.New_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,
-                                   QUEUE => QUEUE_SIZE
+                                   QUEUE => Sorting_Network.Constant_Queue_Size(QUEUE_SIZE)
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
             INFO_BITS       => INFO_BITS         -- 

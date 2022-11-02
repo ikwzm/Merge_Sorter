@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_intake_fifo.vhd
 --!     @brief   Merge Sorter Core Intake Fifo Module :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.4.1
+--!     @date    2022/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2022 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
