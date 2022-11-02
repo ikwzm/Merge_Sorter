@@ -3,7 +3,7 @@ add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/core_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_compare.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_pipeline_register.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/oddeven_sorting_network.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/oddeven_mergesort_network.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/sorting_network_core.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/word_queue.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../../src/main/vhdl/core/merge_sorter_node.vhd
