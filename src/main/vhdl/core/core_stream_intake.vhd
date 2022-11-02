@@ -2,7 +2,7 @@
 --!     @file    core_stream_intake.vhd
 --!     @brief   Merge Sorter Core Stream Intake Module :
 --!     @version 1.4.1
---!     @date    2022/10/29
+--!     @date    2022/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

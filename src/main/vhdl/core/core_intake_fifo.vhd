@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_intake_fifo.vhd
 --!     @brief   Merge Sorter Core Intake Fifo Module :
---!     @version 1.4.0
---!     @date    2022/10/22
+--!     @version 1.4.1
+--!     @date    2022/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --

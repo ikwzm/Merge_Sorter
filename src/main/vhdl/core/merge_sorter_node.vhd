@@ -2,7 +2,7 @@
 --!     @file    merge_sorter_node.vhd
 --!     @brief   Merge Sorter Node Module :
 --!     @version 1.4.1
---!     @date    2022/10/28
+--!     @date    2022/11/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
