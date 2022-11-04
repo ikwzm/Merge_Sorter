@@ -134,12 +134,6 @@ Fig.6 マルチワードマージソートの動作例(5)
 
 
 
-
-
-
-
-
-
 ## マルチワードマージソートノードの VHDL 記述
 
 
@@ -165,19 +159,20 @@ Fig.6 マルチワードマージソートの動作例(5)
             variable param          :  PARAM_TYPE;
         begin
             param.INTAKE_QUEUE_SIZE := 2;
-            param.LOSER_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.LOSER_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.FINAL_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
+            Sorting_Network.Set_Queue_Param(param.LOSER_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,1));
+            Sorting_Network.Set_Queue_Param(param.FINAL_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,0));
             return param;
         end function;
         constant  PARAM             :  PARAM_TYPE := GEN_PARAM;
@@ -499,7 +494,7 @@ end RTL;
 * 次回: [「マージソート ツリー」]
 * 前回: [「シングルワード マージソート ノード」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_node.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_node.vhd
 * [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」]
 
 

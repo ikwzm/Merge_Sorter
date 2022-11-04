@@ -179,9 +179,9 @@ FIFO_SIZE = WAYS × WORDS × 2 × (WAYS\*\*STM_FEEDBACK)
 * 次回: [「ArgSort IP」]
 * 前回: [「ストリーム入力」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_core.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/core_intake_fifo.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/core_stream_intake.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_core.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/core_intake_fifo.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/core_stream_intake.vhd
 
 
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"

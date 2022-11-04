@@ -69,104 +69,120 @@ def oddeven_merge_sort(x):
 
 
 
-#### New_OddEven_Sorter_Network 関数
+#### New_Network 関数
 
 
-New_OddEven_Sorter_Network 関数は、バッチャーズ奇偶マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_OddEven_Sorter_Network 関数は Sorting_Network パッケージにて定義しています。
+New_Network 関数は、バッチャーズ奇偶マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+library Merge_Sorter;
+package OddEven_MergeSort_Network is
     -- (前略) --
-    function   New_OddEven_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
 
 
 
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
+package body OddEven_MergeSort_Network is
     -- (前略) --
-    function   New_OddEven_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_sort(network, network.Stage_Lo, network.Lo, network.Hi);
-        reverse_network_stage_list(network);
-        Add_Queue_Params(network, QUEUE);
+        Sorting_Network.Reverse_Network_Stage(network);
+        return network;
+    end function;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Network(LO,HI,ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
 
 
 
 
 
-#### New_OddEven_Merger_Network 関数
+#### New_Merge_Network 関数
 
 
-New_OddEven_Merger_Network 関数は、バッチャーズ奇偶マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_OddEven_Merger_Network 関数は Sorting_Network パッケージにて定義しています。
+New_Merge_Network 関数は、バッチャーズ奇偶マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+package OddEven_MergeSort_Network is
     -- (前略) --
-    function   New_OddEven_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
 
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
+package body OddEven_MergeSort_Network is
     -- (前略) --
-    function   New_OddEven_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         oddeven_merge(network, network.Stage_Lo, network.Lo, network.Hi, 1);
-        reverse_network_stage_list(network);
-        Add_Queue_Params(network, QUEUE);
+        Sorting_Network.Reverse_Network_Stage(network);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
 
 
@@ -174,17 +190,14 @@ end Sorting_Network;
 #### oddeven_sort 関数
 
 
-Sorting_Netowork パッケージボディに定義されたoddeven_sort 関数は、前述の Python による実装でしめした oddeven_merge_sort_range に対応します。oddeven_sort 関数を再帰的に呼び出しています。
+OddEven_MergeSort_Netowork パッケージボディに定義されたoddeven_sort 関数は、前述の Python による実装でしめした oddeven_merge_sort_range に対応します。oddeven_sort 関数を再帰的に呼び出しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
+package body OddEven_MergeSort_Network is
     -- (前略) --
     procedure oddeven_sort(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer
@@ -199,7 +212,7 @@ package body Sorting_Network is
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
 
 
@@ -209,19 +222,16 @@ end Sorting_Network;
 #### oddeven_merge 関数
 
 
-Sorting_Netowork パッケージボディに定義されたoddeven_merge 関数は、前述の Python による実装でしめした oddeven_merge に対応します。oddeven_merge 関数を再帰的に呼び出しています。
+OddEven_MergeSort_Netowork パッケージボディに定義されたoddeven_merge 関数は、前述の Python による実装でしめした oddeven_merge に対応します。oddeven_merge 関数を再帰的に呼び出しています。
 
-また、Python のよる実装では compare_and_swap を呼び出して実際に値を比較して交換していますが、この Sorting_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。
+また、Python のよる実装では compare_and_swap を呼び出して実際に値を比較して交換していますが、この OddEven_MergeSort_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
+package body OddEven_MergeSort_Network is
     -- (前略) --
     procedure oddeven_merge(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
@@ -233,14 +243,14 @@ package body Sorting_Network is
         step := R * 2;
         if (HI - LO > step) then
             oddeven_merge(NETWORK, START_STAGE + 1, LO    , HI, step);
-            oddeven_merge(NETWORK, START_STAGE + 1, LO + r, HI, step);
+            oddeven_merge(NETWORK, START_STAGE + 1, LO + R, HI, step);
             index  := LO + R;
             while (index <= HI - R) loop
-                Add_Comparator(NETWORK, START_STAGE, index, index + R, TRUE);
+                Sorting_Network.Add_Comparator(NETWORK, START_STAGE, index, index + R, TRUE);
                 index := index + step;
             end loop;
         else
-            Add_Comparator(NETWORK, START_STAGE, LO, LO + R, TRUE);
+            Sorting_Network.Add_Comparator(NETWORK, START_STAGE, LO, LO + R, TRUE);
         end if;
         if (START_STAGE > NETWORK.Stage_Hi) then
             NETWORK.Stage_Hi   := START_STAGE;
@@ -248,81 +258,15 @@ package body Sorting_Network is
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;
+end OddEven_MergeSort_Network;
 ```
-
-
-
-#### Add_Comparator 関数
-
-
-Add_Comparator 関数はソーティングネットワークにコンパレーターを追加します。STAGE でコンパレーターを追加するステージを指定します。LO と HI でコンパレーターを挿入する対となるネットワークを指定します。UP でソーティングネットワークの Up/Down の方向を指定します。
-
-
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
-    -- (前略) --
-    procedure  Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    );
-    -- (後略) --
-end Sorting_Network;
-```
-
-
-
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
-    -- (前略) --
-    procedure Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    ) is
-    begin
-        assert (HI - LO > 0)
-            report "Add_Comparator error" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = HI-LO) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).UP   = UP   )))
-            report "Add_Comparator error" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = LO-HI) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).UP   = UP   )))
-            report "Add_Comparator error" severity ERROR;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  := HI-LO;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).UP    := UP;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  := LO-HI;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).UP    := UP;
-    end procedure;
-    -- (後略) --
-end Sorting_Network;
-```
-
-
-
-
 
 
 
 ### バッチャーズ奇偶マージソートの VHDL 記述例
 
 
-前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Oddeven_Sorter_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバッチャーズ奇偶ソートマージ回路を構成した例を示します。
+前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバッチャーズ奇偶ソートマージ回路を構成した例を示します。
 
 
 #### Entity 
@@ -378,6 +322,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of OddEven_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -421,11 +366,11 @@ begin
 ```VHDL:src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd
     CORE: Sorting_Network_Core
         generic map (
-            NETWORK_PARAM   => Sorting_Network.New_OddEven_Sorter_Network(
+            NETWORK_PARAM   => OddEven_MergeSort_Network.New_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,
-                                   QUEUE => QUEUE_SIZE
+                                   QUEUE => Sorting_Network.Constant_Queue_Size(QUEUE_SIZE)
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
             INFO_BITS       => INFO_BITS         -- 
@@ -484,8 +429,9 @@ end RTL;
 * 次回: [「シングルワード マージソート ノード」]
 * 前回: [「バイトニックマージソート」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/oddeven_mergesort_network.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd
 * 出典: [Wikipedia/Batcher_odd-even_mergesort]
 
 

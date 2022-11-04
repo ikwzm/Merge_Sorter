@@ -507,7 +507,7 @@ end Word;
 
 * 目次: [「はじめに」]
 * 次回: [「ワード比較器」]
-* ソースコード:　 https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/word.vhd
+* ソースコード:　 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/word.vhd
 
 
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"

@@ -3,7 +3,7 @@ Creator:Akane
 Encoding:SJISコード
 % OS:WindowsNT 6.2
 
-Profile{NoOfPages=15;
+Profile{NoOfPages=18;
 Comments='マークダウン・テンプレート';
 ExtrTtlRef={
 };
@@ -136,6 +136,13 @@ FrmDim=[4367 0];
 SepStr=' ';
 NoType=none;
 PreNo=off;
+};
+TtlSty5={
+Name='レベル５見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+SepStr=' ';
+NoType=none;
 };
 TtlStyTxt={
 Name='テキスト枠見出し';
@@ -476,6 +483,17 @@ IndtUt=Char;
 Indt=0;
 };
 ParSty={
+Name='レベル５見出し';
+FSize=11;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
 Name='図形枠内段落';
 FFace='Meiryo UI';
 FSize=10;
@@ -731,7 +749,7 @@ ParSty='レベル２見出し';
 }
 Basic[3 0 2 1]{Type=Txt;
 }
-Char[3 0 2 1 0]{CntInfo='ソーティングネットワークとは、ワイヤとコンパレータで構成されます。ワイヤは値を伝えます。コンパレーターは入出力に二本のワイヤをとり、二つの値が入力されると、指定された属性に従って出力をスルーしたりスワップしたりします。';
+Char[3 0 2 1 0]{CntInfo='ソーティングネットワークとは、数列をソートするネットワークで、ワイヤとコンパレータで構成されています。ワイヤは値を伝えます。コンパレーターは入出力に二本のワイヤをとり、二つの値が入力されると、指定された属性に従って出力をスルーしたりスワップしたりします。';
 }
 Basic[3 0 2 2]{Type=Txt;
 }
@@ -2084,7 +2102,7 @@ use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 package Sorting_Network is
-    constant  Max_Network_Size      :  integer := 256;
+    constant  Max_Network_Size      :  integer := 128;
     constant  Max_Stage_Size        :  integer := 256;
     -- (中略) --
     type      Param_Type            is record
@@ -2150,7 +2168,7 @@ Char[3 0 3 2 2 1 0]{CntInfo='Stage_Type およびその配列型である Stage_Vector は S
 }
 Basic[3 0 3 2 2 2]{Type=Txt;
 }
-Char[3 0 3 2 2 2 0]{CntInfo='Stage_Type はネットワーク毎のコンパレーターの情報を保持する Comparator_List とパイプラインレジスタのキューのサイズを保持する Queue_Sizeで構成されています。';
+Char[3 0 3 2 2 2 0]{CntInfo='Stage_Type は、ネットワーク毎のコンパレーター等のオペレーターの情報を保持する Operator_List と、パイプラインレジスタのキューのサイズを保持する Queue_Sizeで構成されています。';
 }
 Comp[3 0 3 2 2 3]{Type=Fig;
 Ctgry=FigInBdy;
@@ -2177,11 +2195,11 @@ package Sorting_Network is
      -- (前略) --
     constant  Max_Stage_Queue_Size  :  integer := 2;
     type      Stage_Type            is record
-                  Comparator_List   :  Comparator_Vector(0 to Max_Network_Size-1);
+                  Operator_List     :  Operator_Vector(0 to Max_Network_Size-1);
                   Queue_Size        :  integer range 0 to Max_Stage_Queue_Size;
     end record;
     constant  Stage_Null            :  Stage_Type := (
-                  Comparator_List   => (others => Comparator_Null),
+                  Operator_List     => (others => Operator_None),
                   Queue_Size        => 0
               );
     type      Stage_Vector          is array (integer range \<>) of Stage_Type;
@@ -2225,18 +2243,18 @@ Char[3 0 3 2 3 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 2 3 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 2 3 0 1 0]{CntInfo='Comparator_Type';
+Char[3 0 3 2 3 0 1 0]{CntInfo='Operator_Type';
 CntSty={
 ParSty='レベル４見出し';
 };
 }
 Basic[3 0 3 2 3 1]{Type=Txt;
 }
-Char[3 0 3 2 3 1 0]{CntInfo='Comparator_Type およびその配列型である Comparator_Vector は Sorting_Network パッケージにて次のように定義されています。';
+Char[3 0 3 2 3 1 0]{CntInfo='Operator_Type およびその配列型である Operator_Vector は Sorting_Network パッケージにて次のように定義されています。';
 }
 Basic[3 0 3 2 3 2]{Type=Txt;
 }
-Char[3 0 3 2 3 2 0]{CntInfo='Comparator_Type は、コンパレーターを接続するネットワークの相対位置を示す SPEP およびコンパレーターの Up/Down を保持する UP で構成されています。';
+Char[3 0 3 2 3 2 0]{CntInfo='Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す SPEP で構成されています。';
 }
 Comp[3 0 3 2 3 3]{Type=Fig;
 Ctgry=FigInBdy;
@@ -2245,7 +2263,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 10594];
+Dim=[16916 11220];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -2261,16 +2279,17 @@ library Merge_Sorter;
 use     Merge_Sorter.Word;
 package Sorting_Network is
      -- (前略) --
-    type      Comparator_Type       is record
+    type      Operator              is (OP_NONE, OP_PASS, OP_COMP_UP, OP_COMP_DOWN);
+    type      Operator_Type         is record
                   STEP              :  integer;
-                  UP                :  boolean;
+                  OP                :  Operator;
     end record;
-    constant  Comparator_Null       :  Comparator_Type := (
+    constant  Operator_None         :  Operator_Type := (
                   STEP              => 0,
-                  UP                => TRUE
+                  OP                => OP_NONE
               );
-    type      Comparator_Vector     is array (integer range \<>) of Comparator_Type;
-    -- (後略) --
+    type      Operator_Vector       is array (integer range \<>) of Operator_Type;
+     -- (後略) --
 end Sorting_Network;';
 CntSty={
 ParSty='VHDL';
@@ -2589,7 +2608,7 @@ vdcintegerprec -32767 32767;
 cliprect (0 0)(7992 3139);
 clip on;
 asf all indiv;
-appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+appldata 5 0 0 200 0 0 0 0 0 0 0 0 0 0 1 0;
 BEGPLANE 0 '';
 linewidth 34;
 lineendcap 5;
@@ -2605,10 +2624,10 @@ line (6377 2598)(7795 2598);
 line (6377 1889)(7795 1889);
 line (6377 1181)(7795 1181);
 line (6378 472)(7796 472);
-figpos (235 998);
-figpos (235 1706);
-figpos (235 2415);
-figpos (235 289);
+figpos (94 993);
+figpos (94 1703);
+figpos (94 2414);
+figpos (94 283);
 figpos (299 -3539);
 ENDPLANE;
 ENDPIC;
@@ -2639,15 +2658,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 3 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 3 0 0 0 1 0 0]{CntInfo='Stage_List(1).Comparator_List(1).(STEP=> 2,UP=TRUE)';
+Char[3 0 3 2 4 3 0 0 0 1 0 0]{CntInfo='Stage_List(1).Operator_List(1).(STEP=> 2,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2657,15 +2676,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 3 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 3 0 0 0 2 0 0]{CntInfo='Stage_List(1).Comparator_List(2).(STEP=>-2,UP=TRUE)';
+Char[3 0 3 2 4 3 0 0 0 2 0 0]{CntInfo='Stage_List(1).Operator_List(2).(STEP=>-2,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2675,15 +2694,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 3 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 3 0 0 0 3 0 0]{CntInfo='Stage_List(1).Comparator_List(3).(STEP=>-2,UP=TRUE)';
+Char[3 0 3 2 4 3 0 0 0 3 0 0]{CntInfo='Stage_List(1).Operator_List(3).(STEP=>-2,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2693,15 +2712,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 777];
 };
 }
 Basic[3 0 3 2 4 3 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 3 0 0 0 4 0 0]{CntInfo='Stage_List(1).Comparator_List(0).(STEP=> 2,UP=TRUE)';
+Char[3 0 3 2 4 3 0 0 0 4 0 0]{CntInfo='Stage_List(1).Operator_List(0).(STEP=> 2,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2716,7 +2735,7 @@ Dim=[12503 777];
 }
 Basic[3 0 3 2 4 3 0 0 0 5 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 3 0 0 0 5 0 0]{CntInfo='Stage_List(1).Comparator_List(0).(STEP=> 2,UP=TRUE)';
+Char[3 0 3 2 4 3 0 0 0 5 0 0]{CntInfo='Stage_List(1).Operator_List(0).(STEP=> 2,OP=>COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=12;
@@ -2776,7 +2795,7 @@ vdcintegerprec -32767 32767;
 cliprect (0 0)(7970 3139);
 clip on;
 asf all indiv;
-appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+appldata 5 0 0 200 0 0 0 0 0 0 0 0 0 0 1 0;
 BEGPLANE 0 '';
 linewidth 34;
 lineendcap 5;
@@ -2792,10 +2811,10 @@ line (6376 2598)(7794 2598);
 line (6376 1896)(7794 1896);
 line (6376 1181)(7794 1181);
 line (6377 472)(7795 472);
-figpos (235 998);
-figpos (235 1706);
-figpos (235 2415);
-figpos (235 289);
+figpos (94 993);
+figpos (94 1703);
+figpos (94 2414);
+figpos (94 283);
 ENDPLANE;
 ENDPIC;
 ENDMF;
@@ -2825,15 +2844,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 4 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 4 0 0 0 1 0 0]{CntInfo='Stage_List(2).Comparator_List(1).(STEP=>-1,UP=TRUE)';
+Char[3 0 3 2 4 4 0 0 0 1 0 0]{CntInfo='Stage_List(2).Operator_List(1).(STEP=>-1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2843,15 +2862,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 4 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 4 0 0 0 2 0 0]{CntInfo='Stage_List(2).Comparator_List(2).(STEP=> 1,UP=TRUE)';
+Char[3 0 3 2 4 4 0 0 0 2 0 0]{CntInfo='Stage_List(2).Operator_List(2).(STEP=> 1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2861,15 +2880,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 4 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 4 0 0 0 3 0 0]{CntInfo='Stage_List(2).Comparator_List(3).(STEP=>-1,UP=TRUE)';
+Char[3 0 3 2 4 4 0 0 0 3 0 0]{CntInfo='Stage_List(2).Operator_List(3).(STEP=>-1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2879,15 +2898,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 777];
 };
 }
 Basic[3 0 3 2 4 4 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 4 0 0 0 4 0 0]{CntInfo='Stage_List(2).Comparator_List(0).(STEP=> 1,UP=TRUE)';
+Char[3 0 3 2 4 4 0 0 0 4 0 0]{CntInfo='Stage_List(2).Operator_List(0).(STEP=> 1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -2944,7 +2963,7 @@ vdcintegerprec -32767 32767;
 cliprect (0 0)(7992 3151);
 clip on;
 asf all indiv;
-appldata 5 0 0 500 0 0 0 0 0 0 0 0 0 0 1 0;
+appldata 5 0 0 200 0 0 0 0 0 0 0 0 0 0 1 0;
 BEGPLANE 0 '';
 linewidth 34;
 lineendcap 5;
@@ -2959,10 +2978,10 @@ line (6376 2598)(7794 2598);
 line (6376 1896)(7794 1896);
 line (6376 1181)(7794 1181);
 line (6377 472)(7795 472);
-figpos (235 998);
-figpos (235 1706);
-figpos (235 2415);
-figpos (235 289);
+figpos (94 993);
+figpos (94 1703);
+figpos (94 2414);
+figpos (94 283);
 ENDPLANE;
 ENDPIC;
 ENDMF;
@@ -2992,15 +3011,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 5 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 5 0 0 0 1 0 0]{CntInfo='Stage_List(3).Comparator_List(1).(STEP=> 1,UP=TRUE)';
+Char[3 0 3 2 4 5 0 0 0 1 0 0]{CntInfo='Stage_List(3).Operator_List(1).(STEP=> 1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -3010,15 +3029,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 5 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 5 0 0 0 2 0 0]{CntInfo='Stage_List(3).Comparator_List(2).(STEP=>-1,UP=TRUE)';
+Char[3 0 3 2 4 5 0 0 0 2 0 0]{CntInfo='Stage_List(3).Operator_List(2).(STEP=>-1,OP=>OP_COMP_UP)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -3028,15 +3047,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 779];
 };
 }
 Basic[3 0 3 2 4 5 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 5 0 0 0 3 0 0]{CntInfo='Stage_List(3).Comparator_List(3).(STEP=>0,UP=TRUE)';
+Char[3 0 3 2 4 5 0 0 0 3 0 0]{CntInfo='Stage_List(3).Operator_List(3).(STEP=>0,OP=>OP_NONE)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -3046,15 +3065,15 @@ FigAttr={
 FigTransparency=on;
 DimType=[on on];
 IMgn=[200 0 0 0];
-Dim=[12503 777];
+Dim=[13204 777];
 };
 }
 Basic[3 0 3 2 4 5 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 2 4 5 0 0 0 4 0 0]{CntInfo='Stage_List(3).Comparator_List(0).(STEP=> 0,UP=TRUE)';
+Char[3 0 3 2 4 5 0 0 0 4 0 0]{CntInfo='Stage_List(3).Operator_List(0).(STEP=> 0,OP=>OP_NONE)';
 CntSty={
 ParSty='図形枠内段落';
-FSize=12;
+FSize=11;
 Align=Start;
 };
 }
@@ -3076,54 +3095,54 @@ CntSty={
 ParSty='図形枠見出し';
 };
 }
-Comp[3 0 3 3]{Type=NoSeg;
+Comp[3 0 4]{Type=NoSeg;
 }
-Comp[3 0 3 3 0]{Type=Ttl;
+Comp[3 0 4 0]{Type=Ttl;
 Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
-ULayedPageNo=8;
+ULayedPageNo=9;
 }
-Basic[3 0 3 3 0 0]{Type=TtlNo;
+Basic[3 0 4 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 0 0 0]{CntInfo=' ';
+Char[3 0 4 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 0 1]{Type=TtlTxt;
+Basic[3 0 4 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 3 0 1 0]{CntInfo='ソーティングネットワークコアの VHDL 記述';
+Char[3 0 4 0 1 0]{CntInfo='ソーティングネットワークコアの VHDL 記述';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 4 1]{Type=Txt;
+}
+Char[3 0 4 1 0]{CntInfo='ソーティングネットワークコアは、前節で定義したソーティングネットワーク構成(Sorting_Network.Param_Type) に基づき、ソーティングネットワークを構築した回路です。';
+}
+Comp[3 0 4 2]{Type=NoSeg;
+}
+Comp[3 0 4 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=9;
+}
+Basic[3 0 4 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 2 0 1 0]{CntInfo='構造';
 CntSty={
 ParSty='レベル３見出し';
 };
 }
-Comp[3 0 3 3 1]{Type=NoSeg;
+Basic[3 0 4 2 1]{Type=Txt;
 }
-Comp[3 0 3 3 1 0]{Type=Ttl;
-Ctgry=TtlInBdy;
-ULayedPageNo=8;
+Char[3 0 4 2 1 0]{CntInfo='ソーティングネットワークコアの構造は次のようになっています。';
 }
-Basic[3 0 3 3 1 0 0]{Type=TtlNo;
-Ctgry=Discard;
-}
-Char[3 0 3 3 1 0 0 0]{CntInfo=' ';
-}
-Basic[3 0 3 3 1 0 1]{Type=TtlTxt;
-}
-Char[3 0 3 3 1 0 1 0]{CntInfo='構造';
-CntSty={
-ParSty='レベル４見出し';
-};
-}
-Basic[3 0 3 3 1 1]{Type=Txt;
-}
-Char[3 0 3 3 1 1 0]{CntInfo='ソーティングネットワークコアは、前節で定義したソーティングネットワーク構成(Sorting_Network.Param_Type) に基づき、ソーティングネットワークを構築します。';
-}
-Basic[3 0 3 3 1 2]{Type=Txt;
-}
-Char[3 0 3 3 1 2 0]{CntInfo='ソーティングネットワークコアの構造は次のようになっています。';
-}
-Comp[3 0 3 3 1 3]{Type=Fig;
+Comp[3 0 4 2 2]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 DimType=[on on];
@@ -3134,11 +3153,11 @@ Dim=[16942 15685];
 TxtAreaSize=[0 353 0 0];
 };
 }
-Comp[3 0 3 3 1 3 0]{Type=Art;
+Comp[3 0 4 2 2 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 1 3 0 0]{}
-Geo[3 0 3 3 1 3 0 0 0]{CntInfo={
+Basic[3 0 4 2 2 0 0]{}
+Geo[3 0 4 2 2 0 0 0]{CntInfo={
 BEGMF 'interchangeV2';
 mfversion 1;
 mfdesc 'Akane V2.0';
@@ -3409,7 +3428,7 @@ ENDPIC;
 ENDMF;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 0]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 0]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3419,16 +3438,16 @@ IMgn=[100 0 100 0];
 Dim=[4502 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 0 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 0 0 0]{CntInfo='Sorting_Network_Core';
+Char[3 0 4 2 2 0 0 0 0 0 0]{CntInfo='Sorting_Network_Core';
 CntSty={
 ParSty='図形枠内段落';
 FSize=10;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 1]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 1]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3438,16 +3457,16 @@ IMgn=[100 0 100 0];
 Dim=[1302 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 1 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 1 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 1 0 0]{CntInfo='OPENER';
+Char[3 0 4 2 2 0 0 0 1 0 0]{CntInfo='OPENER';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 2]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 2]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3456,16 +3475,16 @@ IMgn=[100 0 200 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 2 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 2 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 2 0 0]{CntInfo='I_INFO';
+Char[3 0 4 2 2 0 0 0 2 0 0]{CntInfo='I_INFO';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 3]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 3]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3474,16 +3493,16 @@ IMgn=[100 0 200 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 3 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 3 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 3 0 0]{CntInfo='I_VALID';
+Char[3 0 4 2 2 0 0 0 3 0 0]{CntInfo='I_VALID';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 4]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 4]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3492,16 +3511,16 @@ IMgn=[100 0 200 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 4 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 4 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 4 0 0]{CntInfo='I_READY';
+Char[3 0 4 2 2 0 0 0 4 0 0]{CntInfo='I_READY';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 5]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 5]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3510,16 +3529,16 @@ IMgn=[100 0 200 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 5 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 5 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 5 0 0]{CntInfo='I_WORD';
+Char[3 0 4 2 2 0 0 0 5 0 0]{CntInfo='I_WORD';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 6]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 6]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3528,16 +3547,16 @@ IMgn=[100 0 100 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 6 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 6 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 6 0 0]{CntInfo='O_INFO';
+Char[3 0 4 2 2 0 0 0 6 0 0]{CntInfo='O_INFO';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 7]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 7]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3546,16 +3565,16 @@ IMgn=[100 0 100 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 7 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 7 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 7 0 0]{CntInfo='O_VALID';
+Char[3 0 4 2 2 0 0 0 7 0 0]{CntInfo='O_VALID';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 8]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 8]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3564,16 +3583,16 @@ IMgn=[100 0 100 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 8 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 8 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 8 0 0]{CntInfo='O_READY';
+Char[3 0 4 2 2 0 0 0 8 0 0]{CntInfo='O_READY';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 9]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 9]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3582,16 +3601,16 @@ IMgn=[100 0 100 0];
 Dim=[1503 502];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 9 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 9 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 9 0 0]{CntInfo='O_WORD';
+Char[3 0 4 2 2 0 0 0 9 0 0]{CntInfo='O_WORD';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 10]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 10]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3601,16 +3620,16 @@ IMgn=[100 0 100 0];
 Dim=[1202 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 10 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 10 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 10 0 0]{CntInfo='STAGE=1';
+Char[3 0 4 2 2 0 0 0 10 0 0]{CntInfo='STAGE=1';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 11]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 11]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3620,16 +3639,16 @@ IMgn=[100 0 100 0];
 Dim=[1302 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 11 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 11 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 11 0 0]{CntInfo='OUTLET';
+Char[3 0 4 2 2 0 0 0 11 0 0]{CntInfo='OUTLET';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 12]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 12]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3639,16 +3658,16 @@ IMgn=[100 0 100 0];
 Dim=[1202 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 12 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 12 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 12 0 0]{CntInfo='STAGE=2';
+Char[3 0 4 2 2 0 0 0 12 0 0]{CntInfo='STAGE=2';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 13]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 13]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3658,16 +3677,16 @@ IMgn=[100 0 100 0];
 Dim=[1202 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 13 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 13 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 13 0 0]{CntInfo='STAGE=n';
+Char[3 0 4 2 2 0 0 0 13 0 0]{CntInfo='STAGE=n';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 14]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 14]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3677,16 +3696,16 @@ IMgn=[100 0 100 0];
 Dim=[1302 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 14 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 14 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 14 0 0]{CntInfo='MAIN';
+Char[3 0 4 2 2 0 0 0 14 0 0]{CntInfo='MAIN';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 15]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 15]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3696,16 +3715,16 @@ IMgn=[100 0 100 0];
 Dim=[2201 802];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 15 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 15 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 15 0 0]{CntInfo='Word_Pipeline_Register';
+Char[3 0 4 2 2 0 0 0 15 0 0]{CntInfo='Word_Pipeline_Register';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 16]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 16]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3714,16 +3733,16 @@ IMgn=[0 0 20 0];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 16 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 16 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 16 0 0]{CntInfo='I_WORD';
+Char[3 0 4 2 2 0 0 0 16 0 0]{CntInfo='I_WORD';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 17]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 17]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3732,16 +3751,16 @@ IMgn=[0 0 0 20];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 17 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 17 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 17 0 0]{CntInfo='O_WORD';
+Char[3 0 4 2 2 0 0 0 17 0 0]{CntInfo='O_WORD';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=End;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 18]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 18]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3750,16 +3769,16 @@ IMgn=[0 0 20 0];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 18 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 18 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 18 0 0]{CntInfo='I_INFO';
+Char[3 0 4 2 2 0 0 0 18 0 0]{CntInfo='I_INFO';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 19]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 19]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3768,16 +3787,16 @@ IMgn=[0 0 20 0];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 19 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 19 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 19 0 0]{CntInfo='I_VALID';
+Char[3 0 4 2 2 0 0 0 19 0 0]{CntInfo='I_VALID';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 20]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 20]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3786,16 +3805,16 @@ IMgn=[0 0 20 0];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 20 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 20 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 20 0 0]{CntInfo='I_READY';
+Char[3 0 4 2 2 0 0 0 20 0 0]{CntInfo='I_READY';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 21]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 21]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3804,16 +3823,16 @@ IMgn=[0 0 0 20];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 21 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 21 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 21 0 0]{CntInfo='O_INFO';
+Char[3 0 4 2 2 0 0 0 21 0 0]{CntInfo='O_INFO';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=End;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 22]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 22]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3822,16 +3841,16 @@ IMgn=[0 0 0 20];
 Dim=[1003 301];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 22 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 22 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 22 0 0]{CntInfo='O_VALID';
+Char[3 0 4 2 2 0 0 0 22 0 0]{CntInfo='O_VALID';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=End;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 23]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 23]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3840,16 +3859,16 @@ IMgn=[0 0 0 20];
 Dim=[1103 252];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 23 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 23 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 23 0 0]{CntInfo='O_READY';
+Char[3 0 4 2 2 0 0 0 23 0 0]{CntInfo='O_READY';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=End;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 24]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 24]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3859,17 +3878,17 @@ IMgn=[100 0 100 0];
 Dim=[1801 703];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 24 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 24 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 24 0 0]{CntInfo='Word_
-Comparator';
+Char[3 0 4 2 2 0 0 0 24 0 0]{CntInfo='Word_
+Compare';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 25]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 25]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3879,16 +3898,16 @@ IMgn=[100 0 100 0];
 Dim=[1202 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 25 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 25 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 25 0 0]{CntInfo='STAGE=n';
+Char[3 0 4 2 2 0 0 0 25 0 0]{CntInfo='STAGE=n';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 26]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 26]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3897,16 +3916,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 26 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 26 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 26 0 0]{CntInfo='stage_word(n)(0)';
+Char[3 0 4 2 2 0 0 0 26 0 0]{CntInfo='stage_word(n)(0)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 27]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 27]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3915,16 +3934,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 27 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 27 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 27 0 0]{CntInfo='stage_word(n)(1)';
+Char[3 0 4 2 2 0 0 0 27 0 0]{CntInfo='stage_word(n)(1)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 28]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 28]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3933,16 +3952,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 28 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 28 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 28 0 0]{CntInfo='stage_word(n)(2)';
+Char[3 0 4 2 2 0 0 0 28 0 0]{CntInfo='stage_word(n)(2)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 29]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 29]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3951,16 +3970,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 29 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 29 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 29 0 0]{CntInfo='stage_word(n)(3)';
+Char[3 0 4 2 2 0 0 0 29 0 0]{CntInfo='stage_word(n)(3)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 30]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 30]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3969,16 +3988,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 30 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 30 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 30 0 0]{CntInfo='stage_info(n)';
+Char[3 0 4 2 2 0 0 0 30 0 0]{CntInfo='stage_info(n)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 31]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 31]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -3987,16 +4006,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 31 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 31 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 31 0 0]{CntInfo='stage_valid(n)';
+Char[3 0 4 2 2 0 0 0 31 0 0]{CntInfo='stage_valid(n)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 32]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 32]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4005,16 +4024,16 @@ IMgn=[100 0 100 0];
 Dim=[3203 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 32 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 32 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 32 0 0]{CntInfo='stage_ready(n)';
+Char[3 0 4 2 2 0 0 0 32 0 0]{CntInfo='stage_ready(n)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 33]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 33]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4023,16 +4042,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 33 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 33 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 33 0 0]{CntInfo='stage_word(n-1)(0)';
+Char[3 0 4 2 2 0 0 0 33 0 0]{CntInfo='stage_word(n-1)(0)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 34]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 34]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4041,16 +4060,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 34 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 34 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 34 0 0]{CntInfo='stage_word(n-1)(1)';
+Char[3 0 4 2 2 0 0 0 34 0 0]{CntInfo='stage_word(n-1)(1)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 35]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 35]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4059,16 +4078,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 35 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 35 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 35 0 0]{CntInfo='stage_word(n-1)(2)';
+Char[3 0 4 2 2 0 0 0 35 0 0]{CntInfo='stage_word(n-1)(2)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 36]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 36]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4077,16 +4096,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 36 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 36 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 36 0 0]{CntInfo='stage_word(n-1)(3)';
+Char[3 0 4 2 2 0 0 0 36 0 0]{CntInfo='stage_word(n-1)(3)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 37]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 37]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4095,16 +4114,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 37 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 37 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 37 0 0]{CntInfo='stage_info(n-1)';
+Char[3 0 4 2 2 0 0 0 37 0 0]{CntInfo='stage_info(n-1)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 38]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 38]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4113,16 +4132,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 38 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 38 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 38 0 0]{CntInfo='stage_valid(n-1)';
+Char[3 0 4 2 2 0 0 0 38 0 0]{CntInfo='stage_valid(n-1)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 39]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 39]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4131,16 +4150,16 @@ IMgn=[100 0 100 0];
 Dim=[3001 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 39 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 39 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 39 0 0]{CntInfo='stage_ready(n-1)';
+Char[3 0 4 2 2 0 0 0 39 0 0]{CntInfo='stage_ready(n-1)';
 CntSty={
 ParSty='図形枠内段落';
 FSize=8;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 40]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 40]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4150,16 +4169,16 @@ IMgn=[100 0 100 0];
 Dim=[802 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 40 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 40 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 40 0 0]{CntInfo='net=1';
+Char[3 0 4 2 2 0 0 0 40 0 0]{CntInfo='net=1';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 41]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 41]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4169,16 +4188,16 @@ IMgn=[100 0 100 0];
 Dim=[802 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 41 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 41 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 41 0 0]{CntInfo='net=0';
+Char[3 0 4 2 2 0 0 0 41 0 0]{CntInfo='net=0';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 0 0 0 42]{Type=Fig;
+Comp[3 0 4 2 2 0 0 0 42]{Type=Fig;
 Ctgry=Nest;
 FigAttr={
 FigTransparency=on;
@@ -4188,83 +4207,83 @@ IMgn=[100 0 100 0];
 Dim=[802 402];
 };
 }
-Basic[3 0 3 3 1 3 0 0 0 42 0]{Type=ArtTxt;
+Basic[3 0 4 2 2 0 0 0 42 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 1 3 0 0 0 42 0 0]{CntInfo='net=3';
+Char[3 0 4 2 2 0 0 0 42 0 0]{CntInfo='net=3';
 CntSty={
 ParSty='図形枠内段落';
 FSize=6;
 Align=Start;
 };
 }
-Comp[3 0 3 3 1 3 1]{Type=Desc;
+Comp[3 0 4 2 2 1]{Type=Desc;
 Ctgry=StdInBCap;
 }
-Comp[3 0 3 3 1 3 1 0]{Type=Cap;
+Comp[3 0 4 2 2 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 1 3 1 0 0]{Type=CapNo;
+Basic[3 0 4 2 2 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 1 3 1 0 0 0]{CntInfo='Fig.9 ';
+Char[3 0 4 2 2 1 0 0 0]{CntInfo='Fig.9 ';
 }
-Basic[3 0 3 3 1 3 1 0 1]{Type=CapTxt;
+Basic[3 0 4 2 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 1 3 1 0 1 0]{CntInfo='ソーティングネットワークコアの構成';
+Char[3 0 4 2 2 1 0 1 0]{CntInfo='ソーティングネットワークコアの構成';
 CntSty={
 ParSty='図形枠見出し';
 };
 }
-Comp[3 0 3 3 2]{Type=NoSeg;
+Comp[3 0 4 3]{Type=NoSeg;
 }
-Comp[3 0 3 3 2 0]{Type=Ttl;
+Comp[3 0 4 3 0]{Type=Ttl;
 Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
-ULayedPageNo=9;
+ULayedPageNo=10;
 }
-Basic[3 0 3 3 2 0 0]{Type=TtlNo;
+Basic[3 0 4 3 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 2 0 0 0]{CntInfo=' ';
+Char[3 0 4 3 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 2 0 1]{Type=TtlTxt;
+Basic[3 0 4 3 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 3 2 0 1 0]{CntInfo='Entity ';
+Char[3 0 4 3 0 1 0]{CntInfo='Entity ';
 CntSty={
-ParSty='レベル４見出し';
+ParSty='レベル３見出し';
 };
 }
-Basic[3 0 3 3 2 1]{Type=Txt;
+Basic[3 0 4 3 1]{Type=Txt;
 }
-Char[3 0 3 3 2 1 0]{CntInfo='ジェネリック変数の NETWORK_PARAM でソーティングネットワークの構成を指定します。WORD_PARAM で[「ワードの定義」]を指定します。INFO_BITS はソーティングネットワークを通すその他の情報のビット数を指定します。';
+Char[3 0 4 3 1 0]{CntInfo='ジェネリック変数の NETWORK_PARAM でソーティングネットワークの構成を指定します。WORD_PARAM で[「ワードの定義」]を指定します。INFO_BITS はソーティングネットワークを通すその他の情報のビット数を指定します。';
 }
-Basic[3 0 3 3 2 2]{Type=Txt;
+Basic[3 0 4 3 2]{Type=Txt;
 }
-Char[3 0 3 3 2 2 0]{CntInfo='I_WORD はソーティングネットワークに入力するネットワーク毎のワードで、O_WORD はソートされたネットワーク毎のワードです。I_WORD および O_WORD はネットワーク毎のワードを一次元のビット配列(std_logic_vector)にしたものです。';
+Char[3 0 4 3 2 0]{CntInfo='I_WORD はソーティングネットワークに入力するネットワーク毎のワードで、O_WORD はソートされたネットワーク毎のワードです。I_WORD および O_WORD はネットワーク毎のワードを一次元のビット配列(std_logic_vector)にしたものです。';
 }
-Basic[3 0 3 3 2 3]{Type=Txt;
+Basic[3 0 4 3 3]{Type=Txt;
 }
-Char[3 0 3 3 2 3 0]{CntInfo='I_INFO はその他の情報を入力し、O_INFO から内部のパイプライン分だけ遅延されて出力されます。';
+Char[3 0 4 3 3 0]{CntInfo='I_INFO はその他の情報を入力し、O_INFO から内部のパイプライン分だけ遅延されて出力されます。';
 }
-Comp[3 0 3 3 2 4]{Type=Fig;
+Comp[3 0 4 3 4]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 14956];
+Dim=[16916 16472];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 2 4 0]{Type=Art;
+Comp[3 0 4 3 4 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 2 4 0 0]{Type=ArtTxt;
+Basic[3 0 4 3 4 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 2 4 0 0 0]{CntInfo='library ieee;
+Char[3 0 4 3 4 0 0 0]{CntInfo='library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
@@ -4295,66 +4314,84 @@ CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 2 4 1]{Type=Desc;
+Comp[3 0 4 3 4 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 2 4 1 0]{Type=Cap;
+Comp[3 0 4 3 4 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 2 4 1 0 0]{Type=CapNo;
+Basic[3 0 4 3 4 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 2 4 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 3 4 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 2 4 1 0 1]{Type=CapTxt;
+Basic[3 0 4 3 4 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 2 4 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 3 4 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Comp[3 0 3 3 3]{Type=NoSeg;
+Comp[3 0 4 4]{Type=NoSeg;
 }
-Comp[3 0 3 3 3 0]{Type=Ttl;
+Comp[3 0 4 4 0]{Type=Ttl;
 Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
-ULayedPageNo=10;
+ULayedPageNo=11;
 }
-Basic[3 0 3 3 3 0 0]{Type=TtlNo;
+Basic[3 0 4 4 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 0 1]{Type=TtlTxt;
+Basic[3 0 4 4 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 3 3 0 1 0]{CntInfo='Architecture';
+Char[3 0 4 4 0 1 0]{CntInfo='Architecture';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Comp[3 0 4 4 1]{Type=NoSeg;
+}
+Comp[3 0 4 4 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=11;
+}
+Basic[3 0 4 4 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 4 1 0 1 0]{CntInfo='定数および信号の定義';
 CntSty={
 ParSty='レベル４見出し';
 };
 }
-Basic[3 0 3 3 3 1]{Type=Txt;
+Basic[3 0 4 4 1 1]{Type=Txt;
 }
-Char[3 0 3 3 3 1 0]{CntInfo='まずは Sorting_Network_Core 内部で使用するタイプおよびステージ毎の各種信号を定義します。';
+Char[3 0 4 4 1 1 0]{CntInfo='まずは Sorting_Network_Core 内部で使用するタイプおよびステージ毎の各種信号を定義します。';
 }
-Comp[3 0 3 3 3 2]{Type=Fig;
+Comp[3 0 4 4 1 2]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 15445];
+Dim=[16916 14493];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 2 0]{Type=Art;
+Comp[3 0 4 4 1 2 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 2 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 1 2 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 2 0 0 0]{CntInfo='library ieee;
+Char[3 0 4 4 1 2 0 0 0]{CntInfo='library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
@@ -4366,55 +4403,67 @@ architecture RTL of Sorting_Network_Core is
     constant  STAGE_OPENER      :  integer := NETWORK_PARAM.Stage_Lo - 1;
     constant  STAGE_FIRST       :  integer := NETWORK_PARAM.Stage_Lo;
     constant  STAGE_LAST        :  integer := NETWORK_PARAM.Stage_Hi;
-
     subtype   WORD_TYPE         is std_logic_vector (WORD_PARAM.BITS-1 downto 0);
     type      STAGE_WORD_TYPE   is array (NETWORK_PARAM.Lo to NETWORK_PARAM.Hi) of WORD_TYPE;
     type      STAGE_WORD_VECTOR is array (integer range \<>) of STAGE_WORD_TYPE;
     signal    stage_word        :  STAGE_WORD_VECTOR(STAGE_OPENER to STAGE_LAST);
-
     subtype   STAGE_INFO_TYPE   is std_logic_vector (INFO_BITS-1 downto 0);
     type      STAGE_INFO_VECTOR is array (integer range \<>) of STAGE_INFO_TYPE;
     signal    stage_info        :  STAGE_INFO_VECTOR(STAGE_OPENER to STAGE_LAST);
-
     signal    stage_valid       :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
     signal    stage_ready       :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
     signal    stage_busy        :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
     constant  STAGE_BUSY_ALL0   :  std_logic_vector (STAGE_OPENER to STAGE_LAST) := (others => \'0\');
-begin';
+begin
+';
 CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 2 1]{Type=Desc;
+Comp[3 0 4 4 1 2 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 2 1 0]{Type=Cap;
+Comp[3 0 4 4 1 2 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 2 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 1 2 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 2 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 1 2 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 2 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 1 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 3 3 3]{Type=Txt;
+Comp[3 0 4 4 2]{Type=NoSeg;
 }
-Char[3 0 3 3 3 3 0]{CntInfo='';
-}
-Basic[3 0 3 3 3 4]{Type=Txt;
+Comp[3 0 4 4 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
+ULayedPageNo=12;
 }
-Char[3 0 3 3 3 4 0]{CntInfo=' I_WORD はソーティングネットワークに入力するネットワーク毎のワードで、ネットワーク毎のワードを一次元のビット配列(std_logic_vector)にしたものです。OPENER ブロックでは I_WORD を内部の信号に変換します。';
+Basic[3 0 4 4 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
 }
-Comp[3 0 3 3 3 5]{Type=Fig;
+Char[3 0 4 4 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 4 2 0 1 0]{CntInfo='OPENER Block';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 4 4 2 1]{Type=Txt;
+}
+Char[3 0 4 4 2 1 0]{CntInfo=' I_WORD はソーティングネットワークに入力するネットワーク毎のワードで、ネットワーク毎のワードを一次元のビット配列(std_logic_vector)にしたものです。OPENER ブロックでは I_WORD を内部の信号に変換します。';
+}
+Comp[3 0 4 4 2 2]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
@@ -4425,12 +4474,12 @@ Dim=[16866 6458];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 5 0]{Type=Art;
+Comp[3 0 4 4 2 2 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 5 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 2 2 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 5 0 0 0]{CntInfo='    OPENER: block
+Char[3 0 4 4 2 2 0 0 0]{CntInfo='    OPENER: block
     begin
         NET: for i in 0 to NETWORK_PARAM.Size-1 generate
             stage_word(STAGE_OPENER)(NETWORK_PARAM.Lo+i) \<= I_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
@@ -4445,50 +4494,68 @@ CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 5 1]{Type=Desc;
+Comp[3 0 4 4 2 2 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 5 1 0]{Type=Cap;
+Comp[3 0 4 4 2 2 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 5 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 2 2 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 5 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 2 2 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 5 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 2 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 5 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 3 3 6]{Type=Txt;
+Comp[3 0 4 4 3]{Type=NoSeg;
 }
-Char[3 0 3 3 3 6 0]{CntInfo='';
+Comp[3 0 4 4 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=13;
 }
-Basic[3 0 3 3 3 7]{Type=Txt;
+Basic[3 0 4 4 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
 }
-Char[3 0 3 3 3 7 0]{CntInfo='ステージ毎に generate 分を使って記述します。';
+Char[3 0 4 4 3 0 0 0]{CntInfo=' ';
 }
-Comp[3 0 3 3 3 8]{Type=Fig;
+Basic[3 0 4 4 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 4 3 0 1 0]{CntInfo='MAIN Block';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 4 4 3 1]{Type=Txt;
+}
+Char[3 0 4 4 3 1 0]{CntInfo='ステージ毎に generate 文を使って記述します。';
+}
+Comp[3 0 4 4 3 2]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 2428];
+Dim=[16916 3183];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 8 0]{Type=Art;
+Comp[3 0 4 4 3 2 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 8 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 3 2 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 8 0 0 0]{CntInfo='    MAIN: for stage in STAGE_FIRST to STAGE_LAST generate
-        constant  Stage_Param   :  Sorting_Network.Stage_Type := NETWORK_PARAM.Stage_List(stage);
+Char[3 0 4 4 3 2 0 0 0]{CntInfo='    MAIN: for stage in STAGE_FIRST to STAGE_LAST generate
+        constant  Stage_Param   :  Sorting_Network.Stage_Type 
+                                := NETWORK_PARAM.Stage_List(stage);
         signal    sorted_word   :  STAGE_WORD_TYPE;
     begin
           ';
@@ -4496,146 +4563,285 @@ CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 8 1]{Type=Desc;
+Comp[3 0 4 4 3 2 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 8 1 0]{Type=Cap;
+Comp[3 0 4 4 3 2 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 8 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 3 2 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 8 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 3 2 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 8 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 3 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 8 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 3 3 9]{Type=Txt;
+Basic[3 0 4 4 3 3]{Type=Txt;
 }
-Char[3 0 3 3 3 9 0]{CntInfo='';
+Char[3 0 4 4 3 3 0]{CntInfo='';
 }
-Basic[3 0 3 3 3 10]{Type=Txt;
-LaySty={
-NLO=page;
-};
+Basic[3 0 4 4 3 4]{Type=Txt;
 }
-Char[3 0 3 3 3 10 0]{CntInfo='ステージ内のさらにネットワーク毎にコンパレーターを記述します。';
+Char[3 0 4 4 3 4 0]{CntInfo='ステージ内のさらにネットワーク毎にオペレーターの挙動を記述します。';
 }
-Basic[3 0 3 3 3 11]{Type=Txt;
-}
-Char[3 0 3 3 3 11 0]{CntInfo='STEPが正の値の時は対となるネットワークが自ネットワーク番号＋STEPに存在します。この場合は対となるネットワークとの間にコンパレーターを接続して、その結果に応じて入力ワードを交換します。';
-}
-Basic[3 0 3 3 3 12]{Type=Txt;
-}
-Char[3 0 3 3 3 12 0]{CntInfo='STEP が0の時はコンパレーターを使わずに入力ワードをそのまま出力します。';
-}
-Basic[3 0 3 3 3 13]{Type=Txt;
-}
-Char[3 0 3 3 3 13 0]{CntInfo='STEP が負の値の時は、すでに対となるネットワーク(STEPの値が正のネットワーク)にてコンパレーターが接続されているので何もしません。';
-}
-Comp[3 0 3 3 3 14]{Type=Fig;
+Comp[3 0 4 4 3 5]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16866 20475];
+Dim=[16916 2449];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 14 0]{Type=Art;
+Comp[3 0 4 4 3 5 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 14 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 3 5 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 14 0 0 0]{CntInfo='        NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
-            constant  STEP           :  integer := Stage_Param.Comparator_List(i).STEP;
-            constant  UP             :  boolean := Stage_Param.Comparator_List(i).UP;
+Char[3 0 4 4 3 5 0 0 0]{CntInfo='        NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
+            constant  OP   :  Sorting_Network.Operator_Type := Stage_Param.Operator_List(i);
+            constant  STEP :  integer := OP.STEP;
         begin
-            XCHG: if STEP > 0 generate
-                signal    comp_sel_a     :  std_logic;
-                signal    comp_sel_b     :  std_logic;
-                signal    swap           :  boolean;
-            begin
-                COMP: Word_Compare                                    --
-                    generic map(                                      --
-                        WORD_PARAM  => WORD_PARAM                   , -- 
-                        SORT_ORDER  => NETWORK_PARAM.Sort_Order       -- 
-                    )                                                 -- 
-                    port map (                                        --
-                        CLK         => CLK                          , -- In  :
-                        RST         => RST                          , -- In  :
-                        CLR         => CLR                          , -- In  :
-                        A_WORD      => stage_word(stage-1)(i     )  , -- In  :
-                        B_WORD      => stage_word(stage-1)(i+STEP)  , -- In  :
-                        VALID       => \'1\'                          , -- In  :
-                        READY       => open                         , -- Out :
-                        SEL_A       => comp_sel_a                   , -- Out :
-                        SEL_B       => comp_sel_b                     -- Out :
-                    );                                                --
-                swap \<= (comp_sel_b = \'1\' and UP = TRUE ) or
-                        (comp_sel_a = \'1\' and UP = FALSE);
-                sorted_word(i     ) \<= stage_word(stage-1)(i+STEP) when (swap) else
-                                       stage_word(stage-1)(i     );
-                sorted_word(i+STEP) \<= stage_word(stage-1)(i     ) when (swap) else
-                                       stage_word(stage-1)(i+STEP);
-            end generate;
-            PASS: if STEP = 0 generate
-                sorted_word(i     ) \<= stage_word(stage-1)(i     );
-            end generate;
-        end generate;
-  ';
+            ';
 CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 14 1]{Type=Desc;
+Comp[3 0 4 4 3 5 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 14 1 0]{Type=Cap;
+Comp[3 0 4 4 3 5 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 14 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 3 5 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 14 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 3 5 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 14 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 3 5 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 14 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 3 5 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 3 3 15]{Type=Txt;
-LaySty={
-NLO=page;
-};
+Basic[3 0 4 4 3 6]{Type=Txt;
 }
-Char[3 0 3 3 3 15 0]{CntInfo='ステージ毎にパイプラインレジスタを挿入します。';
+Char[3 0 4 4 3 6 0]{CntInfo='';
 }
-Comp[3 0 3 3 3 16]{Type=Fig;
+Basic[3 0 4 4 3 7]{Type=Txt;
+}
+Char[3 0 4 4 3 7 0]{CntInfo='オペレーターがコンパレータの場合でSTEPが正の値の時は対となるネットワークが自ネットワーク番号＋STEPに存在します。この場合は対となるネットワークとの間にコンパレーターを接続して、その結果に応じて入力ワードを交換します。';
+}
+Basic[3 0 4 4 3 8]{Type=Txt;
+}
+Char[3 0 4 4 3 8 0]{CntInfo='STEP が0の時はコンパレーターを使わずに入力ワードをそのまま出力します。';
+}
+Basic[3 0 4 4 3 9]{Type=Txt;
+}
+Char[3 0 4 4 3 9 0]{CntInfo='STEP が負の値の時は、すでに対となるネットワーク(STEPの値が正のネットワーク)にてコンパレーターが接続されているので何もしません。';
+}
+Comp[3 0 4 4 3 10]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16895 20024];
+Dim=[16916 17780];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 16 0]{Type=Art;
+Comp[3 0 4 4 3 10 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 16 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 3 10 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 16 0 0 0]{CntInfo='        REGS: block
+Char[3 0 4 4 3 10 0 0 0]{CntInfo='            OP_COMP: if Sorting_Network.Operator_Is_Comp(OP) generate
+                constant  UP   :  boolean := Sorting_Network.Operator_Is_Comp_Up(OP);
+            begin 
+                COMP: if (STEP > 0) generate
+                    signal    swap      :  boolean;
+                    signal    sel_a     :  std_logic;
+                    signal    sel_b     :  std_logic;
+                begin
+                    U: Word_Compare                                      --
+                        generic map(                                     --
+                            WORD_PARAM  => WORD_PARAM                  , -- 
+                            SORT_ORDER  => NETWORK_PARAM.Sort_Order      -- 
+                        )                                                -- 
+                        port map (                                       --
+                            CLK         => CLK                         , -- In  :
+                            RST         => RST                         , -- In  :
+                            CLR         => CLR                         , -- In  :
+                            A_WORD      => stage_word(stage-1)(i     ) , -- In  :
+                            B_WORD      => stage_word(stage-1)(i+STEP) , -- In  :
+                            VALID       => \'1\'                         , -- In  :
+                            READY       => open                        , -- Out :
+                            SEL_A       => sel_a                       , -- Out :
+                            SEL_B       => sel_b                         -- Out :
+                        );                                               --
+                    swap \<= (sel_b = \'1\' and UP = TRUE ) or
+                            (sel_a = \'1\' and UP = FALSE);
+                    sorted_word(i     ) \<= stage_word(stage-1)(i+STEP) when (swap) else
+                                           stage_word(stage-1)(i     );
+                    sorted_word(i+STEP) \<= stage_word(stage-1)(i     ) when (swap) else
+                                           stage_word(stage-1)(i+STEP);
+                end generate;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 4 3 10 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 4 3 10 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 4 3 10 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 4 3 10 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 3 10 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 4 3 10 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 4 3 11]{Type=Txt;
+}
+Char[3 0 4 4 3 11 0]{CntInfo='';
+}
+Basic[3 0 4 4 3 12]{Type=Txt;
+}
+Char[3 0 4 4 3 12 0]{CntInfo='オペレーターが OP_PASS だった場合は、対象となるネットワークが自ネットワーク番号＋STEPに存在するので、そのネットワークを自ネットワークに接続します。';
+}
+Comp[3 0 4 4 3 13]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 1966];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 4 3 13 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 4 3 13 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 4 3 13 0 0 0]{CntInfo='　　　　　　OP_PASS: if Sorting_Network.Operator_Is_Pass(OP) generate
+                    sorted_word(i     ) \<= stage_word(stage-1)(i+STEP);
+            end generate;            ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 4 3 13 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 4 3 13 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 4 3 13 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 4 3 13 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 3 13 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 4 3 13 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 4 3 14]{Type=Txt;
+}
+Char[3 0 4 4 3 14 0]{CntInfo='';
+}
+Basic[3 0 4 4 3 15]{Type=Txt;
+}
+Char[3 0 4 4 3 15 0]{CntInfo='オペレーターが OP_NONE だった場合は、何もせずにネットワークを継続します。';
+}
+Comp[3 0 4 4 3 16]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 2483];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 4 3 16 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 4 3 16 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 4 3 16 0 0 0]{CntInfo='       　   OP_NONE: if Sorting_Network.Operator_Is_None(OP) generate
+                    sorted_word(i     ) \<= stage_word(stage-1)(i     );
+            end generate;
+        end generate;
+      ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 4 4 3 16 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 4 4 3 16 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 4 4 3 16 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 4 4 3 16 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 3 16 1 0 1]{Type=CapTxt;
+}
+Char[3 0 4 4 3 16 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 4 4 3 17]{Type=Txt;
+}
+Char[3 0 4 4 3 17 0]{CntInfo='';
+}
+Basic[3 0 4 4 3 18]{Type=Txt;
+}
+Char[3 0 4 4 3 18 0]{CntInfo='ステージ毎にパイプラインレジスタを挿入します。';
+}
+Comp[3 0 4 4 3 19]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16819 21192];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 4 4 3 19 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 4 4 3 19 0 0]{Type=ArtTxt;
+}
+Char[3 0 4 4 3 19 0 0 0]{CntInfo='        REGS: block
             signal    d_word    :  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
             signal    q_word    :  std_logic_vector(NETWORK_PARAM.Size*WORD_PARAM.BITS-1 downto 0);
         begin
@@ -4675,36 +4881,56 @@ CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 16 1]{Type=Desc;
+Comp[3 0 4 4 3 19 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 16 1 0]{Type=Cap;
+Comp[3 0 4 4 3 19 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 16 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 3 19 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 16 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 3 19 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 16 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 3 19 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 16 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 3 19 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 3 3 17]{Type=Txt;
+Comp[3 0 4 4 4]{Type=NoSeg;
 }
-Char[3 0 3 3 3 17 0]{CntInfo='';
+Comp[3 0 4 4 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=17;
 }
-Basic[3 0 3 3 3 18]{Type=Txt;
+Basic[3 0 4 4 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 4 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 4 4 0 1]{Type=TtlTxt;
 LaySty={
 NLO=page;
 };
 }
-Char[3 0 3 3 3 18 0]{CntInfo=' O_WORD はネットワーク毎のソート済みのワードを一次元のビット配列(std_logic_vector)にしたものです。OUTLET ブロックではソート済みの各ネットワークの出力ワードを O_WORD に変換します。';
+Char[3 0 4 4 4 0 1 0]{CntInfo='OUTLET Block';
+CntSty={
+ParSty='レベル４見出し';
+};
 }
-Comp[3 0 3 3 3 19]{Type=Fig;
+Basic[3 0 4 4 4 1]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 4 4 4 1 0]{CntInfo=' O_WORD はネットワーク毎のソート済みのワードを一次元のビット配列(std_logic_vector)にしたものです。OUTLET ブロックではソート済みの各ネットワークの出力ワードを O_WORD に変換します。';
+}
+Comp[3 0 4 4 4 2]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 FrmLineVis=[on on on on];
@@ -4715,16 +4941,16 @@ Dim=[16916 7491];
 TxtAreaSize=[353 0 0 0];
 };
 }
-Comp[3 0 3 3 3 19 0]{Type=Art;
+Comp[3 0 4 4 4 2 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 3 3 3 19 0 0]{Type=ArtTxt;
+Basic[3 0 4 4 4 2 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 3 3 19 0 0 0]{CntInfo='    OUTLET: block
+Char[3 0 4 4 4 2 0 0 0]{CntInfo='    OUTLET: block
     begin
         NET: for i in 0 to NETWORK_PARAM.Size-1 generate
             O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS)
-                \<= stage_word(STAGE_LAST)(i+NETWORK_PARAM.Lo);
+                \<= stage_word (STAGE_LAST)(i+NETWORK_PARAM.Lo);
         end generate;
         O_INFO  \<= stage_info (STAGE_LAST);
         O_VALID \<= stage_valid(STAGE_LAST);
@@ -4737,70 +4963,70 @@ CntSty={
 ParSty='VHDL';
 };
 }
-Comp[3 0 3 3 3 19 1]{Type=Desc;
+Comp[3 0 4 4 4 2 1]{Type=Desc;
 Ctgry=StdInTCap;
 }
-Comp[3 0 3 3 3 19 1 0]{Type=Cap;
+Comp[3 0 4 4 4 2 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 3 3 3 19 1 0 0]{Type=CapNo;
+Basic[3 0 4 4 4 2 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 3 3 3 19 1 0 0 0]{CntInfo=' ';
+Char[3 0 4 4 4 2 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 3 3 3 19 1 0 1]{Type=CapTxt;
+Basic[3 0 4 4 4 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 3 3 19 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 4 4 4 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Comp[3 0 4]{Type=NoSeg;
+Comp[3 0 5]{Type=NoSeg;
 }
-Comp[3 0 4 0]{Type=Ttl;
+Comp[3 0 5 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=15;
+ULayedPageNo=18;
 }
-Basic[3 0 4 0 0]{Type=TtlNo;
+Basic[3 0 5 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 4 0 0 0]{CntInfo=' ';
+Char[3 0 5 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 4 0 1]{Type=TtlTxt;
+Basic[3 0 5 0 1]{Type=TtlTxt;
 }
-Char[3 0 4 0 1 0]{CntInfo='参照';
+Char[3 0 5 0 1 0]{CntInfo='参照';
 CntSty={
 ParSty='レベル２見出し';
 };
 }
-Basic[3 0 4 1]{Type=Txt;
+Basic[3 0 5 1]{Type=Txt;
 }
-Char[3 0 4 1 0]{CntInfo='・目次: [「はじめに」]';
+Char[3 0 5 1 0]{CntInfo='・目次: [「はじめに」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 2]{Type=Txt;
+Basic[3 0 5 2]{Type=Txt;
 }
-Char[3 0 4 2 0]{CntInfo='・次回: [「バイトニックマージソート」]';
+Char[3 0 5 2 0]{CntInfo='・次回: [「バイトニックマージソート」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 3]{Type=Txt;
+Basic[3 0 5 3]{Type=Txt;
 }
-Char[3 0 4 3 0]{CntInfo='・前回: [「ワード比較器」]';
+Char[3 0 5 3 0]{CntInfo='・前回: [「ワード比較器」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 4]{Type=Txt;
+Basic[3 0 5 4]{Type=Txt;
 }
-Char[3 0 4 4 0]{CntInfo='・ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network_core.vhd';
+Char[3 0 5 4 0]{CntInfo='・ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network_core.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

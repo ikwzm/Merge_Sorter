@@ -3,7 +3,7 @@ Creator:Akane
 Encoding:SJISコード
 % OS:WindowsNT 6.2
 
-Profile{NoOfPages=14;
+Profile{NoOfPages=12;
 Comments='マークダウン・テンプレート';
 ExtrTtlRef={
 };
@@ -1032,14 +1032,14 @@ Char[3 0 3 1 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 1 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 1 1 0 1 0]{CntInfo='New_Bitonic_Sorter_Network 関数';
+Char[3 0 3 1 1 0 1 0]{CntInfo='New_Network 関数';
 CntSty={
 ParSty='レベル４見出し';
 };
 }
 Basic[3 0 3 1 1 1]{Type=Txt;
 }
-Char[3 0 3 1 1 1 0]{CntInfo='New_Bitonic_Sorter_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Bitonic_Sorter_Network 関数は Sorting_Network パッケージにて定義しています。';
+Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
 }
 Comp[3 0 3 1 1 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1048,7 +1048,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 5704];
+Dim=[16916 11703];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1061,12 +1061,22 @@ Char[3 0 3 1 1 2 0 0 0]{CntInfo='library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+package Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1084,7 +1094,7 @@ Char[3 0 3 1 1 2 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 1 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
@@ -1100,7 +1110,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16883 12584];
+Dim=[16781 16743];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1109,28 +1119,35 @@ Ctgry=StdInArt;
 }
 Basic[3 0 3 1 1 4 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 1 1 4 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+Char[3 0 3 1 1 4 0 0 0]{CntInfo='package body Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_sort(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Network(LO, HI, ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1148,7 +1165,7 @@ Char[3 0 3 1 1 4 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 1 4 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
@@ -1173,14 +1190,14 @@ Char[3 0 3 1 2 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 2 0 1]{Type=TtlTxt;
 }
-Char[3 0 3 1 2 0 1 0]{CntInfo='New_Bitonic_Merger_Network 関数';
+Char[3 0 3 1 2 0 1 0]{CntInfo='New_Merge_Network 関数';
 CntSty={
 ParSty='レベル４見出し';
 };
 }
 Basic[3 0 3 1 2 1]{Type=Txt;
 }
-Char[3 0 3 1 2 1 0]{CntInfo='New_Bitonic_Merger_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Bitonic_Merger_Network 関数は Sorting_Network パッケージにて定義しています。';
+Char[3 0 3 1 2 1 0]{CntInfo='New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
 }
 Comp[3 0 3 1 2 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1189,7 +1206,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 5927];
+Dim=[16916 8060];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1202,12 +1219,16 @@ Char[3 0 3 1 2 2 0 0 0]{CntInfo='library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+package Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1225,7 +1246,7 @@ Char[3 0 3 1 2 2 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 2 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
@@ -1237,7 +1258,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 12719];
+Dim=[16916 9434];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1246,28 +1267,22 @@ Ctgry=StdInArt;
 }
 Basic[3 0 3 1 2 3 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 1 2 3 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+Char[3 0 3 1 2 3 0 0 0]{CntInfo='package body Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Add_Queue_Params(network, QUEUE);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1285,7 +1300,7 @@ Char[3 0 3 1 2 3 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 2 3 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 2 3 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 2 3 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
@@ -1317,7 +1332,7 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 3 1]{Type=Txt;
 }
-Char[3 0 3 1 3 1 0]{CntInfo='Sorting_Netowork パッケージボディに定義されたbitonic_sort 関数は、前述の Python による実装でしめした bitonic_sort に対応します。bitonic_sort 関数を再帰的に呼び出しています。';
+Char[3 0 3 1 3 1 0]{CntInfo='Bitonic_MergeSort_Netowork パッケージボディに定義されたbitonic_sort 関数は、前述の Python による実装でしめした bitonic_sort に対応します。bitonic_sort 関数を再帰的に呼び出しています。';
 }
 Comp[3 0 3 1 3 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1326,7 +1341,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 18011];
+Dim=[16916 21641];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1335,37 +1350,42 @@ Ctgry=StdInArt;
 }
 Basic[3 0 3 1 3 2 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 1 3 2 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+Char[3 0 3 1 3 2 0 0 0]{CntInfo='package body Bitonic_MergeSort_Network is
     -- (前略) --
     procedure bitonic_sort(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
                   UP          :  in    boolean
     ) is
         variable  dist        :        integer;
-        variable  first       :        Param_Type;
-        variable  second      :        Param_Type;
+        variable  first       :        Sorting_Network.Param_Type;
+        variable  first_lo    :        integer;
+        variable  first_hi    :        integer;
+        variable  second      :        Sorting_Network.Param_Type;
+        variable  second_lo   :        integer;
+        variable  second_hi   :        integer;
         variable  next_stage  :        integer;
     begin
         if (HI - LO > 0) then
-            dist := (HI-LO+1)/2;
-            first  := NETWORK;
-            second := NETWORK;
-            bitonic_sort (first  , START_STAGE, LO        , LO + dist-1, TRUE );
-            bitonic_sort (second , START_STAGE, LO + dist , HI         , FALSE);
-            merge_network_stage_list(NETWORK, first , START_STAGE);
-            merge_network_stage_list(NETWORK, second, START_STAGE);
+            dist      := ((HI-LO+1)+1)/2;
+            first_lo  := LO;
+            first_hi  := LO + dist - 1;
+            second_lo := LO + dist;
+            second_hi := HI;
+            first     := Sorting_Network.New_Network(first_lo ,first_hi ,START_STAGE,NETWORK.Sort_Order);
+            second    := Sorting_Network.New_Network(second_lo,second_hi,START_STAGE,NETWORK.Sort_Order);
+            bitonic_sort (first  , START_STAGE, first_lo,  first_hi , TRUE );
+            bitonic_sort (second , START_STAGE, second_lo, second_hi, FALSE);
+            Sorting_Network.Merge_Network(NETWORK, first );
+            Sorting_Network.Merge_Network(NETWORK, second);
             next_stage := NETWORK.Stage_Hi + 1;
-            bitonic_merge(NETWORK, next_stage , LO        , HI         , UP   );
+            bitonic_merge(NETWORK, next_stage , LO       , HI       , UP   );
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1383,14 +1403,10 @@ Char[3 0 3 1 3 2 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 3 2 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 3 2 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
-}
-Basic[3 0 3 1 3 3]{Type=Txt;
-}
-Char[3 0 3 1 3 3 0]{CntInfo='';
 }
 Comp[3 0 3 1 4]{Type=NoSeg;
 }
@@ -1415,11 +1431,11 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 4 1]{Type=Txt;
 }
-Char[3 0 3 1 4 1 0]{CntInfo='Sorting_Netowork パッケージボディに定義されたbitonic_merge 関数は、前述の Python による実装でしめした bitonic_merge に対応します。bitonic_merge 関数を再帰的に呼び出しています。';
+Char[3 0 3 1 4 1 0]{CntInfo='Bitonic_MergeSort_Netowork パッケージボディに定義されたbitonic_merge 関数は、前述の Python による実装で示したした bitonic_merge に対応します。bitonic_merge 関数を再帰的に呼び出しています。';
 }
 Basic[3 0 3 1 4 2]{Type=Txt;
 }
-Char[3 0 3 1 4 2 0]{CntInfo='また、Python のよる実装では bitonic_compare を呼び出して実際に値を比較して交換していますが、この Sorting_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。';
+Char[3 0 3 1 4 2 0]{CntInfo='また、Python のよる実装では bitonic_compare を呼び出して実際に値を比較して交換していますが、この Bitonic_MergeSort_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。';
 }
 Comp[3 0 3 1 4 3]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1428,7 +1444,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 18474];
+Dim=[16916 16607];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1437,13 +1453,10 @@ Ctgry=StdInArt;
 }
 Basic[3 0 3 1 4 3 0 0]{Type=ArtTxt;
 }
-Char[3 0 3 1 4 3 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+Char[3 0 3 1 4 3 0 0 0]{CntInfo='package body Bitonic_MergeSort_Network is
     -- (前略) --
     procedure bitonic_merge(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
@@ -1453,10 +1466,10 @@ package body Sorting_Network is
         variable  index       :        integer;
     begin
         if (HI - LO > 0) then
-            dist   := (HI-LO+1)/2;
+            dist   := ((HI-LO+1)+1)/2;
             index  := LO;
             while (index+dist \<= HI) loop
-                Add_Comparator(NETWORK, START_STAGE, index, index+dist, UP);
+                Sorting_Network.Add_Comparator(NETWORK, START_STAGE, index, index+dist, UP);
                 index := index + 1;
             end loop;
             if (START_STAGE > NETWORK.Stage_Hi) then
@@ -1468,7 +1481,7 @@ package body Sorting_Network is
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;';
+end Bitonic_MergeSort_Network;';
 CntSty={
 ParSty='VHDL';
 };
@@ -1486,7 +1499,7 @@ Char[3 0 3 1 4 3 1 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 3 1 4 3 1 0 1]{Type=CapTxt;
 }
-Char[3 0 3 1 4 3 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 3 1 4 3 1 0 1 0]{CntInfo='src/main/vhdl/core/bitonic_mergesort_network.vhd';
 CntSty={
 ParSty='テキスト枠見出し';
 };
@@ -1495,161 +1508,6 @@ Basic[3 0 3 1 4 4]{Type=Txt;
 }
 Char[3 0 3 1 4 4 0]{CntInfo='';
 }
-Comp[3 0 3 1 5]{Type=NoSeg;
-}
-Comp[3 0 3 1 5 0]{Type=Ttl;
-Ctgry=TtlInBdy;
-LaySty={
-NLO=page;
-};
-ULayedPageNo=8;
-}
-Basic[3 0 3 1 5 0 0]{Type=TtlNo;
-Ctgry=Discard;
-}
-Char[3 0 3 1 5 0 0 0]{CntInfo=' ';
-}
-Basic[3 0 3 1 5 0 1]{Type=TtlTxt;
-}
-Char[3 0 3 1 5 0 1 0]{CntInfo='Add_Comparator 関数';
-CntSty={
-ParSty='レベル４見出し';
-};
-}
-Basic[3 0 3 1 5 1]{Type=Txt;
-}
-Char[3 0 3 1 5 1 0]{CntInfo='Add_Comparator 関数はソーティングネットワークにコンパレーターを追加します。STAGE でコンパレーターを追加するステージを指定します。LO と HI でコンパレーターを挿入する対となるネットワークを指定します。UP でソーティングネットワークの Up/Down の方向を指定します。';
-}
-Comp[3 0 3 1 5 2]{Type=Fig;
-Ctgry=FigInBdy;
-FigAttr={
-FrmLineVis=[on on on on];
-DimType=[on on];
-TxtArea=[on off off off];
-LineAlign=Ctrd;
-Dim=[16870 9349];
-TxtAreaSize=[353 0 0 0];
-};
-}
-Comp[3 0 3 1 5 2 0]{Type=Art;
-Ctgry=StdInArt;
-}
-Basic[3 0 3 1 5 2 0 0]{Type=ArtTxt;
-}
-Char[3 0 3 1 5 2 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
-    -- (前略) --
-    procedure  Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    );
-    -- (後略) --
-end Sorting_Network;';
-CntSty={
-ParSty='VHDL';
-};
-}
-Comp[3 0 3 1 5 2 1]{Type=Desc;
-Ctgry=StdInTCap;
-}
-Comp[3 0 3 1 5 2 1 0]{Type=Cap;
-Ctgry=FigTtlInBdy;
-}
-Basic[3 0 3 1 5 2 1 0 0]{Type=CapNo;
-Ctgry=Discard;
-}
-Char[3 0 3 1 5 2 1 0 0 0]{CntInfo=' ';
-}
-Basic[3 0 3 1 5 2 1 0 1]{Type=CapTxt;
-}
-Char[3 0 3 1 5 2 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
-CntSty={
-ParSty='テキスト枠見出し';
-};
-}
-Basic[3 0 3 1 5 3]{Type=Txt;
-}
-Char[3 0 3 1 5 3 0]{CntInfo='';
-}
-Comp[3 0 3 1 5 4]{Type=Fig;
-Ctgry=FigInBdy;
-FigAttr={
-FrmLineVis=[on on on on];
-DimType=[on on];
-TxtArea=[on off off off];
-LineAlign=Ctrd;
-Dim=[16916 17642];
-TxtAreaSize=[353 0 0 0];
-};
-}
-Comp[3 0 3 1 5 4 0]{Type=Art;
-Ctgry=StdInArt;
-}
-Basic[3 0 3 1 5 4 0 0]{Type=ArtTxt;
-}
-Char[3 0 3 1 5 4 0 0 0]{CntInfo='library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
-    -- (前略) --
-    procedure Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    ) is
-    begin
-        assert (HI - LO > 0)
-            report \"Add_Comparator error\" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = HI-LO) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).UP   = UP   )))
-            report \"Add_Comparator error\" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = LO-HI) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).UP   = UP   )))
-            report \"Add_Comparator error\" severity ERROR;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  := HI-LO;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).UP    := UP;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  := LO-HI;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).UP    := UP;
-    end procedure;
-    -- (後略) --
-end Sorting_Network;';
-CntSty={
-ParSty='VHDL';
-};
-}
-Comp[3 0 3 1 5 4 1]{Type=Desc;
-Ctgry=StdInTCap;
-}
-Comp[3 0 3 1 5 4 1 0]{Type=Cap;
-Ctgry=FigTtlInBdy;
-}
-Basic[3 0 3 1 5 4 1 0 0]{Type=CapNo;
-Ctgry=Discard;
-}
-Char[3 0 3 1 5 4 1 0 0 0]{CntInfo=' ';
-}
-Basic[3 0 3 1 5 4 1 0 1]{Type=CapTxt;
-}
-Char[3 0 3 1 5 4 1 0 1 0]{CntInfo='src/main/vhdl/core/sorting_network.vhd';
-CntSty={
-ParSty='テキスト枠見出し';
-};
-}
-Basic[3 0 3 1 5 5]{Type=Txt;
-}
-Char[3 0 3 1 5 5 0]{CntInfo='';
-}
 Comp[3 0 3 2]{Type=NoSeg;
 }
 Comp[3 0 3 2 0]{Type=Ttl;
@@ -1657,7 +1515,7 @@ Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
-ULayedPageNo=10;
+ULayedPageNo=8;
 }
 Basic[3 0 3 2 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -1673,13 +1531,13 @@ ParSty='レベル３見出し';
 }
 Basic[3 0 3 2 1]{Type=Txt;
 }
-Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Bitonic_Sorter_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。';
+Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。';
 }
 Comp[3 0 3 2 2]{Type=NoSeg;
 }
 Comp[3 0 3 2 2 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=10;
+ULayedPageNo=8;
 }
 Basic[3 0 3 2 2 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -1700,7 +1558,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 18036];
+Dim=[16916 19054];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1770,7 +1628,7 @@ Ctgry=TtlInBdy;
 LaySty={
 NLO=page;
 };
-ULayedPageNo=11;
+ULayedPageNo=9;
 }
 Basic[3 0 3 2 3 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -1795,7 +1653,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 7049];
+Dim=[16916 7760];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1809,6 +1667,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Bitonic_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of Bitonic_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -1906,7 +1765,7 @@ Char[3 0 3 2 3 6 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 7]{Type=Txt;
 }
-Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した New_Bitonic_Sorter_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。';
+Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。';
 }
 Comp[3 0 3 2 3 8]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1915,7 +1774,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 14616];
+Dim=[16916 14677];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -1926,11 +1785,11 @@ Basic[3 0 3 2 3 8 0 0]{Type=ArtTxt;
 }
 Char[3 0 3 2 3 8 0 0 0]{CntInfo='    CORE: Sorting_Network_Core
         generic map (
-            NETWORK_PARAM   => Sorting_Network.New_Bitonic_Sorter_Network(
+            NETWORK_PARAM   => Bitonic_MergeSort_Network.New_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,
-                                   QUEUE => QUEUE_SIZE
+                                   QUEUE => Sorting_Network.Constant_Queue_Size(QUEUE_SIZE)
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
             INFO_BITS       => INFO_BITS         -- 
@@ -2047,7 +1906,7 @@ Comp[3 0 4]{Type=NoSeg;
 }
 Comp[3 0 4 0]{Type=Ttl;
 Ctgry=TtlInBdy;
-ULayedPageNo=14;
+ULayedPageNo=12;
 }
 Basic[3 0 4 0 0]{Type=TtlNo;
 Ctgry=Discard;
@@ -2087,8 +1946,9 @@ Align=Start;
 }
 Basic[3 0 4 4]{Type=Txt;
 }
-Char[3 0 4 4 0]{CntInfo='・ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd';
+Char[3 0 4 4 0]{CntInfo='・ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bitonic_mergesort_network.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

@@ -9163,18 +9163,6 @@ Basic[3 0 3 2 24]{Type=Txt;
 }
 Char[3 0 3 2 24 0]{CntInfo='';
 }
-Basic[3 0 3 2 25]{Type=Txt;
-}
-Char[3 0 3 2 25 0]{CntInfo='';
-}
-Basic[3 0 3 2 26]{Type=Txt;
-}
-Char[3 0 3 2 26 0]{CntInfo='';
-}
-Basic[3 0 3 2 27]{Type=Txt;
-}
-Char[3 0 3 2 27 0]{CntInfo='';
-}
 Comp[3 0 4]{Type=NoSeg;
 }
 Comp[3 0 4 0]{Type=Ttl;
@@ -9233,7 +9221,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 13272];
+Dim=[16916 13775];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -9252,19 +9240,20 @@ Char[3 0 4 1 4 0 0 0]{CntInfo='    MULTI_WORD: if (WORDS > 1) generate
             variable param          :  PARAM_TYPE;
         begin
             param.INTAKE_QUEUE_SIZE := 2;
-            param.LOSER_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.LOSER_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE       := Sorting_Network.New_OddEven_Merger_Network(
+            param.FINAL_MERGE       := OddEven_MergeSort_Network.New_Merge_Network(
                                            LO     => 0         ,
                                            HI     => 2*WORDS-1 ,
-                                           ORDER  => SORT_ORDER,
-                                           QUEUE  => 1
+                                           ORDER  => SORT_ORDER
                                        );
-            param.FINAL_MERGE.Stage_List(param.FINAL_MERGE.Stage_HI).Queue_Size := 0;
+            Sorting_Network.Set_Queue_Param(param.LOSER_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,1));
+            Sorting_Network.Set_Queue_Param(param.FINAL_MERGE,
+                                            Sorting_Network.Constant_Queue_Size(1,1,0));
             return param;
         end function;
         constant  PARAM             :  PARAM_TYPE := GEN_PARAM;
@@ -9878,7 +9867,7 @@ Align=Start;
 Basic[3 0 5 4]{Type=Txt;
 }
 Char[3 0 5 4 0]{CntInfo='・ソースコード:
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_node.vhd';
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_node.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
