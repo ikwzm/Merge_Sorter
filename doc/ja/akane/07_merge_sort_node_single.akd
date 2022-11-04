@@ -5013,7 +5013,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 6052];
+Dim=[16916 6668];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -5027,6 +5027,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Word_Compare;
 use     Merge_Sorter.Core_Components.Word_Queue;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
@@ -5773,7 +5774,7 @@ Align=Start;
 Basic[3 0 5 4]{Type=Txt;
 }
 Char[3 0 5 4 0]{CntInfo='・ソースコード:
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_node.vhd';
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_node.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

@@ -65,102 +65,117 @@ def bitonic_compare(up: bool, x) -> None:
 
 
 
-#### New_Bitonic_Sorter_Network 関数
+#### New_Network 関数
 
 
-New_Bitonic_Sorter_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Bitonic_Sorter_Network 関数は Sorting_Network パッケージにて定義しています。
+New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+package Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
 
 
 
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
+package body Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Sorter_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_sort(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Add_Queue_Params(network, QUEUE);
+        return network;
+    end function;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Network(LO, HI, ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
 
 
 
 
 
-#### New_Bitonic_Merger_Network 関数
+#### New_Merge_Network 関数
 
 
-New_Bitonic_Merger_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Bitonic_Merger_Network 関数は Sorting_Network パッケージにて定義しています。
+New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
 library ieee;
 use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
+use     Merge_Sorter.Sorting_Network;
+package Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type;
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
     -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
 
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
+package body Bitonic_MergeSort_Network is
     -- (前略) --
-    function   New_Bitonic_Merger_Network(LO,HI,ORDER,QUEUE:integer) return Param_Type
+    function   New_Merge_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
     is
-        variable  network  :  Param_Type;
+        variable  network     :  Sorting_Network.Param_Type;
     begin
-        network            := Param_Null;
-        network.Size       := HI - LO + 1;
-        network.Lo         := LO;
-        network.Hi         := HI;
-        network.Sort_Order := ORDER;
-        network.Stage_Lo   := 1;
-        network.Stage_Hi   := 0;
+        network := Sorting_Network.New_Network(LO,HI,ORDER);
         bitonic_merge(network, network.Stage_Lo, network.Lo, network.Hi, TRUE);
-        Add_Queue_Params(network, QUEUE);
         return network;
     end function;
     -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
 
 
@@ -170,63 +185,63 @@ end Sorting_Network;
 #### bitonic_sort 関数
 
 
-Sorting_Netowork パッケージボディに定義されたbitonic_sort 関数は、前述の Python による実装でしめした bitonic_sort に対応します。bitonic_sort 関数を再帰的に呼び出しています。
+Bitonic_MergeSort_Netowork パッケージボディに定義されたbitonic_sort 関数は、前述の Python による実装でしめした bitonic_sort に対応します。bitonic_sort 関数を再帰的に呼び出しています。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
+package body Bitonic_MergeSort_Network is
     -- (前略) --
     procedure bitonic_sort(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
                   UP          :  in    boolean
     ) is
         variable  dist        :        integer;
-        variable  first       :        Param_Type;
-        variable  second      :        Param_Type;
+        variable  first       :        Sorting_Network.Param_Type;
+        variable  first_lo    :        integer;
+        variable  first_hi    :        integer;
+        variable  second      :        Sorting_Network.Param_Type;
+        variable  second_lo   :        integer;
+        variable  second_hi   :        integer;
         variable  next_stage  :        integer;
     begin
         if (HI - LO > 0) then
-            dist := (HI-LO+1)/2;
-            first  := NETWORK;
-            second := NETWORK;
-            bitonic_sort (first  , START_STAGE, LO        , LO + dist-1, TRUE );
-            bitonic_sort (second , START_STAGE, LO + dist , HI         , FALSE);
-            merge_network_stage_list(NETWORK, first , START_STAGE);
-            merge_network_stage_list(NETWORK, second, START_STAGE);
+            dist      := ((HI-LO+1)+1)/2;
+            first_lo  := LO;
+            first_hi  := LO + dist - 1;
+            second_lo := LO + dist;
+            second_hi := HI;
+            first     := Sorting_Network.New_Network(first_lo ,first_hi ,START_STAGE,NETWORK.Sort_Order);
+            second    := Sorting_Network.New_Network(second_lo,second_hi,START_STAGE,NETWORK.Sort_Order);
+            bitonic_sort (first  , START_STAGE, first_lo,  first_hi , TRUE );
+            bitonic_sort (second , START_STAGE, second_lo, second_hi, FALSE);
+            Sorting_Network.Merge_Network(NETWORK, first );
+            Sorting_Network.Merge_Network(NETWORK, second);
             next_stage := NETWORK.Stage_Hi + 1;
-            bitonic_merge(NETWORK, next_stage , LO        , HI         , UP   );
+            bitonic_merge(NETWORK, next_stage , LO       , HI       , UP   );
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
-
-
 
 
 
 #### bitonic_merge 関数
 
 
-Sorting_Netowork パッケージボディに定義されたbitonic_merge 関数は、前述の Python による実装でしめした bitonic_merge に対応します。bitonic_merge 関数を再帰的に呼び出しています。
+Bitonic_MergeSort_Netowork パッケージボディに定義されたbitonic_merge 関数は、前述の Python による実装で示したした bitonic_merge に対応します。bitonic_merge 関数を再帰的に呼び出しています。
 
-また、Python のよる実装では bitonic_compare を呼び出して実際に値を比較して交換していますが、この Sorting_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。
+また、Python のよる実装では bitonic_compare を呼び出して実際に値を比較して交換していますが、この Bitonic_MergeSort_Network パッケージではソーティングネットワークを構築するのが目的なので、ソーティングネットワークにコンパレーターを挿入するための Add_Comparator 関数を呼び出します。
 
 
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
+```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
+package body Bitonic_MergeSort_Network is
     -- (前略) --
     procedure bitonic_merge(
-        variable  NETWORK     :  inout Param_Type;
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
                   START_STAGE :  in    integer;
                   LO          :  in    integer;
                   HI          :  in    integer;
@@ -236,10 +251,10 @@ package body Sorting_Network is
         variable  index       :        integer;
     begin
         if (HI - LO > 0) then
-            dist   := (HI-LO+1)/2;
+            dist   := ((HI-LO+1)+1)/2;
             index  := LO;
             while (index+dist <= HI) loop
-                Add_Comparator(NETWORK, START_STAGE, index, index+dist, UP);
+                Sorting_Network.Add_Comparator(NETWORK, START_STAGE, index, index+dist, UP);
                 index := index + 1;
             end loop;
             if (START_STAGE > NETWORK.Stage_Hi) then
@@ -251,73 +266,7 @@ package body Sorting_Network is
         end if;
     end procedure;
     -- (後略) --
-end Sorting_Network;
-```
-
-
-
-
-
-#### Add_Comparator 関数
-
-
-Add_Comparator 関数はソーティングネットワークにコンパレーターを追加します。STAGE でコンパレーターを追加するステージを指定します。LO と HI でコンパレーターを挿入する対となるネットワークを指定します。UP でソーティングネットワークの Up/Down の方向を指定します。
-
-
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-library Merge_Sorter;
-use     Merge_Sorter.Word;
-package Sorting_Network is
-    -- (前略) --
-    procedure  Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    );
-    -- (後略) --
-end Sorting_Network;
-```
-
-
-
-
-
-```VHDL:src/main/vhdl/core/sorting_network.vhd
-library ieee;
-use     ieee.std_logic_1164.all;
-use     ieee.numeric_std.all;
-package body Sorting_Network is
-    -- (前略) --
-    procedure Add_Comparator(
-        variable  NETWORK     :  inout Param_Type;
-                  STAGE       :  in    integer;
-                  LO          :  in    integer;
-                  HI          :  in    integer;
-                  UP          :  in    boolean
-    ) is
-    begin
-        assert (HI - LO > 0)
-            report "Add_Comparator error" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP = HI-LO) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(LO).UP   = UP   )))
-            report "Add_Comparator error" severity ERROR;
-        assert ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = 0) or
-                ((NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP = LO-HI) and
-                 (NETWORK.Stage_List(STAGE).Comparator_List(HI).UP   = UP   )))
-            report "Add_Comparator error" severity ERROR;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).STEP  := HI-LO;
-        NETWORK.Stage_List(STAGE).Comparator_List(LO).UP    := UP;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).STEP  := LO-HI;
-        NETWORK.Stage_List(STAGE).Comparator_List(HI).UP    := UP;
-    end procedure;
-    -- (後略) --
-end Sorting_Network;
+end Bitonic_MergeSort_Network;
 ```
 
 
@@ -327,7 +276,7 @@ end Sorting_Network;
 ### バイトニックマージソートの VHDL 記述例
 
 
-前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Bitonic_Sorter_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。
+前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。
 
 
 #### Entity 
@@ -383,6 +332,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Bitonic_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
 architecture RTL of Bitonic_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
@@ -420,17 +370,17 @@ begin
 
 
 
-前節で説明した New_Bitonic_Sorter_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。
+前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。
 
 
 ```VHDL:src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd
     CORE: Sorting_Network_Core
         generic map (
-            NETWORK_PARAM   => Sorting_Network.New_Bitonic_Sorter_Network(
+            NETWORK_PARAM   => Bitonic_MergeSort_Network.New_Network(
                                    LO    => 0,
                                    HI    => WORDS-1,
                                    ORDER => SORT_ORDER,
-                                   QUEUE => QUEUE_SIZE
+                                   QUEUE => Sorting_Network.Constant_Queue_Size(QUEUE_SIZE)
                                ),
             WORD_PARAM      => WORD_PARAM      , -- 
             INFO_BITS       => INFO_BITS         -- 
@@ -488,8 +438,9 @@ end RTL;
 * 目次: [「はじめに」]
 * 次回: [「バッチャー奇偶マージソート」]
 * 前回: [「ソーティングネットワーク」]
-* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd
+* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bitonic_mergesort_network.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd
 * 出典: https://en.wikipedia.org/wiki/Bitonic_sorter
 
 

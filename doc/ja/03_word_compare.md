@@ -159,7 +159,7 @@ end RTL;
 * 目次: [「はじめに」]
 * 次回: [「ソーティングネットワーク」]
 * 前回: [「ワードの定義」]
-* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/word_compare.vhd
+* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/word_compare.vhd
 
 
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"

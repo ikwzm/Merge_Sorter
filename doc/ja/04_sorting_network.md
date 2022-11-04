@@ -16,7 +16,7 @@
 ## ソーティングネットワークとは
 
 
-ソーティングネットワークとは、ワイヤとコンパレータで構成されます。ワイヤは値を伝えます。コンパレーターは入出力に二本のワイヤをとり、二つの値が入力されると、指定された属性に従って出力をスルーしたりスワップしたりします。
+ソーティングネットワークとは、数列をソートするネットワークで、ワイヤとコンパレータで構成されています。ワイヤは値を伝えます。コンパレーターは入出力に二本のワイヤをとり、二つの値が入力されると、指定された属性に従って出力をスルーしたりスワップしたりします。
 
 コンパレーターには Up/Down という方向が設定されています。下図では矢印で示しています。
 
@@ -98,7 +98,7 @@ use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 package Sorting_Network is
-    constant  Max_Network_Size      :  integer := 256;
+    constant  Max_Network_Size      :  integer := 128;
     constant  Max_Stage_Size        :  integer := 256;
     -- (中略) --
     type      Param_Type            is record
@@ -124,7 +124,7 @@ end Sorting_Network;
 
 Stage_Type およびその配列型である Stage_Vector は Sorting_Network パッケージにて次のように定義されています。
 
-Stage_Type はネットワーク毎のコンパレーターの情報を保持する Comparator_List とパイプラインレジスタのキューのサイズを保持する Queue_Sizeで構成されています。
+Stage_Type は、ネットワーク毎のコンパレーター等のオペレーターの情報を保持する Operator_List と、パイプラインレジスタのキューのサイズを保持する Queue_Sizeで構成されています。
 
 
 ```VHDL:src/main/vhdl/core/sorting_network.vhd
@@ -137,11 +137,11 @@ package Sorting_Network is
      -- (前略) --
     constant  Max_Stage_Queue_Size  :  integer := 2;
     type      Stage_Type            is record
-                  Comparator_List   :  Comparator_Vector(0 to Max_Network_Size-1);
+                  Operator_List     :  Operator_Vector(0 to Max_Network_Size-1);
                   Queue_Size        :  integer range 0 to Max_Stage_Queue_Size;
     end record;
     constant  Stage_Null            :  Stage_Type := (
-                  Comparator_List   => (others => Comparator_Null),
+                  Operator_List     => (others => Operator_None),
                   Queue_Size        => 0
               );
     type      Stage_Vector          is array (integer range <>) of Stage_Type;
@@ -151,12 +151,12 @@ end Sorting_Network;
 
 
 
-#### Comparator_Type
+#### Operator_Type
 
 
-Comparator_Type およびその配列型である Comparator_Vector は Sorting_Network パッケージにて次のように定義されています。
+Operator_Type およびその配列型である Operator_Vector は Sorting_Network パッケージにて次のように定義されています。
 
-Comparator_Type は、コンパレーターを接続するネットワークの相対位置を示す SPEP およびコンパレーターの Up/Down を保持する UP で構成されています。
+Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す SPEP で構成されています。
 
 
 ```VHDL:src/main/vhdl/core/sorting_network.vhd
@@ -167,16 +167,17 @@ library Merge_Sorter;
 use     Merge_Sorter.Word;
 package Sorting_Network is
      -- (前略) --
-    type      Comparator_Type       is record
+    type      Operator              is (OP_NONE, OP_PASS, OP_COMP_UP, OP_COMP_DOWN);
+    type      Operator_Type         is record
                   STEP              :  integer;
-                  UP                :  boolean;
+                  OP                :  Operator;
     end record;
-    constant  Comparator_Null       :  Comparator_Type := (
+    constant  Operator_None         :  Operator_Type := (
                   STEP              => 0,
-                  UP                => TRUE
+                  OP                => OP_NONE
               );
-    type      Comparator_Vector     is array (integer range <>) of Comparator_Type;
-    -- (後略) --
+    type      Operator_Vector       is array (integer range <>) of Operator_Type;
+     -- (後略) --
 end Sorting_Network;
 ```
 
@@ -216,14 +217,14 @@ Fig.8 ソーティングネットワーク構成の VHDL 記述例 (Stage 3)
 <br />
 
 
-### ソーティングネットワークコアの VHDL 記述
+## ソーティングネットワークコアの VHDL 記述
 
 
+ソーティングネットワークコアは、前節で定義したソーティングネットワーク構成(Sorting_Network.Param_Type) に基づき、ソーティングネットワークを構築した回路です。
 
-#### 構造
 
+### 構造
 
-ソーティングネットワークコアは、前節で定義したソーティングネットワーク構成(Sorting_Network.Param_Type) に基づき、ソーティングネットワークを構築します。
 
 ソーティングネットワークコアの構造は次のようになっています。
 
@@ -235,7 +236,7 @@ Fig.9 ソーティングネットワークコアの構成
 <br />
 
 
-#### Entity 
+### Entity 
 
 
 ジェネリック変数の NETWORK_PARAM でソーティングネットワークの構成を指定します。WORD_PARAM で[「ワードの定義」]を指定します。INFO_BITS はソーティングネットワークを通すその他の情報のビット数を指定します。
@@ -277,7 +278,11 @@ end Sorting_Network_Core;
 
 
 
-#### Architecture
+### Architecture
+
+
+
+#### 定数および信号の定義
 
 
 まずは Sorting_Network_Core 内部で使用するタイプおよびステージ毎の各種信号を定義します。
@@ -308,9 +313,12 @@ architecture RTL of Sorting_Network_Core is
     signal    stage_busy        :  std_logic_vector (STAGE_OPENER to STAGE_LAST);
     constant  STAGE_BUSY_ALL0   :  std_logic_vector (STAGE_OPENER to STAGE_LAST) := (others => '0');
 begin
+
 ```
 
 
+
+#### OPENER Block
 
 
  I_WORD はソーティングネットワークに入力するネットワーク毎のワードで、ネットワーク毎のワードを一次元のビット配列(std_logic_vector)にしたものです。OPENER ブロックでは I_WORD を内部の信号に変換します。
@@ -332,13 +340,16 @@ begin
 
 
 
+#### MAIN Block
 
-ステージ毎に generate 分を使って記述します。
+
+ステージ毎に generate 文を使って記述します。
 
 
 ```VHDL:src/main/vhdl/core/sorting_network_core.vhd
     MAIN: for stage in STAGE_FIRST to STAGE_LAST generate
-        constant  Stage_Param   :  Sorting_Network.Stage_Type := NETWORK_PARAM.Stage_List(stage);
+        constant  Stage_Param   :  Sorting_Network.Stage_Type 
+                                := NETWORK_PARAM.Stage_List(stage);
         signal    sorted_word   :  STAGE_WORD_TYPE;
     begin
           
@@ -347,9 +358,21 @@ begin
 
 
 
-ステージ内のさらにネットワーク毎にコンパレーターを記述します。
+ステージ内のさらにネットワーク毎にオペレーターの挙動を記述します。
 
-STEPが正の値の時は対となるネットワークが自ネットワーク番号＋STEPに存在します。この場合は対となるネットワークとの間にコンパレーターを接続して、その結果に応じて入力ワードを交換します。
+
+```VHDL:src/main/vhdl/core/sorting_network_core.vhd
+        NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
+            constant  OP   :  Sorting_Network.Operator_Type := Stage_Param.Operator_List(i);
+            constant  STEP :  integer := OP.STEP;
+        begin
+            
+```
+
+
+
+
+オペレーターがコンパレータの場合でSTEPが正の値の時は対となるネットワークが自ネットワーク番号＋STEPに存在します。この場合は対となるネットワークとの間にコンパレーターを接続して、その結果に応じて入力ワードを交換します。
 
 STEP が0の時はコンパレーターを使わずに入力ワードをそのまま出力します。
 
@@ -357,44 +380,66 @@ STEP が負の値の時は、すでに対となるネットワーク(STEPの値�
 
 
 ```VHDL:src/main/vhdl/core/sorting_network_core.vhd
-        NET: for i in NETWORK_PARAM.Lo to NETWORK_PARAM.Hi generate
-            constant  STEP           :  integer := Stage_Param.Comparator_List(i).STEP;
-            constant  UP             :  boolean := Stage_Param.Comparator_List(i).UP;
-        begin
-            XCHG: if STEP > 0 generate
-                signal    comp_sel_a     :  std_logic;
-                signal    comp_sel_b     :  std_logic;
-                signal    swap           :  boolean;
-            begin
-                COMP: Word_Compare                                    --
-                    generic map(                                      --
-                        WORD_PARAM  => WORD_PARAM                   , -- 
-                        SORT_ORDER  => NETWORK_PARAM.Sort_Order       -- 
-                    )                                                 -- 
-                    port map (                                        --
-                        CLK         => CLK                          , -- In  :
-                        RST         => RST                          , -- In  :
-                        CLR         => CLR                          , -- In  :
-                        A_WORD      => stage_word(stage-1)(i     )  , -- In  :
-                        B_WORD      => stage_word(stage-1)(i+STEP)  , -- In  :
-                        VALID       => '1'                          , -- In  :
-                        READY       => open                         , -- Out :
-                        SEL_A       => comp_sel_a                   , -- Out :
-                        SEL_B       => comp_sel_b                     -- Out :
-                    );                                                --
-                swap <= (comp_sel_b = '1' and UP = TRUE ) or
-                        (comp_sel_a = '1' and UP = FALSE);
-                sorted_word(i     ) <= stage_word(stage-1)(i+STEP) when (swap) else
-                                       stage_word(stage-1)(i     );
-                sorted_word(i+STEP) <= stage_word(stage-1)(i     ) when (swap) else
-                                       stage_word(stage-1)(i+STEP);
-            end generate;
-            PASS: if STEP = 0 generate
-                sorted_word(i     ) <= stage_word(stage-1)(i     );
+            OP_COMP: if Sorting_Network.Operator_Is_Comp(OP) generate
+                constant  UP   :  boolean := Sorting_Network.Operator_Is_Comp_Up(OP);
+            begin 
+                COMP: if (STEP > 0) generate
+                    signal    swap      :  boolean;
+                    signal    sel_a     :  std_logic;
+                    signal    sel_b     :  std_logic;
+                begin
+                    U: Word_Compare                                      --
+                        generic map(                                     --
+                            WORD_PARAM  => WORD_PARAM                  , -- 
+                            SORT_ORDER  => NETWORK_PARAM.Sort_Order      -- 
+                        )                                                -- 
+                        port map (                                       --
+                            CLK         => CLK                         , -- In  :
+                            RST         => RST                         , -- In  :
+                            CLR         => CLR                         , -- In  :
+                            A_WORD      => stage_word(stage-1)(i     ) , -- In  :
+                            B_WORD      => stage_word(stage-1)(i+STEP) , -- In  :
+                            VALID       => '1'                         , -- In  :
+                            READY       => open                        , -- Out :
+                            SEL_A       => sel_a                       , -- Out :
+                            SEL_B       => sel_b                         -- Out :
+                        );                                               --
+                    swap <= (sel_b = '1' and UP = TRUE ) or
+                            (sel_a = '1' and UP = FALSE);
+                    sorted_word(i     ) <= stage_word(stage-1)(i+STEP) when (swap) else
+                                           stage_word(stage-1)(i     );
+                    sorted_word(i+STEP) <= stage_word(stage-1)(i     ) when (swap) else
+                                           stage_word(stage-1)(i+STEP);
+                end generate;
+```
+
+
+
+
+オペレーターが OP_PASS だった場合は、対象となるネットワークが自ネットワーク番号＋STEPに存在するので、そのネットワークを自ネットワークに接続します。
+
+
+```VHDL:src/main/vhdl/core/sorting_network_core.vhd
+　　　　　　OP_PASS: if Sorting_Network.Operator_Is_Pass(OP) generate
+                    sorted_word(i     ) <= stage_word(stage-1)(i+STEP);
+            end generate;            
+```
+
+
+
+
+オペレーターが OP_NONE だった場合は、何もせずにネットワークを継続します。
+
+
+```VHDL:src/main/vhdl/core/sorting_network_core.vhd
+       　   OP_NONE: if Sorting_Network.Operator_Is_None(OP) generate
+                    sorted_word(i     ) <= stage_word(stage-1)(i     );
             end generate;
         end generate;
-  
+      
 ```
+
+
 
 
 ステージ毎にパイプラインレジスタを挿入します。
@@ -441,6 +486,8 @@ STEP が負の値の時は、すでに対となるネットワーク(STEPの値�
 
 
 
+#### OUTLET Block
+
 
  O_WORD はネットワーク毎のソート済みのワードを一次元のビット配列(std_logic_vector)にしたものです。OUTLET ブロックではソート済みの各ネットワークの出力ワードを O_WORD に変換します。
 
@@ -450,7 +497,7 @@ STEP が負の値の時は、すでに対となるネットワーク(STEPの値�
     begin
         NET: for i in 0 to NETWORK_PARAM.Size-1 generate
             O_WORD((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS)
-                <= stage_word(STAGE_LAST)(i+NETWORK_PARAM.Lo);
+                <= stage_word (STAGE_LAST)(i+NETWORK_PARAM.Lo);
         end generate;
         O_INFO  <= stage_info (STAGE_LAST);
         O_VALID <= stage_valid(STAGE_LAST);
@@ -468,8 +515,8 @@ end RTL;
 * 目次: [「はじめに」]
 * 次回: [「バイトニックマージソート」]
 * 前回: [「ワード比較器」]
-* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/sorting_network_core.vhd
+* ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network_core.vhd
 
 
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"

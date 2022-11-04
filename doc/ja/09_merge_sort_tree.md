@@ -365,7 +365,7 @@ end RTL;
 * 次回: [「端数ワード処理」]
 * 前回: [「マルチワード マージソート ノード」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_tree.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_tree.vhd
 
 
 

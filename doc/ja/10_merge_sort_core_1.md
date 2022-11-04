@@ -121,8 +121,8 @@ Fig.7 Word_Drop_None の役割
 * 次回: [「ストリーム入力」] 
 * 前回: [「マージソート ツリー」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_core.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/word_drop_none.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_core.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/word_drop_none.vhd
 
  
 

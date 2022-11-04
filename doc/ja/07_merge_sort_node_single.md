@@ -175,6 +175,7 @@ use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Word;
 use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.OddEven_MergeSort_Network;
 use     Merge_Sorter.Core_Components.Word_Compare;
 use     Merge_Sorter.Core_Components.Word_Queue;
 use     Merge_Sorter.Core_Components.Sorting_Network_Core;
@@ -428,7 +429,7 @@ end RTL;
 * 次回: [「マルチワード マージソート ノード」]
 * 前回: [「バッチャー奇偶マージソート」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_node.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_node.vhd
 * [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]
 * [「VALID 信号と READY 信号によるハンドシェイクの注意点」 @Qiita][「VALID-then-READY」] 
 

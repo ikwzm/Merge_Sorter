@@ -3440,7 +3440,7 @@ Align=Start;
 }
 Basic[3 0 6 3]{Type=Txt;
 }
-Char[3 0 6 3 0]{CntInfo='・ソースコード:　 https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/word.vhd';
+Char[3 0 6 3 0]{CntInfo='・ソースコード:　 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/word.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

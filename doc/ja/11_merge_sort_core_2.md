@@ -151,8 +151,8 @@ Fig.7 マルチワードマージソートの最初のパス(ストリーム入�
 * 次回: [「ストリームフィードバック」]
 * 前回: [「端数ワード処理」]
 * ソースコード:   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/merge_sorter_core.vhd   
-https://github.com/ikwzm/Merge_Sorter/blob/0.9.1/src/main/vhdl/core/core_stream_intake.vhd
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_core.vhd   
+https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/core_stream_intake.vhd
 
  
 
