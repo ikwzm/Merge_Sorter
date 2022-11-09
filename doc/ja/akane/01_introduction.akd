@@ -825,21 +825,21 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 2 4]{Type=Txt;
 }
-Char[3 0 2 4 0]{CntInfo='4. [ソーティングネットワーク]';
+Char[3 0 2 4 0]{CntInfo='4. [ソーティングネットワーク(コアパッケージ)]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
 Basic[3 0 2 5]{Type=Txt;
 }
-Char[3 0 2 5 0]{CntInfo='5. [バイトニックマージソート]';
+Char[3 0 2 5 0]{CntInfo='5. [ソーティングネットワーク(バイトニックマージソート)]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
 Basic[3 0 2 6]{Type=Txt;
 }
-Char[3 0 2 6 0]{CntInfo='6. [バッチャー奇偶マージソート]';
+Char[3 0 2 6 0]{CntInfo='6. [ソーティングネットワーク(バッチャー奇偶マージソート)]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };

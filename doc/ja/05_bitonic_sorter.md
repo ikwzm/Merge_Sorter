@@ -1,5 +1,5 @@
 
-# VHDL で書くマージソーター(バイトニックマージソート)
+# VHDL で書くソーティングネットワーク(バイトニックマージソート)
 
 
 
@@ -8,7 +8,7 @@
 
 別記事 [「はじめに」] を参照してください。
 
-この記事では、前回説明した[「ソーティングネットワーク」]を使ってバイトニックマージソート回路を構成する方法を紹介します。
+この記事では、前回説明した[「ソーティングネットワーク(コアパッケージ)」]を使ってバイトニックマージソート回路を構成する方法を紹介します。
 
 
 
@@ -68,7 +68,7 @@ def bitonic_compare(up: bool, x) -> None:
 #### New_Network 関数
 
 
-New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
+New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
 
 
 ```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
@@ -137,7 +137,7 @@ end Bitonic_MergeSort_Network;
 #### New_Merge_Network 関数
 
 
-New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
+New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。
 
 
 ```VHDL:src/main/vhdl/core/bitonic_mergesort_network.vhd
@@ -276,7 +276,7 @@ end Bitonic_MergeSort_Network;
 ### バイトニックマージソートの VHDL 記述例
 
 
-前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。
+前回の[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。
 
 
 #### Entity 
@@ -370,7 +370,7 @@ begin
 
 
 
-前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。
+前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。
 
 
 ```VHDL:src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd
@@ -436,8 +436,8 @@ end RTL;
 ## 参照
 
 * 目次: [「はじめに」]
-* 次回: [「バッチャー奇偶マージソート」]
-* 前回: [「ソーティングネットワーク」]
+* 次回: [「ソーティングネットワーク(バッチャー奇偶マージソート)」]
+* 前回: [「ソーティングネットワーク(コアパッケージ)」]
 * ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bitonic_mergesort_network.vhd   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bitonic_sorter/bitonic_sorter.vhd
@@ -447,9 +447,9 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bitonic_
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"

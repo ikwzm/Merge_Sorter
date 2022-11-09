@@ -1,5 +1,5 @@
 
-# VHDL で書くマージソーター(バッチャー奇偶マージソート)
+# VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)
 
 
 
@@ -8,7 +8,7 @@
 
 別記事 [「はじめに」] を参照してください。
 
-この記事では、前々回説明した[「ソーティングネットワーク」]を使ってバッチャー奇偶マージソート回路を構成する方法を紹介します。
+この記事では、前々回説明した[「ソーティングネットワーク(コアパッケージ)」]を使ってバッチャー奇偶マージソート回路を構成する方法を紹介します。
 
 
 
@@ -72,7 +72,7 @@ def oddeven_merge_sort(x):
 #### New_Network 関数
 
 
-New_Network 関数は、バッチャーズ奇偶マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
+New_Network 関数は、バッチャーズ奇偶マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
 
 
 ```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
@@ -143,7 +143,7 @@ end OddEven_MergeSort_Network;
 #### New_Merge_Network 関数
 
 
-New_Merge_Network 関数は、バッチャーズ奇偶マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
+New_Merge_Network 関数は、バッチャーズ奇偶マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Merge_Network 関数は OddEven_MergeSort_Network パッケージにて定義しています。
 
 
 ```VHDL:src/main/vhdl/core/oddeven_mergesort_network.vhd
@@ -266,7 +266,7 @@ end OddEven_MergeSort_Network;
 ### バッチャーズ奇偶マージソートの VHDL 記述例
 
 
-前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバッチャーズ奇偶ソートマージ回路を構成した例を示します。
+前回の[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバッチャーズ奇偶ソートマージ回路を構成した例を示します。
 
 
 #### Entity 
@@ -360,7 +360,7 @@ begin
 
 
 
-前節で説明した New_Bitonic_Sorter_Network 関数を使ってバッチャーズ奇偶マージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバッチャーズ奇偶マージソートを行うソーティングネットワークが出来ます。
+前節で説明した New_Bitonic_Sorter_Network 関数を使ってバッチャーズ奇偶マージソートのソーティングネットワークを構築して[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に渡します。これにでバッチャーズ奇偶マージソートを行うソーティングネットワークが出来ます。
 
 
 ```VHDL:src/main/vhdl/examples/oddeven_sorter/oddeven_sorter.vhd
@@ -427,7 +427,7 @@ end RTL;
 
 * 目次: [「はじめに」]
 * 次回: [「シングルワード マージソート ノード」]
-* 前回: [「バイトニックマージソート」]
+* 前回: [「ソーティングネットワーク(バイトニックマージソート)」]
 * ソースコード:   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/oddeven_mergesort_network.vhd   
@@ -438,9 +438,9 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/oddeven_
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"
