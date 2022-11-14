@@ -45,7 +45,7 @@
 
 
 
-例えば、次の図のように、要素数3のソート済み結果が入力されるネット(ネット番号0〜２)と要素数２のソート済み結果が入力されるネット(ネット番号4〜5)があって、それらをマージしてソートした結果を出力するネットワークを作ることを考えます。
+例えば、次の図のように、要素数3のソート済み結果が入力されるネット(ネット番号0〜２)と要素数２のソート済み結果が入力されるネット(ネット番号3〜4)があって、それらをマージしてソートした結果を出力するネットワークを作ることを考えます。
 
 
 ![Fig.1 非対称マージネットワーク(ブラックボックス)](image/17_asymmetric_mergesorter_1.jpg "Fig.1 非対称マージネットワーク(ブラックボックス)")
@@ -402,9 +402,9 @@ end Asymmetric_MergeSort_Network;
 #### asymmetric_sort 関数
 
 
-Asymmetric_MergeSort_Netowork パッケージボディに定義されたasymmetric_sort 関数は、ソート用のソーティングネットワークを生成します。
+asymmetric_sort 関数は、ソート用のソーティングネットワークを生成します。
 
-この関数は、指定されたネットワークをだいたい同じ大きさの二つのネットワークに分割して各々のネットワークに対してasymmetric_sort 関数を再帰的に呼び出してソーティングネットワークを生成しています。各々のソーティングネットワークを asymmetric_merge 関数を使ってマージします。
+この関数は、指定されたネットワークをだいたい同じ大きさの二つのネットワークに分割して各々のネットワークに対してasymmetric_sort 関数を再帰的に呼び出してソーティングネットワークを生成します。さらに各々のソーティングネットワークをマージするネットワークを asymmetric_merge 関数を使ってネットワークに追加します。
 
 
 ```VHDL:src/main/vhdl/core/asymmetric_mergesort_network.vhd
@@ -456,7 +456,7 @@ end Asymmetric_MergeSort_Network;
 #### asymmetric_merge 関数
 
 
-Asymmetric_MergeSort_Netowork パッケージボディに定義された asymmetric_merge 関数は 非対称マージネットワークを生成します。
+ asymmetric_merge 関数は 非対称マージネットワークを生成します。
 
 まずはそれぞれの入力ネットの要素数が２のべき乗値になるように切り上げます。次にこれらの値の大きいほうの値を、バッチャー奇偶マージネットワークを作る際の参考にします。
 
@@ -619,7 +619,7 @@ end Asymmetric_MergeSort_Network;
 ### 非対称マージソートの VHDL 記述例
 
 
-前回の[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡して非対称マージソート回路を構成した例を示します。
+[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡して非対称マージソート回路を構成した例を示します。
 
 
 #### Entity 
@@ -717,7 +717,7 @@ architecture RTL of Asymmetric_Sorter is
     constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
     signal    i_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
     signal    o_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
-
+begin
 ```
 
 
@@ -748,7 +748,7 @@ architecture RTL of Asymmetric_Sorter is
 
 
 
-前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにで非対称マージソートを行うソーティングネットワークが出来ます。
+前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これで非対称マージソートを行うソーティングネットワークが出来ます。
 
 
 ```VHDL:src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd

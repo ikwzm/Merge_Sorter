@@ -275,7 +275,7 @@ begin
 
 
 
-前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにでバブルソートを行うソーティングネットワークが出来ます。
+前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これでバブルソートを行うソーティングネットワークが出来ます。
 
 
 ```VHDL:src/main/vhdl/examples/bubble_sorter/bubble_sorter.vhd

@@ -885,7 +885,7 @@ Char[3 0 2 5 4 0]{CntInfo='';
 }
 Basic[3 0 2 5 5]{Type=Txt;
 }
-Char[3 0 2 5 5 0]{CntInfo='例えば、次の図のように、要素数3のソート済み結果が入力されるネット(ネット番号0～２)と要素数２のソート済み結果が入力されるネット(ネット番号4～5)があって、それらをマージしてソートした結果を出力するネットワークを作ることを考えます。';
+Char[3 0 2 5 5 0]{CntInfo='例えば、次の図のように、要素数3のソート済み結果が入力されるネット(ネット番号0～２)と要素数２のソート済み結果が入力されるネット(ネット番号3～4)があって、それらをマージしてソートした結果を出力するネットワークを作ることを考えます。';
 }
 Comp[3 0 2 5 6]{Type=Fig;
 Ctgry=FigInBdy;
@@ -5337,11 +5337,11 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 3 1]{Type=Txt;
 }
-Char[3 0 3 1 3 1 0]{CntInfo='Asymmetric_MergeSort_Netowork パッケージボディに定義されたasymmetric_sort 関数は、ソート用のソーティングネットワークを生成します。';
+Char[3 0 3 1 3 1 0]{CntInfo='asymmetric_sort 関数は、ソート用のソーティングネットワークを生成します。';
 }
 Basic[3 0 3 1 3 2]{Type=Txt;
 }
-Char[3 0 3 1 3 2 0]{CntInfo='この関数は、指定されたネットワークをだいたい同じ大きさの二つのネットワークに分割して各々のネットワークに対してasymmetric_sort 関数を再帰的に呼び出してソーティングネットワークを生成しています。各々のソーティングネットワークを asymmetric_merge 関数を使ってマージします。';
+Char[3 0 3 1 3 2 0]{CntInfo='この関数は、指定されたネットワークをだいたい同じ大きさの二つのネットワークに分割して各々のネットワークに対してasymmetric_sort 関数を再帰的に呼び出してソーティングネットワークを生成します。さらに各々のソーティングネットワークをマージするネットワークを asymmetric_merge 関数を使ってネットワークに追加します。';
 }
 Comp[3 0 3 1 3 3]{Type=Fig;
 Ctgry=FigInBdy;
@@ -5483,7 +5483,7 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 4 1]{Type=Txt;
 }
-Char[3 0 3 1 4 1 0]{CntInfo='Asymmetric_MergeSort_Netowork パッケージボディに定義された asymmetric_merge 関数は 非対称マージネットワークを生成します。';
+Char[3 0 3 1 4 1 0]{CntInfo=' asymmetric_merge 関数は 非対称マージネットワークを生成します。';
 CntSty={
 Align=Start;
 };
@@ -5899,7 +5899,7 @@ ParSty='レベル３見出し';
 }
 Basic[3 0 3 2 1]{Type=Txt;
 }
-Char[3 0 3 2 1 0]{CntInfo='前回の[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡して非対称マージソート回路を構成した例を示します。';
+Char[3 0 3 2 1 0]{CntInfo='[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡して非対称マージソート回路を構成した例を示します。';
 }
 Comp[3 0 3 2 2]{Type=NoSeg;
 }
@@ -6102,7 +6102,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16629 2576];
+Dim=[16684 2982];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -6114,7 +6114,7 @@ Basic[3 0 3 2 3 5 0 0]{Type=ArtTxt;
 Char[3 0 3 2 3 5 0 0 0]{CntInfo='    constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
     signal    i_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
     signal    o_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
-';
+begin';
 CntSty={
 ParSty='VHDL';
 };
@@ -6152,7 +6152,7 @@ FrmLineVis=[on on on on];
 DimType=[on on];
 TxtArea=[on off off off];
 LineAlign=Ctrd;
-Dim=[16916 8992];
+Dim=[16916 8661];
 TxtAreaSize=[353 0 0 0];
 };
 }
@@ -6205,7 +6205,7 @@ Char[3 0 3 2 3 9 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 10]{Type=Txt;
 }
-Char[3 0 3 2 3 10 0]{CntInfo='前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにで非対称マージソートを行うソーティングネットワークが出来ます。';
+Char[3 0 3 2 3 10 0]{CntInfo='前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これで非対称マージソートを行うソーティングネットワークが出来ます。';
 }
 Comp[3 0 3 2 3 11]{Type=Fig;
 Ctgry=FigInBdy;

@@ -1685,7 +1685,7 @@ Char[3 0 3 2 3 6 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 7]{Type=Txt;
 }
-Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにでバブルソートを行うソーティングネットワークが出来ます。';
+Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これでバブルソートを行うソーティングネットワークが出来ます。';
 }
 Comp[3 0 3 2 3 8]{Type=Fig;
 Ctgry=FigInBdy;
