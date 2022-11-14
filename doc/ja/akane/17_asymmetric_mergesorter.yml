@@ -1,11 +1,14 @@
 ---
-input_file  : 16_bubble_sorter.akd
+input_file  : 17_asymmetric_mergesorter.akd
 
-output_file : ../16_bubble_sorter.md
+output_file : ../17_asymmetric_mergesorter.md
 
 image_url :
-  "Fig.1 バブルソートのソーティングネットワーク例(最適化前)" : "image/16_bubble_sorter_1.jpg"
-  "Fig.2 バブルソートのソーティングネットワーク例(最適化後)" : "image/16_bubble_sorter_2.jpg"
+  "Fig.1 非対称マージネットワーク(ブラックボックス)"                 : "image/17_asymmetric_mergesorter_1.jpg"
+  "Fig.2 元になるバッチャー奇偶マージネットワーク"                   : "image/17_asymmetric_mergesorter_2.jpg"
+  "Fig.3 バッチャー奇偶マージネットワークにネット番号を割り当てる"   : "image/17_asymmetric_mergesorter_3.jpg"
+  "Fig.4 バッチャー奇偶マージネットワークから不要なネットを削除する" : "image/17_asymmetric_mergesorter_4.jpg"
+  "Fig.5 非対称マージソートネットワークの例"                         : "image/17_asymmetric_mergesorter_5.jpg"
 
 link_list :
   - id   : "「VHDL で書くマージソーター(はじめに)」"
@@ -32,7 +35,4 @@ link_list :
   - id   : "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
     title: "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
     url  : "./17_asymmetric_mergesorter.md"
-  - id   : "https://wikipedia.org/wiki/Bubble_sort"
-    title: "https://wikipedia.org/wiki/Bubble_sort"
-    url  : "https://wikipedia.org/wiki/Bubble_sort"
 ---

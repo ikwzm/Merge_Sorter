@@ -1,0 +1,6463 @@
+Fuji Xerox Clear Text Encoding Format Version 3.00
+Creator:Akane
+Encoding:SJISコード
+% OS:WindowsNT 6.2
+
+Profile{NoOfPages=22;
+Comments='マークダウン・テンプレート';
+ExtrTtlRef={
+};
+}
+Sty{
+Name='本文';
+Comments='本文';
+BasicStyBdy={
+PageSty={
+PageSet=SprdPage;
+FstPageType=on;
+RelCharNo=48;
+RelLineNo=41;
+RelHorMgnType=inner;
+RelHorMgn=2500;
+AbsMgn=[2000 2000 2000 2000];
+FFace='メイリオ';
+FSize=10;
+IntrLineH=800;
+Mgn=[0 0 1100 0];
+};
+HdrSty={
+Name='ヘッダー(左)';
+PageType=LPageOnly;
+Loc=TL;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=2;
+};
+HdrSty={
+Name='ヘッダー(右)';
+PageType=RPageOnly;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrRefLevel=3;
+};
+HdrSty={
+Name='ヘッダー';
+PageType=SymmPage;
+Loc=TR;
+FFace='メイリオ';
+HdrType=PageHdr;
+HdrForm=on;
+HdrPat='DATA SHEET';
+HdrRefCnt=16;
+};
+HdrSty={
+Name='ヘッダー罫線';
+PageType=SymmPage;
+Loc=TL;
+Ofst=[0 700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+HdrSty={
+Name='ページ番号';
+PageType=SymmPage;
+Loc=BL;
+FFace='メイリオ';
+FSize=10;
+PageNoRefLoc=outer;
+};
+HdrSty={
+Name='フッター';
+PageType=SymmPage;
+Loc=BR;
+FFace='メイリオ';
+FSize=10;
+HdrType=PageHdr;
+};
+HdrSty={
+Name='フッター罫線';
+PageType=SymmPage;
+Loc=BL;
+Ofst=[0 -700];
+FFace='ＭＳ ゴシック' Bld;
+FSize=10;
+HdrType=PageHdr;
+HdrPat='━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+};
+NoteSty={
+ClmW=10;
+Name='注段落スタイル';
+RT=2;
+};
+TtlSty1={
+Area=FullClm;
+Name='レベル１見出し';
+FrmDimType=[max Var];
+FrmDim=[3429 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty2={
+Area=FullClm;
+Name='レベル２見出し';
+FrmDimType=[max Var];
+FrmDim=[4005 0];
+IMgn=[800 100 0 0];
+NLO=page;
+NBH=page;
+SepStr=' ';
+NoType=none;
+PreNo=off;
+FrmLineW=35;
+FrmLineVis=[off off on on];
+};
+TtlSty3={
+Name='レベル３見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+NBH=null;
+SepStr=' ';
+NoType=none;
+};
+TtlSty4={
+Name='レベル４見出し';
+FrmDimType=[max Var];
+FrmDim=[4367 0];
+SepStr=' ';
+NoType=none;
+PreNo=off;
+};
+TtlStyTxt={
+Name='テキスト枠見出し';
+SepStr=' ';
+RT=0;
+};
+TtlStyGeo={
+Name='図形枠見出し';
+PrfxStr='Fig.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+TtlStyTbl={
+Name='表組枠見出し';
+ClmAlign=Ctrd;
+PrfxStr='Table.';
+SepStr=' ';
+PreNo=on;
+DivStr='-';
+};
+};
+ParStyBdy={
+ParSty={
+Name='レベル１見出し';
+FFace='メイリオ';
+FSize=14;
+IntrLineH=500;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル２見出し';
+FFace='メイリオ';
+FSize=12;
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='レベル３見出し';
+FFace='メイリオ';
+FSize=11;
+IntrLineH=800;
+Align=Start;
+MgnUt=Pt;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Pt;
+FstLineOfst=0;
+};
+ParSty={
+Name='段落スタイル';
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='表枠内段落スタイル';
+FFace='メイリオ';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠内段落スタイル';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+Tab={
+TabPos=3600;
+};
+Tab={
+TabPos=4000;
+};
+Tab={
+TabPos=4400;
+};
+Tab={
+TabPos=4800;
+};
+Tab={
+TabPos=5200;
+};
+Tab={
+TabPos=5600;
+};
+Tab={
+TabPos=6000;
+};
+Tab={
+TabPos=6400;
+};
+};
+ParSty={
+Name='表組枠見出し';
+FFace='メイリオ';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文箇条書きレベル１';
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='本文箇条書きレベル２';
+FstLineOfstUt=Char;
+FstLineOfst=400;
+IndtUt=Char;
+Indt=500;
+};
+ParSty={
+Name='表組枠内箇条書きレベル１';
+FSize=10;
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=100;
+};
+ParSty={
+Name='図形枠見出し';
+FFace='メイリオ';
+FSize=10;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='コラム内本文段落スタイル';
+FSize=10;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=100;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='本文段落スタイル';
+MgnUt=Char;
+Mgn=[0 100 1100 0];
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='注段落スタイル';
+FSize=9;
+Align=Just;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=400;
+};
+ParSty={
+Name='レベル４見出し';
+FSize=11;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='図形枠内段落';
+FFace='Meiryo UI';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=0;
+Align=Ctrd;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+IndtUt=Char;
+Indt=0;
+};
+ParSty={
+Name='Makefile';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='C';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='VHDL';
+FFace=156;
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='Python';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=200;
+};
+Tab={
+TabPos=400;
+};
+Tab={
+TabPos=600;
+};
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1000;
+};
+Tab={
+TabPos=1200;
+};
+Tab={
+TabPos=1400;
+};
+Tab={
+TabPos=1600;
+};
+Tab={
+TabPos=1800;
+};
+Tab={
+TabPos=2000;
+};
+Tab={
+TabPos=2200;
+};
+Tab={
+TabPos=2400;
+};
+Tab={
+TabPos=2600;
+};
+Tab={
+TabPos=2800;
+};
+Tab={
+TabPos=3000;
+};
+Tab={
+TabPos=3200;
+};
+};
+ParSty={
+Name='devicetree';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+Tab={
+TabPos=800;
+};
+Tab={
+TabPos=1600;
+};
+};
+ParSty={
+Name='Shell';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='console';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=600;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+ParSty={
+Name='テキスト枠見出し';
+FFace='Ricty';
+FSize=10;
+FColr=[0 0 0];
+IntrLineH=800;
+Align=Start;
+MgnUt=Char;
+Mgn=[0 0 0 0];
+FstLineOfstUt=Char;
+FstLineOfst=0;
+};
+};
+}
+Root[3]{}
+Comp[3 0]{Type=NoSeg;
+}
+Comp[3 0 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 0 1]{Type=TtlTxt;
+}
+Char[3 0 0 1 0]{CntInfo='VHDL で書くソーティングネットワーク(非対称マージソート)';
+CntSty={
+ParSty='レベル１見出し';
+};
+}
+Comp[3 0 1]{Type=NoSeg;
+}
+Comp[3 0 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 1 0 1 0]{CntInfo='はじめに';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 1 1]{Type=Txt;
+}
+Char[3 0 1 1 0]{CntInfo='筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装するに当たり、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。';
+}
+Basic[3 0 1 2]{Type=Txt;
+}
+Char[3 0 1 2 0]{CntInfo='';
+}
+Basic[3 0 1 3]{Type=Txt;
+}
+Char[3 0 1 3 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 4]{Type=Txt;
+}
+Char[3 0 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 5]{Type=Txt;
+}
+Char[3 0 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 6]{Type=Txt;
+}
+Char[3 0 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 7]{Type=Txt;
+}
+Char[3 0 1 7 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バブルソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 8]{Type=Txt;
+}
+Char[3 0 1 8 0]{CntInfo='';
+}
+Basic[3 0 1 9]{Type=Txt;
+}
+Char[3 0 1 9 0]{CntInfo='この記事は、上の記事の続編で、[「VHDL で書くソーティングネットワーク(コアパッケージ)」]を使って非対称マージソート回路を構成する方法を紹介します。';
+}
+Basic[3 0 1 10]{Type=Txt;
+}
+Char[3 0 1 10 0]{CntInfo='';
+}
+Comp[3 0 2]{Type=NoSeg;
+}
+Comp[3 0 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=null;
+};
+ULayedPageNo=1;
+}
+Basic[3 0 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 0 1 0]{CntInfo='非対称マージソートとは';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Basic[3 0 2 1]{Type=Txt;
+}
+Char[3 0 2 1 0]{CntInfo='非対称マージソートという言葉は筆者が勝手に命名した名前です。もし他に同様な仕組みのソート方法があれば教えてください。';
+}
+Basic[3 0 2 2]{Type=Txt;
+}
+Char[3 0 2 2 0]{CntInfo='';
+}
+Basic[3 0 2 3]{Type=Txt;
+}
+Char[3 0 2 3 0]{CntInfo='[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]や[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]で紹介したソーティングネットワークは、ソートする要素を半分ずつ区切って各々にソートを再帰的に実行して、その結果をマージします。その性質からソートする要素の数は２のべき乗値に限定されます。';
+}
+Basic[3 0 2 4]{Type=Txt;
+}
+Char[3 0 2 4 0]{CntInfo='ソートする要素の数が２のべき乗値に限定されているのは少し使い勝手が悪いので、ここではソートする要素の数が２のべき乗値でなくてもよく、また、[「VHDL で書くソーティングネットワーク(バブルソート)」]で紹介したバブルソートのネットワークよりも効率の良いソーティングネットワークを考えます。';
+}
+Comp[3 0 2 5]{Type=NoSeg;
+}
+Comp[3 0 2 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=1;
+}
+Basic[3 0 2 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 5 0 1 0]{CntInfo='非対称マージネットワーク';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 2 5 1]{Type=Txt;
+}
+Char[3 0 2 5 1 0]{CntInfo='ここで紹介するのは非対称マージソートで、その名のとおりマージソートの一種です。ただし、二つのソート結果をマージする際に、その二つのソート結果の要素の数が同じ数で無くても良く、また各々のソート結果の要素の数が２のべき乗値でなくても構いません。そのようなマージをするネットワークを考えます。';
+}
+Basic[3 0 2 5 2]{Type=Txt;
+}
+Char[3 0 2 5 2 0]{CntInfo='';
+}
+Basic[3 0 2 5 3]{Type=Txt;
+}
+Char[3 0 2 5 3 0]{CntInfo='と言っても考え方は単純で、まず大きめの[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]で紹介したマージネットワークを作り、そして不要なネットワークを消していくだけです。';
+}
+Basic[3 0 2 5 4]{Type=Txt;
+}
+Char[3 0 2 5 4 0]{CntInfo='';
+}
+Basic[3 0 2 5 5]{Type=Txt;
+}
+Char[3 0 2 5 5 0]{CntInfo='例えば、次の図のように、要素数3のソート済み結果が入力されるネット(ネット番号0～２)と要素数２のソート済み結果が入力されるネット(ネット番号4～5)があって、それらをマージしてソートした結果を出力するネットワークを作ることを考えます。';
+}
+Comp[3 0 2 5 6]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12000 4561];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 5 6 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 5 6 0 0]{}
+Geo[3 0 2 5 6 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5669 2155);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5669 2155);
+clip on;
+asf all indiv;
+appldata 5 0 0 200 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+figpos (7370 2646);
+linewidth 34;
+line (568 379)(5102 379);
+line (568 756)(5102 756);
+line (568 1134)(5102 1134);
+line (568 1512)(5102 1512);
+line (568 1890)(5102 1890);
+figpos (190 190);
+figpos (190 567);
+figpos (190 945);
+figpos (190 1323);
+figpos (190 1701);
+edgewidth 34;
+intstyle solid;
+fillcolr 1 1 1;
+rect (945 189)(4913 2079)(0 1);
+figpos (1135 567);
+line (1039 283)(1133 378)(1133 1134)(1039 1228);
+line (1039 1417)(1133 1512)(1133 1890)(1039 1984);
+figpos (1135 1512);
+line (4819 283)(4724 378)(4724 1890)(4819 1984);
+figpos (2079 1039);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 5 6 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 0 0 0]{CntInfo='0';
+CntSty={
+FSize=12;
+};
+}
+Basic[3 0 2 5 6 0 0 0 0 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 0 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 1 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 1 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 1 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 2 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 2 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 2 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 3 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 3 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 3 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 4 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 4 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 4 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 5 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 5 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 5 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[5601 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 6 0 0]{CntInfo='３要素のソート済み入力ネット';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=Start;
+};
+}
+Basic[3 0 2 5 6 0 0 0 6 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 6 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[5601 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 7 0 0]{CntInfo='2要素のソート済み入力ネット';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=Start;
+};
+}
+Basic[3 0 2 5 6 0 0 0 7 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 7 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 0 100];
+Dim=[5601 802];
+};
+}
+Basic[3 0 2 5 6 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 8 0 0]{CntInfo='５要素のソート済み出力ネット';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 6 0 0 0 8 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 6 0 0 0 8 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 6 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 5 6 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 5 6 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 6 1 0 0 0]{CntInfo='Fig.1 ';
+}
+Basic[3 0 2 5 6 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 5 6 1 0 1 0]{CntInfo='非対称マージネットワーク(ブラックボックス)';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 2 5 7]{Type=Txt;
+}
+Char[3 0 2 5 7 0]{CntInfo='';
+}
+Basic[3 0 2 5 8]{Type=Txt;
+}
+Char[3 0 2 5 8 0]{CntInfo='まずはそれぞれの入力ネットの要素数が２のべき乗値になるように切り上げます。この例では 3 を ４に、2は２のままです。次にこれらの値の大きいほう(この例では4)の２倍のネット数(この例では8)のバッチャー奇偶マージネットワークを作ります。このマージネットワークは、各々４要素のソート済みデータを受け取って８要素のソート結果を出力します。';
+}
+Comp[3 0 2 5 9]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12000 7106];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 5 9 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 5 9 0 0]{}
+Geo[3 0 2 5 9 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5669 3357);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5669 3357);
+clip on;
+asf all indiv;
+appldata 5 0 0 400 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+linewidth 34;
+line (568 378)(5106 378);
+line (568 756)(5106 756);
+line (568 1134)(5106 1134);
+line (568 1512)(5106 1512);
+line (569 1890)(5106 1890);
+line (568 2268)(5102 2268);
+line (568 2646)(5102 2646);
+line (568 3024)(5102 3024);
+lineendcap 5;
+line (1134 1890)(1134 378);
+line (1512 2268)(1512 756);
+line (1890 2646)(1890 1134);
+line (2268 3024)(2268 1512);
+line (3213 1890)(3213 1134);
+line (3591 2268)(3591 1512);
+line (4535 1134)(4535 756);
+line (4535 1890)(4535 1512);
+line (4535 2646)(4535 2268);
+figpos (7370 2646);
+figpos (1134 -1889);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 5 9 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 9 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 9 0 0 0 0 0 0]{CntInfo='0';
+CntSty={
+FSize=12;
+};
+}
+Basic[3 0 2 5 9 0 0 0 0 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 9 0 0 0 0 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 9 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 9 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 9 0 0 0 1 0 0]{CntInfo='0';
+CntSty={
+FFace='Ricty';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 9 0 0 0 1 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 9 0 0 0 1 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 9 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 5 9 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 5 9 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 9 1 0 0 0]{CntInfo='Fig.2 ';
+}
+Basic[3 0 2 5 9 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 5 9 1 0 1 0]{CntInfo='元になるバッチャー奇偶マージネットワーク';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 2 5 10]{Type=Txt;
+}
+Char[3 0 2 5 10 0]{CntInfo='';
+}
+Basic[3 0 2 5 11]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 2 5 11 0]{CntInfo='次にバッチャー奇偶マージネットワークのネットの数の整数配列を用意し、各々に元のネットワークのネット番号を設定します。その際、不要なネットには－1を設定します。';
+}
+Comp[3 0 2 5 12]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12000 6993];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 5 12 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 5 12 0 0]{}
+Geo[3 0 2 5 12 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5669 3304);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5669 3304);
+clip on;
+asf all indiv;
+appldata 5 0 0 400 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+linewidth 34;
+line (568 378)(5106 378);
+line (568 756)(5106 756);
+line (568 1134)(5106 1134);
+line (568 1512)(5106 1512);
+line (569 1890)(5106 1890);
+line (568 2268)(5102 2268);
+line (568 2646)(5102 2646);
+line (568 3024)(5102 3024);
+lineendcap 5;
+line (1134 1890)(1134 378);
+line (1512 2268)(1512 756);
+line (1890 2646)(1890 1134);
+line (2268 3024)(2268 1512);
+line (3213 1890)(3213 1134);
+line (3591 2268)(3591 1512);
+line (4535 1134)(4535 756);
+line (4535 1890)(4535 1512);
+line (4535 2646)(4535 2268);
+figpos (7370 2646);
+figpos (378 189);
+figpos (378 567);
+figpos (378 945);
+figpos (378 1323);
+figpos (378 1701);
+figpos (378 2079);
+figpos (378 2457);
+figpos (378 2835);
+figpos (1134 -1889);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 5 12 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 0 0 0]{CntInfo='0';
+CntSty={
+FSize=12;
+};
+}
+Basic[3 0 2 5 12 0 0 0 0 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 0 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 1 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 1 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 1 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 2 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 2 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 2 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 3 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 3 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 3 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 4 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 4 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 4 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 5 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 5 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 5 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 6 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 6 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 6 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 7 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 7 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 7 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 8 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 8 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 8 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 12 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 9 0 0]{CntInfo='0';
+CntSty={
+FFace='Ricty';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 12 0 0 0 9 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 12 0 0 0 9 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 12 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 5 12 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 5 12 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 12 1 0 0 0]{CntInfo='Fig.3 ';
+}
+Basic[3 0 2 5 12 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 5 12 1 0 1 0]{CntInfo='バッチャー奇偶マージネットワークにネット番号を割り当てる';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 2 5 13]{Type=Txt;
+}
+Char[3 0 2 5 13 0]{CntInfo='';
+}
+Basic[3 0 2 5 14]{Type=Txt;
+}
+Char[3 0 2 5 14 0]{CntInfo='あとはステージ毎に不要となるコンパレーターを削除しながらマージネットワークを作っていきます。具体的には、コンパレーターの入力側のネット番号が２つとも0以上の場合は残し、それ以外は削除します。整数配列のネット番号は0以上の場合は小さい方を前に、－1の場合は後ろに詰めて行きます。';
+}
+Comp[3 0 2 5 15]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12000 11599];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 5 15 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 5 15 0 0]{}
+Geo[3 0 2 5 15 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5669 5480);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5669 5480);
+clip on;
+asf all indiv;
+appldata 5 0 0 200 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+figpos (3779 2835);
+linewidth 34;
+line (568 378)(5106 378);
+line (568 756)(5106 756);
+line (568 1134)(5106 1134);
+line (568 1512)(5106 1512);
+line (569 1890)(5106 1890);
+line (568 2268)(5102 2268);
+line (568 2646)(5102 2646);
+line (568 3024)(5102 3024);
+lineendcap 5;
+line (1134 1890)(1134 378);
+line (1512 2268)(1512 756);
+line (1890 2646)(1890 1134);
+line (2268 3024)(2268 1512);
+line (3213 1890)(3213 1134);
+line (3591 2268)(3591 1512);
+line (4535 1134)(4535 756);
+line (4535 1890)(4535 1512);
+line (4535 2646)(4535 2268);
+figpos (7370 2646);
+figpos (378 189);
+figpos (378 567);
+figpos (378 945);
+figpos (378 1323);
+figpos (378 1701);
+figpos (378 2079);
+figpos (378 2457);
+figpos (378 2835);
+figpos (4724 189);
+figpos (4724 567);
+figpos (4724 945);
+figpos (4724 1323);
+figpos (4724 1701);
+figpos (4724 2079);
+figpos (4724 2457);
+figpos (4724 2835);
+figpos (945 189);
+figpos (945 1701);
+figpos (1323 567);
+figpos (1323 2079);
+figpos (1701 945);
+figpos (1701 2457);
+figpos (2079 2835);
+figpos (2079 1323);
+figpos (2457 189);
+figpos (2457 567);
+figpos (2457 945);
+figpos (2457 1323);
+figpos (2457 1701);
+figpos (2457 2079);
+figpos (2457 2457);
+figpos (2457 2835);
+figpos (3024 945);
+figpos (3024 1701);
+figpos (3402 1323);
+figpos (3402 2079);
+figpos (3779 189);
+figpos (3779 567);
+figpos (3779 945);
+figpos (3779 1323);
+figpos (3779 1701);
+figpos (3779 2079);
+figpos (3779 2457);
+figpos (4346 2457);
+figpos (4346 2079);
+figpos (4346 1701);
+figpos (4346 1323);
+figpos (4346 945);
+figpos (4346 567);
+lineendcap 1;
+line (567 3780)(5101 3780);
+line (567 4157)(5101 4157);
+line (567 4535)(5101 4535);
+line (567 4913)(5101 4913);
+line (567 5291)(5101 5291);
+figpos (189 3591);
+figpos (189 3968);
+figpos (189 4346);
+figpos (189 4724);
+figpos (189 5102);
+lineendcap 5;
+line (1134 4913)(1134 3780);
+line (1512 5290)(1512 4157);
+line (3213 4913)(3213 4535);
+line (4535 4535)(4535 4157);
+line (4535 5291)(4535 4913);
+figpos (1134 -1889);
+intstyle empty;
+edgewidth 9;
+edgetype 2;
+rect (945 94)(1323 5008)(0 1);
+rect (1323 472)(1701 5386)(0 1);
+rect (3024 850)(3402 5008)(0 1);
+rect (4346 472)(4724 5386)(0 1);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 5 15 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 0 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 0 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 0 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 1 0 0]{CntInfo='0';
+CntSty={
+FSize=12;
+};
+}
+Basic[3 0 2 5 15 0 0 0 1 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 1 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 2 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 2 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 2 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 3 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 3 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 3 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 4 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 4 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 4 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 5 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 5 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 5 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 6 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 6 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 6 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 7 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 7 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 7 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 8 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 8 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 8 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 9 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 9 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 9 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 10 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 10 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 10 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 11 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 11 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 11 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 12 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 12 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 12 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 13 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 13 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 13 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 14 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 14 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 14 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 15 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 15 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 15 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 16 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 16 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 16 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 17 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 17 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 17 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 18 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 18 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 18 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 19 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 19 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 19 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 20 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 20 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 20 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 21 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 21 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 21 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 22 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 22 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 22 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 23 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 23 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 23 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 24 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 24 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 24 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 25 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 25 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 25 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 26 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 26 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 26 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 27 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 27 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 27 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 28 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 28 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 28 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 29 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 29 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 29 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 30 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 30 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 30 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 31 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 31 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 31 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 32 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 32 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 32 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 33 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 33 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 33 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 34 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 34 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 34 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 35 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 35 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 35 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 36 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 36 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 36 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 37 0 0]{CntInfo='-1';
+CntSty={
+FFace='Ricty';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 37 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 37 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 38 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 38 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 38 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 39 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 39 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 39 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 40 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 40 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 40 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 41 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 41 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 41 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 42 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 42 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 42 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 43 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 43 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 43 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 44 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 44 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 44 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 45 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 45 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 45 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 46 0 0]{CntInfo='-1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 46 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 46 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 47 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 47 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 47 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 48 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 48 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 48 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 49 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 49 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 49 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 50 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 50 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 50 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 51 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 51 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 51 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 52 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 52 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 52 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 53 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 53 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 53 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 54 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 54 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 54 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 55 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 55 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 55 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 5 15 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 56 0 0]{CntInfo='0';
+CntSty={
+FFace='Ricty';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 5 15 0 0 0 56 1]{Type=ArtTxt;
+}
+Char[3 0 2 5 15 0 0 0 56 1 0]{CntInfo='';
+}
+Comp[3 0 2 5 15 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 5 15 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 5 15 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 5 15 1 0 0 0]{CntInfo='Fig.4 ';
+}
+Basic[3 0 2 5 15 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 5 15 1 0 1 0]{CntInfo='バッチャー奇偶マージネットワークから不要なネットを削除する';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Comp[3 0 2 6]{Type=NoSeg;
+}
+Comp[3 0 2 6 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=4;
+}
+Basic[3 0 2 6 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 6 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 6 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 6 0 1 0]{CntInfo='非対称マージソートネットワーク';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 2 6 1]{Type=Txt;
+}
+Char[3 0 2 6 1 0]{CntInfo='ソート済みの要素の数が非対称なネット入力でもマージできる「非対称マージネットワーク」が手に入ったので、今度はこの非対称マージネットワークを使って、ソーティングネットワークを作ります。';
+}
+Basic[3 0 2 6 2]{Type=Txt;
+}
+Char[3 0 2 6 2 0]{CntInfo='具体的には、要素数が「だいたい」同じくらいになるように入力ネットワークを二つに分割して、その各々のネットワークに対してソーティングネットワークを再帰的に作って、これを「非対称マージネットワーク」でマージします。';
+}
+Basic[3 0 2 6 3]{Type=Txt;
+}
+Char[3 0 2 6 3 0]{CntInfo='';
+}
+Basic[3 0 2 6 4]{Type=Txt;
+}
+Char[3 0 2 6 4 0]{CntInfo='例えば、要素数が５の場合は、まず要素数３のネットワークと要素数２のネットワークに分割します。さらに要素数３のネットワークは、要素数２のネットワークと要素数１のネットワークに分割して、各々の出力をマージします。';
+}
+Comp[3 0 2 6 5]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+DimType=[on on];
+TxtArea=[off on off off];
+LineAlign=Ctrd;
+IMgn=[0 0 0 0];
+Dim=[12000 7110];
+TxtAreaSize=[0 353 0 0];
+};
+}
+Comp[3 0 2 6 5 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 6 5 0 0]{}
+Geo[3 0 2 6 5 0 0 0]{CntInfo={
+BEGMF 'interchangeV2';
+mfversion 1;
+mfdesc 'Akane V2.0';
+vdctype int;
+integerprec -32767 32767;
+colrprec 255;
+colrvalext 0 0 0 255 255 255;
+mfelemlist 'drawingplus';
+BEGPIC;
+colrmode direct;
+linewidthmode abs;
+markersizemode abs;
+edgewidthmode abs;
+vdcext (0 0)(5669 3359);
+BEGPICBODY;
+vdcintegerprec -32767 32767;
+cliprect (0 0)(5669 3359);
+clip on;
+asf all indiv;
+appldata 5 0 0 400 0 0 0 0 0 0 0 0 0 0 1 0;
+BEGPLANE 0 '';
+intstyle solid;
+fillcolr 1 1 1;
+edgewidth 17;
+polygon (1890 2551)(1890 2740)(1701 2740)(1701 3307)(3024 3307)(3024 2740)(1984 2740);
+polygon (3780 850)(3780 661)(3591 661)(3591 94)(4913 94)(4913 661)(3874 661);
+polygon (1890 850)(1890 661)(1701 661)(1701 94)(3024 94)(3024 661)(1984 661);
+polygon (1323 850)(1323 661)(1512 661)(1512 94)(189 94)(189 661)(1228 661);
+intstyle empty;
+fillcolr 0 0 0;
+edgewidth 1;
+figpos (7370 2646);
+linewidth 34;
+line (568 946)(5102 946);
+line (568 1323)(5102 1323);
+line (568 1701)(5102 1701);
+line (568 2079)(5102 2079);
+line (568 2457)(5102 2457);
+figpos (190 757);
+figpos (190 1134);
+figpos (190 1512);
+figpos (190 1890);
+figpos (190 2268);
+lineendcap 5;
+line (3401 2078)(3401 945);
+line (3779 2455)(3779 1322);
+line (4156 2079)(4156 1701);
+line (4535 1701)(4535 1323);
+line (4535 2457)(4535 2079);
+figpos (1134 -1889);
+intstyle empty;
+edgewidth 9;
+edgetype 2;
+rect (3024 850)(4913 2551)(0 1);
+line (2457 1701)(2457 1323);
+rect (1701 850)(2835 1795)(0 1);
+line (2079 1701)(2079 945);
+line (1134 1323)(1134 945);
+line (2457 2457)(2457 2079);
+rect (1701 1984)(2835 2551)(0 1);
+rect (756 850)(1512 1417)(0 1);
+intstyle empty;
+edgetype 1;
+edgewidth 1;
+figpos (1701 94);
+figpos (3590 94);
+figpos (189 94);
+figpos (1701 2740);
+ENDPLANE;
+ENDPIC;
+ENDMF;
+};
+}
+Comp[3 0 2 6 5 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 0 0 0]{CntInfo='0';
+CntSty={
+FSize=12;
+};
+}
+Basic[3 0 2 6 5 0 0 0 0 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 0 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 1 0 0]{CntInfo='0';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 1 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 1 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 2 0 0]{CntInfo='1';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 2 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 2 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 3 0 0]{CntInfo='2';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 3 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 3 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 4 0 0]{CntInfo='3';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 4 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 4 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[140 0 0 140];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 5 0 0]{CntInfo='4';
+CntSty={
+FFace='Meiryo UI';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 5 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 5 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[0 0 0 0];
+Dim=[802 802];
+};
+}
+Basic[3 0 2 6 5 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 6 0 0]{CntInfo='0';
+CntSty={
+FFace='Ricty';
+FSize=12;
+Align=End;
+};
+}
+Basic[3 0 2 6 5 0 0 0 6 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 6 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[2802 1202];
+};
+}
+Basic[3 0 2 6 5 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 7 0 0]{CntInfo='2-1 In 3 Out
+Merge Network';
+CntSty={
+FFace='Meiryo UI';
+FSize=10;
+Align=Start;
+IntrLineH=400;
+};
+}
+Basic[3 0 2 6 5 0 0 0 7 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 7 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[2802 1202];
+};
+}
+Basic[3 0 2 6 5 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 8 0 0]{CntInfo='3-2 In 5 Out
+Merge Network';
+CntSty={
+FFace='Meiryo UI';
+FSize=10;
+Align=Start;
+IntrLineH=400;
+};
+}
+Basic[3 0 2 6 5 0 0 0 8 1]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 8 1 0]{CntInfo='';
+}
+Comp[3 0 2 6 5 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[2802 1202];
+};
+}
+Basic[3 0 2 6 5 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 9 0 0]{CntInfo='1-1 In 2 Out
+Merge Network';
+CntSty={
+FFace='Meiryo UI';
+FSize=10;
+Align=Start;
+IntrLineH=400;
+};
+}
+Comp[3 0 2 6 5 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+FigTransparency=on;
+DimType=[on on];
+IMgn=[200 0 100 0];
+Dim=[2802 1202];
+};
+}
+Basic[3 0 2 6 5 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 2 6 5 0 0 0 10 0 0]{CntInfo='1-1 In 2 Out
+Merge Network';
+CntSty={
+FFace='Meiryo UI';
+FSize=10;
+Align=Start;
+IntrLineH=400;
+};
+}
+Comp[3 0 2 6 5 1]{Type=Desc;
+Ctgry=StdInBCap;
+}
+Comp[3 0 2 6 5 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 6 5 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 6 5 1 0 0 0]{CntInfo='Fig.5 ';
+}
+Basic[3 0 2 6 5 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 6 5 1 0 1 0]{CntInfo='非対称マージソートネットワークの例';
+CntSty={
+ParSty='図形枠見出し';
+};
+}
+Basic[3 0 2 6 6]{Type=Txt;
+}
+Char[3 0 2 6 6 0]{CntInfo='';
+}
+Comp[3 0 2 7]{Type=NoSeg;
+}
+Comp[3 0 2 7 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=5;
+}
+Basic[3 0 2 7 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 2 7 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 2 7 0 1]{Type=TtlTxt;
+}
+Char[3 0 2 7 0 1 0]{CntInfo='バブルソートネットワークとの比較';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 2 7 1]{Type=Txt;
+}
+Char[3 0 2 7 1 0]{CntInfo='非対称マージソートネットワークと[「VHDL で書くソーティングネットワーク(バブルソート)」]で紹介したバブルソートネットワークとで、必要なコンパレーターの数とステージの段数を比較したのが次の表です。';
+}
+Comp[3 0 2 7 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Div=on;
+IMgn=[0 0 0 0];
+Dim=[16006 10761];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 2 7 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 2 7 2 0 0]{}
+Tbl[3 0 2 7 2 0 0 0]{CntInfo={
+Hor={
+LineInfo={
+Pos=0;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=299;
+Sec={
+FromTo=[1 5];
+};
+};
+LineInfo={
+Pos=598;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=897;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=1196;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=1495;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=1794;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=2093;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=2392;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=2691;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=2990;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=3289;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=3588;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=3887;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=4186;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=4485;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=4784;
+Sec={
+FromTo=[0 5];
+};
+};
+LineInfo={
+Pos=5083;
+Sec={
+FromTo=[0 5];
+};
+};
+};
+Ver={
+LineInfo={
+Pos=0;
+Sec={
+FromTo=[0 17];
+};
+};
+LineInfo={
+Pos=945;
+Sec={
+FromTo=[0 17];
+};
+};
+LineInfo={
+Pos=2599;
+Sec={
+FromTo=[1 17];
+};
+};
+LineInfo={
+Pos=4253;
+Sec={
+FromTo=[0 17];
+};
+};
+LineInfo={
+Pos=5907;
+Sec={
+FromTo=[1 17];
+};
+};
+LineInfo={
+Pos=7561;
+Sec={
+FromTo=[0 17];
+};
+};
+};
+Cell={
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+CellAttr={};
+};
+};
+}
+Comp[3 0 2 7 2 0 0 0 0]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 0 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 0 0 0]{CntInfo='要素の数';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 1]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[7002 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 1 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 1 0 0]{CntInfo='コンパレーターの数';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 2]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[7002 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 2 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 2 0 0]{CntInfo='ステージの段数';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 3]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 3 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 3 0 0]{CntInfo='バブルソート';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 4]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 4 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 4 0 0]{CntInfo='非対称マージソート';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 5]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 5 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 5 0 0]{CntInfo='バブルソート';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 6]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+LineAlign=Ctrd;
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 6 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 6 0 0]{CntInfo='非対称マージソート';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=Ctrd;
+};
+}
+Comp[3 0 2 7 2 0 0 0 7]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 7 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 7 0 0]{CntInfo='4';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 8]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 8 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 8 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 9]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 9 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 9 0 0]{CntInfo='5';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 10]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 10 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 10 0 0]{CntInfo='5';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 11]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 11 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 11 0 0]{CntInfo='3';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 12]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 12 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 12 0 0]{CntInfo='5';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 13]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 13 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 13 0 0]{CntInfo='10';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 14]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 14 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 14 0 0]{CntInfo='9';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 15]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 15 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 15 0 0]{CntInfo='7';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 16]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 16 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 16 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 17]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 17 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 17 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 18]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 18 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 18 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 19]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 19 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 19 0 0]{CntInfo='12';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 20]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 20 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 20 0 0]{CntInfo='9';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 21]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 21 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 21 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 22]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 22 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 22 0 0]{CntInfo='7';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 23]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 23 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 23 0 0]{CntInfo='21';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 24]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 24 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 24 0 0]{CntInfo='16';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 25]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 25 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 25 0 0]{CntInfo='11';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 26]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 26 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 26 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 27]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 27 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 27 0 0]{CntInfo='8';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 28]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 28 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 28 0 0]{CntInfo='28';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 29]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 29 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 29 0 0]{CntInfo='19';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 30]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 30 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 30 0 0]{CntInfo='13';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 31]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 31 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 31 0 0]{CntInfo='6';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 32]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 32 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 32 0 0]{CntInfo='9';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 33]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 33 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 33 0 0]{CntInfo='36';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 34]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 34 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 34 0 0]{CntInfo='26';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 35]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 35 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 35 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 36]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 36 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 36 0 0]{CntInfo='10';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 37]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 37 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 37 0 0]{CntInfo='10';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 38]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 38 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 38 0 0]{CntInfo='45';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 39]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 39 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 39 0 0]{CntInfo='31';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 40]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 40 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 40 0 0]{CntInfo='17';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 41]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 41 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 41 0 0]{CntInfo='10';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 42]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 42 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 42 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 43]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 43 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 43 0 0]{CntInfo='105';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 44]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 44 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 44 0 0]{CntInfo='59';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 45]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 45 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 45 0 0]{CntInfo='27';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 46]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 46 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 46 0 0]{CntInfo='10';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 47]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 47 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 47 0 0]{CntInfo='20';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 48]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 48 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 48 0 0]{CntInfo='190';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 49]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 49 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 49 0 0]{CntInfo='97';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 50]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 50 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 50 0 0]{CntInfo='37';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 51]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 51 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 51 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 52]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 52 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 52 0 0]{CntInfo='25';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 53]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 53 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 53 0 0]{CntInfo='300';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 54]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 54 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 54 0 0]{CntInfo='138';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 55]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 55 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 55 0 0]{CntInfo='47';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 56]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 56 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 56 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 57]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 57 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 57 0 0]{CntInfo='30';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 58]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 58 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 58 0 0]{CntInfo='435';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 59]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 59 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 59 0 0]{CntInfo='178';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 60]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 60 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 60 0 0]{CntInfo='57';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 61]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 61 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 61 0 0]{CntInfo='15';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 62]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 62 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 62 0 0]{CntInfo='35';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 63]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 63 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 63 0 0]{CntInfo='595';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 64]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 64 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 64 0 0]{CntInfo='232';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 65]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 65 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 65 0 0]{CntInfo='67';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 66]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 66 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 66 0 0]{CntInfo='21';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 67]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 67 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 67 0 0]{CntInfo='40';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 68]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 68 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 68 0 0]{CntInfo='780';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 69]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 69 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 69 0 0]{CntInfo='283';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 70]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 70 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 70 0 0]{CntInfo='77';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 71]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 71 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 71 0 0]{CntInfo='21';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 72]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 72 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 72 0 0]{CntInfo='45';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 73]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 73 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 73 0 0]{CntInfo='990';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 74]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 74 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 74 0 0]{CntInfo='342';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 75]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 75 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 75 0 0]{CntInfo='87';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 76]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 76 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 76 0 0]{CntInfo='21';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 77]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[2000 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 77 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 77 0 0]{CntInfo='50';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 78]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 78 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 78 0 0]{CntInfo='1225';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 79]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 79 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 79 0 0]{CntInfo='395';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 80]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 80 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 80 0 0]{CntInfo='97';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 0 0 0 81]{Type=Fig;
+Ctgry=Nest;
+FigAttr={
+DimType=[on off];
+Dim=[3501 633];
+};
+}
+Basic[3 0 2 7 2 0 0 0 81 0]{Type=ArtTxt;
+}
+Char[3 0 2 7 2 0 0 0 81 0 0]{CntInfo='21';
+CntSty={
+ParSty='表枠内段落スタイル';
+Align=End;
+};
+}
+Comp[3 0 2 7 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 2 7 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 2 7 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 2 7 2 1 0 0 0]{CntInfo='Table.1 ';
+}
+Basic[3 0 2 7 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 2 7 2 1 0 1 0]{CntInfo='非対称マージソートネットワークとバブルソートネットワークの比較';
+CntSty={
+ParSty='表組枠見出し';
+};
+}
+Basic[3 0 2 7 3]{Type=Txt;
+}
+Char[3 0 2 7 3 0]{CntInfo='';
+}
+Basic[3 0 2 7 4]{Type=Txt;
+}
+Char[3 0 2 7 4 0]{CntInfo='バブルソートネットワークのコンパレーターの数は要素数n に対して (n×(n-1)÷2) なので O(n**2) で増加します。また、バブルソートネットワークのステージ数は (n-1)+(n-2)=2n-3 になります。';
+}
+Basic[3 0 2 7 5]{Type=Txt;
+}
+Char[3 0 2 7 5 0]{CntInfo='それに対して非対称マージソートネットワークは、必要なコンパレーターの数とステージの数が少なくなっています。';
+}
+Comp[3 0 3]{Type=NoSeg;
+}
+Comp[3 0 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=6;
+}
+Basic[3 0 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 0 1 0]{CntInfo='非対称マージソートの VHDL 記述';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 3 1]{Type=NoSeg;
+}
+Comp[3 0 3 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=6;
+}
+Basic[3 0 3 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 0 1 0]{CntInfo='ソーティングネットワークの VHDL 記述';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Comp[3 0 3 1 1]{Type=NoSeg;
+}
+Comp[3 0 3 1 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=6;
+}
+Basic[3 0 3 1 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 1 0 1 0]{CntInfo='New_Network 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 1 1]{Type=Txt;
+}
+Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、非対称マージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「VHDL で書くソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は Asymmetric_MergeSort_Network パッケージにて定義しています。';
+}
+Comp[3 0 3 1 1 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16832 12145];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 1 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 1 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 1 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Sorting_Network;
+package Asymmetric_MergeSort_Network is
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  GROUP_NETS  :  integer := 1
+    )             return         Sorting_Network.Param_Type;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  GROUP_NETS  :  integer := 1;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
+    -- (後略) --
+end Asymmetric_MergeSort_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 1 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 1 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 1 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 1 2 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 1 3]{Type=Txt;
+}
+Char[3 0 3 1 1 3 0]{CntInfo='';
+}
+Comp[3 0 3 1 1 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 17814];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 1 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 1 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 1 4 0 0 0]{CntInfo='package body Asymmetric_MergeSort_Network is
+    -- (前略) --
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  GROUP_NETS  :  integer := 1
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := Sorting_Network.New_Network(LO, HI, ORDER);
+        asymmetric_sort(network, network.Stage_Lo, LO, HI, GROUP_NETS);
+        return network;
+    end function;
+    function   New_Network(
+                  LO          :  integer;
+                  HI          :  integer;
+                  ORDER       :  integer;
+                  GROUP_NETS  :  integer := 1;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Network(LO, HI, ORDER, GROUP_NETS);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
+        return network;
+    end function;
+    -- (後略) --
+end Asymmetric_MergeSort_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 1 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 1 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 1 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 1 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 1 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 1 4 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 2]{Type=NoSeg;
+}
+Comp[3 0 3 1 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=8;
+}
+Basic[3 0 3 1 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 2 0 1 0]{CntInfo='New_Merge_Network 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 2 1]{Type=Txt;
+}
+Char[3 0 3 1 2 1 0]{CntInfo='New_Merge_Network 関数は、非対称マージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「VHDL で書くソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Merge_Network 関数は Asymmetric_MergeSort_Network パッケージにて定義しています。';
+}
+Comp[3 0 3 1 2 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 13267];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 2 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 2 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+use     ieee.numeric_std.all;
+library Merge_Sorter;
+use     Merge_Sorter.Sorting_Network;
+package Asymmetric_MergeSort_Network is
+-- (前略) --
+    function   New_Merge_Network(
+                  L_LO        :  integer;
+                  L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type;
+    function   New_Merge_Network(
+                  L_LO        :  integer;
+                  L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type;
+end Asymmetric_MergeSort_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 2 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 2 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 2 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 2 2 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 2 3]{Type=Txt;
+}
+Char[3 0 3 1 2 3 0]{CntInfo='';
+}
+Comp[3 0 3 1 2 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16785 20570];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 2 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 2 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 2 4 0 0 0]{CntInfo='package body Asymmetric_MergeSort_Network is
+    -- (前略) --
+    function   New_Merge_Network(
+                  L_LO        :  integer;
+                  L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
+                  ORDER       :  integer
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+        variable  net_lo      :  integer;
+        variable  net_hi      :  integer;
+    begin
+        net_lo  := min(L_LO, H_LO);
+        net_hi  := max(L_HI, H_HI);
+        network := Sorting_Network.New_Network(net_lo, net_hi, ORDER);
+        asymmetric_merge(network, network.Stage_Lo, L_LO, L_HI, H_LO, H_HI);
+        return network;
+    end function;
+    function   New_Merge_Network(
+                  L_LO        :  integer;
+                  L_HI        :  integer;
+                  H_LO        :  integer;
+                  H_HI        :  integer;
+                  ORDER       :  integer;
+                  QUEUE       :  Sorting_Network.Queue_Param_Type
+    )             return         Sorting_Network.Param_Type
+    is
+        variable  network     :  Sorting_Network.Param_Type;
+    begin
+        network := New_Merge_Network(L_LO, L_HI, H_LO, H_HI, ORDER);
+        Sorting_Network.Set_Queue_Param(network, QUEUE);
+        return network;
+    end function;
+end Asymmetric_MergeSort_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 2 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 2 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 2 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 2 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 2 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 2 4 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 2 5]{Type=Txt;
+}
+Char[3 0 3 1 2 5 0]{CntInfo='';
+}
+Comp[3 0 3 1 3]{Type=NoSeg;
+}
+Comp[3 0 3 1 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=10;
+}
+Basic[3 0 3 1 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 3 0 1 0]{CntInfo='asymmetric_sort 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 3 1]{Type=Txt;
+}
+Char[3 0 3 1 3 1 0]{CntInfo='Asymmetric_MergeSort_Netowork パッケージボディに定義されたasymmetric_sort 関数は、ソート用のソーティングネットワークを生成します。';
+}
+Basic[3 0 3 1 3 2]{Type=Txt;
+}
+Char[3 0 3 1 3 2 0]{CntInfo='この関数は、指定されたネットワークをだいたい同じ大きさの二つのネットワークに分割して各々のネットワークに対してasymmetric_sort 関数を再帰的に呼び出してソーティングネットワークを生成しています。各々のソーティングネットワークを asymmetric_merge 関数を使ってマージします。';
+}
+Comp[3 0 3 1 3 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 10410];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 3 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 3 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 3 3 0 0 0]{CntInfo='package body Asymmetric_MergeSort_Network is
+    -- (前略) --
+    procedure asymmetric_sort(
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
+                  START_STAGE :  in    integer;
+                  LO          :  in    integer;
+                  HI          :  in    integer;
+                  GROUP_NETS  :  in    integer
+    ) is
+        variable  net_size    :        integer;
+        variable  group_count :        integer;
+        variable  l_network   :        Sorting_Network.Param_Type;
+        variable  l_lo        :        integer;
+        variable  l_hi        :        integer;
+        variable  h_network   :        Sorting_Network.Param_Type;
+        variable  h_lo        :        integer;
+        variable  h_hi        :        integer;
+        variable  next_stage  :        integer;
+   ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 3 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 3 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 3 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 3 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 3 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 3 3 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(1)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 3 4]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 14086];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 3 4 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 3 4 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 3 4 0 0 0]{CntInfo='    begin
+        net_size := HI - LO + 1;
+        assert (net_size mod GROUP_NETS = 0)
+            report \"asymmetric_sort error\" severity ERROR;
+        group_count := net_size / GROUP_NETS;
+        if (group_count > 1) then
+            l_lo := LO;
+            l_hi := LO + GROUP_NETS*(group_count/2) - 1;
+            h_lo := l_hi + 1;
+            h_hi := HI;
+            l_network := Sorting_Network.New_Network(l_lo, l_hi, START_STAGE, NETWORK.Sort_Order);
+            h_network := Sorting_Network.New_Network(h_lo, h_hi, START_STAGE, NETWORK.Sort_Order);
+            asymmetric_sort(l_network, START_STAGE, l_lo, l_hi, GROUP_NETS);
+            asymmetric_sort(h_network, START_STAGE, h_lo, h_hi, GROUP_NETS);
+            Sorting_Network.Merge_Network(NETWORK, l_network);
+            Sorting_Network.Merge_Network(NETWORK, h_network);
+            next_stage := NETWORK.Stage_Hi + 1;
+            asymmetric_merge(NETWORK, next_stage, l_lo, l_hi, h_lo, h_hi);
+        end if;
+    end procedure;
+    -- (後略) --
+end Asymmetric_MergeSort_Network;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 3 4 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 3 4 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 3 4 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 3 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 3 4 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 3 4 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(2)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 4]{Type=NoSeg;
+}
+Comp[3 0 3 1 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=12;
+}
+Basic[3 0 3 1 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 1 4 0 1 0]{CntInfo='asymmetric_merge 関数';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 1 4 1]{Type=Txt;
+}
+Char[3 0 3 1 4 1 0]{CntInfo='Asymmetric_MergeSort_Netowork パッケージボディに定義された asymmetric_merge 関数は 非対称マージネットワークを生成します。';
+CntSty={
+Align=Start;
+};
+}
+Basic[3 0 3 1 4 2]{Type=Txt;
+}
+Char[3 0 3 1 4 2 0]{CntInfo='まずはそれぞれの入力ネットの要素数が２のべき乗値になるように切り上げます。次にこれらの値の大きいほうの値を、バッチャー奇偶マージネットワークを作る際の参考にします。';
+CntSty={
+Align=Start;
+};
+}
+Comp[3 0 3 1 4 3]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 10410];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 3 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 3 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 3 0 0 0]{CntInfo='package body Asymmetric_MergeSort_Network is
+    -- (前略) --
+    procedure asymmetric_merge(
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
+                  START_STAGE :  in    integer;
+                  L_LO        :  in    integer;
+                  L_HI        :  in    integer;
+                  H_LO        :  in    integer;
+                  H_HI        :  in    integer
+    ) is
+        variable  half_size   :        integer;
+    begin
+        half_size := max(align_by_power_of_2(L_HI-L_LO+1), 
+                         align_by_power_of_2(H_HI-H_LO+1));
+        asymmetric_merge(NETWORK, START_STAGE, L_LO, L_HI, H_LO, H_HI, half_size);
+    end procedure;
+    -- (後略) --
+end Asymmetric_MergeSort_Network;   ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 3 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 3 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 3 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 3 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 3 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 3 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 4 4]{Type=Txt;
+}
+Char[3 0 3 1 4 4 0]{CntInfo='';
+}
+Basic[3 0 3 1 4 5]{Type=Txt;
+}
+Char[3 0 3 1 4 5 0]{CntInfo='次に指定された大きさのバッチャー奇偶マージネットワークを生成して、あとは前節で説明したようにマージネットワークを生成していきます。';
+}
+Comp[3 0 3 1 4 6]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 15062];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 6 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 6 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 6 0 0 0]{CntInfo='package body Asymmetric_MergeSort_Network is
+    -- (前略) --
+    procedure asymmetric_merge(
+        variable  NETWORK     :  inout Sorting_Network.Param_Type;
+                  START_STAGE :  in    integer;
+                  L_LO        :  in    integer;
+                  L_HI        :  in    integer;
+                  H_LO        :  in    integer;
+                  H_HI        :  in    integer;
+        constant  HALF_SIZE   :  in    integer
+    ) is
+        type      NET_VALID_VECTOR   is array(0 to 2*HALF_SIZE-1) of integer;
+        variable  curr_net_list      :  NET_VALID_VECTOR;
+        variable  next_net_list      :  NET_VALID_VECTOR;
+        variable  merge_network      :  Sorting_Network.Param_Type;
+        variable  operator           :  Sorting_Network.Operator_Type;
+        variable  l_size             :  integer;
+        variable  h_size             :  integer;
+        variable  op_lo_net          :  integer;
+        variable  op_hi_net          :  integer;
+        variable  comp_lo_net        :  integer;
+        variable  comp_hi_net        :  integer;
+        variable  step               :  integer;
+        variable  curr_stage         :  integer;
+        variable  last_stage         :  integer;
+    begin';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 6 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 6 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 6 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 6 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 6 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 6 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(1)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 4 7]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16883 813];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 7 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 7 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 7 0 0 0]{CntInfo='        merge_network := OddEven_MergeSort_Network.New_Merge_Network(0, 2*HALF_SIZE-1, 0);
+ ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 7 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 7 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 7 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 7 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 7 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 7 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(2)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 4 8]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16887 9119];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 8 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 8 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 8 0 0 0]{CntInfo='        l_size := L_HI - L_LO + 1;
+        h_size := H_HI - H_LO + 1;
+        for i in 0 to HALF_SIZE-1 loop
+            if (i \< l_size) then
+                curr_net_list(i) := i + L_LO;
+            else
+                curr_net_list(i) := -1;
+            end if;
+        end loop;
+        for i in 0 to HALF_SIZE-1 loop
+            if (i \< h_size) then
+                curr_net_list(i+HALF_SIZE) := i + H_LO;
+            else
+                curr_net_list(i+HALF_SIZE) := -1;
+            end if;
+        end loop;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 8 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 8 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 8 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 8 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 8 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 8 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(3)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 1 4 9]{Type=Txt;
+}
+Char[3 0 3 1 4 9 0]{CntInfo='';
+}
+Comp[3 0 3 1 4 10]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 25182];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 10 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 10 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 10 0 0 0]{CntInfo='        curr_stage := START_STAGE;
+        last_stage := NETWORK.Stage_Hi;
+        for stage in merge_network.Stage_Lo to merge_network.Stage_Hi loop
+            for net in merge_network.Lo to merge_network.Hi loop
+                operator  := merge_network.Stage_List(stage).Operator_List(net);
+                step      := operator.STEP;
+                op_lo_net := curr_net_list(net     );
+                op_hi_net := curr_net_list(net+step);
+                if (Sorting_Network.Operator_Is_Comp(operator)) then
+                    if (step > 0) then
+                        if    (op_lo_net >= 0 and op_hi_net >= 0) then
+                            if (op_lo_net \< op_hi_net) then
+                                comp_lo_net := op_lo_net;
+                                comp_hi_net := op_hi_net;
+                            else
+                                comp_lo_net := op_hi_net;
+                                comp_hi_net := op_lo_net;
+                            end if;
+                            Sorting_Network.Add_Comparator(
+                                NETWORK => NETWORK    ,
+                                STAGE   => curr_stage ,
+                                LO      => comp_lo_net,
+                                HI      => comp_hi_net,
+                                UP      => TRUE
+                            );
+                            next_net_list(net     ) := comp_lo_net;
+                            next_net_list(net+step) := comp_hi_net;
+                        elsif (op_lo_net >= 0 and op_hi_net \<  0) then
+                            next_net_list(net     ) := op_lo_net;
+                            next_net_list(net+step) := -1;
+                        elsif (op_hi_net >= 0 and op_lo_net \<  0) then
+                            next_net_list(net     ) := op_hi_net;
+                            next_net_list(net+step) := -1;
+                        else
+                            next_net_list(net     ) := -1;
+                            next_net_list(net+step) := -1;
+                        end if;
+                    elsif (step = 0) then
+                        if (op_lo_net >= 0) then
+                            next_net_list(net     ) := op_lo_net;
+                        else
+                            next_net_list(net     ) := -1;
+                        end if;
+                    end if;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 10 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 10 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 10 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 10 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 10 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 10 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(4)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 1 4 11]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 19251];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 1 4 11 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 1 4 11 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 1 4 11 0 0 0]{CntInfo='                elsif (Sorting_Network.Operator_Is_Pass(operator)) then
+                        if (op_lo_net >= 0 and op_hi_net >= 0) then
+                            Sorting_Network.Add_Pass_Operator(
+                                NETWORK => NETWORK   ,
+                                STAGE   => curr_stage,
+                                DST     => op_lo_net ,
+                                SRC     => op_hi_net
+                            );
+                            next_net_list(net) := op_lo_net;
+                        elsif (op_lo_net >= 0 and op_hi_net \<  0) then
+                            next_net_list(net) := op_lo_net;
+                        else
+                            next_net_list(net) := -1;
+                        end if;
+                else
+                        if (op_lo_net >= 0) then
+                            next_net_list(net) := op_lo_net;
+                        else
+                            next_net_list(net) := -1;
+                        end if;
+                end if;
+            end loop;
+            curr_net_list := next_net_list;
+            last_stage    := curr_stage;
+            curr_stage    := curr_stage + 1;
+        end loop;
+        if (last_stage > NETWORK.Stage_Hi) then
+            NETWORK.Stage_Hi := last_stage;
+        end if;
+        NETWORK.Stage_Size := NETWORK.Stage_Hi - NETWORK.Stage_Lo + 1;
+    end procedure;
+    -- (後略) --
+end Asymmetric_MergeSort_Network;  ';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 1 4 11 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 1 4 11 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 1 4 11 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 1 4 11 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 1 4 11 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 1 4 11 1 0 1 0]{CntInfo='src/main/vhdl/core/asymmetric_mergesort_network.vhd(5)';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 2]{Type=NoSeg;
+}
+Comp[3 0 3 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=17;
+}
+Basic[3 0 3 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 0 1 0]{CntInfo='非対称マージソートの VHDL 記述例';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 3 2 1]{Type=Txt;
+}
+Char[3 0 3 2 1 0]{CntInfo='前回の[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡して非対称マージソート回路を構成した例を示します。';
+}
+Comp[3 0 3 2 2]{Type=NoSeg;
+}
+Comp[3 0 3 2 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=17;
+}
+Basic[3 0 3 2 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 2 0 1 0]{CntInfo='Entity ';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Comp[3 0 3 2 2 1]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 19609];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 2 1 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 2 1 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 2 1 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter is
+    generic (
+        WORDS           :  integer :=  4;
+        GROUP_WORDS     :  integer :=  1;
+        DATA_BITS       :  integer := 32;
+        COMP_HIGH       :  integer := 32;
+        COMP_LOW        :  integer :=  0;
+        COMP_SIGN       :  boolean := FALSE;
+        SORT_ORDER      :  integer :=  0;
+        ATRB_BITS       :  integer :=  4;
+        INFO_BITS       :  integer :=  1;
+        QUEUE_SIZE      :  integer :=  0
+    );
+    port (
+        CLK             :  in  std_logic;
+        RST             :  in  std_logic;
+        CLR             :  in  std_logic;
+        I_DATA          :  in  std_logic_vector(WORDS*DATA_BITS-1 downto 0);
+        I_ATRB          :  in  std_logic_vector(WORDS*ATRB_BITS-1 downto 0) := (others => \'0\');
+        I_INFO          :  in  std_logic_vector(      INFO_BITS-1 downto 0) := (others => \'0\');
+        I_VALID         :  in  std_logic;
+        I_READY         :  out std_logic;
+        O_DATA          :  out std_logic_vector(WORDS*DATA_BITS-1 downto 0);
+        O_ATRB          :  out std_logic_vector(WORDS*ATRB_BITS-1 downto 0);
+        O_INFO          :  out std_logic_vector(      INFO_BITS-1 downto 0);
+        O_VALID         :  out std_logic;
+        O_READY         :  in  std_logic;
+        BUSY            :  out std_logic
+    );
+end Asymmetric_Sorter;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 2 1 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 2 1 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 2 1 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 2 1 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 2 1 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 2 1 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Comp[3 0 3 2 3]{Type=NoSeg;
+}
+Comp[3 0 3 2 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=page;
+};
+ULayedPageNo=18;
+}
+Basic[3 0 3 2 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 3 2 3 0 1 0]{CntInfo='Architecture';
+CntSty={
+ParSty='レベル４見出し';
+};
+}
+Basic[3 0 3 2 3 1]{Type=Txt;
+}
+Char[3 0 3 2 3 1 0]{CntInfo='前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってソーティングネットワークを構築します。';
+}
+Comp[3 0 3 2 3 2]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 21738];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 2 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 2 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 2 0 0 0]{CntInfo='library ieee;
+use     ieee.std_logic_1164.all;
+library Merge_Sorter;
+use     Merge_Sorter.Word;
+use     Merge_Sorter.Sorting_Network;
+use     Merge_Sorter.Asymmetric_MergeSort_Network;
+use     Merge_Sorter.Core_Components.Sorting_Network_Core;
+architecture RTL of Asymmetric_Sorter is
+    function  GEN_NETWORK_PARAM return Sorting_Network.Param_Type
+    is
+        variable  network       :  Sorting_Network.Param_Type;
+        variable  sub_network   :  Sorting_Network.Param_Type;
+        variable  top_network   :  Sorting_Network.Param_Type;
+    begin
+        if (GROUP_WORDS > 1) then
+            assert (WORDS mod GROUP_WORDS = 0)
+                report \"GEN_NETWORK_PARAM error\" severity ERROR;
+            network     := Sorting_Network.New_Network(0, WORDS-1, SORT_ORDER);
+            sub_network := Asymmetric_MergeSort_Network.New_Network(0, GROUP_WORDS-1, SORT_ORDER);
+            top_network := Asymmetric_MergeSort_Network.New_Network(0, WORDS-1, SORT_ORDER, GROUP_WORDS);
+            for i in 0 to WORDS/GROUP_WORDS-1 loop
+                Sorting_Network.Merge_Network(network, sub_network, i*GROUP_WORDS, network.Stage_Lo);
+            end loop;
+            Sorting_Network.Merge_Network(network, top_network, 0, network.Stage_Hi+1);
+        else
+            network := Asymmetric_MergeSort_Network.New_Network(0, WORDS-1, SORT_ORDER);
+        end if;
+        Sorting_Network.Set_Queue_Param(network, Sorting_Network.Constant_Queue_Size(QUEUE_SIZE));
+        assert (FALSE)
+            report Sorting_Network.To_String(network)
+            severity NOTE;
+        return network;
+    end function;
+    constant  NETWORK_PARAM :  Sorting_Network.Param_Type := GEN_NETWORK_PARAM;';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 2 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 2 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 2 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 2 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 2 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 2 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 3]{Type=Txt;
+}
+Char[3 0 3 2 3 3 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 4]{Type=Txt;
+}
+Char[3 0 3 2 3 4 0]{CntInfo='[「VHDL で書くマージソーター(ワードの定義)」]で説明したパラメータを WORD_PARAM 定数に設定します。';
+}
+Comp[3 0 3 2 3 5]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16629 2576];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 5 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 5 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 5 0 0 0]{CntInfo='    constant  WORD_PARAM    :  Word.Param_Type := Word.New_Param(DATA_BITS, COMP_LOW, COMP_HIGH, COMP_SIGN);
+    signal    i_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+    signal    o_word        :  std_logic_vector(WORDS*WORD_PARAM.BITS-1 downto 0);
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 5 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 5 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 5 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 5 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 5 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 5 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 6]{Type=Txt;
+}
+Char[3 0 3 2 3 6 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 7]{Type=Txt;
+}
+Char[3 0 3 2 3 7 0]{CntInfo='入力された I_DATA と I_ATRB を前述の WARD_PARAM 定数で指定されたワード形式に変換します。';
+}
+Comp[3 0 3 2 3 8]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 8992];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 8 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 8 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 8 0 0 0]{CntInfo='    process (I_DATA, I_ATRB)
+        variable   data     :  std_logic_vector(DATA_BITS-1 downto 0);
+        variable   atrb     :  std_logic_vector(ATRB_BITS-1 downto 0);
+        variable   word     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    begin
+        for i in 0 to WORDS-1 loop
+            data := I_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS);
+            atrb := I_ATRB((i+1)*ATRB_BITS-1 downto i*ATRB_BITS);
+            word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO) := data;
+            word(WORD_PARAM.ATRB_NONE_POS    ) := atrb(0);
+            word(WORD_PARAM.ATRB_PRIORITY_POS) := atrb(1);
+            word(WORD_PARAM.ATRB_POSTPEND_POS) := atrb(2);
+            i_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS) \<= word;
+        end loop;
+    end process;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 8 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 8 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 8 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 8 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 8 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 8 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 9]{Type=Txt;
+}
+Char[3 0 3 2 3 9 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 10]{Type=Txt;
+}
+Char[3 0 3 2 3 10 0]{CntInfo='前節で説明した Asymmetric_MergeSort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにで非対称マージソートを行うソーティングネットワークが出来ます。';
+}
+Comp[3 0 3 2 3 11]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 11646];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 11 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 11 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 11 0 0 0]{CntInfo='    CORE: Sorting_Network_Core
+        generic map (
+            NETWORK_PARAM   => NETWORK_PARAM   , --
+            WORD_PARAM      => WORD_PARAM      , -- 
+            INFO_BITS       => INFO_BITS         -- 
+        )                                        -- 
+        port map (                               -- 
+            CLK             => CLK             , -- In  :
+            RST             => RST             , -- In  :
+            CLR             => CLR             , -- In  :
+            I_WORD          => i_word          , -- In  :
+            I_INFO          => I_INFO          , -- In  :
+            I_VALID         => I_VALID         , -- In  :
+            I_READY         => I_READY         , -- Out :
+            O_WORD          => o_word          , -- Out :
+            O_INFO          => O_INFO          , -- Out :
+            O_VALID         => O_VALID         , -- Out :
+            O_READY         => O_READY         , -- In  :
+            BUSY            => BUSY              -- Out :
+        );
+
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 11 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 11 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 11 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 11 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 11 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 11 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 12]{Type=Txt;
+}
+Char[3 0 3 2 3 12 0]{CntInfo='';
+}
+Basic[3 0 3 2 3 13]{Type=Txt;
+LaySty={
+NLO=page;
+};
+}
+Char[3 0 3 2 3 13 0]{CntInfo='最後にソート結果を O_WORD と O_ATRB に変換して出力します。';
+}
+Comp[3 0 3 2 3 14]{Type=Fig;
+Ctgry=FigInBdy;
+FigAttr={
+FrmLineVis=[on on on on];
+DimType=[on on];
+TxtArea=[on off off off];
+LineAlign=Ctrd;
+Dim=[16916 9794];
+TxtAreaSize=[353 0 0 0];
+};
+}
+Comp[3 0 3 2 3 14 0]{Type=Art;
+Ctgry=StdInArt;
+}
+Basic[3 0 3 2 3 14 0 0]{Type=ArtTxt;
+}
+Char[3 0 3 2 3 14 0 0 0]{CntInfo='    process (o_word)
+        variable   data     :  std_logic_vector(DATA_BITS-1 downto 0);
+        variable   atrb     :  std_logic_vector(ATRB_BITS-1 downto 0);
+        variable   word     :  std_logic_vector(WORD_PARAM.BITS-1 downto 0);
+    begin
+        for i in 0 to WORDS-1 loop
+            word := o_word((i+1)*WORD_PARAM.BITS-1 downto i*WORD_PARAM.BITS);
+            data := word(WORD_PARAM.DATA_HI downto WORD_PARAM.DATA_LO);
+            atrb    := (others => \'0\');
+            atrb(0) := word(WORD_PARAM.ATRB_NONE_POS    );
+            atrb(1) := word(WORD_PARAM.ATRB_PRIORITY_POS);
+            atrb(2) := word(WORD_PARAM.ATRB_POSTPEND_POS);
+            O_DATA((i+1)*DATA_BITS-1 downto i*DATA_BITS) \<= data;
+            O_ATRB((i+1)*ATRB_BITS-1 downto i*ATRB_BITS) \<= atrb;
+        end loop;
+    end process;
+end RTL;
+';
+CntSty={
+ParSty='VHDL';
+};
+}
+Comp[3 0 3 2 3 14 1]{Type=Desc;
+Ctgry=StdInTCap;
+}
+Comp[3 0 3 2 3 14 1 0]{Type=Cap;
+Ctgry=FigTtlInBdy;
+}
+Basic[3 0 3 2 3 14 1 0 0]{Type=CapNo;
+Ctgry=Discard;
+}
+Char[3 0 3 2 3 14 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 3 2 3 14 1 0 1]{Type=CapTxt;
+}
+Char[3 0 3 2 3 14 1 0 1 0]{CntInfo='src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='テキスト枠見出し';
+};
+}
+Basic[3 0 3 2 3 15]{Type=Txt;
+}
+Char[3 0 3 2 3 15 0]{CntInfo='';
+}
+Comp[3 0 4]{Type=NoSeg;
+}
+Comp[3 0 4 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=22;
+}
+Basic[3 0 4 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 0 1 0]{CntInfo='参照';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 4 1]{Type=NoSeg;
+}
+Comp[3 0 4 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=22;
+}
+Basic[3 0 4 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 1 0 1 0]{CntInfo='参考記事';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 1 1]{Type=Txt;
+}
+Char[3 0 4 1 1 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 1 2]{Type=Txt;
+}
+Char[3 0 4 1 2 0]{CntInfo='・[「VHDL で書くマージソーター(ワードの定義)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 1 3]{Type=Txt;
+}
+Char[3 0 4 1 3 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 1 4]{Type=Txt;
+}
+Char[3 0 4 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 4 1 5]{Type=Txt;
+}
+Char[3 0 4 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 4 1 6]{Type=Txt;
+}
+Char[3 0 4 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バブルソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Comp[3 0 4 2]{Type=NoSeg;
+}
+Comp[3 0 4 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=22;
+}
+Basic[3 0 4 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 2 0 1 0]{CntInfo='ソースコード';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 2 1]{Type=Txt;
+}
+Char[3 0 4 2 1 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 2 2]{Type=Txt;
+}
+Char[3 0 4 2 2 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 2 3]{Type=Txt;
+}
+Char[3 0 4 2 3 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}

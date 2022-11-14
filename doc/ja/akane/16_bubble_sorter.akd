@@ -758,15 +758,51 @@ ParSty='レベル２見出し';
 }
 Basic[3 0 1 1]{Type=Txt;
 }
-Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
+Char[3 0 1 1 0]{CntInfo='筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装するに当たり、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。';
 }
 Basic[3 0 1 2]{Type=Txt;
 }
-Char[3 0 1 2 0]{CntInfo='この記事では、別記事で紹介した [「ソーティングネットワーク(コアパッケージ)」]を使ってバブルソート回路を構成する方法を紹介します。';
+Char[3 0 1 2 0]{CntInfo='';
 }
 Basic[3 0 1 3]{Type=Txt;
 }
-Char[3 0 1 3 0]{CntInfo='';
+Char[3 0 1 3 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 4]{Type=Txt;
+}
+Char[3 0 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 5]{Type=Txt;
+}
+Char[3 0 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 6]{Type=Txt;
+}
+Char[3 0 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 1 7]{Type=Txt;
+}
+Char[3 0 1 7 0]{CntInfo='';
+}
+Basic[3 0 1 8]{Type=Txt;
+}
+Char[3 0 1 8 0]{CntInfo='この記事は、上の記事の続編で、[「VHDL で書くソーティングネットワーク(コアパッケージ)」]を使ってバブルソート回路を構成する方法を紹介します。';
+}
+Basic[3 0 1 9]{Type=Txt;
+}
+Char[3 0 1 9 0]{CntInfo='';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
@@ -966,9 +1002,13 @@ Char[3 0 2 8 0]{CntInfo='';
 }
 Basic[3 0 2 9]{Type=Txt;
 }
-Char[3 0 2 9 0]{CntInfo='ただし、このままだとステージ数が多いため、次の図のように並列処理できるステージをまとめてしまいます。';
+Char[3 0 2 9 0]{CntInfo='ただし、このままだとステージ数がコンパレーターの数と同じ数になってしまいす。ここでステージとは、ソーティングネットワークを並列処理可能な単位で分割したものです。';
 }
-Comp[3 0 2 10]{Type=Fig;
+Basic[3 0 2 10]{Type=Txt;
+}
+Char[3 0 2 10 0]{CntInfo='具体的には、要素数n としてステージ数は (n×(n-1)÷2) となり、O(n**2)で増加します。そこで次の図のように並列処理できるステージをまとめてしまいます。この最適化によって、ステージ数は (n-1)+(n-2) になります。';
+}
+Comp[3 0 2 11]{Type=Fig;
 Ctgry=FigInBdy;
 FigAttr={
 DimType=[on on];
@@ -979,11 +1019,11 @@ Dim=[15024 12016];
 TxtAreaSize=[0 353 0 0];
 };
 }
-Comp[3 0 2 10 0]{Type=Art;
+Comp[3 0 2 11 0]{Type=Art;
 Ctgry=StdInArt;
 }
-Basic[3 0 2 10 0 0]{}
-Geo[3 0 2 10 0 0 0]{CntInfo={
+Basic[3 0 2 11 0 0]{}
+Geo[3 0 2 11 0 0 0]{CntInfo={
 BEGMF 'interchangeV2';
 mfversion 1;
 mfdesc 'Akane V2.0';
@@ -1090,20 +1130,20 @@ ENDPIC;
 ENDMF;
 };
 }
-Comp[3 0 2 10 1]{Type=Desc;
+Comp[3 0 2 11 1]{Type=Desc;
 Ctgry=StdInBCap;
 }
-Comp[3 0 2 10 1 0]{Type=Cap;
+Comp[3 0 2 11 1 0]{Type=Cap;
 Ctgry=FigTtlInBdy;
 }
-Basic[3 0 2 10 1 0 0]{Type=CapNo;
+Basic[3 0 2 11 1 0 0]{Type=CapNo;
 Ctgry=Discard;
 }
-Char[3 0 2 10 1 0 0 0]{CntInfo='Fig.2 ';
+Char[3 0 2 11 1 0 0 0]{CntInfo='Fig.2 ';
 }
-Basic[3 0 2 10 1 0 1]{Type=CapTxt;
+Basic[3 0 2 11 1 0 1]{Type=CapTxt;
 }
-Char[3 0 2 10 1 0 1 0]{CntInfo='バブルソートのソーティングネットワーク例(最適化後)';
+Char[3 0 2 11 1 0 1 0]{CntInfo='バブルソートのソーティングネットワーク例(最適化後)';
 CntSty={
 ParSty='図形枠見出し';
 };
@@ -1164,7 +1204,7 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 1 1]{Type=Txt;
 }
-Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、バブルソートソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は Bubble_Sort_Network パッケージにて定義しています。';
+Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、バブルソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「VHDL で書くソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は Bubble_Sort_Network パッケージにて定義しています。';
 }
 Comp[3 0 3 1 1 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1412,7 +1452,7 @@ ParSty='レベル３見出し';
 }
 Basic[3 0 3 2 1]{Type=Txt;
 }
-Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバブルソート回路を構成した例を示します。';
+Char[3 0 3 2 1 0]{CntInfo='[「VHDL で書くソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバブルソート回路を構成した例を示します。';
 }
 Comp[3 0 3 2 2]{Type=NoSeg;
 }
@@ -1525,7 +1565,7 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 2 3 1]{Type=Txt;
 }
-Char[3 0 3 2 3 1 0]{CntInfo='[「ワードの定義」]で説明したパラメータを WORD_PARAM 定数に設定します。';
+Char[3 0 3 2 3 1 0]{CntInfo='[「VHDL で書くマージソーター(ワードの定義)」]で説明したパラメータを WORD_PARAM 定数に設定します。';
 }
 Comp[3 0 3 2 3 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1583,7 +1623,7 @@ Char[3 0 3 2 3 3 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 4]{Type=Txt;
 }
-Char[3 0 3 2 3 4 0]{CntInfo='入力された I_DATA と I_ATRB を[「ワードの定義」]で指定されたワード形式に変換します。';
+Char[3 0 3 2 3 4 0]{CntInfo='入力された I_DATA と I_ATRB を前述の WARD_PARAM 定数で指定されたワード形式に変換します。';
 }
 Comp[3 0 3 2 3 5]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1645,7 +1685,7 @@ Char[3 0 3 2 3 6 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 7]{Type=Txt;
 }
-Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に渡します。これにでバブルソートを行うソーティングネットワークが出来ます。';
+Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した Bubble_Sort_Network.New_Network 関数を使ってバブルソートのソーティングネットワークを構築して Sorting_Network_Core に渡します。これにでバブルソートを行うソーティングネットワークが出来ます。';
 }
 Comp[3 0 3 2 3 8]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1799,36 +1839,141 @@ CntSty={
 ParSty='レベル２見出し';
 };
 }
-Basic[3 0 4 1]{Type=Txt;
+Comp[3 0 4 1]{Type=NoSeg;
 }
-Char[3 0 4 1 0]{CntInfo='・目次: [「はじめに」]';
+Comp[3 0 4 1 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 4 1 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 1 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 1 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 1 0 1 0]{CntInfo='参考記事';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 1 1]{Type=Txt;
+}
+Char[3 0 4 1 1 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 2]{Type=Txt;
+Basic[3 0 4 1 2]{Type=Txt;
 }
-Char[3 0 4 2 0]{CntInfo='・参考: [「ソーティングネットワーク(コアパッケージ)」]';
+Char[3 0 4 1 2 0]{CntInfo='・[「VHDL で書くマージソーター(ワードの定義)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 3]{Type=Txt;
+Basic[3 0 4 1 3]{Type=Txt;
 }
-Char[3 0 4 3 0]{CntInfo='・ソースコード:
-https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd
-https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bubble_sort_network.vhd
-https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bubble_sorter/bubble_sorter.vhd';
+Char[3 0 4 1 3 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 4]{Type=Txt;
+Basic[3 0 4 1 4]{Type=Txt;
 }
-Char[3 0 4 4 0]{CntInfo='・出典: [Wikipedia/Bubble_Sort]';
+Char[3 0 4 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 4 1 5]{Type=Txt;
+}
+Char[3 0 4 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Basic[3 0 4 1 6]{Type=Txt;
+}
+Char[3 0 4 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(非対称マージソート)」]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+};
+}
+Comp[3 0 4 2]{Type=NoSeg;
+}
+Comp[3 0 4 2 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 4 2 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 2 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 2 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 2 0 1 0]{CntInfo='ソースコード';
+CntSty={
+ParSty='レベル３見出し';
+};
+}
+Basic[3 0 4 2 1]{Type=Txt;
+}
+Char[3 0 4 2 1 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 2 2]{Type=Txt;
+}
+Char[3 0 4 2 2 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bubble_sort_network.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 2 3]{Type=Txt;
+}
+Char[3 0 4 2 3 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bubble_sorter/bubble_sorter.vhd';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Comp[3 0 4 3]{Type=NoSeg;
+}
+Comp[3 0 4 3 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+ULayedPageNo=10;
+}
+Basic[3 0 4 3 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 4 3 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 4 3 0 1]{Type=TtlTxt;
+}
+Char[3 0 4 3 0 1 0]{CntInfo='出典';
+CntSty={
+ParSty='レベル３見出し';
+Align=Start;
+};
+}
+Basic[3 0 4 3 1]{Type=Txt;
+}
+Char[3 0 4 3 1 0]{CntInfo='・[https://wikipedia.org/wiki/Bubble_sort]';
+CntSty={
+ParSty='本文箇条書きレベル１';
+Align=Start;
+};
+}
+Basic[3 0 4 3 2]{Type=Txt;
+}
+Char[3 0 4 3 2 0]{CntInfo='・[『Pythonで学ぶアルゴリズム　第17弾：並べ替え（バブルソート）』@Qiita](https://qiita.com/Yuya-Shimizu/items/99349001f0fccc0d8d41)';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
