@@ -9,6 +9,7 @@
 筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装するに当たり、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。
 
 
+
 * [「VHDL で書くマージソーター(はじめに)」]
 * [「VHDL で書くソーティングネットワーク(コアパッケージ)」]
 * [「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]
@@ -812,6 +813,7 @@ end RTL;
 
 ### 参考記事
 
+
 * [「VHDL で書くマージソーター(はじめに)」]
 * [「VHDL で書くマージソーター(ワードの定義)」]
 * [「VHDL で書くソーティングネットワーク(コアパッケージ)」]
@@ -821,6 +823,7 @@ end RTL;
 
 
 ### ソースコード
+
 
 * https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd
 * https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/asymmetric_mergesort_network.vhd

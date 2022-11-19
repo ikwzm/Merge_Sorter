@@ -13,6 +13,7 @@
 
 
 この記事で説明する ArgSort IP はGitHub にて公開しています。
+
 * https://github.com/ikwzm/Merge_Sorter/tree/1.3.0/ip/argsort_axi_1.3
 
 
@@ -72,6 +73,7 @@ Fig.2 ArgSort IPの構成
 例えば RD_BUF に格納されたデータ配列をすべてソートするのにNパス必要だった場合、 ArgSort IP は次のように動作します。
 
  1.  STM_AXI から RD_BUF のデータ配列を読み、index を付加してマージソートコアに入力して、部分的にソートした結果を MRG_AXI から T0_BUF に書き込みます。
+
 2. MRG_AXI から T0_BUF に格納された部分的にソートされた結果をマージソートコアに入力して、さらにマージソートした結果を MRG_AXI から T1_BUF に書き込みます。
 3. 最後のNパス目では、MRG_AXI から T0_BUF または T1_BUF に格納された部分的にソートされた結果をマージソートコアに入力して、すべてソートされた結果のうち、index だけを取り出して STM_AXI から WR_BUF に書き込みます。
 
@@ -741,6 +743,7 @@ MODE_REGS.DEBUG が２の場合、DEBUG_REGS_0 には、ソート全部に要し
 
 
 ## 参照
+
 
 * 目次: [「はじめに」]
 * 次回: [「ArgSort-Ultra96」]

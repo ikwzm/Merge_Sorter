@@ -425,6 +425,7 @@ end RTL;
 
 ## 参照
 
+
 * 目次: [「はじめに」]
 * 次回: [「シングルワード マージソート ノード」]
 * 前回: [「ソーティングネットワーク(バイトニックマージソート)」]
@@ -435,6 +436,7 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/oddeven_
 * 出典: [Wikipedia/Batcher_odd-even_mergesort]
 
 
+[Wikipedia/Batcher_odd-even_mergesort]: https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%83%E3%83%81%E3%83%A3%E3%83%BC%E5%A5%87%E5%81%B6%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88 "Wikipedia/Batcher_odd-even_mergesort"
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
@@ -450,4 +452,3 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/oddeven_
 [「ArgSort IP」]: ./13_argsort.md "「VHDL で書くマージソーター(ArgSort IP)」"
 [「ArgSort-Ultra96」]: https://github.com/ikwzm/ArgSort-Ultra96/blob/1.2.1/doc/ja/argsort-ultra96.md "「VHDL で書くマージソーター(ArgSort-Ultra96)」"
 [「ArgSort-Kv260」]: https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md "「VHDL で書くマージソーター(ArgSort-Kv260)」"
-[Wikipedia/Batcher_odd-even_mergesort]: https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%83%E3%83%81%E3%83%A3%E3%83%BC%E5%A5%87%E5%81%B6%E3%83%9E%E3%83%BC%E3%82%B8%E3%82%BD%E3%83%BC%E3%83%88 "Wikipedia/Batcher_odd-even_mergesort"

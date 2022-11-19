@@ -9,6 +9,7 @@
 筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装するに当たり、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。
 
 
+
 * [「VHDL で書くマージソーター(はじめに)」]
 * [「VHDL で書くソーティングネットワーク(コアパッケージ)」]
 * [「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]
@@ -343,6 +344,7 @@ end RTL;
 
 ### 参考記事
 
+
 * [「VHDL で書くマージソーター(はじめに)」]
 * [「VHDL で書くマージソーター(ワードの定義)」]
 * [「VHDL で書くソーティングネットワーク(コアパッケージ)」]
@@ -353,12 +355,14 @@ end RTL;
 
 ### ソースコード
 
+
 * https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd
 * https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/bubble_sort_network.vhd
 * https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/bubble_sorter/bubble_sorter.vhd
 
 
 ### 出典
+
 
 * [https://wikipedia.org/wiki/Bubble_sort]
 * [『Pythonで学ぶアルゴリズム　第17弾：並べ替え（バブルソート）』@Qiita](https://qiita.com/Yuya-Shimizu/items/99349001f0fccc0d8d41)
