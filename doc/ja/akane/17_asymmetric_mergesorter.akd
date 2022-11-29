@@ -759,7 +759,7 @@ ParSty='レベル２見出し';
 }
 Basic[3 0 1 1]{Type=Txt;
 }
-Char[3 0 1 1 0]{CntInfo='筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装するに当たり、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。';
+Char[3 0 1 1 0]{CntInfo='筆者はかつて「VHDL で書くマージソーター」という題で幾つか記事を書きました。マージソーターを実装する際に、ソーティングネットワークを VHDL で書く必要がありました。これらの詳細は以下の記事を参照してください。';
 }
 Basic[3 0 1 2]{Type=Txt;
 }
@@ -835,7 +835,7 @@ ParSty='レベル２見出し';
 }
 Basic[3 0 2 1]{Type=Txt;
 }
-Char[3 0 2 1 0]{CntInfo='非対称マージソートという言葉は筆者が勝手に命名した名前です。もし他に同様な仕組みのソート方法があれば教えてください。';
+Char[3 0 2 1 0]{CntInfo='非対称マージソート(Asymmetric mergesort)という言葉は筆者が勝手に命名した名前です。もし他に同様な仕組みのソート方法があれば教えてください。';
 }
 Basic[3 0 2 2]{Type=Txt;
 }
@@ -6334,10 +6334,6 @@ CntSty={
 ParSty='テキスト枠見出し';
 };
 }
-Basic[3 0 3 2 3 15]{Type=Txt;
-}
-Char[3 0 3 2 3 15 0]{CntInfo='';
-}
 Comp[3 0 4]{Type=NoSeg;
 }
 Comp[3 0 4 0]{Type=Ttl;
@@ -6351,111 +6347,144 @@ Char[3 0 4 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 4 0 1]{Type=TtlTxt;
 }
-Char[3 0 4 0 1 0]{CntInfo='参照';
+Char[3 0 4 0 1 0]{CntInfo='まとめ';
 CntSty={
 ParSty='レベル２見出し';
 };
 }
-Comp[3 0 4 1]{Type=NoSeg;
+Basic[3 0 4 1]{Type=Txt;
 }
-Comp[3 0 4 1 0]{Type=Ttl;
+Char[3 0 4 1 0]{CntInfo='この記事では、非対称マージソートに基づいたソーティングネットワークを VHDL で記述する方法を紹介しました。ここで紹介した非対称マージソートは、バイトニックマージソートやバッチャー奇遇マージソートに比べて、ソートする要素数が２のべき乗値に限定されない利点があります。またバブルソートに比べてコンパレーターの数とステージ数が少なくなっています。そのため、例えばメディアンフィルタを FPGA で実装する場合に活用できると思います。';
+}
+Basic[3 0 4 2]{Type=Txt;
+}
+Char[3 0 4 2 0]{CntInfo='なお、非対称マージソート(Asymmetric mergesort)という言葉は筆者が勝手に命名した名前です。もし他に同様な仕組みのソート方法があれば教えてください。';
+}
+Basic[3 0 4 3]{Type=Txt;
+}
+Char[3 0 4 3 0]{CntInfo='';
+}
+Comp[3 0 5]{Type=NoSeg;
+}
+Comp[3 0 5 0]{Type=Ttl;
+Ctgry=TtlInBdy;
+LaySty={
+NLO=null;
+};
+ULayedPageNo=22;
+}
+Basic[3 0 5 0 0]{Type=TtlNo;
+Ctgry=Discard;
+}
+Char[3 0 5 0 0 0]{CntInfo=' ';
+}
+Basic[3 0 5 0 1]{Type=TtlTxt;
+}
+Char[3 0 5 0 1 0]{CntInfo='参照';
+CntSty={
+ParSty='レベル２見出し';
+};
+}
+Comp[3 0 5 1]{Type=NoSeg;
+}
+Comp[3 0 5 1 0]{Type=Ttl;
 Ctgry=TtlInBdy;
 ULayedPageNo=22;
 }
-Basic[3 0 4 1 0 0]{Type=TtlNo;
+Basic[3 0 5 1 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 4 1 0 0 0]{CntInfo=' ';
+Char[3 0 5 1 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 4 1 0 1]{Type=TtlTxt;
+Basic[3 0 5 1 0 1]{Type=TtlTxt;
 }
-Char[3 0 4 1 0 1 0]{CntInfo='参考記事';
+Char[3 0 5 1 0 1 0]{CntInfo='参考記事';
 CntSty={
 ParSty='レベル３見出し';
 };
 }
-Basic[3 0 4 1 1]{Type=Txt;
+Basic[3 0 5 1 1]{Type=Txt;
 }
-Char[3 0 4 1 1 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
+Char[3 0 5 1 1 0]{CntInfo='・[「VHDL で書くマージソーター(はじめに)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 1 2]{Type=Txt;
+Basic[3 0 5 1 2]{Type=Txt;
 }
-Char[3 0 4 1 2 0]{CntInfo='・[「VHDL で書くマージソーター(ワードの定義)」]';
+Char[3 0 5 1 2 0]{CntInfo='・[「VHDL で書くマージソーター(ワードの定義)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 1 3]{Type=Txt;
+Basic[3 0 5 1 3]{Type=Txt;
 }
-Char[3 0 4 1 3 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
+Char[3 0 5 1 3 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(コアパッケージ)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 1 4]{Type=Txt;
+Basic[3 0 5 1 4]{Type=Txt;
 }
-Char[3 0 4 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
+Char[3 0 5 1 4 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バイトニックマージソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
-Basic[3 0 4 1 5]{Type=Txt;
+Basic[3 0 5 1 5]{Type=Txt;
 }
-Char[3 0 4 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
+Char[3 0 5 1 5 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
-Basic[3 0 4 1 6]{Type=Txt;
+Basic[3 0 5 1 6]{Type=Txt;
 }
-Char[3 0 4 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バブルソート)」]';
+Char[3 0 5 1 6 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バブルソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 };
 }
-Comp[3 0 4 2]{Type=NoSeg;
+Comp[3 0 5 2]{Type=NoSeg;
 }
-Comp[3 0 4 2 0]{Type=Ttl;
+Comp[3 0 5 2 0]{Type=Ttl;
 Ctgry=TtlInBdy;
 ULayedPageNo=22;
 }
-Basic[3 0 4 2 0 0]{Type=TtlNo;
+Basic[3 0 5 2 0 0]{Type=TtlNo;
 Ctgry=Discard;
 }
-Char[3 0 4 2 0 0 0]{CntInfo=' ';
+Char[3 0 5 2 0 0 0]{CntInfo=' ';
 }
-Basic[3 0 4 2 0 1]{Type=TtlTxt;
+Basic[3 0 5 2 0 1]{Type=TtlTxt;
 }
-Char[3 0 4 2 0 1 0]{CntInfo='ソースコード';
+Char[3 0 5 2 0 1 0]{CntInfo='ソースコード';
 CntSty={
 ParSty='レベル３見出し';
 };
 }
-Basic[3 0 4 2 1]{Type=Txt;
+Basic[3 0 5 2 1]{Type=Txt;
 }
-Char[3 0 4 2 1 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd';
+Char[3 0 5 2 1 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 2 2]{Type=Txt;
+Basic[3 0 5 2 2]{Type=Txt;
 }
-Char[3 0 4 2 2 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/asymmetric_mergesort_network.vhd';
+Char[3 0 5 2 2 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/asymmetric_mergesort_network.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
 };
 }
-Basic[3 0 4 2 3]{Type=Txt;
+Basic[3 0 5 2 3]{Type=Txt;
 }
-Char[3 0 4 2 3 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
+Char[3 0 5 2 3 0]{CntInfo='・https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
