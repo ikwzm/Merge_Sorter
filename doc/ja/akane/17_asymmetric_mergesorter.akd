@@ -795,22 +795,15 @@ ParSty='本文箇条書きレベル１';
 }
 Basic[3 0 1 7]{Type=Txt;
 }
-Char[3 0 1 7 0]{CntInfo='・[「VHDL で書くソーティングネットワーク(バブルソート)」]';
-CntSty={
-ParSty='本文箇条書きレベル１';
-};
+Char[3 0 1 7 0]{CntInfo='';
 }
 Basic[3 0 1 8]{Type=Txt;
 }
-Char[3 0 1 8 0]{CntInfo='';
+Char[3 0 1 8 0]{CntInfo='この記事は、上の記事のスピンオフ編で、[「VHDL で書くソーティングネットワーク(コアパッケージ)」]を使って非対称マージソート回路を構成する方法を紹介します。';
 }
 Basic[3 0 1 9]{Type=Txt;
 }
-Char[3 0 1 9 0]{CntInfo='この記事は、上の記事の続編で、[「VHDL で書くソーティングネットワーク(コアパッケージ)」]を使って非対称マージソート回路を構成する方法を紹介します。';
-}
-Basic[3 0 1 10]{Type=Txt;
-}
-Char[3 0 1 10 0]{CntInfo='';
+Char[3 0 1 9 0]{CntInfo='';
 }
 Comp[3 0 2]{Type=NoSeg;
 }
