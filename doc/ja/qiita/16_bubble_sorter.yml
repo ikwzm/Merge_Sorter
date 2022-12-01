@@ -1,0 +1,40 @@
+---
+input_file  : ../akane/16_bubble_sorter.akd
+
+output_file : 16_bubble_sorter.md
+
+image_url :
+  "Fig.1 バブルソートのソーティングネットワーク例(最適化前)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/53d1f8ae-7b21-1693-8274-d5eb37b394a7.jpeg"
+  "Fig.2 バブルソートのソーティングネットワーク例(最適化後)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/9b4db4bf-fe3c-ccc4-daab-8a61fadad662.jpeg"
+
+link_list :
+  - id   : "「VHDL で書くマージソーター(はじめに)」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "https://qiita.com/ikwzm/items/6665b2ef44d878a5b85f"
+  - id   : "「VHDL で書くマージソーター(ワードの定義)」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "https://qiita.com/ikwzm/items/bdcd8876317b908ff492"
+  - id   : "「VHDL で書くマージソーター(ワード比較器)」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "https://qiita.com/ikwzm/items/d5d1dd264b1670f33bd7"
+  - id   : "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    title: "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    url  : "https://qiita.com/ikwzm/items/a1d06e47523759c726ae"
+  - id   : "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    url  : "https://qiita.com/ikwzm/items/366eacbf6a877994c955"
+  - id   : "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    url  : "https://qiita.com/ikwzm/items/c21a53f21b87408a7805"
+  - id   : "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    url  : "https://qiita.com/ikwzm/items/5bf935d36441da08b38f"
+  - id   : "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    url  : "https://qiita.com/ikwzm/items/9b6594f4d57d8b80dcbf"
+  - id   : "https://wikipedia.org/wiki/Bubble_sort"
+    title: "https://wikipedia.org/wiki/Bubble_sort"
+    url  : "https://wikipedia.org/wiki/Bubble_sort"
+
+seg_level : -1
+---

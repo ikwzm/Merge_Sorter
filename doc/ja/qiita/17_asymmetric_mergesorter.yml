@@ -1,0 +1,42 @@
+---
+input_file  : ../akane/17_asymmetric_mergesorter.akd
+
+output_file : 17_asymmetric_mergesorter.md
+
+image_url :
+  "Fig.1 非対称マージネットワーク(ブラックボックス)"                 : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/a32a4d3f-7050-b72a-40bc-125bc3b3b422.jpeg"
+  "Fig.2 元になるバッチャー奇偶マージネットワーク"                   : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/d73973cd-e15c-6608-7c14-9eadc4f9a569.jpeg"
+  "Fig.3 バッチャー奇偶マージネットワークにネット番号を割り当てる"   : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/3f6f9404-6c46-0be9-2e4f-0c6998bd30f8.jpeg"
+  "Fig.4 バッチャー奇偶マージネットワークから不要なネットを削除する" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/b05c11f0-7580-cfb4-5526-0efc6c5c9c90.jpeg"
+  "Fig.5 非対称マージソートネットワークの例"                         : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/f2d501b1-e2fd-113e-7598-7e69d7b9f6a0.jpeg"
+
+link_list :
+  - id   : "「VHDL で書くマージソーター(はじめに)」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "https://qiita.com/ikwzm/items/6665b2ef44d878a5b85f"
+  - id   : "「VHDL で書くマージソーター(ワードの定義)」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "https://qiita.com/ikwzm/items/bdcd8876317b908ff492"
+  - id   : "「VHDL で書くマージソーター(ワード比較器)」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "https://qiita.com/ikwzm/items/d5d1dd264b1670f33bd7"
+  - id   : "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    title: "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    url  : "https://qiita.com/ikwzm/items/a1d06e47523759c726ae"
+  - id   : "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    url  : "https://qiita.com/ikwzm/items/366eacbf6a877994c955"
+  - id   : "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    url  : "https://qiita.com/ikwzm/items/c21a53f21b87408a7805"
+  - id   : "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    url  : "https://qiita.com/ikwzm/items/5bf935d36441da08b38f"
+  - id   : "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    url  : "https://qiita.com/ikwzm/items/9b6594f4d57d8b80dcbf"
+
+include : 00_link_list.yml
+
+seg_level : -1
+---
