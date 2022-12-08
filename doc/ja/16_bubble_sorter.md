@@ -29,16 +29,17 @@
 
 
 
-以下に Python で記述したバブルソートの実装例を示します。(出典:[『Pythonで学ぶアルゴリズム　第17弾：並べ替え（バブルソート）』@Qiita](https://qiita.com/Yuya-Shimizu/items/99349001f0fccc0d8d41) )。
+以下に Python で記述したバブルソートの実装例を示します。
 
 
 ```Python:bubble_sort.py
 def bubble_sort(data):
-    for i in range(len(data)):
-        for j in range(len(data) - i -1):
-            if data[j] > data[j+1]: 
-                data[j], data[j+1] = data[j+1], data[j] 
+    for i in range(0,len(data)-1):
+        for j in reversed(range(i,len(data)-1)):
+            if data[j+1] > data[j]:
+                data[j],data[j+1] = data[j+1],data[j]
     return data
+   
 ```
 
 

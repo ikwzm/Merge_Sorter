@@ -4,8 +4,9 @@ input_file  : ../akane/16_bubble_sorter.akd
 output_file : 16_bubble_sorter.md
 
 image_url :
-  "Fig.1 バブルソートのソーティングネットワーク例(最適化前)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/53d1f8ae-7b21-1693-8274-d5eb37b394a7.jpeg"
-  "Fig.2 バブルソートのソーティングネットワーク例(最適化後)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/9b4db4bf-fe3c-ccc4-daab-8a61fadad662.jpeg"
+  "Fig.1 バブルソートのソーティングネットワーク例(最適化前)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/2e6a9edf-940a-fa72-0732-76a704db7e19.jpeg"
+  "Fig.2 バブルソートのソーティングネットワーク例(最適化後)" : "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/24981/becf0470-e641-1cb6-2d26-46e9f553a4b0.jpeg"
+
 
 link_list :
   - id   : "「VHDL で書くマージソーター(はじめに)」"
