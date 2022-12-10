@@ -22,7 +22,7 @@ TARGET.each do |md|
   akane_name  = File.join("..", "akane", base_name + ".akd")
   image_path  = File.join("..", "akane", base_name + ".img")
   config_name = File.join("."          , base_name + ".yml")
-  file md => [akane_name, config_name] do
+  file md => [akane_name, config_name, "00_link_list.yml"] do
     sh "#{AKANE_TO_MARKDOWN} --proc #{config_name}"
     Dir.glob("#{image_path}/*.jpg") do |src_image_file|
       num = src_image_file[/akgeo(\d+)/,1]
