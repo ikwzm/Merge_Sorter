@@ -1,0 +1,38 @@
+---
+input_file  : 17_asymmetric_mergesorter.akd
+
+output_file : ../17_asymmetric_mergesorter.md
+
+image_url :
+  "Fig.1 非対称マージネットワーク(ブラックボックス)"                 : "image/17_asymmetric_mergesorter_1.jpg"
+  "Fig.2 元になるバッチャー奇偶マージネットワーク"                   : "image/17_asymmetric_mergesorter_2.jpg"
+  "Fig.3 バッチャー奇偶マージネットワークにネット番号を割り当てる"   : "image/17_asymmetric_mergesorter_3.jpg"
+  "Fig.4 バッチャー奇偶マージネットワークから不要なネットを削除する" : "image/17_asymmetric_mergesorter_4.jpg"
+  "Fig.5 非対称マージソートネットワークの例"                         : "image/17_asymmetric_mergesorter_5.jpg"
+
+link_list :
+  - id   : "「VHDL で書くマージソーター(はじめに)」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "./01_introduction.md"
+  - id   : "「VHDL で書くマージソーター(ワードの定義)」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "./02_word_package.md"
+  - id   : "「VHDL で書くマージソーター(ワード比較器)」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "./03_word_compare.md"
+  - id   : "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    title: "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    url  : "./04_sorting_network.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    url  : "./05_bitonic_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    url  : "./06_oddeven_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    url  : "./16_bubble_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    url  : "./17_asymmetric_mergesorter.md"
+---

@@ -11,16 +11,18 @@ TARGET            = ["01_introduction.md"          ,
                      "10_merge_sort_core_1.md"     ,
                      "11_merge_sort_core_2.md"     ,
                      "12_merge_sort_core_3.md"     ,
-                     "13_argsort.md"               ].map{|name| File.join(TARGET_DIR, name)}
+                     "13_argsort.md"               ,
+                     "16_bubble_sorter.md"         ,
+                     "17_asymmetric_mergesorter.md"].map{|name| File.join(TARGET_DIR, name)}
 
-AKANE_TO_MARKDOWN = File.join("..", "..", "..", "..", "..", "src", "akane_reader", "akane-to-markdown.rb")
+AKANE_TO_MARKDOWN = File.join("..", "..", "..", "..", "..", "src", "akane_document", "exe", "akane-to-markdown.rb")
 
 TARGET.each do |md|
   base_name   = File.basename(md, ".md")
   akane_name  = File.join(".", base_name + ".akd")
   image_path  = File.join(".", base_name + ".img")
   config_name = File.join(".", base_name + ".yml")
-  file md => [akane_name, config_name] do
+  file md => [akane_name, config_name, "00_link_list.yml"] do
     sh "#{AKANE_TO_MARKDOWN} --proc #{config_name}"
     Dir.glob("#{image_path}/*.jpg") do |src_image_file|
       num = src_image_file[/akgeo(\d+)/,1]

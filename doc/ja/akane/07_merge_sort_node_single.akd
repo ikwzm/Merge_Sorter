@@ -5765,7 +5765,7 @@ Align=Start;
 }
 Basic[3 0 5 3]{Type=Txt;
 }
-Char[3 0 5 3 0]{CntInfo='・前回: [「バッチャー奇偶マージソート」]';
+Char[3 0 5 3 0]{CntInfo='・前回: [「ソーティングネットワーク(バッチャー奇偶マージソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

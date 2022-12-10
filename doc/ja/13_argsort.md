@@ -13,6 +13,7 @@
 
 
 この記事で説明する ArgSort IP はGitHub にて公開しています。
+
 * https://github.com/ikwzm/Merge_Sorter/tree/1.3.0/ip/argsort_axi_1.3
 
 
@@ -72,6 +73,7 @@ Fig.2 ArgSort IPの構成
 例えば RD_BUF に格納されたデータ配列をすべてソートするのにNパス必要だった場合、 ArgSort IP は次のように動作します。
 
  1.  STM_AXI から RD_BUF のデータ配列を読み、index を付加してマージソートコアに入力して、部分的にソートした結果を MRG_AXI から T0_BUF に書き込みます。
+
 2. MRG_AXI から T0_BUF に格納された部分的にソートされた結果をマージソートコアに入力して、さらにマージソートした結果を MRG_AXI から T1_BUF に書き込みます。
 3. 最後のNパス目では、MRG_AXI から T0_BUF または T1_BUF に格納された部分的にソートされた結果をマージソートコアに入力して、すべてソートされた結果のうち、index だけを取り出して STM_AXI から WR_BUF に書き込みます。
 
@@ -742,6 +744,7 @@ MODE_REGS.DEBUG が２の場合、DEBUG_REGS_0 には、ソート全部に要し
 
 ## 参照
 
+
 * 目次: [「はじめに」]
 * 次回: [「ArgSort-Ultra96」]
 * 前回: [「ストリームフィードバック」]
@@ -753,9 +756,9 @@ https://github.com/ikwzm/Merge_Sorter/tree/1.3.0/src/main/vhdl/examples/argsort_
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"

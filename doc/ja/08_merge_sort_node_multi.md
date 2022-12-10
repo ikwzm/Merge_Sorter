@@ -21,6 +21,7 @@
 マルチワードソートノードは、同時に処理するワードを複数ワードにすることで、単位時間あたりに出力するワード数を増やします。その結果、マージソートをワード数倍に高速化することが出来ます。
 
 マルチワードノードソートは、[「はじめに」]で紹介した以下の ACRi の記事がとても詳しいです。私はその記事に刺激を受けて VHDL で実装してみたに過ぎません。詳しい内容はそちらを参照してください。
+
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」] 
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」] 
 *  [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」] 
@@ -54,7 +55,7 @@ Fig.1 マルチワードマージソートのアーキテクチャ
 
 マルチワードマージソートノードの入力側は[「シングルワード マージソート ノード」]とほとんど変わりありません。上の図の点線で囲まれた部分がマルチワードに拡張した部分になります。
 
-今回実装したマルチワードソートノードは、[「バッチャー奇偶マージソート」]のマージ部分を使っています。
+今回実装したマルチワードソートノードは、[「ソーティングネットワーク(バッチャー奇偶マージソート)」]のマージ部分を使っています。
 
 
 ### 動作例
@@ -145,7 +146,7 @@ Fig.6 マルチワードマージソートの動作例(5)
 
 
 
-前段のバッチャーズ奇偶マージャー(Loose Merger) と後段のバッチャーズ奇偶マージャー(Final Merger)を [「ソーティングネットワーク」]で構築するために [「バッチャー奇偶マージソート」]で説明した関数(Sorting_Network.New_OddEven_Merge_Network)を用いてパラメータを生成します。
+前段のバッチャーズ奇偶マージャー(Loose Merger) と後段のバッチャーズ奇偶マージャー(Final Merger)を [「ソーティングネットワーク(コアパッケージ)」]で構築するために [「バッチャー奇偶マージソート」]で説明した関数(Sorting_Network.New_OddEven_Merge_Network)を用いてパラメータを生成します。
 
 
 ```VHDL:src/main/vhdl/core/merge_sorter_node.vhd
@@ -490,6 +491,7 @@ end RTL;
 
 ## 参照
 
+
 * 目次: [「はじめに」]
 * 次回: [「マージソート ツリー」]
 * 前回: [「シングルワード マージソート ノード」]
@@ -499,12 +501,19 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter
 
 
 
+[ACRi]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
+[アダプティブコンピューティング研究推進体(ACRi)]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/501 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」"
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/2393 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」"
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(4)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/3888 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(4)」"
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/4713 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」"
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"
@@ -514,10 +523,3 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter
 [「ArgSort IP」]: ./13_argsort.md "「VHDL で書くマージソーター(ArgSort IP)」"
 [「ArgSort-Ultra96」]: https://github.com/ikwzm/ArgSort-Ultra96/blob/1.2.1/doc/ja/argsort-ultra96.md "「VHDL で書くマージソーター(ArgSort-Ultra96)」"
 [「ArgSort-Kv260」]: https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md "「VHDL で書くマージソーター(ArgSort-Kv260)」"
-[ACRi]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
-[アダプティブコンピューティング研究推進体(ACRi)]: https://www.acri.c.titech.ac.jp/wp "アダプティブコンピューティング研究推進体(ACRi)"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/501 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(2)」"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/2393 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(3)」"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(4)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/3888 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(4)」"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/4713 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(5)」"

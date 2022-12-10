@@ -1,0 +1,38 @@
+---
+input_file  : 16_bubble_sorter.akd
+
+output_file : ../16_bubble_sorter.md
+
+image_url :
+  "Fig.1 バブルソートのソーティングネットワーク例(最適化前)" : "image/16_bubble_sorter_1.jpg"
+  "Fig.2 バブルソートのソーティングネットワーク例(最適化後)" : "image/16_bubble_sorter_2.jpg"
+
+link_list :
+  - id   : "「VHDL で書くマージソーター(はじめに)」"
+    title: "「VHDL で書くマージソーター(はじめに)」"
+    url  : "./01_introduction.md"
+  - id   : "「VHDL で書くマージソーター(ワードの定義)」"
+    title: "「VHDL で書くマージソーター(ワードの定義)」"
+    url  : "./02_word_package.md"
+  - id   : "「VHDL で書くマージソーター(ワード比較器)」"
+    title: "「VHDL で書くマージソーター(ワード比較器)」"
+    url  : "./03_word_compare.md"
+  - id   : "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    title: "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+    url  : "./04_sorting_network.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+    url  : "./05_bitonic_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
+    url  : "./06_oddeven_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    title: "「VHDL で書くソーティングネットワーク(バブルソート)」"
+    url  : "./16_bubble_sorter.md"
+  - id   : "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    title: "「VHDL で書くソーティングネットワーク(非対称マージソート)」"
+    url  : "./17_asymmetric_mergesorter.md"
+  - id   : "https://wikipedia.org/wiki/Bubble_sort"
+    title: "https://wikipedia.org/wiki/Bubble_sort"
+    url  : "https://wikipedia.org/wiki/Bubble_sort"
+---

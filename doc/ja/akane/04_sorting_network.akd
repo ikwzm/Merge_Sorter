@@ -691,7 +691,7 @@ Char[3 0 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 0 1]{Type=TtlTxt;
 }
-Char[3 0 0 1 0]{CntInfo='VHDL で書くマージソーター(ソーティングネットワーク)';
+Char[3 0 0 1 0]{CntInfo='VHDL で書くソーティングネットワーク(コアパッケージ)';
 CntSty={
 ParSty='レベル１見出し';
 };
@@ -720,7 +720,7 @@ Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
 }
 Basic[3 0 1 2]{Type=Txt;
 }
-Char[3 0 1 2 0]{CntInfo='この記事では、マージソーター内部で使用するソーティングネットワーク(Sorting_Network) について説明します。';
+Char[3 0 1 2 0]{CntInfo='この記事では、マージソーター内部で使用するソーティングネットワーク(Sorting_Network) のコアパッケージについて説明します。';
 }
 Basic[3 0 1 3]{Type=Txt;
 }
@@ -2254,7 +2254,7 @@ Char[3 0 3 2 3 1 0]{CntInfo='Operator_Type およびその配列型である Operator_Vecto
 }
 Basic[3 0 3 2 3 2]{Type=Txt;
 }
-Char[3 0 3 2 3 2 0]{CntInfo='Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す SPEP で構成されています。';
+Char[3 0 3 2 3 2 0]{CntInfo='Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す STEP で構成されています。';
 }
 Comp[3 0 3 2 3 3]{Type=Fig;
 Ctgry=FigInBdy;
@@ -5009,7 +5009,7 @@ Align=Start;
 }
 Basic[3 0 5 2]{Type=Txt;
 }
-Char[3 0 5 2 0]{CntInfo='・次回: [「バイトニックマージソート」]';
+Char[3 0 5 2 0]{CntInfo='・次回: [「ソーティングネットワーク(バイトニックマージソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

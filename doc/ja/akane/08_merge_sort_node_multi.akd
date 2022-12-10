@@ -759,6 +759,9 @@ ParSty='レベル２見出し';
 Basic[3 0 1 1]{Type=Txt;
 }
 Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
+CntSty={
+Align=Start;
+};
 }
 Basic[3 0 1 2]{Type=Txt;
 }
@@ -2244,7 +2247,7 @@ Char[3 0 3 1 3 0]{CntInfo='マルチワードマージソートノードの入力側は[「シングルワ
 }
 Basic[3 0 3 1 4]{Type=Txt;
 }
-Char[3 0 3 1 4 0]{CntInfo='今回実装したマルチワードソートノードは、[「バッチャー奇偶マージソート」]のマージ部分を使っています。';
+Char[3 0 3 1 4 0]{CntInfo='今回実装したマルチワードソートノードは、[「ソーティングネットワーク(バッチャー奇偶マージソート)」]のマージ部分を使っています。';
 }
 Comp[3 0 3 2]{Type=NoSeg;
 }
@@ -9212,7 +9215,7 @@ Char[3 0 4 1 2 0]{CntInfo='';
 }
 Basic[3 0 4 1 3]{Type=Txt;
 }
-Char[3 0 4 1 3 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger) と後段のバッチャーズ奇偶マージャー(Final Merger)を [「ソーティングネットワーク」]で構築するために [「バッチャー奇偶マージソート」]で説明した関数(Sorting_Network.New_OddEven_Merge_Network)を用いてパラメータを生成します。';
+Char[3 0 4 1 3 0]{CntInfo='前段のバッチャーズ奇偶マージャー(Loose Merger) と後段のバッチャーズ奇偶マージャー(Final Merger)を [「ソーティングネットワーク(コアパッケージ)」]で構築するために [「バッチャー奇偶マージソート」]で説明した関数(Sorting_Network.New_OddEven_Merge_Network)を用いてパラメータを生成します。';
 }
 Comp[3 0 4 1 4]{Type=Fig;
 Ctgry=FigInBdy;

@@ -733,7 +733,7 @@ Char[3 0 0 0 0]{CntInfo=' ';
 }
 Basic[3 0 0 1]{Type=TtlTxt;
 }
-Char[3 0 0 1 0]{CntInfo='VHDL で書くマージソーター(バイトニックマージソート)';
+Char[3 0 0 1 0]{CntInfo='VHDL で書くソーティングネットワーク(バイトニックマージソート)';
 CntSty={
 ParSty='レベル１見出し';
 };
@@ -762,7 +762,7 @@ Char[3 0 1 1 0]{CntInfo='別記事 [「はじめに」] を参照してください。';
 }
 Basic[3 0 1 2]{Type=Txt;
 }
-Char[3 0 1 2 0]{CntInfo='この記事では、前回説明した[「ソーティングネットワーク」]を使ってバイトニックマージソート回路を構成する方法を紹介します。';
+Char[3 0 1 2 0]{CntInfo='この記事では、前回説明した[「ソーティングネットワーク(コアパッケージ)」]を使ってバイトニックマージソート回路を構成する方法を紹介します。';
 }
 Basic[3 0 1 3]{Type=Txt;
 }
@@ -1039,7 +1039,10 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 1 1]{Type=Txt;
 }
-Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
+Char[3 0 3 1 1 1 0]{CntInfo='New_Network 関数は、バイトニックマージソートのソーティングネットワークに対応した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
+CntSty={
+Align=Start;
+};
 }
 Comp[3 0 3 1 1 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1197,7 +1200,7 @@ ParSty='レベル４見出し';
 }
 Basic[3 0 3 1 2 1]{Type=Txt;
 }
-Char[3 0 3 1 2 1 0]{CntInfo='New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
+Char[3 0 3 1 2 1 0]{CntInfo='New_Merge_Network 関数は、バイトニックマージソートネットワークのうちのマージの部分だけを取り出した Sorting_Network.Param_Type([「ソーティングネットワーク(コアパッケージ)」]参照)を生成します。 New_Merge_Network 関数は Bitonic_MergeSort_Network パッケージにて定義しています。';
 }
 Comp[3 0 3 1 2 2]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1531,7 +1534,7 @@ ParSty='レベル３見出し';
 }
 Basic[3 0 3 2 1]{Type=Txt;
 }
-Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。';
+Char[3 0 3 2 1 0]{CntInfo='前回の[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に、前述で説明した New_Network関数で生成したソーティングネットワーク構成を示す定数を渡してバイトニックソートマージ回路を構成した例を示します。';
 }
 Comp[3 0 3 2 2]{Type=NoSeg;
 }
@@ -1765,7 +1768,7 @@ Char[3 0 3 2 3 6 0]{CntInfo='';
 }
 Basic[3 0 3 2 3 7]{Type=Txt;
 }
-Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。';
+Char[3 0 3 2 3 7 0]{CntInfo='前節で説明した New_Network 関数を使ってバイトニックマージソートのソーティングネットワークを構築して[「ソーティングネットワーク(コアパッケージ)」]で説明した Sorting_Network_Core に渡します。これにでバイトニックマージソートを行うソーティングネットワークが出来ます。';
 }
 Comp[3 0 3 2 3 8]{Type=Fig;
 Ctgry=FigInBdy;
@@ -1930,7 +1933,7 @@ Align=Start;
 }
 Basic[3 0 4 2]{Type=Txt;
 }
-Char[3 0 4 2 0]{CntInfo='・次回: [「バッチャー奇偶マージソート」]';
+Char[3 0 4 2 0]{CntInfo='・次回: [「ソーティングネットワーク(バッチャー奇偶マージソート)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;
@@ -1938,7 +1941,7 @@ Align=Start;
 }
 Basic[3 0 4 3]{Type=Txt;
 }
-Char[3 0 4 3 0]{CntInfo='・前回: [「ソーティングネットワーク」]';
+Char[3 0 4 3 0]{CntInfo='・前回: [「ソーティングネットワーク(コアパッケージ)」]';
 CntSty={
 ParSty='本文箇条書きレベル１';
 Align=Start;

@@ -1,5 +1,5 @@
 
-# VHDL で書くマージソーター(ソーティングネットワーク)
+# VHDL で書くソーティングネットワーク(コアパッケージ)
 
 
 
@@ -8,7 +8,7 @@
 
 別記事 [「はじめに」] を参照してください。
 
-この記事では、マージソーター内部で使用するソーティングネットワーク(Sorting_Network) について説明します。
+この記事では、マージソーター内部で使用するソーティングネットワーク(Sorting_Network) のコアパッケージについて説明します。
 
 
 
@@ -156,7 +156,7 @@ end Sorting_Network;
 
 Operator_Type およびその配列型である Operator_Vector は Sorting_Network パッケージにて次のように定義されています。
 
-Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す SPEP で構成されています。
+Operator_Type は、オペレーターの種類(OP_NONE、OP_PASS、OP_COMP_UP 、OP_COMP_DOWN) を保持する OP、およびオペレーターを接続する対となるネットワークの相対位置を示す STEP で構成されています。
 
 
 ```VHDL:src/main/vhdl/core/sorting_network.vhd
@@ -512,8 +512,9 @@ end RTL;
 
 ## 参照
 
+
 * 目次: [「はじめに」]
-* 次回: [「バイトニックマージソート」]
+* 次回: [「ソーティングネットワーク(バイトニックマージソート)」]
 * 前回: [「ワード比較器」]
 * ソースコード: https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network.vhd   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_network_core.vhd
@@ -522,9 +523,9 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/sorting_netw
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"

@@ -65,6 +65,7 @@ A_LAST、B_LAST、O_LAST は一連のワード列の最後のワードである�
 
 
 マージソートノードは、内部で次のような状態を持ちます。
+
   * COMP_STATE はAとBからの入力ワードを比較する状態
   * A_SEL_STATEは A を選択している状態
   * B_SEL_STATEは B を選択している状態
@@ -425,21 +426,24 @@ end RTL;
 
 ## 参照
 
+
 * 目次: [「はじめに」]
 * 次回: [「マルチワード マージソート ノード」]
-* 前回: [「バッチャー奇偶マージソート」]
+* 前回: [「ソーティングネットワーク(バッチャー奇偶マージソート)」]
 * ソースコード:   
 https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter_node.vhd
 * [「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]
 * [「VALID 信号と READY 信号によるハンドシェイクの注意点」 @Qiita][「VALID-then-READY」] 
 
 
+[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
+[「VALID-then-READY」]: https://qiita.com/ikwzm/items/9736b5547cb15309af5c "「VALID 信号と READY 信号によるハンドシェイクの注意点」"
 [「はじめに」]: ./01_introduction.md "「VHDL で書くマージソーター(はじめに)」"
 [「ワードの定義」]: ./02_word_package.md "「VHDL で書くマージソーター(ワードの定義)」"
 [「ワード比較器」]: ./03_word_compare.md "「VHDL で書くマージソーター(ワード比較器)」"
-[「ソーティングネットワーク」]: ./04_sorting_network.md "「VHDL で書くマージソーター(ソーティングネットワーク)」"
-[「バイトニックマージソート」]: ./05_bitonic_sorter.md "「VHDL で書くマージソーター(バイトニックマージソート)」"
-[「バッチャー奇偶マージソート」]: ./06_oddeven_sorter.md "「VHDL で書くマージソーター(バッチャー奇偶マージソート)」"
+[「ソーティングネットワーク(コアパッケージ)」]: ./04_sorting_network.md "「VHDL で書くソーティングネットワーク(コアパッケージ)」"
+[「ソーティングネットワーク(バイトニックマージソート)」]: ./05_bitonic_sorter.md "「VHDL で書くソーティングネットワーク(バイトニックマージソート)」"
+[「ソーティングネットワーク(バッチャー奇偶マージソート)」]: ./06_oddeven_sorter.md "「VHDL で書くソーティングネットワーク(バッチャー奇偶マージソート)」"
 [「シングルワード マージソート ノード」]: ./07_merge_sort_node_single.md "「VHDL で書くマージソーター(シングルワード マージソート ノード)」"
 [「マルチワード マージソート ノード」]: ./08_merge_sort_node_multi.md "「VHDL で書くマージソーター(マルチワード マージソート ノード)」"
 [「マージソート ツリー」]: ./09_merge_sort_tree.md "「VHDL で書くマージソーター(マージソート ツリー)」"
@@ -449,5 +453,3 @@ https://github.com/ikwzm/Merge_Sorter/blob/1.4.1/src/main/vhdl/core/merge_sorter
 [「ArgSort IP」]: ./13_argsort.md "「VHDL で書くマージソーター(ArgSort IP)」"
 [「ArgSort-Ultra96」]: https://github.com/ikwzm/ArgSort-Ultra96/blob/1.2.1/doc/ja/argsort-ultra96.md "「VHDL で書くマージソーター(ArgSort-Ultra96)」"
 [「ArgSort-Kv260」]: https://github.com/ikwzm/ArgSort-Kv260/blob/1.2.1/doc/ja/argsort-Kv260.md "「VHDL で書くマージソーター(ArgSort-Kv260)」"
-[「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」]: https://www.acri.c.titech.ac.jp/wordpress/archives/132 "「FPGAを使って基本的なアルゴリズムのソーティングを劇的に高速化(1)」"
-[「VALID-then-READY」]: https://qiita.com/ikwzm/items/9736b5547cb15309af5c "「VALID 信号と READY 信号によるハンドシェイクの注意点」"
