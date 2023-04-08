@@ -4,13 +4,13 @@
 
 - Library:
     Name     :  DUMMY_PLUG
-    Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
+    Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name} --relaxed"
     Exclude  :  ["../../../Dummy_Plug/src/main/vhdl/core/sync_alt.vhd"]
     PathList :  ["../../../Dummy_Plug/src/main/vhdl/"]
 
 - Library:
     Name     :  PIPEWORK
-    Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
+    Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name} --relaxed"
     Exclude  :  ["../../../PipeWork/src/components/sdpram_altera_auto_select.vhd",
                  "../../../PipeWork/src/components/sdpram_xilinx_auto_select.vhd",
                  "../../../PipeWork/src/components/sdpram_xilinx_ultrascale_auto_select.vhd"]
