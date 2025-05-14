@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------------
 --!     @file    core_components.vhd                                             --
 --!     @brief   Merge Sorter Core Component Library Description Package         --
---!     @version 1.4.1                                                           --
---!     @date    2022/11/02                                                      --
+--!     @version 1.5.0                                                           --
+--!     @date    2025/05/14                                                      --
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>                     --
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 --                                                                               --
---      Copyright (C) 2022 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
+--      Copyright (C) 2025 Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>           --
 --      All rights reserved.                                                     --
 --                                                                               --
 --      Redistribution and use in source and binary forms, with or without       --
