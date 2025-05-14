@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    word.vhd
 --!     @brief   Merge Sorter Word Package :
---!     @version 0.9.1
---!     @date    2020/11/19
+--!     @version 1.5.0
+--!     @date    2025/5/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2020 Ichiro Kawazome
+--      Copyright (C) 2018-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -87,7 +87,7 @@ package Word is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  Default_Param        :  Param_Type := New_Param(DATA_BITS => 8,SIGN => FALSE);
+    constant  Default_Param        :  Param_Type;
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -281,5 +281,8 @@ package body Word is
                         NONE     => NONE
                );
     end function;
-
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  Default_Param         :  Param_Type := New_Param(DATA_BITS => 8,SIGN => FALSE);
 end Word;
