@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface_controller.vhd
 --!     @brief   Merge Sorter Interface Controller Module :
---!     @version 1.3.0
---!     @date    2021/7/14
+--!     @version 1.5.0
+--!     @date    2025/5/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2021 Ichiro Kawazome
+--      Copyright (C) 2018-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -1455,11 +1455,11 @@ begin
                         mode <= DEBUG_MODE;
                     elsif (to_01(unsigned(mode)) = 1) then
                         if (debug_req and active(i) = '1') then
-                            for i in regs'low to regs'high-1 loop
-                                if (sort_block_size'low <= i and i <= sort_block_size'high) then
-                                    regs(i) <= sort_block_size(i);
+                            for pos in regs'low to regs'high-1 loop
+                                if (sort_block_size'low <= pos and pos <= sort_block_size'high) then
+                                    regs(pos) <= sort_block_size(pos);
                                 else
-                                    regs(i) <= '0';
+                                    regs(pos) <= '0';
                                 end if;
                             end loop;
                             if (last_proc) then
