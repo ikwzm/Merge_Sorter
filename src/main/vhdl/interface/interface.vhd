@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    interface.vhd
 --!     @brief   Merge Sorter Interface Package :
---!     @version 1.3.0
---!     @date    2021/7/14
+--!     @version 1.5.0
+--!     @date    2025/5/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2021 Ichiro Kawazome
+--      Copyright (C) 2018-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -121,7 +121,7 @@ package Interface is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    constant  Default_Regs_Param : Regs_Field_Type := New_Regs_Field_Type;
+    constant  Default_Regs_Param : Regs_Field_Type;
     
 end Interface;
 -----------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ package body Interface is
     -- Mode[15]    = 1:AXI4 Master I/F をセイフティモードで動かす.
     -- Mode[14]    = 1:AXI4 Master I/F を投機モードで動かす.
     -- Mode[13]    = AXI4 Master I/F の AXID[0] の値を指定する.
-    -- Mode[11]    = AXI4 Master I/F の ARUSER[0] の値を指定する.
+    -- Mode[12:11] = AXI4 Master I/F の ARUSER[1:0] の値を指定する.
     -- Mode[10:08] = AXI4 Master I/F の APORT[2:0] の値を指定する.
     -- Mode[07:04] = AXI4 Master I/F の ACHACHE[3:0]を指定する.
     -- Mode[03]    = 予約.
@@ -166,7 +166,7 @@ package body Interface is
         mode_regs_field.SAFETY := New_Bit_Slice_Field(1, LO + 15);
         mode_regs_field.SPECUL := New_Bit_Slice_Field(1, LO + 14);
         mode_regs_field.AID    := New_Bit_Slice_Field(1, LO + 13);
-        mode_regs_field.AUSER  := New_Bit_Slice_Field(1, LO + 11);
+        mode_regs_field.AUSER  := New_Bit_Slice_Field(2, LO + 11);
         mode_regs_field.APROT  := New_Bit_Slice_Field(3, LO +  8);
         mode_regs_field.CACHE  := New_Bit_Slice_Field(4, LO +  4);
         mode_regs_field.CLOSE  := New_Bit_Slice_Field(1, LO +  2);
@@ -276,5 +276,8 @@ package body Interface is
 
         return regs_field;
     end New_Regs_Field_Type;
-
+    -------------------------------------------------------------------------------
+    --
+    -------------------------------------------------------------------------------
+    constant  Default_Regs_Param : Regs_Field_Type := New_Regs_Field_Type;
 end Interface;
