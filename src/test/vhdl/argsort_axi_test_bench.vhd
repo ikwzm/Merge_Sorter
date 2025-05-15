@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi_test_bench.vhd
 --!     @brief   Merge Sorter ArgSort AXI Test Bench :
---!     @version 1.4.1
---!     @date    2022/11/1
+--!     @version 1.5.0
+--!     @date    2025/5/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2021-2022 Ichiro Kawazome
+--      Copyright (C) 2021-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -170,8 +170,8 @@ architecture Model of ArgSort_AXI_Test_Bench is
                                        ALOCK       => AXI4_ALOCK_WIDTH,
                                        WDATA       => AXI_DATA_WIDTH,
                                        RDATA       => AXI_DATA_WIDTH,
-                                       ARUSER      => 1,
-                                       AWUSER      => 1,
+                                       ARUSER      => 2,
+                                       AWUSER      => 2,
                                        WUSER       => 1,
                                        RUSER       => 1,
                                        BUSER       => 1
@@ -237,8 +237,8 @@ architecture Model of ArgSort_AXI_Test_Bench is
                                        ALOCK       => AXI4_ALOCK_WIDTH,
                                        WDATA       => AXI_DATA_WIDTH,
                                        RDATA       => AXI_DATA_WIDTH,
-                                       ARUSER      => 1,
-                                       AWUSER      => 1,
+                                       ARUSER      => 2,
+                                       AWUSER      => 2,
                                        WUSER       => 1,
                                        RUSER       => 1,
                                        BUSER       => 1
