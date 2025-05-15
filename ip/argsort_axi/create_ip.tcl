@@ -2,11 +2,12 @@
 # create_ip.tcl  Tcl script for create project and generate IP
 #
 set ip_name                 "ArgSort_AXI"
-set ip_version              "1.3"
+set ip_version              "1.5"
 set ip_vendor_name          "ikwzm"
 set ip_description          "ArgSort_AXI"
 set ip_library_name         "Merge_Sorter"
-set ip_root_directory       [file join [file dirname [info script]] ".." "argsort_axi_1.3"]
+set ip_root_directory       [file join [file dirname [info script]] ".." "argsort_axi_$ip_version"]
+
 set project_name            "argsort_axi"
 set project_directory       [file join [file dirname [info script]] "work"]
 set device_parts            "xc7z010clg400-1"
@@ -86,13 +87,6 @@ ipx::infer_bus_interfaces xilinx.com:interface:axis_rtl:1.0  [ipx::current_core]
 # Set Supported Families
 #
 set_property supported_families {zynq Production virtex7 Production qvirtex7 Production kintex7 Production kintex7l Production qkintex7 Production qkintex7l Production artix7 Production artix7l Production aartix7 Production qartix7 Production zynq Production qzynq Production azynq Production zynquplus Production} [ipx::current_core]
-#
-# Add PipeWork Logo
-#
-ipx::add_file_group -type utility {} [ipx::current_core]
-file copy -force [file join [file dirname [info script]] ".." ".." "PipeWork" "icons" PipeWork_100x100.png] [file join $ip_root_directory "src" "PipeWork.png" ]
-ipx::add_file "src/PipeWork.png" [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]
-set_property type LOGO [ipx::get_files "src/PipeWork.png" -of_objects [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]]
 #
 # Set Core Version
 #

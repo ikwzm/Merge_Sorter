@@ -9,6 +9,7 @@ add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/delay_adjuster.vh
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/delay_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/float_intake_manifold_valve.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/float_outlet_manifold_valve.vhd
+add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/justifier.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/pipeline_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/queue_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/reducer.vhd
@@ -43,11 +44,12 @@ add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/axi4/axi4_register_interface
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/register_access_adapter.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/queue_arbiter_one_hot_arch.vhd
 add_vhdl_file sources_1 PIPEWORK ../../PipeWork/src/components/sdpram_xilinx_ultrascale_auto_select.vhd
-add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/sorting_network.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/core_components.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word_compare.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word_pipeline_register.vhd
+add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/oddeven_mergesort_network.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/sorting_network_core.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/core/word_queue.vhd
 add_vhdl_file sources_1 MERGE_SORTER ../../src/main/vhdl/interface/interface.vhd
