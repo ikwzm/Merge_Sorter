@@ -141,8 +141,8 @@ module ScenarioWriter
     
     attr_reader   :name, :size
     attr_reader   :addr_start, :addr_last
-    attr_reader   :read, :write, :cache, :prot
-    def initialize(name, file, size, addr_start, cache=nil, prot=nil)
+    attr_reader   :read, :write, :cache, :prot, :auser
+    def initialize(name, file, size, addr_start, cache=nil, prot=nil, auser=nil)
       super(name,file)
       @size       = size
       @addr_start = addr_start
@@ -151,6 +151,7 @@ module ScenarioWriter
       @write      = true
       @cache      = cache
       @prot       = prot
+      @auser      = auser
       @timeout    = 100000
       @latency    = 1
       @read_delay = 12
@@ -159,16 +160,19 @@ module ScenarioWriter
     def init
       cache = (@cache.nil?)? "\"4'b----\"" : sprintf("\"4'b%04b\"", @cache)
       prot  = (@prot.nil? )? "\"3'b---\""  : sprintf("\"3'b%03b\"", @prot )
+      auser = (@auser.nil?)? "\"2'b--\""   : sprintf("\"2'b%02b\"", @auser)
       my_name
       @file.puts   "  - {DOMAIN: {INDEX: 0, MAP: 0, READ: true, WRITE: true,"
       @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: DECERR,\n", 0, 0xFFFFFFFF
       @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  \"4'b----\","
       @file.puts   "              APROT: \"3'b---\", AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              AUSER: \"2'b--\","
       @file.puts   "              LATENCY: 8, TIMEOUT: 10000}}"
       @file.puts   "  - {DOMAIN: {INDEX: 1, MAP: 0, READ: true, WRITE: true,"
       @file.printf "              ADDR: 0x%08X, LAST: 0x%08X, RESP: OKAY,  \n", @addr_start, @addr_last
       @file.puts   "              ASIZE: \"3'b---\", ALOCK: \"1'b-\"   , ACACHE:  #{cache},"
       @file.puts   "              APROT: #{prot}, AQOS:  \"4'b----\", AREGION: \"4'b----\","
+      @file.puts   "              AUSER: #{auser},"
       @file.puts   "              LATENCY: #{@latency}, RDELAY: #{@read_delay}, TIMEOUT: #{@timeout}}}"
     end
 
