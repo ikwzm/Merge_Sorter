@@ -4,7 +4,7 @@
 
 - Library:
     Name     :  DUMMY_PLUG
-    Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
+    Format   :  "nvc -L ./ --work=#{library_name} -a --relaxed #{file_name}"
     Exclude  :  ["../../../Dummy_Plug/src/main/vhdl/core/sync_alt.vhd"]
     PathList :  ["../../../Dummy_Plug/src/main/vhdl/"]
 
