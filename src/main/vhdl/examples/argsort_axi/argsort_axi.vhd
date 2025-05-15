@@ -2,7 +2,7 @@
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
 --!     @version 1.5.0
---!     @date    2025/5/14
+--!     @date    2025/5/15
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -69,7 +69,7 @@ entity  ArgSort_AXI is
         STM_AXI_ID_WIDTH    : --! @brief STREAM IN/OUT AXI ID WIDTH :
                               integer := 1;
         STM_AXI_USER_WIDTH  : --! @brief STREAM IN/OUT AXI ADDRESS USER WIDTH :
-                              integer := 1;
+                              integer := 2;
         STM_AXI_ID_BASE     : --! @brief STREAM IN/OUT AXI ID BASE :
                               integer := 0;
         STM_RD_AXI_XFER_SIZE: --! @brief STREAM IN  AXI MAX XFER SIZE :
@@ -101,7 +101,7 @@ entity  ArgSort_AXI is
         MRG_AXI_ID_WIDTH    : --! @brief MERGE IN/OUT AXI ID WIDTH :
                               integer := 1;
         MRG_AXI_USER_WIDTH  : --! @brief MERGE IN/OUT AXI ADDRESS USER WIDTH :
-                              integer := 1;
+                              integer := 2;
         MRG_AXI_ID_BASE     : --! @brief MERGE IN/OUT AXI ID BASE :
                               integer := 0;
         MRG_RD_AXI_XFER_SIZE: --! @brief MERGE IN  AXI MAX XFER SIZE :
