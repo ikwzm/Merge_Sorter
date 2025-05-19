@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    asymmetric_mergesort_network.vhd
 --!     @brief   Asymmetric MergeSort Network Package :
---!     @version 1.4.1
---!     @date    2022/10/20
+--!     @version 1.5.0
+--!     @date    2025/5/14
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020-2022 Ichiro Kawazome
+--      Copyright (C) 2020-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without

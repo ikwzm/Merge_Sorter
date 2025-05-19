@@ -21,6 +21,7 @@ PIPEWORK_SRC += ../../../PipeWork/src/components/delay_adjuster.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/delay_register.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/float_intake_manifold_valve.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/float_outlet_manifold_valve.vhd
+PIPEWORK_SRC += ../../../PipeWork/src/components/justifier.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/pipeline_register.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/queue_register.vhd
 PIPEWORK_SRC += ../../../PipeWork/src/components/reducer.vhd
