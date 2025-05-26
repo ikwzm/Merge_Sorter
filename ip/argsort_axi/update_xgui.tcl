@@ -2,7 +2,7 @@
 # update_xgui.tcl  Tcl script for Update XGUI
 #
 set ip_name                 "ArgSort_AXI"
-set ip_version              "1.5"
+set ip_version              "1.6"
 set project_name            "argsort_axi"
 
 

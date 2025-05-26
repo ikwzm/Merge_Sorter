@@ -2,7 +2,7 @@
 # create_ip.tcl  Tcl script for create project and generate IP
 #
 set ip_name                 "ArgSort_AXI"
-set ip_version              "1.5"
+set ip_version              "1.6"
 set ip_vendor_name          "ikwzm"
 set ip_description          "ArgSort_AXI"
 set ip_library_name         "Merge_Sorter"
