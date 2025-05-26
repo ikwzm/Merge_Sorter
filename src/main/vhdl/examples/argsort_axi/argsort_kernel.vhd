@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_kernel.vhd
 --!     @brief   Merge Sorter ArgSort for Xilinx RTL Kernel
---!     @version 1.5.0
---!     @date    2025/5/14
+--!     @version 1.6.0
+--!     @date    2025/5/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -621,7 +621,7 @@ architecture RTL of ArgSort_Kernel is
     -------------------------------------------------------------------------------
     constant  VERSION_REGS_BITS :  integer := 64;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 2;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 6;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &

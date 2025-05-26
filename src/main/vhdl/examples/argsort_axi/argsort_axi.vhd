@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------
 --!     @file    argsort_axi.vhd
 --!     @brief   Merge Sorter ArgSort with AXI I/F
---!     @version 1.5.0
---!     @date    2025/5/15
+--!     @version 1.6.0
+--!     @date    2025/5/26
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
@@ -374,7 +374,7 @@ architecture RTL of ArgSort_AXI is
     constant  VERSION_REGS_LO   :  integer := 8*VERSION_REGS_ADDR;
     constant  VERSION_REGS_HI   :  integer := 8*VERSION_REGS_ADDR + VERSION_REGS_BITS- 1;
     constant  VERSION_MAJOR     :  integer range 0 to 15 := 1;
-    constant  VERSION_MINOR     :  integer range 0 to 15 := 5;
+    constant  VERSION_MINOR     :  integer range 0 to 15 := 6;
     constant  VERSION_REGS_DATA :  std_logic_vector(VERSION_REGS_BITS-1 downto 0)
                                 := std_logic_vector(to_unsigned(VERSION_MAJOR, 4)) &
                                    std_logic_vector(to_unsigned(VERSION_MINOR, 4)) &
