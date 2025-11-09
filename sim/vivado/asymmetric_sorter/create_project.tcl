@@ -3,10 +3,10 @@
 #
 
 set project_directory       [file dirname [info script]]
-set project_name            "argsort_kernel"
+set project_name            "asymmetric_sorter"
 set device_parts            "xc7z020clg400-1"
-set test_bench              "ArgSort_Kernel_Test_Bench_X04_W1_F1"
-set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" $project_name "test_x04_w1_f1_1.snr" ]
+set test_bench              "Asymmetric_Sorter_Test_Bench_X2x3_O0_S0_Q0"
+set scenario_file           [file join $project_directory ".." ".." ".." "src" "test" "scenarios" "sorting_network" "test_x06_o0_s0.snr" ]
 #
 # Create project
 #
@@ -81,7 +81,7 @@ add_files -fileset constrs_1 -norecurse ./timing.xdc
 #
 update_compile_order -fileset sources_1
 set obj [get_filesets sources_1]
-set_property "top" "ArgSort_Kernel"  $obj
+set_property "top" "ArgSort_AXI"  $obj
 #
 # Set 'sim_1' fileset properties
 #

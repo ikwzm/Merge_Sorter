@@ -39,6 +39,7 @@ add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/delay_adjuster
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/delay_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/float_intake_manifold_valve.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/float_outlet_manifold_valve.vhd
+add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/justifier.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/pipeline_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/queue_register.vhd
 add_vhdl_file sources_1 PIPEWORK ../../../PipeWork/src/components/reducer.vhd
