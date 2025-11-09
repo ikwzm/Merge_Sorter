@@ -85,7 +85,9 @@ set_property "top" "Merge_Sorter_Tree"  $obj
 # Set 'sim_1' fileset properties
 #
 set current_vivado_version [version -short]
-if       { [string first "2019.2" $current_vivado_version ] == 0 } {
+if       { [string first "2025.1" $current_vivado_version ] == 0 } {
+    set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
+} elseif { [string first "2019.2" $current_vivado_version ] == 0 } {
     set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
 } elseif { [string first "2018.3" $current_vivado_version ] == 0 } {
     set scenario_full_path [file join ".." ".." ".."      $scenario_file ]
