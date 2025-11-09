@@ -5,7 +5,7 @@ COPY          = cp
 CAT           = cat
 REMOVE        = -rm
 NVC           = nvc
-NVCFLAGS      = -L ./ -M 32M -H 32M
+NVCFLAGS      = -L ./ -M 128M -H 128M
 
 TEST_BENCH    = test_x2x3_o0_s0_q0 \
                 test_x3x2_o0_s0_q0 \
