@@ -1,25 +1,26 @@
-
-- Global:
+- Library:
+    Name     :  pipework
     Print    :  true
+    Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
+    Use      :  ["SDPRAM(MODEL)", "QUEUE_ARBITER(ONE_HOT_ARCH)"]
+    PathList :  ["../../../PipeWork/src/"]
 
 - Library:
     Name     :  merge_sorter
+    Print    :  true
     Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
     PathList :  ["../../../src/main/vhdl"]
 
 - Library:
-    Name     :  pipework
-    Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
-    PathList :  ["../../../PipeWork/src/"]
-
-- Library:
     Name     :  dummy_plug
+    Print    :  true
     Format   :  "add_vhdl_file sim_1     #{library_name} #{file_name}"
     Exclude  :  ["../../../Dummy_Plug/src/main/vhdl/core/sync_alt.vhd"]
     PathList :  ["../../../Dummy_Plug/src/main/vhdl/"]
 
 - Library:
     Name     :  work
+    Print    :  true
     Format   :  "add_vhdl_file sim_1     #{library_name} #{file_name}"
     PathList :  ["../../../src/test/vhdl"]
     Top      :  ["ArgSort_AXI_Test_Bench"]

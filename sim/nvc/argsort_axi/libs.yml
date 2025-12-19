@@ -1,15 +1,13 @@
-
-- Global:
-    Print    :  true
-
 - Library:
     Name     :  DUMMY_PLUG
+    Print    :  true
     Format   :  "nvc -L ./ --work=#{library_name} -a --relaxed #{file_name}"
     Exclude  :  ["../../../Dummy_Plug/src/main/vhdl/core/sync_alt.vhd"]
     PathList :  ["../../../Dummy_Plug/src/main/vhdl/"]
 
 - Library:
     Name     :  PIPEWORK
+    Print    :  true
     Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
     Exclude  :  ["../../../PipeWork/src/components/sdpram_altera_auto_select.vhd",
                  "../../../PipeWork/src/components/sdpram_xilinx_auto_select.vhd",
@@ -18,11 +16,13 @@
 
 - Library:
     Name     :  MERGE_SORTER
+    Print    :  true
     Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
     PathList :  ["../../../src/main/vhdl"]
 
 - Library:
     Name     :  WORK
+    Print    :  true
     Format   :  "nvc -L ./ --work=#{library_name} -a #{file_name}"
     PathList :  ["../../../src/test/vhdl"]
     Top      :  ["ArgSort_AXI_Test_Bench"]
