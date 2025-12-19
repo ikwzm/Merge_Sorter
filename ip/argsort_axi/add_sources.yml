@@ -1,15 +1,13 @@
-
-- Global:
-    Print    :  true
-
 - Library:
     Name     :  pipework
+    Print    :  true
     Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
     PathList :  ["../../PipeWork/src/"]
     Use      :  ["SDPRAM(XILINX_ULTRASCALE_AUTO_SELECT)", "QUEUE_ARBITER(ONE_HOT_ARCH)"]
 
 - Library:
     Name     :  Merge_Sorter
+    Print    :  true
     Format   :  "add_vhdl_file sources_1 #{library_name} #{file_name}"
     PathList :  ["../../src/main/vhdl/"]
     Top      :  ["ArgSort_AXI"]
