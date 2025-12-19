@@ -101,5 +101,6 @@ if       { [string first "2025.1" $current_vivado_version ] == 0 } {
 }
 update_compile_order -fileset sim_1
 set obj [get_filesets sim_1]
-set_property "top"     $test_bench [get_filesets sim_1]
+set_property "top"     $test_bench $obj
 set_property "generic" "SCENARIO_FILE=$scenario_full_path FINISH_ABORT=true" $obj
+set_property -name {xsim.simulate.runtime} -value {all} -objects $obj
