@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    sorting_network_core.vhd
 --!     @brief   Sorting Network Core Module :
---!     @version 1.6.0
---!     @date    2025/5/26
+--!     @version 1.6.2
+--!     @date    2026/1/2
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2020-2025 Ichiro Kawazome
+--      Copyright (C) 2020-2026 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
