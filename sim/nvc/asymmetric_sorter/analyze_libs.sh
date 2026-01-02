@@ -22,4 +22,6 @@ nvc -L ./ --work=MERGE_SORTER -a ../../../src/main/vhdl/core/word_pipeline_regis
 nvc -L ./ --work=MERGE_SORTER -a ../../../src/main/vhdl/core/asymmetric_mergesort_network.vhd
 nvc -L ./ --work=MERGE_SORTER -a ../../../src/main/vhdl/core/sorting_network_core.vhd
 nvc -L ./ --work=MERGE_SORTER -a ../../../src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd
+nvc -L ./ --work=WORK -a ../../../src/test/vhdl/sorting_network_printer.vhd
+nvc -L ./ --work=WORK -a ../../../src/test/vhdl/asymmetric_sorter_network_print.vhd
 nvc -L ./ --work=WORK -a ../../../src/test/vhdl/asymmetric_sorter_test_bench.vhd
