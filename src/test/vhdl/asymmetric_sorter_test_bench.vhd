@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
 --!     @file    asymmetric_sorter_test_bench.vhd
---!     @brief   Batcher's Odd-Even Merge Sorter Test Bench :
---!     @version 1.4.1
---!     @date    2022/11/1
+--!     @brief   Asymmetric Merge Sorter Test Bench :
+--!     @version 1.6.2
+--!     @date    2025/1/3
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2022 Ichiro Kawazome
+--      Copyright (C) 2022-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -299,6 +299,37 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X5x1_O0_S0_Q0 is
+    generic (
+        NAME            :  STRING  := "TEST_X5x1_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x5x1_o0_s0.snr";
+        WORDS           :  integer := 5;
+        GROUP_WORDS     :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X5x1_O0_S0_Q0;
+architecture Model of Asymmetric_Sorter_Test_Bench_X5x1_O0_S0_Q0 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X6x1_O0_S0_Q0 is
     generic (
         NAME            :  STRING  := "TEST_X6x1_O0_S0";
@@ -374,6 +405,37 @@ entity  Asymmetric_Sorter_Test_Bench_X2x3_O0_S0_Q0 is
     );
 end     Asymmetric_Sorter_Test_Bench_X2x3_O0_S0_Q0;
 architecture Model of Asymmetric_Sorter_Test_Bench_X2x3_O0_S0_Q0 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X7x1_O0_S0_Q0 is
+    generic (
+        NAME            :  STRING  := "TEST_X7x1_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x7x1_o0_s0.snr";
+        WORDS           :  integer := 7;
+        GROUP_WORDS     :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 0;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X7x1_O0_S0_Q0;
+architecture Model of Asymmetric_Sorter_Test_Bench_X7x1_O0_S0_Q0 is
 begin
     TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
         generic map (
@@ -578,6 +640,37 @@ end Model;
 -----------------------------------------------------------------------------------
 library ieee;
 use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X10x1_O0_S0_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X10x1_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x10x1_o0_s0.snr";
+        WORDS           :  integer := 10;
+        GROUP_WORDS     :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X10x1_O0_S0_Q2;
+architecture Model of Asymmetric_Sorter_Test_Bench_X10x1_O0_S0_Q2 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
 entity  Asymmetric_Sorter_Test_Bench_X5x2_O0_S0_Q2 is
     generic (
         NAME            :  STRING  := "TEST_X5x2_O0_S0";
@@ -622,6 +715,37 @@ entity  Asymmetric_Sorter_Test_Bench_X2x5_O0_S0_Q2 is
     );
 end     Asymmetric_Sorter_Test_Bench_X2x5_O0_S0_Q2;
 architecture Model of Asymmetric_Sorter_Test_Bench_X2x5_O0_S0_Q2 is
+begin
+    TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
+        generic map (
+            NAME            => NAME,
+            SCENARIO_FILE   => SCENARIO_FILE,
+            WORDS           => WORDS,
+            GROUP_WORDS     => GROUP_WORDS,
+            SORT_ORDER      => SORT_ORDER,
+            COMP_SIGN       => COMP_SIGN,
+            QUEUE_SIZE      => QUEUE_SIZE,
+            FINISH_ABORT    => FINISH_ABORT
+        );
+end Model;
+-----------------------------------------------------------------------------------
+--
+-----------------------------------------------------------------------------------
+library ieee;
+use     ieee.std_logic_1164.all;
+entity  Asymmetric_Sorter_Test_Bench_X11x1_O0_S0_Q2 is
+    generic (
+        NAME            :  STRING  := "TEST_X11x1_O0_S0";
+        SCENARIO_FILE   :  STRING  := "test_x11x1_o0_s0.snr";
+        WORDS           :  integer := 11;
+        GROUP_WORDS     :  integer := 1;
+        SORT_ORDER      :  integer := 0;
+        COMP_SIGN       :  boolean := FALSE;
+        QUEUE_SIZE      :  integer := 2;
+        FINISH_ABORT    :  boolean := FALSE
+    );
+end     Asymmetric_Sorter_Test_Bench_X11x1_O0_S0_Q2;
+architecture Model of Asymmetric_Sorter_Test_Bench_X11x1_O0_S0_Q2 is
 begin
     TEST: entity  WORK.Asymmetric_Sorter_Test_Bench
         generic map (

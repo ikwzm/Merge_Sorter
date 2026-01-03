@@ -1,0 +1,1311 @@
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1 Start.
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.1 Start.
+- I  : 
+  - XFER   : {DATA: 0x8F61247D7F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x8F7F7D6124, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE43900E2F8, USER: 0x00300, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF8E4E23900, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6500356A59, USER: 0x05000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x006A655935, USER: 0x50000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.2 Start.
+- I  : 
+  - XFER   : {DATA: 0x9C65ABE26E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE2AB9C6E65, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x90FA077D6D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFA907D6D07, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x35CCE39BCA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE3CCCA9B35, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.3 Start.
+- I  : 
+  - XFER   : {DATA: 0x4B31453C28, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x4B453C3128, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE87C883819, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE8887C3819, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3ABFF6106F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF6BF6F3A10, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.4 Start.
+- I  : 
+  - XFER   : {DATA: 0xED71F79318, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF7ED937118, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x990F0259FA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFA99590F02, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xC6EBCD00A3, USER: 0x00050, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00EBCDC6A3, USER: 0x50000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.5 Start.
+- I  : 
+  - XFER   : {DATA: 0x2720CB2210, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCB27222010, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.6 Start.
+- I  : 
+  - XFER   : {DATA: 0xBA316E586D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBA6E6D5831, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.7 Start.
+- I  : 
+  - XFER   : {DATA: 0x1BE69ECE9E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE6CE9E9E1B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x7E55320DBB, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBB7E55320D, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1A7BEBC5BC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEBC5BC7B1A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3D5ACCCA24, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCCCA5A3D24, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.8 Start.
+- I  : 
+  - XFER   : {DATA: 0x005A01A775, USER: 0x50000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00A7755A01, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xEF8BAEB6EC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFECB6AE8B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.9 Start.
+- I  : 
+  - XFER   : {DATA: 0x32644F213E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x644F3E3221, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.10 Start.
+- I  : 
+  - XFER   : {DATA: 0x250B8D5BC0, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC08D5B250B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3A826225C2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC282623A25, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x21798BB837, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB88B793721, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2EC80B5E10, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC85E2E100B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.11 Start.
+- I  : 
+  - XFER   : {DATA: 0xD82C229099, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD899902C22, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xBE25EFEF65, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFEFBE6525, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.12 Start.
+- I  : 
+  - XFER   : {DATA: 0x4F703CECC9, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xECC9704F3C, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.13 Start.
+- I  : 
+  - XFER   : {DATA: 0xEE121DEDB3, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEEEDB31D12, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1C4715273C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x473C271C15, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3A1D846EDE, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDE846E3A1D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.14 Start.
+- I  : 
+  - XFER   : {DATA: 0xD657A2BD3F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD6BDA2573F, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x914809CEF8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF8CE914809, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.15 Start.
+- I  : 
+  - XFER   : {DATA: 0x44779E30F5, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF59E774430, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8CE11C5B4C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE18C5B4C1C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x41851522A1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA185412215, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.16 Start.
+- I  : 
+  - XFER   : {DATA: 0x8B0EDFA7B1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDFB1A78B0E, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x90C6877DC2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC6C290877D, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xCB7212675E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCB72675E12, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.17 Start.
+- I  : 
+  - XFER   : {DATA: 0x35A05C2120, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA05C352120, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6739C8634B, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC867634B39, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x4320AC0007, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xAC43200700, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x948BB3F086, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF0B3948B86, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.18 Start.
+- I  : 
+  - XFER   : {DATA: 0x25B4CB0C6A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCBB46A250C, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.19 Start.
+- I  : 
+  - XFER   : {DATA: 0x6F82DD1949, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDD826F4919, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.20 Start.
+- I  : 
+  - XFER   : {DATA: 0xD0B619EA29, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEAD0B62919, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x9FBA60CDE1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE1CDBA9F60, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.21 Start.
+- I  : 
+  - XFER   : {DATA: 0x19A2D1B979, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD1B9A27919, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.22 Start.
+- I  : 
+  - XFER   : {DATA: 0x9D2638EE19, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEE9D382619, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.23 Start.
+- I  : 
+  - XFER   : {DATA: 0x37A4987CE1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE1A4987C37, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB25E706354, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB270635E54, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.24 Start.
+- I  : 
+  - XFER   : {DATA: 0x81B1CA7C07, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCAB1817C07, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x90F2C9186F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF2C9906F18, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB3DF290D56, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDFB356290D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.25 Start.
+- I  : 
+  - XFER   : {DATA: 0x0660B44B95, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB495604B06, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB49429D842, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD8B4944229, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xA2D61A189D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD6A29D1A18, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.26 Start.
+- I  : 
+  - XFER   : {DATA: 0x72D741CB40, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD7CB724140, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x61679CDE9B, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDE9C9B6761, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDBE6031390, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE6DB901303, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.27 Start.
+- I  : 
+  - XFER   : {DATA: 0xDB396533E4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE4DB653933, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xF88D54059C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF89C8D5405, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0222FFDB5C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFFDB5C2202, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.28 Start.
+- I  : 
+  - XFER   : {DATA: 0xB8B98A22DC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDCB9B88A22, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xF2B3CBEE05, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF2EECBB305, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x00250CF35D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF35D250C00, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.29 Start.
+- I  : 
+  - XFER   : {DATA: 0x8189DAD15E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDAD189815E, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.30 Start.
+- I  : 
+  - XFER   : {DATA: 0x979ADE3028, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDE9A973028, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xADA1569C46, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xADA19C5646, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0084BDEE64, USER: 0x30000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEEBD846400, USER: 0x00003, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.31 Start.
+- I  : 
+  - XFER   : {DATA: 0x13A8C8E197, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE1C8A89713, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2925F85DB9, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF8B95D2925, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.32 Start.
+- I  : 
+  - XFER   : {DATA: 0x0398511580, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9880511503, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.33 Start.
+- I  : 
+  - XFER   : {DATA: 0x836EAEDB25, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDBAE836E25, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.34 Start.
+- I  : 
+  - XFER   : {DATA: 0xFAFF3E7035, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFFFA703E35, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE07BBB8EF7, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF7E0BB8E7B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDFBD50C7EF, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFDFC7BD50, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x23008853B7, USER: 0x03000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB788532300, USER: 0x00003, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.35 Start.
+- I  : 
+  - XFER   : {DATA: 0x1E009D1EC6, USER: 0x05000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00C69D1E1E, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xAEECCDBA67, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xECCDBAAE67, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2D29FF94A8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFFA8942D29, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.36 Start.
+- I  : 
+  - XFER   : {DATA: 0x9DF5128FF8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF8F59D8F12, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xC572AFD487, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD4C5AF8772, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.37 Start.
+- I  : 
+  - XFER   : {DATA: 0x00421C79B8, USER: 0x50000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00B879421C, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8289F1E35F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF1E389825F, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x9D9F6F0179, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9F9D796F01, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xA4372B205B, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA45B372B20, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.38 Start.
+- I  : 
+  - XFER   : {DATA: 0xFB1503B573, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFBB5731503, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8DCC4A404E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCC8D4E4A40, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.39 Start.
+- I  : 
+  - XFER   : {DATA: 0x20648E7C23, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x8E7C642320, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x5ECABF7279, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCABF79725E, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.40 Start.
+- I  : 
+  - XFER   : {DATA: 0x5945D2EF45, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFD2594545, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.41 Start.
+- I  : 
+  - XFER   : {DATA: 0xCC2A9D4714, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCC9D472A14, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x7C3DB1C9F3, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF3C9B17C3D, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xAB2646B4B3, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB4B3AB4626, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x78742FFCE7, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFCE778742F, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.42 Start.
+- I  : 
+  - XFER   : {DATA: 0x1060E11264, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE164601210, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3A9300B82A, USER: 0x00500, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00B8933A2A, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x45E596EDDD, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEDE5DD9645, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.43 Start.
+- I  : 
+  - XFER   : {DATA: 0xC2BE4DBCA1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC2BEBCA14D, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xEBF4ED354F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF4EDEB4F35, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2C7923FA2D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFA792D2C23, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x892C3289E6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE68989322C, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.44 Start.
+- I  : 
+  - XFER   : {DATA: 0x2A96FC0294, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFC96942A02, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB1D22FEA03, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEAD2B12F03, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.45 Start.
+- I  : 
+  - XFER   : {DATA: 0xB64ABC545E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBCB65E544A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x18D6B7D23A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD6D2B73A18, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x7DA31B5AC8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC8A37D5A1B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x4A6A93FEA0, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFEA0936A4A, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.46 Start.
+- I  : 
+  - XFER   : {DATA: 0x4E1C744CF1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF1744E4C1C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6ABC451E58, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBC6A58451E, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x99CCDE52E6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE6DECC9952, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xC024A0F8C3, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF8C3C0A024, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.47 Start.
+- I  : 
+  - XFER   : {DATA: 0x150D62D82F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD8622F150D, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x050C3BC1D5, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD5C13B0C05, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.48 Start.
+- I  : 
+  - XFER   : {DATA: 0xD23CCA66C4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD2CAC4663C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6516B39885, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB398856516, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.49 Start.
+- I  : 
+  - XFER   : {DATA: 0x614F18D4B4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD4B4614F18, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB57BE1871C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE1B5877B1C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1A8B0E2DEB, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEB8B2D1A0E, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.50 Start.
+- I  : 
+  - XFER   : {DATA: 0xCF3A000029, USER: 0x00030, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCF3A290000, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDF6F325300, USER: 0x00005, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00DF6F5332, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x89672041FA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFA89674120, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.51 Start.
+- I  : 
+  - XFER   : {DATA: 0x278263C019, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC082632719, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB5D1F9ABC2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF9D1C2B5AB, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2F289899DD, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDD99982F28, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3DA63EF986, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF9A6863E3D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.52 Start.
+- I  : 
+  - XFER   : {DATA: 0x5C01C20072, USER: 0x00030, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC2725C0100, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8B4A57D8EC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xECD88B574A, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.53 Start.
+- I  : 
+  - XFER   : {DATA: 0xB3BF2E09A2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBFB3A22E09, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3E4E693271, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x71694E3E32, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.54 Start.
+- I  : 
+  - XFER   : {DATA: 0xDF7533F0C6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF0DFC67533, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2F20B81261, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB8612F2012, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.55 Start.
+- I  : 
+  - XFER   : {DATA: 0x5B0B17532E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x5B532E170B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xFD7765DC2A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFDDC77652A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDAD275B99D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDAD2B99D75, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.56 Start.
+- I  : 
+  - XFER   : {DATA: 0x01CBD78F9A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD7CB9A8F01, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x4738FB001E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFB47381E00, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xA0983A4BB1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB1A0984B3A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB30F4A4D93, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB3934D4A0F, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.57 Start.
+- I  : 
+  - XFER   : {DATA: 0x4F474B0C1F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x4F4B471F0C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x006455D6F7, USER: 0x30000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF7D6645500, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xEE12CDBDAB, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEECDBDAB12, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.58 Start.
+- I  : 
+  - XFER   : {DATA: 0x650593188D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x938D651805, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x5DD1052300, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD15D230500, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8A13C34883, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC38A834813, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x44555DF20A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF25D55440A, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.59 Start.
+- I  : 
+  - XFER   : {DATA: 0xD49C567DFA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFAD49C7D56, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDD323C007D, USER: 0x00050, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00DD7D3C32, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x598E349478, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x948E785934, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x36BC00D28E, USER: 0x00500, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00D2BC8E36, USER: 0x50000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.60 Start.
+- I  : 
+  - XFER   : {DATA: 0x3564A63842, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA664423835, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6D5007B4CF, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCFB46D5007, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.61 Start.
+- I  : 
+  - XFER   : {DATA: 0xD6E4E062A6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE4E0D6A662, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.62 Start.
+- I  : 
+  - XFER   : {DATA: 0x3BCA4296EC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xECCA96423B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.63 Start.
+- I  : 
+  - XFER   : {DATA: 0x7DA9DAC3B2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDAC3B2A97D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.64 Start.
+- I  : 
+  - XFER   : {DATA: 0x3D8A94C439, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC4948A3D39, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.65 Start.
+- I  : 
+  - XFER   : {DATA: 0x684E0218B4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB4684E1802, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE0095939D4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE0D4593909, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0DD639D167, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD6D167390D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.66 Start.
+- I  : 
+  - XFER   : {DATA: 0x9F037BD473, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD49F7B7303, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.67 Start.
+- I  : 
+  - XFER   : {DATA: 0xAC33311085, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xAC85333110, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x6BC1E7DA8C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE7DAC18C6B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.68 Start.
+- I  : 
+  - XFER   : {DATA: 0xBE8E062EA4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBEA48E2E06, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE5E61B00E6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE6E6E51B00, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.69 Start.
+- I  : 
+  - XFER   : {DATA: 0x2BAA11BB1B, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBBAA2B1B11, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xFFEC62F5D8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFFF5ECD862, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x10BF2B7407, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBF742B1007, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xCB4BFFB2DD, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFFDDCBB24B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.70 Start.
+- I  : 
+  - XFER   : {DATA: 0x958003C256, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC295805603, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.71 Start.
+- I  : 
+  - XFER   : {DATA: 0x50C8392BE2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE2C850392B, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xBF06ACA152, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBFACA15206, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xCACC153E5F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCCCA5F3E15, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.72 Start.
+- I  : 
+  - XFER   : {DATA: 0x5FC81A077D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC87D5F1A07, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.73 Start.
+- I  : 
+  - XFER   : {DATA: 0xFDB76C17E8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFDE8B76C17, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x008085D3A1, USER: 0x50000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x00D3A18580, USER: 0x50000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x266EF9E119, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF9E16E2619, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.74 Start.
+- I  : 
+  - XFER   : {DATA: 0xD41377B311, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD4B3771311, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0C21265478, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x785426210C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x78603849E4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE478604938, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x92529DFF55, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFF9D925552, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.75 Start.
+- I  : 
+  - XFER   : {DATA: 0xB63B04D60C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD6B63B0C04, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.76 Start.
+- I  : 
+  - XFER   : {DATA: 0xC6FC18578D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFCC68D5718, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xA83258E548, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE5A8584832, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x83FED8A55F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFED8A5835F, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.77 Start.
+- I  : 
+  - XFER   : {DATA: 0xE72572D246, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE7D2724625, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x12602080B0, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB080602012, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3A9A302FFA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFA9A3A302F, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.78 Start.
+- I  : 
+  - XFER   : {DATA: 0x14E947E179, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE9E1794714, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x7A63143610, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x7A63361410, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x48A5C6B0D1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD1C6B0A548, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x4CC4BC1B86, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC4BC864C1B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.79 Start.
+- I  : 
+  - XFER   : {DATA: 0x124A7DAA1F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xAA7D4A1F12, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB64FEFC559, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFC5B6594F, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x9B09444E76, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9B764E4409, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0E015EF5F4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF5F45E0E01, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.80 Start.
+- I  : 
+  - XFER   : {DATA: 0xFB7E61CA70, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFBCA7E7061, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x671E7C32B7, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB77C67321E, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.81 Start.
+- I  : 
+  - XFER   : {DATA: 0x86E33000FB, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFBE3863000, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x5794E4AB50, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE4AB945750, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1D21A84735, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA84735211D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.82 Start.
+- I  : 
+  - XFER   : {DATA: 0xA877A5A11E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xA8A5A1771E, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1A88EEF990, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF9EE90881A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0078460DD3, USER: 0x30000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD378460D00, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3EEE0076C8, USER: 0x00300, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEEC8763E00, USER: 0x00003, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.83 Start.
+- I  : 
+  - XFER   : {DATA: 0x879442F82A, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF89487422A, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0BE051D8AD, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE0D8AD510B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.84 Start.
+- I  : 
+  - XFER   : {DATA: 0x875F14DD15, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDD875F1514, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8603B5F71F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF7B5861F03, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x29CA838A9E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCA9E8A8329, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x19B2664A4D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB2664D4A19, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.85 Start.
+- I  : 
+  - XFER   : {DATA: 0x743A26F249, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF274493A26, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x100001080E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x100E080100, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.86 Start.
+- I  : 
+  - XFER   : {DATA: 0x2916ECAE96, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xECAE962916, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x1F45DB2270, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDB7045221F, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.87 Start.
+- I  : 
+  - XFER   : {DATA: 0x5D24376AE2, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE26A5D3724, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xD555180049, USER: 0x00030, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD555491800, USER: 0x00003, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.88 Start.
+- I  : 
+  - XFER   : {DATA: 0x73C13B08DC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDCC1733B08, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3435BB3AAE, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xBBAE3A3534, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.89 Start.
+- I  : 
+  - XFER   : {DATA: 0xFA3BCFA3D8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFAD8CFA33B, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.90 Start.
+- I  : 
+  - XFER   : {DATA: 0x84AA207EB5, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB5AA847E20, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x520D4A585D, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x5D58524A0D, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.91 Start.
+- I  : 
+  - XFER   : {DATA: 0xBD8304FA67, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xFABD836704, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x9A38F5250C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF59A38250C, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.92 Start.
+- I  : 
+  - XFER   : {DATA: 0x18652E3A21, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x653A2E2118, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x337E3AE57F, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE57F7E3A33, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.93 Start.
+- I  : 
+  - XFER   : {DATA: 0x7C0EEF6B79, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEF7C796B0E, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x36F15F635E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF1635F5E36, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x7F80D3A771, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD3A7807F71, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xD8A2B5D9CF, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD9D8CFB5A2, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.94 Start.
+- I  : 
+  - XFER   : {DATA: 0xEF76A23C00, USER: 0x00003, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEFA2763C00, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x28B57FEA09, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEAB57F2809, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xEAD88A516E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEAD88A6E51, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.95 Start.
+- I  : 
+  - XFER   : {DATA: 0x08969870E1, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE198967008, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x980EB0EB34, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xEBB098340E, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x0815320004, USER: 0x00030, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x3215080400, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDC907E3C45, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDC907E453C, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.96 Start.
+- I  : 
+  - XFER   : {DATA: 0x286A97AEC4, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC4AE976A28, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xB700857D00, USER: 0x00003, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xB7857D0000, USER: 0x00003, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x8F679B1C28, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9B8F67281C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x77A98DC5A8, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC5A9A88D77, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.97 Start.
+- I  : 
+  - XFER   : {DATA: 0x9A7AB633C0, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xC0B69A7A33, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x3D9E137A2E, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9E7A3D2E13, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x5E06A5D944, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xD9A55E4406, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x2FF53E2468, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xF5683E2F24, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.98 Start.
+- I  : 
+  - XFER   : {DATA: 0x258B0429CC, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCC8B292504, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.99 Start.
+- I  : 
+  - XFER   : {DATA: 0x5F831950E6, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE6835F5019, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xE5DD8677D0, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xE5DDD08677, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0xDA5997312C, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xDA9759312C, USER: 0x00000, LAST: 1}
+- I  : 
+  - XFER   : {DATA: 0x129745B9CA, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0xCAB9974512, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1.100 Start.
+- I  : 
+  - XFER   : {DATA: 0x9E53962111, USER: 0x00000, LAST: 1}
+- O  : 
+  - XFER   : {DATA: 0x9E96532111, USER: 0x00000, LAST: 1}
+---
+- MARCHAL  : 
+  - SAY     : Sorting Network(WORDS=5,ORDER=0,SIGN=0) TEST 1 Done.
+---

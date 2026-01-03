@@ -22,4 +22,6 @@ MERGE_SORTER_SRC += ../../../src/main/vhdl/core/word_pipeline_register.vhd
 MERGE_SORTER_SRC += ../../../src/main/vhdl/core/asymmetric_mergesort_network.vhd
 MERGE_SORTER_SRC += ../../../src/main/vhdl/core/sorting_network_core.vhd
 MERGE_SORTER_SRC += ../../../src/main/vhdl/examples/asymmetric_sorter/asymmetric_sorter.vhd
+WORK_SRC += ../../../src/test/vhdl/sorting_network_printer.vhd
+WORK_SRC += ../../../src/test/vhdl/asymmetric_sorter_network_print.vhd
 WORK_SRC += ../../../src/test/vhdl/asymmetric_sorter_test_bench.vhd
