@@ -25,4 +25,4 @@
     Name     :  WORK
     Format   :  "#{library_name}_SRC += #{file_name}"
     PathList :  ["../../../src/test/vhdl"]
-    Top      :  ["Asymmetric_Sorter_Test_Bench"]
+    Top      :  ["Asymmetric_Sorter_Test_Bench", "Asymmetric_Sort_Network_Print"]
