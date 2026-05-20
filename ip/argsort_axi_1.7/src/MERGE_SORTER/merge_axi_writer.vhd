@@ -1,12 +1,12 @@
 -----------------------------------------------------------------------------------
---!     @file    argsort_axi_reader.vhd
---!     @brief   Merge Sorter ArgSort AXI Reader Module :
---!     @version 1.7.0
---!     @date    2026/5/20
+--!     @file    merge_axi_writer.vhd
+--!     @brief   Merge Sorter Merge AXI Writer Module :
+--!     @version 1.6.0
+--!     @date    2025/5/25
 --!     @author  Ichiro Kawazome <ichiro_k@ca2.so-net.ne.jp>
 -----------------------------------------------------------------------------------
 --
---      Copyright (C) 2018-2026 Ichiro Kawazome
+--      Copyright (C) 2018-2025 Ichiro Kawazome
 --      All rights reserved.
 --
 --      Redistribution and use in source and binary forms, with or without
@@ -38,25 +38,24 @@ library ieee;
 use     ieee.std_logic_1164.all;
 library Merge_Sorter;
 use     Merge_Sorter.Interface;
-entity  ArgSort_AXI_Reader is
+entity  Merge_AXI_Writer is
     generic (
         WORDS           :  integer :=  1;
         WORD_BITS       :  integer := 64;
-        WORD_INDEX_LO   :  integer :=  0;
-        WORD_INDEX_HI   :  integer := 31;
-        WORD_COMP_LO    :  integer := 32;
-        WORD_COMP_HI    :  integer := 63;
         AXI_ID_BASE     :  integer :=  0;
         AXI_ID_WIDTH    :  integer :=  8;
         AXI_AUSER_WIDTH :  integer :=  4;
+        AXI_WUSER_WIDTH :  integer :=  4;
+        AXI_BUSER_WIDTH :  integer :=  4;
         AXI_ADDR_WIDTH  :  integer := 32;
         AXI_DATA_WIDTH  :  integer := 64;
-        AXI_XFER_SIZE   :  integer := 10;
-        AXI_BUF_DEPTH   :  integer := 11;
+        AXI_XFER_SIZE   :  integer := 11;
+        AXI_BUF_DEPTH   :  integer := 12;
         AXI_QUEUE_SIZE  :  integer :=  4;
-        AXI_RDATA_REGS  :  integer :=  2;
+        AXI_REQ_REGS    :  integer range 0 to 1 :=  1;
         AXI_ACK_REGS    :  integer range 0 to 1 :=  1;
-        STM_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
+        AXI_RESP_REGS   :  integer range 0 to 1 :=  1;
+        MRG_REG_PARAM   :  Interface.Regs_Field_Type := Interface.Default_Regs_Param
     );
     port (
     -------------------------------------------------------------------------------
@@ -66,51 +65,60 @@ entity  ArgSort_AXI_Reader is
         RST             :  in  std_logic;
         CLR             :  in  std_logic;
     -------------------------------------------------------------------------------
-    -- AXI Master Read Address Channel Signals.
+    -- AXI Master Writer Address Channel Signals.
     -------------------------------------------------------------------------------
-        AXI_ARID        :  out std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_ARADDR      :  out std_logic_vector(AXI_ADDR_WIDTH  -1 downto 0);
-        AXI_ARLEN       :  out std_logic_vector(7 downto 0);
-        AXI_ARSIZE      :  out std_logic_vector(2 downto 0);
-        AXI_ARBURST     :  out std_logic_vector(1 downto 0);
-        AXI_ARLOCK      :  out std_logic_vector(0 downto 0);
-        AXI_ARCACHE     :  out std_logic_vector(3 downto 0);
-        AXI_ARPROT      :  out std_logic_vector(2 downto 0);
-        AXI_ARQOS       :  out std_logic_vector(3 downto 0);
-        AXI_ARREGION    :  out std_logic_vector(3 downto 0);
-        AXI_ARUSER      :  out std_logic_vector(AXI_AUSER_WIDTH -1 downto 0);
-        AXI_ARVALID     :  out std_logic;
-        AXI_ARREADY     :  in  std_logic;
+        AXI_AWID        :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_AWADDR      :  out std_logic_vector(AXI_ADDR_WIDTH   -1 downto 0);
+        AXI_AWLEN       :  out std_logic_vector(7 downto 0);
+        AXI_AWSIZE      :  out std_logic_vector(2 downto 0);
+        AXI_AWBURST     :  out std_logic_vector(1 downto 0);
+        AXI_AWLOCK      :  out std_logic_vector(0 downto 0);
+        AXI_AWCACHE     :  out std_logic_vector(3 downto 0);
+        AXI_AWPROT      :  out std_logic_vector(2 downto 0);
+        AXI_AWQOS       :  out std_logic_vector(3 downto 0);
+        AXI_AWREGION    :  out std_logic_vector(3 downto 0);
+        AXI_AWUSER      :  out std_logic_vector(AXI_AUSER_WIDTH  -1 downto 0);
+        AXI_AWVALID     :  out std_logic;
+        AXI_AWREADY     :  in  std_logic;
+    ------------------------------------------------------------------------------
+    -- AXI Master Write Data Channel Signals.
+    ------------------------------------------------------------------------------
+        AXI_WID         :  out std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_WDATA       :  out std_logic_vector(AXI_DATA_WIDTH   -1 downto 0);
+        AXI_WSTRB       :  out std_logic_vector(AXI_DATA_WIDTH/8 -1 downto 0);
+        AXI_WUSER       :  out std_logic_vector(AXI_WUSER_WIDTH  -1 downto 0);
+        AXI_WLAST       :  out std_logic;
+        AXI_WVALID      :  out std_logic;
+        AXI_WREADY      :  in  std_logic;
+    ------------------------------------------------------------------------------
+    -- AXI Write Response Channel Signals.
+    ------------------------------------------------------------------------------
+        AXI_BID         :  in  std_logic_vector(AXI_ID_WIDTH     -1 downto 0);
+        AXI_BRESP       :  in  std_logic_vector(1 downto 0);
+        AXI_BUSER       :  in  std_logic_vector(AXI_BUSER_WIDTH  -1 downto 0);
+        AXI_BVALID      :  in  std_logic;
+        AXI_BREADY      :  out std_logic;
     -------------------------------------------------------------------------------
-    -- AXI Master Read Data Channel Signals.
+    -- Merge Writer Control Register Interface.
     -------------------------------------------------------------------------------
-        AXI_RID         :  in  std_logic_vector(AXI_ID_WIDTH    -1 downto 0);
-        AXI_RDATA       :  in  std_logic_vector(AXI_DATA_WIDTH  -1 downto 0);
-        AXI_RRESP       :  in  std_logic_vector(1 downto 0);
-        AXI_RLAST       :  in  std_logic;
-        AXI_RVALID      :  in  std_logic;
-        AXI_RREADY      :  out std_logic;
+        MRG_REG_L       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_D       :  in  std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
+        MRG_REG_Q       :  out std_logic_vector(MRG_REG_PARAM.BITS   -1 downto 0);
     -------------------------------------------------------------------------------
-    -- Stream Reader Control Register Interface.
+    -- Merge Intake Signals.
     -------------------------------------------------------------------------------
-        STM_REG_L       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
-        STM_REG_D       :  in  std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
-        STM_REG_Q       :  out std_logic_vector(STM_REG_PARAM.BITS  -1 downto 0);
-    -------------------------------------------------------------------------------
-    -- Stream Outlet Signals.
-    -------------------------------------------------------------------------------
-        STM_DATA        :  out std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
-        STM_STRB        :  out std_logic_vector(WORDS            -1 downto 0);
-        STM_LAST        :  out std_logic;
-        STM_VALID       :  out std_logic;
-        STM_READY       :  in  std_logic;
+        MRG_DATA        :  in  std_logic_vector(WORDS*WORD_BITS  -1 downto 0);
+        MRG_STRB        :  in  std_logic_vector(WORDS            -1 downto 0);
+        MRG_LAST        :  in  std_logic;
+        MRG_VALID       :  in  std_logic;
+        MRG_READY       :  out std_logic;
     -------------------------------------------------------------------------------
     -- Status Output.
     -------------------------------------------------------------------------------
         BUSY            :  out std_logic;
         DONE            :  out std_logic
     );
-end ArgSort_AXI_Reader;
+end Merge_AXI_Writer;
 -----------------------------------------------------------------------------------
 --
 -----------------------------------------------------------------------------------
@@ -119,16 +127,11 @@ use     ieee.std_logic_1164.all;
 use     ieee.numeric_std.all;
 library Merge_Sorter;
 use     Merge_Sorter.Interface;
-use     Merge_Sorter.ArgSort_AXI_Components.ArgSort_Reader;
+use     Merge_Sorter.Interface_Components.Merge_Writer;
 library PIPEWORK;
 use     PIPEWORK.AXI4_TYPES.all;
-use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_READ_INTERFACE;
-architecture RTL of ArgSort_AXI_Reader is
-    ------------------------------------------------------------------------------
-    -- 
-    ------------------------------------------------------------------------------
-    constant  WORD_COMP_BITS    :  integer := WORD_COMP_HI  - WORD_COMP_LO  + 1;
-    constant  WORD_INDEX_BITS   :  integer := WORD_INDEX_HI - WORD_INDEX_LO + 1;
+use     PIPEWORK.AXI4_COMPONENTS.AXI4_MASTER_WRITE_INTERFACE;
+architecture RTL of Merge_AXI_Writer is
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -150,15 +153,15 @@ architecture RTL of ArgSort_AXI_Reader is
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
-    constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_COMP_BITS, AXI_DATA_WIDTH);
-    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_COMP_BITS, AXI_DATA_WIDTH);
+    constant  ALIGNMENT_BITS    :  integer := MIN(      WORD_BITS, AXI_DATA_WIDTH);
+    constant  BUF_DATA_BITS     :  integer := MAX(WORDS*WORD_BITS, AXI_DATA_WIDTH);
     constant  BUF_DEPTH         :  integer := AXI_BUF_DEPTH;
     ------------------------------------------------------------------------------
     -- 
     ------------------------------------------------------------------------------
     constant  XFER_SIZE_BITS    :  integer := BUF_DEPTH+1;
-    constant  REQ_SIZE_BITS     :  integer := STM_REG_PARAM.SIZE.BITS;
-    constant  REQ_MODE_BITS     :  integer := STM_REG_PARAM.MODE.BITS;
+    constant  REQ_SIZE_BITS     :  integer := MRG_REG_PARAM.SIZE.BITS;
+    constant  REQ_MODE_BITS     :  integer := MRG_REG_PARAM.MODE.BITS;
     constant  REQ_MODE_FIELD    :  Interface.Mode_Regs_Field_Type := Interface.New_Mode_Regs_Field(0);
     ------------------------------------------------------------------------------
     -- 
@@ -180,8 +183,8 @@ architecture RTL of ArgSort_AXI_Reader is
     signal    req_safety        :  std_logic;
     signal    req_first         :  std_logic;
     signal    req_last          :  std_logic;
-    signal    req_valid         :  std_logic;
     signal    req_none          :  std_logic;
+    signal    req_valid         :  std_logic;
     signal    req_ready         :  std_logic;
     signal    xfer_busy         :  std_logic;
     signal    xfer_done         :  std_logic;
@@ -197,25 +200,27 @@ architecture RTL of ArgSort_AXI_Reader is
     signal    flow_stop         :  std_logic;
     signal    flow_last         :  std_logic;
     signal    flow_size         :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    push_fin_valid    :  std_logic;
-    signal    push_fin_error    :  std_logic;
-    signal    push_fin_last     :  std_logic;
-    signal    push_fin_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    push_buf_valid    :  std_logic;
-    signal    push_buf_ready    :  std_logic;
-    signal    push_buf_reset    :  std_logic;
-    signal    push_buf_error    :  std_logic;
-    signal    push_buf_last     :  std_logic;
-    signal    push_buf_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
-    signal    buf_wdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
-    signal    buf_ben           :  std_logic_vector(BUF_DATA_BITS/8-1 downto 0);
-    signal    buf_wptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
-    signal    buf_wen           :  std_logic;
+    signal    pull_fin_valid    :  std_logic;
+    signal    pull_fin_error    :  std_logic;
+    signal    pull_fin_last     :  std_logic;
+    signal    pull_fin_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
+    signal    pull_rsv_valid    :  std_logic;
+    signal    pull_rsv_error    :  std_logic;
+    signal    pull_rsv_last     :  std_logic;
+    signal    pull_rsv_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
+    signal    pull_buf_valid    :  std_logic;
+    signal    pull_buf_ready    :  std_logic;
+    signal    pull_buf_reset    :  std_logic;
+    signal    pull_buf_error    :  std_logic;
+    signal    pull_buf_last     :  std_logic;
+    signal    pull_buf_size     :  std_logic_vector(XFER_SIZE_BITS -1 downto 0);
+    signal    buf_rdata         :  std_logic_vector(BUF_DATA_BITS  -1 downto 0);
+    signal    buf_rptr          :  std_logic_vector(BUF_DEPTH      -1 downto 0);
 begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    AXI_IF: AXI4_MASTER_READ_INTERFACE                   -- 
+    AXI_IF: AXI4_MASTER_WRITE_INTERFACE                  -- 
         generic map (                                    -- 
             AXI4_ADDR_WIDTH     => AXI_ADDR_WIDTH      , -- 
             AXI4_DATA_WIDTH     => AXI_DATA_WIDTH      , -- 
@@ -230,9 +235,10 @@ begin
             XFER_SIZE_BITS      => XFER_SIZE_BITS      , -- 
             XFER_MIN_SIZE       => AXI_XFER_SIZE       , -- 
             XFER_MAX_SIZE       => AXI_XFER_SIZE       , -- 
-            QUEUE_SIZE          => AXI_QUEUE_SIZE      , --
-            RDATA_REGS          => AXI_RDATA_REGS      , --
-            ACK_REGS            => AXI_ACK_REGS          -- 
+            REQ_REGS            => AXI_REQ_REGS        , -- 
+            ACK_REGS            => AXI_ACK_REGS        , -- 
+            QUEUE_SIZE          => AXI_QUEUE_SIZE      , -- 
+            RESP_REGS           => AXI_RESP_REGS         -- 
         )                                                -- 
         port map (                                       -- 
         --------------------------------------------------------------------------
@@ -242,29 +248,36 @@ begin
             CLR                 => CLR                 , -- In  :
             RST                 => RST                 , -- In  :
         --------------------------------------------------------------------------
-        -- AXI4 Read Address Channel Signals.
+        -- AXI4 Write Address Channel Signals.
         --------------------------------------------------------------------------
-            ARID                => AXI_ARID            , -- Out :
-            ARADDR              => AXI_ARADDR          , -- Out :
-            ARLEN               => AXI_ARLEN           , -- Out :
-            ARSIZE              => AXI_ARSIZE          , -- Out :
-            ARBURST             => AXI_ARBURST         , -- Out :
-            ARLOCK              => AXI_ARLOCK          , -- Out :
-            ARCACHE             => AXI_ARCACHE         , -- Out :
-            ARPROT              => AXI_ARPROT          , -- Out :
-            ARQOS               => AXI_ARQOS           , -- Out :
-            ARREGION            => AXI_ARREGION        , -- Out :
-            ARVALID             => AXI_ARVALID         , -- Out :
-            ARREADY             => AXI_ARREADY         , -- In  :
+            AWID                => AXI_AWID            , -- Out :
+            AWADDR              => AXI_AWADDR          , -- Out :
+            AWLEN               => AXI_AWLEN           , -- Out :
+            AWSIZE              => AXI_AWSIZE          , -- Out :
+            AWBURST             => AXI_AWBURST         , -- Out :
+            AWLOCK              => AXI_AWLOCK          , -- Out :
+            AWCACHE             => AXI_AWCACHE         , -- Out :
+            AWPROT              => AXI_AWPROT          , -- Out :
+            AWQOS               => AXI_AWQOS           , -- Out :
+            AWREGION            => AXI_AWREGION        , -- Out :
+            AWVALID             => AXI_AWVALID         , -- Out :
+            AWREADY             => AXI_AWREADY         , -- In  :
         --------------------------------------------------------------------------
-        -- AXI4 Read Data Channel Signals.
+        -- AXI4 Write Data Channel Signals.
         --------------------------------------------------------------------------
-            RID                 => AXI_RID             , -- In  :
-            RDATA               => AXI_RDATA           , -- In  :
-            RRESP               => AXI_RRESP           , -- In  :
-            RLAST               => AXI_RLAST           , -- In  :
-            RVALID              => AXI_RVALID          , -- In  :
-            RREADY              => AXI_RREADY          , -- Out :
+            WID                 => AXI_WID             , -- Out :
+            WDATA               => AXI_WDATA           , -- Out :
+            WSTRB               => AXI_WSTRB           , -- Out :
+            WLAST               => AXI_WLAST           , -- Out :
+            WVALID              => AXI_WVALID          , -- Out :
+            WREADY              => AXI_WREADY          , -- In  :
+        --------------------------------------------------------------------------
+        -- AXI4 Write Response Channel Signals.
+        --------------------------------------------------------------------------
+            BID                 => AXI_BID             , -- In  :
+            BRESP               => AXI_BRESP           , -- In  :
+            BVALID              => AXI_BVALID          , -- In  :
+            BREADY              => AXI_BREADY          , -- Out :
         ---------------------------------------------------------------------------
         -- Command Request Signals.
         ---------------------------------------------------------------------------
@@ -311,34 +324,33 @@ begin
         ---------------------------------------------------------------------------
         -- Reserve Size Signals.
         ---------------------------------------------------------------------------
-            PUSH_RSV_VAL        => open                , -- Out :
-            PUSH_RSV_SIZE       => open                , -- Out :
-            PUSH_RSV_LAST       => open                , -- Out :
-            PUSH_RSV_ERROR      => open                , -- Out :
+            PULL_RSV_VAL        => open                , -- Out :
+            PULL_RSV_SIZE       => open                , -- Out :
+            PULL_RSV_LAST       => open                , -- Out :
+            PULL_RSV_ERROR      => open                , -- Out :
         ---------------------------------------------------------------------------
-        -- Push Size Signals.
+        -- Pull Size Signals.
         ---------------------------------------------------------------------------
-            PUSH_FIN_VAL(0)     => push_fin_valid      , -- Out :
-            PUSH_FIN_SIZE       => push_fin_size       , -- Out :
-            PUSH_FIN_LAST       => push_fin_last       , -- Out :
-            PUSH_FIN_ERROR      => push_fin_error      , -- Out :
+            PULL_FIN_VAL(0)     => pull_fin_valid      , -- Out :
+            PULL_FIN_SIZE       => pull_fin_size       , -- Out :
+            PULL_FIN_LAST       => pull_fin_last       , -- Out :
+            PULL_FIN_ERROR      => pull_fin_error      , -- Out :
         ---------------------------------------------------------------------------
-        -- Push Size Signals.
+        -- Pull Buffer Size Signals.
         ---------------------------------------------------------------------------
-            PUSH_BUF_RESET(0)   => push_buf_reset      , -- Out :
-            PUSH_BUF_VAL(0)     => push_buf_valid      , -- Out :
-            PUSH_BUF_SIZE       => push_buf_size       , -- Out :
-            PUSH_BUF_LAST       => push_buf_last       , -- Out :
-            PUSH_BUF_ERROR      => push_buf_error      , -- Out :
-            PUSH_BUF_RDY(0)     => push_buf_ready      , -- In  :
+            PULL_BUF_RESET(0)   => pull_buf_reset      , -- Out :
+            PULL_BUF_VAL(0)     => pull_buf_valid      , -- Out :
+            PULL_BUF_SIZE       => pull_buf_size       , -- Out :
+            PULL_BUF_LAST       => pull_buf_last       , -- Out :
+            PULL_BUF_ERROR      => pull_buf_error      , -- Out :
+            PULL_BUF_RDY(0)     => pull_buf_ready      , -- Out :
         ---------------------------------------------------------------------------
         -- Read Buffer Interface Signals.
         ---------------------------------------------------------------------------
-            BUF_WEN(0)          => buf_wen             , -- Out :
-            BUF_BEN             => buf_ben             , -- Out :
-            BUF_DATA            => buf_wdata           , -- Out :
-            BUF_PTR             => buf_wptr              -- Out :
-        );                                               --
+            BUF_REN             => open                , -- Out :
+            BUF_DATA            => buf_rdata           , -- In  :
+            BUF_PTR             => buf_rptr              -- Out :
+        );
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
@@ -352,12 +364,12 @@ begin
     begin 
         process (CLK, RST) begin
             if (RST = '1') then
-                    AXI_ARUSER <= (others => '0');
+                    AXI_AWUSER <= (others => '0');
             elsif (CLK'event and CLK = '1') then
                 if (CLR = '1') then
-                    AXI_ARUSER <= (others => '0');
+                    AXI_AWUSER <= (others => '0');
                 elsif (req_valid = '1' and req_ready = '1') then
-                    AXI_ARUSER <= std_logic_vector(resize(unsigned(req_mode(REQ_MODE_FIELD.AUSER.HI downto REQ_MODE_FIELD.AUSER.LO)), AXI_AUSER_WIDTH));
+                    AXI_AWUSER <= std_logic_vector(resize(unsigned(req_mode(REQ_MODE_FIELD.AUSER.HI downto REQ_MODE_FIELD.AUSER.LO)), AXI_AUSER_WIDTH));
                 end if;
             end if;
         end process;
@@ -370,37 +382,33 @@ begin
     -------------------------------------------------------------------------------
     --
     -------------------------------------------------------------------------------
-    READER:  ArgSort_Reader                              -- 
+    WRITER:  Merge_Writer                                -- 
         generic map (                                    -- 
             WORDS               => WORDS               , --   
             WORD_BITS           => WORD_BITS           , --   
-            REG_PARAM           => STM_REG_PARAM       , -- 
+            REG_PARAM           => MRG_REG_PARAM       , -- 
             REQ_ADDR_BITS       => AXI_ADDR_WIDTH      , --   
             REQ_SIZE_BITS       => REQ_SIZE_BITS       , --   
             BUF_DATA_BITS       => BUF_DATA_BITS       , --   
             BUF_DEPTH           => BUF_DEPTH           , --   
-            MAX_XFER_SIZE       => AXI_XFER_SIZE       , --   
-            WORD_INDEX_LO       => WORD_INDEX_LO       , --   
-            WORD_INDEX_HI       => WORD_INDEX_HI       , --   
-            WORD_COMP_LO        => WORD_COMP_LO        , --   
-            WORD_COMP_HI        => WORD_COMP_HI          --   
+            MAX_XFER_SIZE       => AXI_XFER_SIZE         --   
         )                                                -- 
         port map (                                       -- 
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
         -- Clock/Reset Signals.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             CLK                 => CLK                 , --  In  :
             RST                 => RST                 , --  In  :
             CLR                 => CLR                 , --  In  :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
         -- Register Interface
-        ---------------------------------------------------------------------------
-            REG_L               => STM_REG_L           , --  In  :
-            REG_D               => STM_REG_D           , --  In  :
-            REG_Q               => STM_REG_Q           , --  Out :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
+            REG_L               => MRG_REG_L           , --  In  :
+            REG_D               => MRG_REG_D           , --  In  :
+            REG_Q               => MRG_REG_Q           , --  Out :
+        -------------------------------------------------------------------------------
         -- Transaction Command Request Signals.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             REQ_VALID           => req_valid           , --  Out :
             REQ_ADDR            => req_addr            , --  Out :
             REQ_SIZE            => req_size            , --  Out :
@@ -410,9 +418,9 @@ begin
             REQ_LAST            => req_last            , --  Out :
             REQ_NONE            => req_none            , --  Out :
             REQ_READY           => req_ready           , --  In  :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
         -- Transaction Command Acknowledge Signals.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             ACK_VALID           => ack_valid           , --  In  :
             ACK_SIZE            => ack_size            , --  In  :
             ACK_ERROR           => ack_error           , --  In  :
@@ -420,48 +428,46 @@ begin
             ACK_LAST            => ack_last            , --  In  :
             ACK_STOP            => ack_stop            , --  In  :
             ACK_NONE            => ack_none            , --  In  :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
         -- Transfer Status Signals.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             XFER_BUSY           => xfer_busy           , --  In  :
             XFER_DONE           => xfer_done           , --  In  :
             XFER_ERROR          => xfer_error          , --  In  :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
         -- Intake Flow Control Signals.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             FLOW_READY          => open                , --  Out :
             FLOW_PAUSE          => flow_pause          , --  Out :
             FLOW_STOP           => flow_stop           , --  Out :
             FLOW_LAST           => flow_last           , --  Out :
             FLOW_SIZE           => flow_size           , --  Out :
-            PUSH_FIN_VALID      => push_fin_valid      , --  In  :
-            PUSH_FIN_LAST       => push_fin_last       , --  In  :
-            PUSH_FIN_ERROR      => push_fin_error      , --  In  :
-            PUSH_FIN_SIZE       => push_fin_size       , --  In  :
-            PUSH_BUF_RESET      => push_buf_reset      , --  In  :
-            PUSH_BUF_VALID      => push_buf_valid      , --  In  :
-            PUSH_BUF_LAST       => push_buf_last       , --  In  :
-            PUSH_BUF_ERROR      => push_buf_error      , --  In  :
-            PUSH_BUF_SIZE       => push_buf_size       , --  In  :
-            PUSH_BUF_READY      => push_buf_ready      , --  Out :
-        ---------------------------------------------------------------------------
+            PULL_FIN_VALID      => pull_fin_valid      , --  In  :
+            PULL_FIN_LAST       => pull_fin_last       , --  In  :
+            PULL_FIN_ERROR      => pull_fin_error      , --  In  :
+            PULL_FIN_SIZE       => pull_fin_size       , --  In  :
+            PULL_BUF_RESET      => pull_buf_reset      , --  In  :
+            PULL_BUF_VALID      => pull_buf_valid      , --  In  :
+            PULL_BUF_LAST       => pull_buf_last       , --  In  :
+            PULL_BUF_ERROR      => pull_buf_error      , --  In  :
+            PULL_BUF_SIZE       => pull_buf_size       , --  In  :
+            PULL_BUF_READY      => pull_buf_ready      , --  Out :
+        -------------------------------------------------------------------------------
         -- Buffer Interface Signals.
-        ---------------------------------------------------------------------------
-            BUF_WEN             => buf_wen             , --  In  :
-            BUF_BEN             => buf_ben             , --  In  :
-            BUF_DATA            => buf_wdata           , --  In  :
-            BUF_PTR             => buf_wptr            , --  In  :
-        ---------------------------------------------------------------------------
-        -- Stream Outlet Signals.
-        ---------------------------------------------------------------------------
-            STM_DATA            => STM_DATA            , --  Out :
-            STM_STRB            => STM_STRB            , --  Out :
-            STM_LAST            => STM_LAST            , --  Out :
-            STM_VALID           => STM_VALID           , --  Out :
-            STM_READY           => STM_READY           , --  In  :
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
+            BUF_DATA            => buf_rdata           , --  Out :
+            BUF_PTR             => buf_rptr            , --  In  :
+        -------------------------------------------------------------------------------
+        -- Merge Outlet Signals.
+        -------------------------------------------------------------------------------
+            MRG_DATA            => MRG_DATA            , --  In  :
+            MRG_STRB            => MRG_STRB            , --  In  :
+            MRG_LAST            => MRG_LAST            , --  In  :
+            MRG_VALID           => MRG_VALID           , --  In  :
+            MRG_READY           => MRG_READY           , --  Out :
+        -------------------------------------------------------------------------------
         -- Status Output.
-        ---------------------------------------------------------------------------
+        -------------------------------------------------------------------------------
             BUSY                => BUSY                , --  Out :
             DONE                => DONE                  --  Out :
         );

@@ -1,10 +1,10 @@
 VIVADO       ?= vivado
 IP_NAME      ?= argsort_axi
-IP_VERSION   ?= 1.6
+IP_VERSION   ?= 1.7
 IP_VERSION_  := $(subst .,_,$(IP_VERSION))
 IP_ROOT_DIR  := ../$(IP_NAME)_$(IP_VERSION)
 XGUI_FILE    := ./xgui/ArgSort_AXI_v$(IP_VERSION_).tcl
-VIVADO_FILES := create_ip.tcl add_sources.tcl update_xgui.tcl $(XGUI_FILE)
+VIVADO_FILES := setting.tcl create_ip.tcl add_sources.tcl update_xgui.tcl $(XGUI_FILE)
 
 all: ip
 

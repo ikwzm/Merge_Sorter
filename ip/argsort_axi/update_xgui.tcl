@@ -1,16 +1,12 @@
 #
 # update_xgui.tcl  Tcl script for Update XGUI
 #
-set ip_name                 "ArgSort_AXI"
-set ip_version              "1.6"
-set project_name            "argsort_axi"
-
-
-set ip_root_directory       [file join [file dirname [info script]] ".." "argsort_axi_$ip_version"]
-set project_directory       [file join [file dirname [info script]] "work"]
+source [file join [file dirname [info script]] "setting.tcl"]
+#
+# Set GUI Files (Tcl File and Logo File)
+# 
 set ip_version_             [string map {. _} $ip_version]
 set xgui_tcl_file           "${ip_name}_v${ip_version_}.tcl"
-
 #
 # Copy GUI Tcl file to IP
 #
@@ -28,6 +24,16 @@ ipx::open_ipxact_file [file join $ip_root_directory "component.xml"]
 #
 ipx::create_xgui_files          [ipx::current_core]
 #
+# Copy GUI Logo file to IP
+#
+file copy -force [file join [file dirname [info script]] ".." ".." "PipeWork" "icons" "PipeWork_100x100.png"] [file join $ip_root_directory "xgui" "PipeWork.png" ]
+#
+# Add PipeWork Logo
+#
+ipx::add_file_group -type utility {} [ipx::current_core]
+ipx::add_file [file join "xgui" "PipeWork.png"] [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]
+set_property type LOGO [ipx::get_files [file join "xgui" "PipeWork.png"] -of_objects [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]]
+#
 # Set Display Name same as Name
 #
 proc set_user_parameter_display_name_same_as_name { user_parameter } {
@@ -43,13 +49,6 @@ proc set_user_parameter_all_display_name_same_as_name {} {
     }
 }
 set_user_parameter_all_display_name_same_as_name
-#
-# Add PipeWork Logo
-#
-ipx::add_file_group -type utility {} [ipx::current_core]
-file copy -force [file join [file dirname [info script]] ".." ".." "PipeWork" "icons" PipeWork_100x100.png] [file join $ip_root_directory "src" "PipeWork.png" ]
-ipx::add_file "src/PipeWork.png" [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]
-set_property type LOGO [ipx::get_files "src/PipeWork.png" -of_objects [ipx::get_file_groups xilinx_utilityxitfiles -of_objects [ipx::current_core]]]
 #
 # Generate files
 #
