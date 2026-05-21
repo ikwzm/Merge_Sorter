@@ -956,7 +956,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>f1535ad4</spirit:value>
+            <spirit:value>806dd051</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -972,7 +972,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>f1535ad4</spirit:value>
+            <spirit:value>806dd051</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -4109,15 +4109,15 @@
       </xilinx:taxonomies>
       <xilinx:displayName>ArgSort_AXI</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>0</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-05-20T11:28:13Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>1</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2026-05-21T01:22:19Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2025.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="f2908b32"/>
       <xilinx:checksum xilinx:scope="addressSpaces" xilinx:value="62105df4"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="39f0ff7d"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="c0b52869"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="8eecd035"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="f015077b"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="1bf0119b"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="86f4120b"/>
